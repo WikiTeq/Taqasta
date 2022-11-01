@@ -19,6 +19,25 @@ WG_SEARCH_TYPE=$(get_mediawiki_variable wgSearchType)
 WG_CIRRUS_SEARCH_SERVER=$(get_hostname_with_port "$(get_mediawiki_variable wgCirrusSearchServers first)" 9200)
 VERSION_HASH=$(php /getMediawikiSettings.php --versions --format=md5)
 
+get_tables_count() {
+    waitdatabase || {
+        return $?
+    }
+
+    if [ "3" = "$db_started" ]; then
+        # sqlite
+        find "$WG_SQLITE_DATA_DIR" -type f | wc -l
+        return 0
+    elif [ "1" = "$db_started" ]; then
+        db_user="$WG_DB_USER"
+        db_password="$WG_DB_PASSWORD"
+    else
+        db_user="$MW_DB_INSTALLDB_USER"
+        db_password="$MW_DB_INSTALLDB_PASS"
+    fi
+    mysql -h "$WG_DB_SERVER" -u"$db_user" -p"$db_password" -e "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$WG_DB_NAME'" | sed -n 2p
+}
+
 run_maintenance_script_if_needed () {
     if [ -f "$MW_VOLUME/$1.info" ]; then
         update_info="$(cat "$MW_VOLUME/$1.info" 2>/dev/null)"
@@ -217,25 +236,6 @@ waitdatabase() {
     fi
     echo >&2 'Successfully connected to the database.'
     return 0
-}
-
-get_tables_count() {
-    waitdatabase || {
-        return $?
-    }
-
-    if [ "3" = "$db_started" ]; then
-        # sqlite
-        find "$WG_SQLITE_DATA_DIR" -type f | wc -l
-        return 0
-    elif [ "1" = "$db_started" ]; then
-        db_user="$WG_DB_USER"
-        db_password="$WG_DB_PASSWORD"
-    else
-        db_user="$MW_DB_INSTALLDB_USER"
-        db_password="$MW_DB_INSTALLDB_PASS"
-    fi
-    mysql -h "$WG_DB_SERVER" -u"$db_user" -p"$db_password" -e "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$WG_DB_NAME'" | sed -n 2p
 }
 
 waitelastic() {
