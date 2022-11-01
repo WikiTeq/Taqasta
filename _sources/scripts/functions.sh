@@ -21,7 +21,9 @@ get_hostname_with_port () {
 
 make_dir_writable() {
     find "$1" '(' -type f -o -type d ')' \
-       '(' '(' -user "$WWW_USER" -perm -u=w ')' -o \
+       ! '(' '(' -user "$WWW_USER" -perm -u=w ')' -o \
            '(' -group "$WWW_GROUP" -perm -g=w ')' -o \
-           '(' -perm -o=w ')' ')' -exec chgrp "$WWW_GROUP" {} \; -exec chmod g=rwX {} \;
+           '(' -perm -o=w ')' \
+         ')' \
+         -exec chgrp "$WWW_GROUP" {} \; -exec chmod g=rwX {} \;
 }
