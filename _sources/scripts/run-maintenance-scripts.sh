@@ -7,6 +7,12 @@ set -x
 
 . /functions.sh
 
+# Remove LocalSettings.php file in MW_VOLUME directory if is is a broken symbolic link
+# For backward compatibility, when LocalSettings.php is a broken link to /var/www/html/w/DockerSettings.php file
+if [ -L "$MW_VOLUME/LocalSettings.php" ] && [ ! -e "$MW_VOLUME/LocalSettings.php" ]; then
+    rm "$MW_VOLUME/LocalSettings.php"
+fi
+
 WG_DB_TYPE=$(get_mediawiki_variable wgDBtype)
 WG_DB_SERVER=$(get_mediawiki_variable wgDBserver)
 WG_DB_NAME=$(get_mediawiki_variable wgDBname)
@@ -238,6 +244,19 @@ if [ -e "$MW_VOLUME/LocalSettings.php" ] && [ ! -e "$MW_HOME/LocalSettings.php" 
 fi
 
 rm "$WWW_ROOT/.maintenance"
+
+# Reload the settings
+WG_DB_TYPE=$(get_mediawiki_variable wgDBtype)
+WG_DB_SERVER=$(get_mediawiki_variable wgDBserver)
+WG_DB_NAME=$(get_mediawiki_variable wgDBname)
+WG_DB_USER=$(get_mediawiki_variable wgDBuser)
+WG_DB_PASSWORD=$(get_mediawiki_variable wgDBpassword)
+WG_SQLITE_DATA_DIR=$(get_mediawiki_variable wgSQLiteDataDir)
+WG_LANG_CODE=$(get_mediawiki_variable wgLanguageCode)
+WG_SITE_NAME=$(get_mediawiki_variable wgSitename)
+WG_SEARCH_TYPE=$(get_mediawiki_variable wgSearchType)
+WG_CIRRUS_SEARCH_SERVER=$(get_hostname_with_port "$(get_mediawiki_variable wgCirrusSearchServers first)" 9200)
+VERSION_HASH=$(php /getMediawikiSettings.php --versions --format=md5)
 
 jobrunner() {
     sleep 1
