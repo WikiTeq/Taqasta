@@ -63,7 +63,7 @@ if [ "$WG_DB_TYPE" = "sqlite" ]; then
 fi
 
 echo "Checking permissions of Mediawiki volume dir $MW_VOLUME except $MW_VOLUME/images..."
-make_dir_writable "$MW_VOLUME" ! \( -path "$MW_VOLUME/images" -prune \)
+make_dir_writable "$MW_VOLUME" -not '(' -path "$MW_VOLUME/images" -prune ')'
 
 # Check and update permissions of wiki images in background.
 # It can take a long time and should not block Apache from starting.

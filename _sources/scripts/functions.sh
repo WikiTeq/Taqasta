@@ -20,7 +20,7 @@ get_hostname_with_port () {
 }
 
 make_dir_writable() {
-    find "$1" '(' -type f -o -type d ')' \
+    find "$@" '(' -type f -o -type d ')' \
        -not '(' '(' -user "$WWW_USER" -perm -u=w ')' -o \
            '(' -group "$WWW_GROUP" -perm -g=w ')' -o \
            '(' -perm -o=w ')' \
