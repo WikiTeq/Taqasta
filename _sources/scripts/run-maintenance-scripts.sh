@@ -10,7 +10,7 @@ set -x
 # Remove LocalSettings.php file in MW_VOLUME directory if is is a broken symbolic link
 # For backward compatibility, when LocalSettings.php is a broken link to /var/www/html/w/DockerSettings.php file
 if [ -L "$MW_VOLUME/LocalSettings.php" ] && [ ! -e "$MW_VOLUME/LocalSettings.php" ]; then
-    rm "$MW_VOLUME/LocalSettings.php"
+    mv "$MW_VOLUME/LocalSettings.php" "$MW_VOLUME/ToBeDeleted-$(date +%Y%m%d-%H%M%S)-LocalSettings.php"
 fi
 
 WG_DB_TYPE=$(get_mediawiki_variable wgDBtype)
