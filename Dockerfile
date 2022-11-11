@@ -758,9 +758,7 @@ RUN set -x; \
 COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
 RUN set -x; \
 	cd $MW_HOME \
-	&& composer update --no-dev \
-	# We need the 2nd update for SMW dependencies
-	&& composer update --no-dev
+	&& composer update --no-dev --with-dependencies --no-cache
 
 ################# Patches #################
 
