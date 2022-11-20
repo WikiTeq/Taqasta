@@ -765,6 +765,8 @@ RUN set -x; \
 	&& rm composer.json.bak \
 	&& cp composer.json composer.json.bak \
 	&& cat composer.json.bak | jq '. + {"prefer-stable": true}' > composer.json \
+	&& rm composer.json.bak \
+	&& composer clear-cache \
 	&& composer update --no-dev --with-dependencies --no-cache
 
 ################# Patches #################
