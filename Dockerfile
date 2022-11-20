@@ -71,6 +71,7 @@ RUN set x; \
 	ploticus \
 	djvulibre-bin \
 	fonts-hosny-amiri \
+	jq \
 #    xvfb \ + 14.9 MB
 #    lilypond \ + 301 MB
 	&& aptitude clean \
@@ -759,6 +760,11 @@ RUN set -x; \
 COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
 RUN set -x; \
 	cd $MW_HOME \
+	&& cp composer.json composer.json.bak \
+	&& cat composer.json.bak |  jq --arg foo bar '. + {"minimum-stability": "dev"}' > composer.json \
+	&& rm composer.json.bak \
+	&& cp composer.json composer.json.bak \
+	&& cat composer.json.bak |  jq --arg foo bar '. + {"prefer-stable": true}' > composer.json \
 	&& composer update --no-dev --with-dependencies --no-cache
 
 ################# Patches #################
