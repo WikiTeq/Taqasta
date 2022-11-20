@@ -761,10 +761,10 @@ COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
 RUN set -x; \
 	cd $MW_HOME \
 	&& cp composer.json composer.json.bak \
-	&& cat composer.json.bak |  jq --arg foo bar '. + {"minimum-stability": "dev"}' > composer.json \
+	&& cat composer.json.bak | jq '. + {"minimum-stability": "dev"}' > composer.json \
 	&& rm composer.json.bak \
 	&& cp composer.json composer.json.bak \
-	&& cat composer.json.bak |  jq --arg foo bar '. + {"prefer-stable": true}' > composer.json \
+	&& cat composer.json.bak | jq '. + {"prefer-stable": true}' > composer.json \
 	&& composer update --no-dev --with-dependencies --no-cache
 
 ################# Patches #################

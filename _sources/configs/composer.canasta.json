@@ -41,7 +41,5 @@
 			"type": "vcs",
 			"url": "https://github.com/WikiTeq/mediawiki-extension-RemoteWiki"
 		}
-	],
-	"minimum-stability": "dev",
-	"prefer-stable": true
+	]
 }
