@@ -572,10 +572,6 @@ RUN set -x; \
 	&& rmdir SemanticQueryInterface \
 	&& ln -s SQI.php SemanticQueryInterface.php \
 	&& rm -fr .git \
-	# Sentry
-	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extensions-Sentry.git $MW_HOME/extensions/Sentry \
-	&& cd $MW_HOME/extensions/Sentry \
-	&& git checkout -q 51ffdd6474a02476adce583edfe647616c6f117a \
 	# ShowMe
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ShowMe $MW_HOME/extensions/ShowMe \
 	&& cd $MW_HOME/extensions/ShowMe \

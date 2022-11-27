@@ -10,6 +10,7 @@
 		"mediawiki/semantic-compound-queries": "2.1.0",
 		"mediawiki/semantic-extra-special-properties": "2.1.0",
 		"mediawiki/semantic-scribunto": "2.1.0",
+		"mediawiki/sentry": "dev-master#51ffdd6474a02476adce583edfe647616c6f117a",
 		"mediawiki/simple-batch-upload": "1.8.2",
 		"mediawiki/bootstrap-components": "4.0.1",
 		"mediawiki/sub-page-list": "1.6.1",
