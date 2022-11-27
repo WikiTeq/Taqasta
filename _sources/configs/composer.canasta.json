@@ -46,6 +46,10 @@
 		{
 			"type": "vcs",
 			"url": "https://github.com/WikiTeq/mediawiki-api-base.git"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/wikimedia/mediawiki-extensions-Sentry.git"
 		}
 	]
 }
