@@ -765,7 +765,11 @@ RUN set -x; \
 	&& cat composer.json.bak | jq '. + {"prefer-stable": true}' > composer.json \
 	&& rm composer.json.bak \
 	&& composer clear-cache \
-	&& composer update --no-dev --with-dependencies --no-cache
+	&& git config --global url."https://github.com/WikiTeq/mediawiki-extension-RemoteWiki.git".insteadOf "git@github.com:WikiTeq/mediawiki-extension-RemoteWiki.git" \
+	&& git config --global url."https://github.com/WikiTeq/mediawiki-api-base.git".insteadOf "git@github.com:WikiTeq/mediawiki-api-base.git" \
+	&& git config --global url."https://github.com/WikiTeq/mediawiki-extensions-Sentry.git".insteadOf "git@github.com:WikiTeq/mediawiki-extensions-Sentry.git" \
+	&& composer update --no-dev --with-dependencies \
+	&& composer clear-cache
 
 ################# Patches #################
 
