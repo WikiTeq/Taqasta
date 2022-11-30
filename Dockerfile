@@ -572,6 +572,10 @@ RUN set -x; \
 	&& rmdir SemanticQueryInterface \
 	&& ln -s SQI.php SemanticQueryInterface.php \
 	&& rm -fr .git \
+	# Sentry
+	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extensions-Sentry.git $MW_HOME/extensions/Sentry \
+	&& cd $MW_HOME/extensions/Sentry \
+	&& git checkout -q 51ffdd6474a02476adce583edfe647616c6f117a \
 	# ShowMe
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ShowMe $MW_HOME/extensions/ShowMe \
 	&& cd $MW_HOME/extensions/ShowMe \
@@ -765,9 +769,6 @@ RUN set -x; \
 	&& cat composer.json.bak | jq '. + {"prefer-stable": true}' > composer.json \
 	&& rm composer.json.bak \
 	&& composer clear-cache \
-	&& git config --global url."https://github.com/WikiTeq/mediawiki-extension-RemoteWiki.git".insteadOf "git@github.com:WikiTeq/mediawiki-extension-RemoteWiki.git" \
-	&& git config --global url."https://github.com/WikiTeq/mediawiki-api-base.git".insteadOf "git@github.com:WikiTeq/mediawiki-api-base.git" \
-	&& git config --global url."https://github.com/WikiTeq/mediawiki-extensions-Sentry.git".insteadOf "git@github.com:WikiTeq/mediawiki-extensions-Sentry.git" \
 	&& composer update --no-dev --with-dependencies \
 	&& composer clear-cache
 
