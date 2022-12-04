@@ -96,7 +96,7 @@ jobs:
 
           echo "Final image tag to be pushed:"
           echo $REGISTRY_TAGS
-          echo "::set-output name=REGISTRY_TAGS::$REGISTRY_TAGS"
+          echo "REGISTRY_TAGS=$REGISTRY_TAGS" >> $GITHUB_OUTPUT
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
