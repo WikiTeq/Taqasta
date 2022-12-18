@@ -26,22 +26,31 @@ git fetch upstream
 git checkout canasta
 ```
 
-3. Merge Canasta repo changes into the `canasta` branch
+3. Update the branch by merging Canasta repo changes into the `canasta` branch
 
 ```bash
 git merge upstream/master
 ```
 
-4. Cherry-pick desired change into the `canasta` branch
+4. Create a new branch for your changes
+
+```bash
+git checkout -b fork/name-of-my-change
+```
+
+4. Cherry-pick desired change into just created `fork/name-of-my-change` branch
 
 ```bash
 git cherry-pick <commit-hash>
 ```
 
-5. Push the `canasta` branch changes to this repo
+5. Push the `fork/name-of-my-change` branch changes to this repo
 
 ```bash
 git push origin canasta
 ```
 
 6. Create PR from this repo back to Canasta repo
+
+https://github.com/WikiTeq/Taqasta/pulls , ensure that you have `CanastaWiki/Canastas:master` choosen as base,
+and `WikiTeq/Taqasta:fork/name-of-my-change` as compare.
