@@ -1,0 +1,69 @@
+version: '3.1'
+services:
+    db:
+        image: mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password --expire_logs_days=3
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE, fix error mbind: Operation not permitted
+        restart: unless-stopped
+        environment:
+            - MYSQL_ROOT_HOST=%
+            - MYSQL_ROOT_PASSWORD=${MW_DB_INSTALLDB_PASS:-mediawiki}
+            - MYSQL_DATABASE=${MW_DB_NAME:-mediawiki}
+        volumes:
+            - initdb:/docker-entrypoint-initdb.d
+            - mysql:/var/lib/mysql
+
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        ports:
+            - "${PORT:-127.0.0.1:8081}:80"
+        links:
+            - db
+        environment:
+            - MW_ADMIN_USER=${MW_ADMIN_USER:-admin}
+            - MW_ADMIN_PASS=${MW_ADMIN_PASS:-Passsw0rd!}
+            - MW_DB_NAME=${MW_DB_NAME:-mediawiki}
+            - MW_DB_INSTALLDB_USER=root
+            - MW_DB_INSTALLDB_PASS=${MW_DB_INSTALLDB_PASS:-mediawiki}
+            - MW_DB_USER=root
+            - MW_DB_PASS=${MW_DB_PASS:-mediawiki}
+            - MW_SECRET_KEY
+            - MW_SITE_SERVER
+            - MW_SITE_NAME
+            - MW_SITE_LANG
+            - MW_ENABLE_UPLOADS
+            - MW_USE_INSTANT_COMMONS
+            - MW_AUTOUPDATE
+            - MW_MAIN_CACHE_TYPE
+            - MW_LOAD_SKINS=${MW_LOAD_SKINS:-Vector,chameleon}
+            - MW_DEFAULT_SKIN=${MW_DEFAULT_SKIN:-chameleon}
+            - MW_LOAD_EXTENSIONS=${MW_LOAD_EXTENSIONS:-ParserFunctions,WikiEditor}
+            - MW_ENABLE_EMAIL
+            - MW_ENABLE_USER_EMAIL
+            - MW_EMERGENCY_CONTACT
+            - MW_PASSWORD_SENDER
+            - MW_DB_TYPE=${MW_DB_TYPE:-mysql}
+            - MW_USE_CACHE_DIRECTORY
+            - MW_SHOW_EXCEPTION_DETAILS
+            - MW_MEMCACHED_SERVERS
+            - MW_PROXY_SERVERS
+            - MW_FLOW_NAMESPACES
+            - MW_SEARCH_TYPE
+            - MW_ENABLE_SITEMAP_GENERATOR
+            - MW_CIRRUS_SEARCH_SERVERS
+            - PHP_UPLOAD_MAX_FILESIZE=500M
+            - PHP_POST_MAX_SIZE=500M
+            - MW_DEBUG_MODE
+        volumes:
+            - mediawiki:/mediawiki
+            - settings:/var/www/mediawiki/w/_settings
+
+volumes:
+    mediawiki:
+    mysql:
+    initdb:
+    settings:

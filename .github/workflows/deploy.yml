@@ -1,0 +1,77 @@
+name: DeployerBot
+
+on:
+  pull_request:
+    types: [ labeled, synchronize, reopened ]
+  workflow_call:
+    inputs: {}
+    secrets: {}
+##concurrency: docker_compose_ngrok_free
+jobs:
+  deploy-tunnel:
+    if: contains(github.event.pull_request.labels.*.name, 'deploy')
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+      pull-requests: write
+      actions: write
+      statuses: write
+      checks: write
+    steps:
+
+      - name: Fetch check run ids
+        id: fetch
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/{repo}/commits/{sha}/check-runs
+          repo: ${{ github.repository }}
+          run_id: ${{ github.run_id }}
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Echo check run ids
+        run: echo "job ids - ${{ toJSON(fromJSON(steps.fetch.outputs.data).check_runs[0].id) }}"
+
+#      - name: Script
+#        uses: actions/github-script@v6
+#        id: my-script
+#        with:
+#          result-encoding: string
+#          retries: 1
+#          script: |
+#            github.rest.checks.listForRef({
+#              owner: context.repo.owner,
+#              ref: context.ref,
+#              repo: context.repo.repo,
+#              check_name: 'deploy-tunnel'
+#            })
+#
+#      - name: Get result
+#        run: echo "${{steps.my-script.outputs.result}}"
+
+      - name: Confirm check
+        uses: LouisBrunner/checks-action@v1.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          conclusion: 'neutral'
+          check_id: ${{ toJSON(fromJSON(steps.fetch.outputs.data).check_runs[0].id) }}
+          status: 'completed'
+
+      - name: Deploy and tunnel
+        uses: wikiteq/compose-deploy-tunnel-action@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          secret: ${{ secrets.BORE_TOKEN }}
+          endpoint: stage-deploy.wikiteq.com
+          port: 80
+          file: docker-compose.yml
+
+      - name: Confirm check
+        uses: LouisBrunner/checks-action@v1.1.1
+        if: cancelled()
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          conclusion: 'neutral'
+          check_id: ${{ toJSON(fromJSON(steps.fetch.outputs.data).check_runs[0].id) }}
+          status: 'skipped'
