@@ -18,6 +18,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+            args:
+                COMPOSER_TOKEN: ${COMPOSER_TOKEN:-}
         restart: unless-stopped
         ports:
             - "${PORT:-127.0.0.1:8081}:80"
