@@ -675,7 +675,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/SimpleTooltip \
 	&& git checkout -b $MW_VERSION a918f4a6f095e9d8cc9fde0efad7acef472d2e94 \
 	# Skinny
-	&& git clone https://github.com/tinymighty/skinny.git Skinny $MW_HOME/extensions/Skinny \
+	&& git clone https://github.com/tinymighty/skinny.git $MW_HOME/extensions/Skinny \
 	&& cd $MW_HOME/extensions/Skinny \
 	&& git checkout -b $MW_VERSION 512e07818556e9b9baa07154371dab3201bfb435 \
 	# SkinPerNamespace
