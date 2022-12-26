@@ -543,7 +543,7 @@ RUN set -x; \
 RUN set -x; \
 	cd $MW_HOME/extensions \
 	# Buggy
-	&& git clone --single-branch -b master https://github.com/wikimedia/mediawiki-extensions-Buggy.git $MW_HOME/extensions/Buggy \
+	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-Buggy.git $MW_HOME/extensions/Buggy \
 	&& cd $MW_HOME/extensions/Buggy \
     && git checkout -q 768d2ec62de692ab62fc0c9f1820e22058d09d4b \
 	# ChangeAuthor
