@@ -609,10 +609,6 @@ RUN set -x; \
 	&& git clone https://github.com/nischayn22/MassPasswordReset.git \
 	&& cd MassPasswordReset \
 	&& git checkout -b $MW_VERSION 04b7e765db994d41f5ca3a910e18f77105218d94 \
-	# Math
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Math $MW_HOME/extensions/Math \
-	&& cd $MW_HOME/extensions/Math \
-	&& git checkout -q 106bb1ea4d5fc43e09f59311bdd28b26fef83711 \
 	# Mendeley
 	&& git clone https://github.com/nischayn22/Mendeley.git $MW_HOME/extensions/Mendeley \
 	&& cd $MW_HOME/extensions/Mendeley \
