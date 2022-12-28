@@ -757,7 +757,11 @@ RUN set -x; \
     && git apply /tmp/PageForms.Adds_semantic_query_param.fb9511c.diff
 
 # Composer dependencies
-COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
+# Original Canasta string:
+# COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
+# Modified by WikiTeq
+COPY _sources/configs/composer.canasta.json $MW_HOME/composer.canasta.json
+COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
 RUN set -x; \
 	cd $MW_HOME \
 	&& cp composer.json composer.json.bak \

@@ -1,0 +1,44 @@
+{
+	"require": {
+		"mediawiki/semantic-media-wiki": "4.0.2",
+		"mediawiki/chameleon-skin": "3.4.3",
+		"mediawiki/bootstrap-components": "4.0.1",
+		"mediawiki/remote-wiki": "dev-master#cb31c362e0759c95b0b97f03ad3b2b08c2e77529",
+		"mediawiki/semantic-breadcrumb-links": "dev-master#323e9c759e6e80459f226004d4b04d9b4fd254e9",
+		"mediawiki/semantic-compound-queries": "2.2.0",
+		"mediawiki/semantic-extra-special-properties": "3.0.1",
+		"mediawiki/semantic-result-formats": "4.0.1",
+		"mediawiki/semantic-scribunto": "2.2.0",
+		"mediawiki/simple-batch-upload": "1.9.0",
+		"mediawiki/sub-page-list": "2.0.2"
+	},
+	"extra": {
+		"merge-plugin": {
+			"include": [
+				"extensions/Flow/composer.json",
+				"extensions/GoogleAnalyticsMetrics/composer.json",
+				"extensions/MassPasswordReset/composer.json",
+				"extensions/Mpdf/composer.json",
+				"extensions/SemanticExternalQueryLookup/composer.json",
+				"extensions/Sentry/composer.json"
+			]
+		}
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/WikiTeq/mediawiki-api-base.git"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/WikiTeq/mediawiki-extension-RemoteWiki"
+		}
+	],
+	"extra": {
+		"merge-plugin": {
+			"include": [
+				"composer.canasta.json"
+			]
+		}
+	}
+}
