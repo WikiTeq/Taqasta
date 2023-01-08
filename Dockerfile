@@ -549,7 +549,7 @@ RUN set -x; \
 	# Buggy
 	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-Buggy.git $MW_HOME/extensions/Buggy \
 	&& cd $MW_HOME/extensions/Buggy \
-    && git checkout -q 768d2ec62de692ab62fc0c9f1820e22058d09d4b \
+	&& git checkout -q 768d2ec62de692ab62fc0c9f1820e22058d09d4b \
 	# ChangeAuthor
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ChangeAuthor $MW_HOME/extensions/ChangeAuthor \
 	&& cd $MW_HOME/extensions/ChangeAuthor \
@@ -587,10 +587,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleDocTag $MW_HOME/extensions/GoogleDocTag \
 	&& cd $MW_HOME/extensions/GoogleDocTag \
 	&& git checkout -q b71c875b033f79e17a54e6fccd2bfde26bff9163 \
-    # GTag
-    && git clone https://github.com/SkizNet/mediawiki-GTag.git $MW_HOME/extensions/GTag \
-    && cd $MW_HOME/extensions/GTag \
-    && git checkout -q 5b3ac10946e8242da5d63d981875e4dad3e14f9d \
+	# GTag
+	&& git clone https://github.com/SkizNet/mediawiki-GTag.git $MW_HOME/extensions/GTag \
+	&& cd $MW_HOME/extensions/GTag \
+	&& git checkout -q 5b3ac10946e8242da5d63d981875e4dad3e14f9d \
 	# HeadScript
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/HeadScript $MW_HOME/extensions/HeadScript \
 	&& cd $MW_HOME/extensions/HeadScript \
@@ -731,34 +731,20 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/YouTube \
 	&& git checkout -q 7ed328ab60779938eb1557d54d7d8454012df08c
 
-## GoogleAnalyticsMetrics: Resolve composer conflicts, so placed before the composer install statement!
-#COPY _sources/patches/core-fix-composer-for-GoogleAnalyticsMetrics.diff /tmp/core-fix-composer-for-GoogleAnalyticsMetrics.diff
-#RUN set -x; \
-#	cd $MW_HOME \
-#	&& git apply /tmp/core-fix-composer-for-GoogleAnalyticsMetrics.diff
-
 # Patch composer
 RUN set -x; \
-    sed -i 's="monolog/monolog": "2.2.0",="monolog/monolog": "^2.2",=g' $MW_HOME/composer.json
+	sed -i 's="monolog/monolog": "2.2.0",="monolog/monolog": "^2.2",=g' $MW_HOME/composer.json
 
 # WikiTeq AL-12
 COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
 RUN set -x; \
-    cd $MW_HOME/extensions/FlexDiagrams \
-    && git apply /tmp/FlexDiagrams.0.4.fix.diff
+	cd $MW_HOME/extensions/FlexDiagrams \
+	&& git apply /tmp/FlexDiagrams.0.4.fix.diff
 
-## Fix composer dependencies for MassPasswordReset extension
-## TODO: remove when PR merged https://github.com/nischayn22/MassPasswordReset/pull/1
-#COPY _sources/patches/MassPasswordReset.patch /tmp/MassPasswordReset.patch
-#RUN set -x; \
-#	cd $MW_HOME/extensions/MassPasswordReset \
-#	&& git apply /tmp/MassPasswordReset.patch
-
-# WikiTeq WLDR-242
-COPY _sources/patches/PageForms.Adds_semantic_query_param.fb9511c.diff /tmp/PageForms.Adds_semantic_query_param.fb9511c.diff
+# WikiTeq WLDR-242 TODO update it on Canasta
 RUN set -x; \
-    cd $MW_HOME/extensions/PageForms \
-    && git apply /tmp/PageForms.Adds_semantic_query_param.fb9511c.diff
+	cd $MW_HOME/extensions/PageForms \
+	&& git checkout -q fb9511cd59845b9d2e5bbeb2964a5c4fca698c13
 
 # Composer dependencies
 # Original Canasta string:
@@ -782,65 +768,17 @@ RUN set -x; \
 
 ################# Patches #################
 
-# WLDR-92, WLDR-125, probably need to be removed if there will be a similar
-# change of UserGroupManager on future wiki releases
-COPY _sources/patches/ugm.patch /tmp/ugm.patch
-RUN set -x; \
-	cd $MW_HOME \
-	&& git apply /tmp/ugm.patch
-
-## Parsoid assertValidUTF8 back-port from 0.13.1
-#COPY _sources/patches/parsoid.0.12.1.diff /tmp/parsoid.0.12.1.diff
-#RUN set -x; \
-#	cd $MW_HOME/vendor/wikimedia/parsoid/src/Utils/ \
-#	&& patch --verbose --ignore-whitespace --fuzz 3 PHPUtils.php /tmp/parsoid.0.12.1.diff
-
 # Add Bootstrap to LocalSettings.php if the web installer added the Chameleon skin
 COPY _sources/patches/core-local-settings-generator.patch /tmp/core-local-settings-generator.patch
 RUN set -x; \
 	cd $MW_HOME \
 	&& git apply /tmp/core-local-settings-generator.patch
-
-# TODO send to upstream, see https://wikiteq.atlassian.net/browse/MW-64 and https://wikiteq.atlassian.net/browse/MW-81
-#COPY _sources/patches/skin-refreshed.patch /tmp/skin-refreshed.patch
-#RUN set -x; \
-#	cd $MW_HOME/skins/Refreshed \
-#	&& patch -u -b includes/RefreshedTemplate.php -i /tmp/skin-refreshed.patch
-
-#COPY _sources/patches/bootstrap-path.patch /tmp/bootstrap-path.patch
-#RUN set -x; \
-#    cd $MW_HOME/extensions/Bootstrap \
-#    && patch -p1 < /tmp/bootstrap-path.patch
-
-#COPY _sources/patches/chameleon-path.patch /tmp/chameleon-path.patch
-#RUN set -x; \
-#    cd $MW_HOME/skins/chameleon \
-#    && git apply /tmp/chameleon-path.patch
-
-# Add Bootstrap to LocalSettings.php if the web installer added the Chameleon skin
-COPY _sources/patches/core-local-settings-generator.patch /tmp/core-local-settings-generator.patch
-RUN set -x; \
-	cd $MW_HOME \
-	&& git apply /tmp/core-local-settings-generator.patch
-
-# SemanticResultFormats, see https://github.com/WikiTeq/SemanticResultFormats/compare/master...WikiTeq:fix1_35
-COPY _sources/patches/semantic-result-formats.patch /tmp/semantic-result-formats.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/SemanticResultFormats \
-	&& patch < /tmp/semantic-result-formats.patch
 
 # Fixes PHP parsoid errors when user replies on a flow message, see https://phabricator.wikimedia.org/T260648#6645078
 COPY _sources/patches/flow-conversion-utils.patch /tmp/flow-conversion-utils.patch
 RUN set -x; \
 	cd $MW_HOME/extensions/Flow \
-	&& git checkout d37f94241d8cb94ac96c7946f83c1038844cf7e6 \
 	&& git apply /tmp/flow-conversion-utils.patch
-
-# SWM maintenance page returns 503 (Service Unavailable) status code, PR: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4967
-#COPY _sources/patches/smw-maintenance-503.patch /tmp/smw-maintenance-503.patch
-#RUN set -x; \
-#	cd $MW_HOME/extensions/SemanticMediaWiki \
-#	&& patch -u -b src/SetupCheck.php -i /tmp/smw-maintenance-503.patch
 
 # TODO send to upstream, see https://wikiteq.atlassian.net/browse/MW-64 and https://wikiteq.atlassian.net/browse/MW-81
 COPY _sources/patches/skin-refreshed.patch /tmp/skin-refreshed.patch
@@ -852,24 +790,14 @@ RUN set -x; \
 	# Fix PHP Warning in RefreshedTemplate::makeElementWithIconHelper()
 	&& git apply /tmp/skin-refreshed-737080.diff
 
-# TODO: remove for 1.36+, see https://phabricator.wikimedia.org/T281043
-COPY _sources/patches/social-profile-REL1_35.44b4f89.diff /tmp/social-profile-REL1_35.44b4f89.diff
-RUN set -x; \
-	cd $MW_HOME/extensions/SocialProfile \
-	&& git apply /tmp/social-profile-REL1_35.44b4f89.diff
-
-# WikiTeq's patch allowing to manage fields visibility site-wide
-COPY _sources/patches/SocialProfile-disable-fields.patch /tmp/SocialProfile-disable-fields.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/SocialProfile \
-	&& git apply /tmp/SocialProfile-disable-fields.patch
-
-#COPY _sources/patches/CommentStreams.REL1_35.core.hook.37a9e60.diff /tmp/CommentStreams.REL1_35.core.hook.37a9e60.diff
-## TODO: the Hooks is added in REL1_38, remove the patch once the core is updated to 1.38
+# WikiTeq's patch allowing to manage fields visibility site-wide. See WZ7-1
+#COPY _sources/patches/SocialProfile-disable-fields.patch /tmp/SocialProfile-disable-fields.patch
 #RUN set -x; \
-#	cd $MW_HOME \
-#	&& git apply /tmp/CommentStreams.REL1_35.core.hook.37a9e60.diff
+#	cd $MW_HOME/extensions/SocialProfile \
+#	&& git apply /tmp/SocialProfile-disable-fields.patch
 
+# see HEAL-167
+# https://github.com/WikiTeq/mediawiki-extensions-DisplayTitle/commit/a1fbbff7bb43d514fbd61c3c4be2ca17bb76f22e.patch
 COPY _sources/patches/DisplayTitleHooks.fragment.master.patch /tmp/DisplayTitleHooks.fragment.master.patch
 RUN set -x; \
 	cd $MW_HOME/extensions/DisplayTitle \
