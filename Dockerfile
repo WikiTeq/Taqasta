@@ -562,6 +562,14 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-DebugMode.git $MW_HOME/extensions/DebugMode \
 	&& cd $MW_HOME/extensions/DebugMode \
 	&& git checkout -q 5e2dc96feeb441c9bd6199321e52073128a629c7 \
+	# DiscussionTools
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DiscussionTools $MW_HOME/extensions/DiscussionTools \
+	&& cd $MW_HOME/extensions/DiscussionTools \
+	&& git checkout -q 472ceb15288844e610d5f09c872dcc86dd624f7d \
+	# EditAccount
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/EditAccount $MW_HOME/extensions/EditAccount \
+	&& cd $MW_HOME/extensions/EditAccount \
+	&& git checkout -q a9a0d7002483d2165300afd108a8f4b3c2c485ff \
 	# EncryptedUploads
 	&& cd $MW_HOME/extensions \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/EncryptedUploads \

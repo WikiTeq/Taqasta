@@ -115,7 +115,6 @@ const DOCKER_EXTENSIONS = [
 	'LinkTarget',
 	'Linter',
 	'LiquidThreads',
-	'LocalisationUpdate', # bundled
 	'LockAuthor',
 	'Lockdown',
 	'LookupUser',
@@ -126,10 +125,12 @@ const DOCKER_EXTENSIONS = [
 	'MassMessageEmail',
 	'MassPasswordReset',
 	'Math',
+	'MediaUploader',
 	'Mendeley',
 	'MintyDocs',
 	'MobileDetect',
 	'MobileFrontend',
+	'Mpdf',
 	'MsUpload',
 	'MultimediaViewer', # bundled
 	'MyVariables',
@@ -175,6 +176,7 @@ const DOCKER_EXTENSIONS = [
 	'SemanticResultFormats',
 	'SemanticScribunto',
 	'Sentry',
+	'ShowMe',
 	'SimpleBatchUpload',
 	'SimpleChanges',
 	'SimpleMathJax',
@@ -195,6 +197,7 @@ const DOCKER_EXTENSIONS = [
 	'Tabs',
 	'TemplateData', # bundled
 	'TemplateStyles',
+	'TemplateWizard',
 	'TextExtracts', # bundled
 	'Thanks',
 	'TimedMediaHandler',
@@ -207,6 +210,7 @@ const DOCKER_EXTENSIONS = [
 	'UrlGetParameters',
 	'UserFunctions',
 	'UserMerge',
+	'UserPageViewTracker',
 	'VEForAll',
 	'Validator',
 	'Variables',
