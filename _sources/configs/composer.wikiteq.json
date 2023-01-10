@@ -19,7 +19,6 @@
 				"extensions/GoogleAnalyticsMetrics/composer.json",
 				"extensions/MassPasswordReset/composer.json",
 				"extensions/Mpdf/composer.json",
-				"extensions/SemanticExternalQueryLookup/composer.json",
 				"extensions/Sentry/composer.json",
 				"composer.canasta.json"
 			]
