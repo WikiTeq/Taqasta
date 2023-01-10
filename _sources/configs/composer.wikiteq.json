@@ -20,7 +20,8 @@
 				"extensions/MassPasswordReset/composer.json",
 				"extensions/Mpdf/composer.json",
 				"extensions/SemanticExternalQueryLookup/composer.json",
-				"extensions/Sentry/composer.json"
+				"extensions/Sentry/composer.json",
+				"composer.canasta.json"
 			]
 		}
 	},
@@ -33,12 +34,5 @@
 			"type": "vcs",
 			"url": "https://github.com/WikiTeq/mediawiki-extension-RemoteWiki"
 		}
-	],
-	"extra": {
-		"merge-plugin": {
-			"include": [
-				"composer.canasta.json"
-			]
-		}
-	}
+	]
 }
