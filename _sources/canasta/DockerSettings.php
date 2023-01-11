@@ -169,7 +169,6 @@ const DOCKER_EXTENSIONS = [
 	'SemanticBreadcrumbLinks',
 	'SemanticCompoundQueries',
 	'SemanticDrilldown',
-	'SemanticExternalQueryLookup',
 	'SemanticExtraSpecialProperties',
 	'SemanticMediaWiki',
 	'SemanticQueryInterface',

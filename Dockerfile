@@ -662,10 +662,6 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory $MW_HOME/extensions/SelectCategory \
 	&& cd $MW_HOME/extensions/SelectCategory \
 	&& git checkout -q 072f7a5df0346f4f4fccaf54510641e0a0ce2922 \
-	# SemanticExternalQueryLookup (WikiTeq's fork)
-	&& git clone https://github.com/WikiTeq/SemanticExternalQueryLookup.git $MW_HOME/extensions/SemanticExternalQueryLookup \
-	&& cd $MW_HOME/extensions/SemanticExternalQueryLookup \
-	&& git checkout -b $MW_VERSION dd7810061f2f1a9eef7be5ee09da999cbf9ecd8a \
 	# SemanticQueryInterface
 	&& git clone https://github.com/vedmaka/SemanticQueryInterface.git $MW_HOME/extensions/SemanticQueryInterface \
 	&& cd $MW_HOME/extensions/SemanticQueryInterface \
