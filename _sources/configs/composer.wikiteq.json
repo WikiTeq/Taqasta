@@ -10,7 +10,8 @@
 		"mediawiki/semantic-result-formats": "4.0.1",
 		"mediawiki/semantic-scribunto": "2.2.0",
 		"mediawiki/simple-batch-upload": "1.9.0",
-		"mediawiki/sub-page-list": "2.0.2"
+		"mediawiki/sub-page-list": "2.0.2",
+		"mediawiki/maps": "10.0.0"
 	},
 	"extra": {
 		"merge-plugin": {
@@ -20,7 +21,17 @@
 				"extensions/MassPasswordReset/composer.json",
 				"extensions/Mpdf/composer.json",
 				"extensions/Sentry/composer.json",
-				"composer.canasta.json"
+				"extensions/AbuseFilter/composer.json",
+				"extensions/CirrusSearch/composer.json",
+				"extensions/DataTransfer/composer.json",
+				"extensions/Elastica/composer.json",
+				"extensions/OATHAuth/composer.json",
+				"extensions/TimedMediaHandler/composer.json",
+				"extensions/AntiSpoof/composer.json",
+				"extensions/TemplateStyles/composer.json",
+				"extensions/Widgets/composer.json",
+				"extensions/OpenIDConnect/composer.json",
+				"extensions/WSOAuth/composer.json"
 			]
 		}
 	},

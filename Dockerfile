@@ -754,7 +754,7 @@ RUN set -x; \
 # Original Canasta string:
 # COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
 # Modified by WikiTeq
-COPY _sources/configs/composer.canasta.json $MW_HOME/composer.canasta.json
+# COPY _sources/configs/composer.canasta.json $MW_HOME/composer.canasta.json
 COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
 RUN set -x; \
 	cd $MW_HOME \
