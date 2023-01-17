@@ -126,7 +126,6 @@ const DOCKER_EXTENSIONS = [
 	'MassPasswordReset',
 	'Math',
 	'MediaUploader',
-	'Mendeley',
 	'MintyDocs',
 	'MobileDetect',
 	'MobileFrontend',
@@ -159,7 +158,6 @@ const DOCKER_EXTENSIONS = [
 	'ReplaceText', # bundled
 	'RevisionSlider',
 	'RottenLinks',
-	'SRFEventCalendarMod',
 	'SandboxLink',
 	'SaveSpinner',
 	'Scopus',
@@ -189,7 +187,6 @@ const DOCKER_EXTENSIONS = [
 	'SpamBlacklist', # bundled
 	'SubPageList',
 	'Survey',
-	'Sync',
 	'SyntaxHighlight_GeSHi', # bundled
 	'Tabber',
 	'TabberNeue',
@@ -221,7 +218,6 @@ const DOCKER_EXTENSIONS = [
 	'WikiEditor', # bundled
 	'WikiForum',
 	'WikiSEO',
-	'Wiretap',
 	'YouTube',
 	'googleAnalytics',
 ];

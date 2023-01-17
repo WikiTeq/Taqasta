@@ -621,10 +621,6 @@ RUN set -x; \
 	&& git clone https://github.com/nischayn22/MassPasswordReset.git \
 	&& cd MassPasswordReset \
 	&& git checkout -b $MW_VERSION 04b7e765db994d41f5ca3a910e18f77105218d94 \
-	# Mendeley
-	&& git clone https://github.com/nischayn22/Mendeley.git $MW_HOME/extensions/Mendeley \
-	&& cd $MW_HOME/extensions/Mendeley \
-	&& git checkout -b $MW_VERSION b866c3608ada025ce8a3e161e4605cd9106056c4 \
 	# MobileDetect
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileDetect $MW_HOME/extensions/MobileDetect \
 	&& cd $MW_HOME/extensions/MobileDetect \
@@ -694,18 +690,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SoundManager2Button $MW_HOME/extensions/SoundManager2Button \
 	&& cd $MW_HOME/extensions/SoundManager2Button \
 	&& git checkout -q 89b477d952cad892792263f3097077111d1b7844 \
-	# SRFEventCalendarMod
-	&& git clone https://github.com/vedmaka/mediawiki-extension-SRFEventCalendarMod.git $MW_HOME/extensions/SRFEventCalendarMod \
-	&& cd $MW_HOME/extensions/SRFEventCalendarMod \
-	&& git checkout -b $MW_VERSION e0dfa797af0709c90f9c9295d217bbb6d564a7a8 \
 	# Survey
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Survey $MW_HOME/extensions/Survey \
 	&& cd $MW_HOME/extensions/Survey \
 	&& git checkout -q a723508305d618623615f324f90755c4a8b74bbf \
-	# Sync
-	&& git clone https://github.com/nischayn22/Sync.git $MW_HOME/extensions/Sync \
-	&& cd $MW_HOME/extensions/Sync \
-	&& git checkout -b $MW_VERSION f56b956521f383221737261ad68aef2367466b76 \
 	# Tabber
 	&& git clone https://gitlab.com/hydrawiki/extensions/Tabber.git $MW_HOME/extensions/Tabber \
 	&& cd $MW_HOME/extensions/Tabber \
@@ -726,10 +714,6 @@ RUN set -x; \
 	&& git clone https://github.com/vedmaka/mediawiki-extension-UploadWizardExtraButtons.git $MW_HOME/extensions/UploadWizardExtraButtons \
 	&& cd $MW_HOME/extensions/UploadWizardExtraButtons \
 	&& git checkout -b $MW_VERSION accba1b9b6f50e67d709bd727c9f4ad6de78c0c0 \
-	# Wiretap
-	&& git clone https://github.com/enterprisemediawiki/Wiretap.git $MW_HOME/extensions/Wiretap \
-	&& cd $MW_HOME/extensions/Wiretap \
-	&& git checkout -q a97b708c3093ea66e7cf625859b1b38178526bab \
 	# YouTube
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/YouTube $MW_HOME/extensions/YouTube \
 	&& cd $MW_HOME/extensions/YouTube \
