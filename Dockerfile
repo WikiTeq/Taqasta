@@ -791,11 +791,6 @@ RUN set -x; \
 	cd $MW_HOME/extensions/DisplayTitle \
 	&& git apply /tmp/DisplayTitleHooks.fragment.master.patch
 
-COPY _sources/patches/Mendeley.notices.patch /tmp/Mendeley.notices.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/Mendeley \
-	&& git apply /tmp/Mendeley.notices.patch
-
 # Cleanup all .git leftovers
 RUN set -x; \
 	cd $MW_HOME \
