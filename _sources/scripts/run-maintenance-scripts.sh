@@ -338,28 +338,6 @@ run_autoupdate () {
             'extensions/CirrusSearch/maintenance/ForceSearchIndex.php --skipParse'
     fi
 
-    ### cldr extension
-    if [ -n "$MW_SCRIPT_CLDR_REBUILD" ]; then
-    run_script_if_needed 'script_cldr_rebuild' "$MW_VERSION-$MW_SCRIPT_CLDR_REBUILD" \
-        "set -x; cd $MW_HOME/extensions/cldr && wget -q http://www.unicode.org/Public/cldr/latest/core.zip && unzip -q core.zip -d core && php rebuild.php && set +x;" && {
-            if [ "$MW_MAINTENANCE_ULS_INDEXER" ]; then
-                ### UniversalLanguageSelector extension
-                run_maintenance_script_if_needed 'maintenance_ULS_indexer' "$MW_VERSION-$MW_SCRIPT_CLDR_REBUILD-$MW_MAINTENANCE_ULS_INDEXER" \
-                    'extensions/UniversalLanguageSelector/data/LanguageNameIndexer.php'
-            fi
-        }
-    fi
-
-    ### Flow extension
-#    if [ -n "$MW_FLOW_NAMESPACES" ]; then
-# https://phabricator.wikimedia.org/T172369
-#        if [ "$WG_SEARCH_TYPE" == 'CirrusSearch' ]; then
-#            # see https://www.mediawiki.org/wiki/Flow/Architecture/Search
-#            run_maintenance_script_if_needed 'maintenance_FlowSearchConfig_CirrusSearch' "$MW_MAINTENANCE_CIRRUSSEARCH_UPDATECONFIG" \
-#                'extensions/Flow/maintenance/FlowSearchConfig.php'
-#        fi
-#    fi
-
     echo >&2 "Auto-update completed"
 }
 
