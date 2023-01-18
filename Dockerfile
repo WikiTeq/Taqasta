@@ -1,6 +1,6 @@
 FROM debian:11.5 as base
 
-LABEL maintainers="pastakhov@yandex.ru,alexey@wikiteq.com"
+LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
 ARG COMPOSER_TOKEN
