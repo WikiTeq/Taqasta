@@ -856,8 +856,7 @@ RUN cd $MW_HOME/extensions \
 	&& sed -i "s/#cfLoadSkin('Vector');/cfLoadSkin('Vector');/" $MW_ORIGIN_FILES/installedSkins.txt
 
 # Move files around
-RUN # Move files to $MW_ORIGIN_FILES directory
-	mv $MW_HOME/images $MW_ORIGIN_FILES/ \
+RUN mv $MW_HOME/images $MW_ORIGIN_FILES/ \
 	&& mv $MW_HOME/cache $MW_ORIGIN_FILES/ \
 	# Create symlinks from $MW_VOLUME to the wiki root for images and cache directories
 	&& ln -s $MW_VOLUME/images $MW_HOME/images \
