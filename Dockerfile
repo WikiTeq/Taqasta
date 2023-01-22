@@ -18,8 +18,7 @@ ENV MW_VERSION=REL1_35 \
 	COMPOSER_TOKEN=$COMPOSER_TOKEN
 
 # System setup
-RUN set x; \
-	apt-get clean \
+RUN apt-get clean \
 	&& apt-get update \
 	&& apt-get install -y aptitude \
 	&& aptitude -y upgrade \
@@ -81,9 +80,7 @@ RUN set x; \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Post install configuration
-RUN set -x; \
-	# Remove default config
-	rm /etc/apache2/sites-enabled/000-default.conf \
+RUN rm /etc/apache2/sites-enabled/000-default.conf \
 	&& rm /etc/apache2/sites-available/000-default.conf \
 	&& rm -rf /var/www/html \
 	# Enable rewrite module
@@ -95,23 +92,20 @@ RUN set -x; \
 	&& mkdir -p $MW_VOLUME
 
 # Composer
-RUN set -x; \
-	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 	&& composer self-update 2.1.3
 
 FROM base as source
 
 # MediaWiki Core
-RUN set -x; \
-	git clone --depth 1 -b $MW_CORE_VERSION https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME \
+RUN git clone --depth 1 -b $MW_CORE_VERSION https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME \
 	&& cd $MW_HOME \
 	&& git submodule update --init --recursive
 
 # Skins
 # The MonoBook, Timeless and Vector skins are bundled into MediaWiki and do not need to be separately installed.
 # The Chameleon skin is downloaded via Composer and also does not need to be installed.
-RUN set -x; \
-	cd $MW_HOME/skins \
+RUN cd $MW_HOME/skins \
 	# CologneBlue
 	&& git clone -b $MW_VERSION --single-branch https://gerrit.wikimedia.org/r/mediawiki/skins/CologneBlue $MW_HOME/skins/CologneBlue \
 	&& cd $MW_HOME/skins/CologneBlue \
@@ -143,8 +137,7 @@ RUN set -x; \
 # BootstrapComponents, Maps, Semantic Breadcrumb Links, Semantic Compound Queries, Semantic Extra Special Properties,
 # Semantic MediaWiki (along with all its helper library extensions, like DataValues), Semantic Result Formats, Semantic
 # Scribunto, SimpleBatchUpload, SubPageList.
-RUN set -x; \
-	cd $MW_HOME/extensions \
+RUN cd $MW_HOME/extensions \
 	# AdminLinks (v. 0.5)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/AdminLinks $MW_HOME/extensions/AdminLinks \
 	&& cd $MW_HOME/extensions/AdminLinks \
@@ -739,38 +732,32 @@ RUN set -x; \
     && git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/Mpdf.git $MW_HOME/extensions/Mpdf
 
 # ReplaceText (switch to more recent commit due to bug on submodule HEAD)
-RUN set -x; \
-	cd $MW_HOME/extensions/ReplaceText \
+RUN cd $MW_HOME/extensions/ReplaceText \
 	&& git checkout -q 109d24b690b9096863513bdea642f88c062a3b0b
 
 # GTag1
 COPY _sources/extensions/GTag1.2.0.tar.gz /tmp/
-RUN set -x; \
-	tar -xvf /tmp/GTag*.tar.gz -C $MW_HOME/extensions \
+RUN tar -xvf /tmp/GTag*.tar.gz -C $MW_HOME/extensions \
 	&& rm /tmp/GTag*.tar.gz
 
 # GoogleAnalyticsMetrics: Resolve composer conflicts, so placed before the composer install statement!
 COPY _sources/patches/core-fix-composer-for-GoogleAnalyticsMetrics.diff /tmp/core-fix-composer-for-GoogleAnalyticsMetrics.diff
-RUN set -x; \
-	cd $MW_HOME \
+RUN cd $MW_HOME \
 	&& git apply /tmp/core-fix-composer-for-GoogleAnalyticsMetrics.diff
 
 COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
-RUN set -x; \
-    cd $MW_HOME/extensions/FlexDiagrams \
+RUN cd $MW_HOME/extensions/FlexDiagrams \
     && git apply /tmp/FlexDiagrams.0.4.fix.diff
 
 # Fix composer dependencies for MassPasswordReset extension
 # TODO: remove when PR merged https://github.com/nischayn22/MassPasswordReset/pull/1
 COPY _sources/patches/MassPasswordReset.patch /tmp/MassPasswordReset.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/MassPasswordReset \
+RUN cd $MW_HOME/extensions/MassPasswordReset \
 	&& git apply /tmp/MassPasswordReset.patch
 
 # Composer dependencies
 COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
-RUN set -x; \
-	cd $MW_HOME \
+RUN cd $MW_HOME \
 	&& cp composer.json composer.json.bak \
 	&& cat composer.json.bak | jq '. + {"minimum-stability": "dev"}' > composer.json \
 	&& rm composer.json.bak \
@@ -788,46 +775,39 @@ RUN set -x; \
 # WLDR-92, WLDR-125, probably need to be removed if there will be a similar
 # change of UserGroupManager on future wiki releases
 COPY _sources/patches/ugm.patch /tmp/ugm.patch
-RUN set -x; \
-	cd $MW_HOME \
+RUN cd $MW_HOME \
 	&& git apply /tmp/ugm.patch
 
 # Parsoid assertValidUTF8 back-port from 0.13.1
 COPY _sources/patches/parsoid.0.12.1.diff /tmp/parsoid.0.12.1.diff
-RUN set -x; \
-	cd $MW_HOME/vendor/wikimedia/parsoid/src/Utils/ \
+RUN cd $MW_HOME/vendor/wikimedia/parsoid/src/Utils/ \
 	&& patch --verbose --ignore-whitespace --fuzz 3 PHPUtils.php /tmp/parsoid.0.12.1.diff
 
 # Add Bootstrap to LocalSettings.php if the web installer added the Chameleon skin
 COPY _sources/patches/core-local-settings-generator.patch /tmp/core-local-settings-generator.patch
-RUN set -x; \
-	cd $MW_HOME \
+RUN cd $MW_HOME \
 	&& git apply /tmp/core-local-settings-generator.patch
 
 # SemanticResultFormats, see https://github.com/WikiTeq/SemanticResultFormats/compare/master...WikiTeq:fix1_35
 COPY _sources/patches/semantic-result-formats.patch /tmp/semantic-result-formats.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/SemanticResultFormats \
+RUN cd $MW_HOME/extensions/SemanticResultFormats \
 	&& patch < /tmp/semantic-result-formats.patch
 
 # Fixes PHP parsoid errors when user replies on a flow message, see https://phabricator.wikimedia.org/T260648#6645078
 COPY _sources/patches/flow-conversion-utils.patch /tmp/flow-conversion-utils.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/Flow \
+RUN cd $MW_HOME/extensions/Flow \
 	&& git checkout d37f94241d8cb94ac96c7946f83c1038844cf7e6 \
 	&& git apply /tmp/flow-conversion-utils.patch
 
 # SWM maintenance page returns 503 (Service Unavailable) status code, PR: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4967
 COPY _sources/patches/smw-maintenance-503.patch /tmp/smw-maintenance-503.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/SemanticMediaWiki \
+RUN cd $MW_HOME/extensions/SemanticMediaWiki \
 	&& patch -u -b src/SetupCheck.php -i /tmp/smw-maintenance-503.patch
 
 # TODO send to upstream, see https://wikiteq.atlassian.net/browse/MW-64 and https://wikiteq.atlassian.net/browse/MW-81
 COPY _sources/patches/skin-refreshed.patch /tmp/skin-refreshed.patch
 COPY _sources/patches/skin-refreshed-737080.diff /tmp/skin-refreshed-737080.diff
-RUN set -x; \
-	cd $MW_HOME/skins/Refreshed \
+RUN cd $MW_HOME/skins/Refreshed \
 	&& patch -u -b includes/RefreshedTemplate.php -i /tmp/skin-refreshed.patch \
 	# TODO remove me when https://gerrit.wikimedia.org/r/c/mediawiki/skins/Refreshed/+/737080 merged
 	# Fix PHP Warning in RefreshedTemplate::makeElementWithIconHelper()
@@ -835,46 +815,38 @@ RUN set -x; \
 
 # Allow to modify headelement in the Vector skin, see https://wikiteq.atlassian.net/browse/FAM-7
 COPY _sources/patches/skin-vector-addVectorGeneratedSkinDataHook.patch /tmp/skin-vector-addVectorGeneratedSkinDataHook.patch
-RUN set -x; \
-	cd $MW_HOME/skins/Vector \
+RUN cd $MW_HOME/skins/Vector \
 	&& git apply /tmp/skin-vector-addVectorGeneratedSkinDataHook.patch
 
 # TODO: remove for 1.36+, see https://phabricator.wikimedia.org/T281043
 COPY _sources/patches/social-profile-REL1_35.44b4f89.diff /tmp/social-profile-REL1_35.44b4f89.diff
-RUN set -x; \
-	cd $MW_HOME/extensions/SocialProfile \
+RUN cd $MW_HOME/extensions/SocialProfile \
 	&& git apply /tmp/social-profile-REL1_35.44b4f89.diff
 
 # WikiTeq's patch allowing to manage fields visibility site-wide
 COPY _sources/patches/SocialProfile-disable-fields.patch /tmp/SocialProfile-disable-fields.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/SocialProfile \
+RUN cd $MW_HOME/extensions/SocialProfile \
 	&& git apply /tmp/SocialProfile-disable-fields.patch
 
 COPY _sources/patches/CommentStreams.REL1_35.core.hook.37a9e60.diff /tmp/CommentStreams.REL1_35.core.hook.37a9e60.diff
 # TODO: the Hooks is added in REL1_38, remove the patch once the core is updated to 1.38
-RUN set -x; \
-	cd $MW_HOME \
+RUN cd $MW_HOME \
 	&& git apply /tmp/CommentStreams.REL1_35.core.hook.37a9e60.diff
 
 COPY _sources/patches/DisplayTitleHooks.fragment.master.patch /tmp/DisplayTitleHooks.fragment.master.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/DisplayTitle \
+RUN cd $MW_HOME/extensions/DisplayTitle \
 	&& git apply /tmp/DisplayTitleHooks.fragment.master.patch
 
 COPY _sources/patches/Mendeley.notices.patch /tmp/Mendeley.notices.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/Mendeley \
+RUN cd $MW_HOME/extensions/Mendeley \
 	&& git apply /tmp/Mendeley.notices.patch
 
 # Cleanup all .git leftovers
-RUN set -x; \
-	cd $MW_HOME \
+RUN cd $MW_HOME \
 	&& find . \( -name ".git" -o -name ".gitignore" -o -name ".gitmodules" -o -name ".gitattributes" \) -exec rm -rf -- {} +
 
 # Generate list of installed extensions
-RUN set -x; \
-	cd $MW_HOME/extensions \
+RUN cd $MW_HOME/extensions \
 	&& for i in $(ls -d */); do echo "#cfLoadExtension('${i%%/}');"; done > $MW_ORIGIN_FILES/installedExtensions.txt \
 	# Dirty hack for SemanticMediawiki
 	&& sed -i "s/#cfLoadExtension('SemanticMediaWiki');/#enableSemantics('localhost');/g" $MW_ORIGIN_FILES/installedExtensions.txt \
@@ -884,8 +856,7 @@ RUN set -x; \
 	&& sed -i "s/#cfLoadSkin('Vector');/cfLoadSkin('Vector');/" $MW_ORIGIN_FILES/installedSkins.txt
 
 # Move files around
-RUN set -x; \
-	# Move files to $MW_ORIGIN_FILES directory
+RUN # Move files to $MW_ORIGIN_FILES directory
 	mv $MW_HOME/images $MW_ORIGIN_FILES/ \
 	&& mv $MW_HOME/cache $MW_ORIGIN_FILES/ \
 	# Create symlinks from $MW_VOLUME to the wiki root for images and cache directories
@@ -953,8 +924,7 @@ COPY _sources/canasta/DockerSettings.php $MW_HOME/
 COPY _sources/canasta/getMediawikiSettings.php /
 COPY _sources/configs/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 
-RUN set -x; \
-	chmod -v +x /*.sh \
+RUN chmod -v +x /*.sh \
 	# Sitemap directory
 	&& ln -s $MW_VOLUME/sitemap $MW_HOME/sitemap \
 	# Comment out ErrorLog and CustomLog parameters, we use rotatelogs in mediawiki.conf for the log files
