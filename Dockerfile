@@ -779,10 +779,10 @@ RUN set -x; \
 	&& git apply /tmp/skin-refreshed-737080.diff
 
 # WikiTeq's patch allowing to manage fields visibility site-wide. See WZ7-1
-#COPY _sources/patches/SocialProfile-disable-fields.patch /tmp/SocialProfile-disable-fields.patch
-#RUN set -x; \
-#	cd $MW_HOME/extensions/SocialProfile \
-#	&& git apply /tmp/SocialProfile-disable-fields.patch
+COPY _sources/patches/SocialProfile-disable-fields.patch /tmp/SocialProfile-disable-fields.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/SocialProfile \
+	&& git apply /tmp/SocialProfile-disable-fields.patch
 
 # see HEAL-167
 # https://github.com/WikiTeq/mediawiki-extensions-DisplayTitle/commit/a1fbbff7bb43d514fbd61c3c4be2ca17bb76f22e.patch
