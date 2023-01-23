@@ -14,8 +14,7 @@ ENV MW_VERSION=REL1_39 \
 	MW_VOLUME=/mediawiki \
 	WWW_USER=www-data \
 	WWW_GROUP=www-data \
-	APACHE_LOG_DIR=/var/log/apache2 \
-	COMPOSER_TOKEN=$COMPOSER_TOKEN
+	APACHE_LOG_DIR=/var/log/apache2
 
 # System setup
 RUN set x; \
@@ -740,8 +739,8 @@ RUN set -x; \
 # Modified by WikiTeq
 # COPY _sources/configs/composer.canasta.json $MW_HOME/composer.canasta.json
 COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
-RUN set -x; \
-	cd $MW_HOME \
+# Run with secret mounted to /run/secrets/COMPOSER_TOKEN
+RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME \
 	&& cp composer.json composer.json.bak \
 	&& cat composer.json.bak | jq '. + {"minimum-stability": "dev"}' > composer.json \
 	&& rm composer.json.bak \
@@ -750,7 +749,7 @@ RUN set -x; \
 	&& rm composer.json.bak \
 	&& composer clear-cache \
 	# configure auth
-	&& if [ "$COMPOSER_TOKEN" != "" ]; then composer config -g github-oauth.github.com $COMPOSER_TOKEN; fi \
+	&& if [ -f "/run/secrets/COMPOSER_TOKEN" ]; then composer config -g github-oauth.github.com $(cat /run/secrets/COMPOSER_TOKEN); fi \
 	&& composer update --no-dev --with-dependencies \
 	&& composer clear-cache
 
