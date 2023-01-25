@@ -642,9 +642,9 @@ RUN set -x; \
 	&& git checkout -q 2b07a1c18cef4794f4cb2429baa2d55fdb2beed3 \
 	# PubmedParser
 	&& cd $MW_HOME/extensions \
-	&& git clone https://github.com/WikiTeq/PubmedParser.git \
+	&& git clone https://github.com/bovender/PubmedParser.git \
 	&& cd PubmedParser \
-	&& git checkout -b $MW_VERSION f2b04c7094aedfefb6096e88117ae1a947a2acd2 \
+	&& git checkout -b $MW_VERSION b77635651cc8ef2d39fd0f04fe73285c4ea3cd19 \
 	# RandomInCategory
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/RandomInCategory $MW_HOME/extensions/RandomInCategory \
 	&& cd $MW_HOME/extensions/RandomInCategory \
