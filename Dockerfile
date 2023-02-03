@@ -756,6 +756,12 @@ RUN set -x; \
 	cd $MW_HOME \
 	&& git apply /tmp/core-fix-composer-for-GoogleAnalyticsMetrics.diff
 
+# GoogleLogin: removed explicit monolog/monolog v2 dependency
+COPY _sources/patches/GoogleLogin.monolog.diff /tmp/GoogleLogin.monolog.diff
+RUN set -x; \
+    cd $MW_HOME/extensions/GoogleLogin \
+    && git apply /tmp/GoogleLogin.monolog.diff
+
 COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
 RUN set -x; \
     cd $MW_HOME/extensions/FlexDiagrams \
