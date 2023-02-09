@@ -718,6 +718,10 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/YouTube \
 	&& git checkout -q 7ed328ab60779938eb1557d54d7d8454012df08c
 
+RUN set -x; \
+    # Throws the errors, see WIK-702?focusedCommentId=41196
+    rm -fr $MW_HOME/extensions/NumerAlpha
+
 # Patch composer
 RUN set -x; \
 	sed -i 's="monolog/monolog": "2.2.0",="monolog/monolog": "^2.2",=g' $MW_HOME/composer.json
