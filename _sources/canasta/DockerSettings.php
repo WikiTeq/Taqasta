@@ -164,7 +164,6 @@ const DOCKER_EXTENSIONS = [
 	'Scribunto', # bundled
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
-	'SemanticBreadcrumbLinks',
 	'SemanticCompoundQueries',
 	'SemanticDrilldown',
 	'SemanticExtraSpecialProperties',
