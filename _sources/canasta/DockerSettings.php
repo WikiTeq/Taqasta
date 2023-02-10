@@ -374,10 +374,9 @@ $smwgConfigFileDir = "$DOCKER_MW_VOLUME/extensions/SemanticMediaWiki/config";
 
 // Scribunto https://www.mediawiki.org/wiki/Extension:Scribunto
 if ( isset( $dockerLoadExtensions['Scribunto'] ) ) {
-	$wgScribuntoDefaultEngine = 'luastandalone';
+	$wgScribuntoDefaultEngine = 'luasandbox';
 	$wgScribuntoUseGeSHi = boolval( $dockerLoadExtensions['SyntaxHighlight_GeSHi'] ?? false );
 	$wgScribuntoUseCodeEditor = boolval( $dockerLoadExtensions['CodeEditor'] ?? false );
-	$wgScribuntoEngineConf['luastandalone']['luaPath'] = "$IP/extensions/Scribunto/includes/engines/LuaStandalone/binaries/lua5_1_5_linux_64_generic/lua";
 }
 
 # Interwiki
