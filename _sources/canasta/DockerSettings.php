@@ -285,7 +285,8 @@ $wgShellLocale = "en_US.utf8";
 ## be publicly accessible from the web.
 $wgCacheDirectory = getenv( 'MW_USE_CACHE_DIRECTORY' ) ? "$IP/cache" : false;
 
-$wgSecretKey = getenv( 'MW_SECRET_KEY' );
+# Do not overwrite $wgSecretKey with empty string if MW_SECRET_KEY is not defined
+$wgSecretKey = getenv( 'MW_SECRET_KEY' ) ?: $wgSecretKey;
 
 # Changing this will log out all existing sessions.
 $wgAuthenticationTokenVersion = "1";
