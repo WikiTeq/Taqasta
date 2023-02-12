@@ -373,11 +373,9 @@ $wgPygmentizePath = '/usr/bin/pygmentize';
 $smwgConfigFileDir = "$DOCKER_MW_VOLUME/extensions/SemanticMediaWiki/config";
 
 // Scribunto https://www.mediawiki.org/wiki/Extension:Scribunto
-if ( isset( $dockerLoadExtensions['Scribunto'] ) ) {
-	$wgScribuntoDefaultEngine = 'luasandbox';
-	$wgScribuntoUseGeSHi = boolval( $dockerLoadExtensions['SyntaxHighlight_GeSHi'] ?? false );
-	$wgScribuntoUseCodeEditor = boolval( $dockerLoadExtensions['CodeEditor'] ?? false );
-}
+$wgScribuntoDefaultEngine = 'luasandbox';
+$wgScribuntoUseGeSHi = boolval( $dockerLoadExtensions['SyntaxHighlight_GeSHi'] ?? false );
+$wgScribuntoUseCodeEditor = boolval( $dockerLoadExtensions['CodeEditor'] ?? false );
 
 # Interwiki
 $wgGroupPermissions['sysop']['interwiki'] = true;
