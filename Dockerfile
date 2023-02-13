@@ -61,7 +61,6 @@ RUN set x; \
 	php7.4-curl \
 	php7.4-tidy \
 	php7.4-zip \
-	php7.4-xdebug \
 	monit \
 	zip \
 	weasyprint \
