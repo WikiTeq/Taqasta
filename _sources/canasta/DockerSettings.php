@@ -71,6 +71,7 @@ const DOCKER_EXTENSIONS = [
 	'CookieWarning',
 	'DataTransfer',
 	'DebugMode',
+	'DeleteBatch',
 	'Description2',
 	'Disambiguator',
 	'DiscussionTools',
@@ -163,6 +164,7 @@ const DOCKER_EXTENSIONS = [
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
 	'SemanticCompoundQueries',
+	'SemanticDependencyUpdater',
 	'SemanticDrilldown',
 	'SemanticExtraSpecialProperties',
 	'SemanticMediaWiki',
@@ -196,6 +198,7 @@ const DOCKER_EXTENSIONS = [
 	'TimedMediaHandler',
 	'TinyMCE',
 	'TitleBlacklist', # bundled
+	'TitleIcon',
 	'TwitterTag',
 	'UniversalLanguageSelector',
 	'UploadWizard',
@@ -209,14 +212,15 @@ const DOCKER_EXTENSIONS = [
 	'Variables',
 	'VisualEditor', # bundled
 	'VoteNY',
+	'WatchAnalytics',
 	'WSOAuth',
 	'WhoIsWatching',
+	'WhosOnline',
 	'Widgets',
 	'WikiEditor', # bundled
 	'WikiForum',
 	'WikiSEO',
 	'YouTube',
-	'googleAnalytics',
 ];
 
 $DOCKER_MW_VOLUME = getenv( 'MW_VOLUME' );
