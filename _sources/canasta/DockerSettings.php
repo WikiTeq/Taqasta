@@ -164,7 +164,7 @@ const DOCKER_EXTENSIONS = [
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
 	'SemanticCompoundQueries',
-	'SemanticDependencyUpdater',
+//	'SemanticDependencyUpdater',   must be enabled manually after enableSemantics()
 	'SemanticDrilldown',
 	'SemanticExtraSpecialProperties',
 	'SemanticMediaWiki',
