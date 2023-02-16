@@ -30,7 +30,8 @@
 				"extensions/TemplateStyles/composer.json",
 				"extensions/Widgets/composer.json",
 				"extensions/OpenIDConnect/composer.json",
-				"extensions/WSOAuth/composer.json"
+				"extensions/WSOAuth/composer.json",
+				"extensions/GoogleLogin/composer.json"
 			]
 		}
 	},

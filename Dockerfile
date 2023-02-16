@@ -63,6 +63,7 @@ RUN set x; \
 	php7.4-curl \
 	php7.4-tidy \
 	php7.4-zip \
+	php-luasandbox \
 	monit \
 	zip \
 	weasyprint \
@@ -640,9 +641,9 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/Mpdf \
 	&& git checkout -q 1c1a5a4b0caba3164d765c7e893610dccbe33c96 \
 	# NCBITaxonomyLookup
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/NCBITaxonomyLookup $MW_HOME/extensions/NCBITaxonomyLookup \
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/NCBITaxonomyLookup $MW_HOME/extensions/NCBITaxonomyLookup \
 	&& cd $MW_HOME/extensions/NCBITaxonomyLookup \
-	&& git checkout -q 46a8571234c62b8d86c7e33934b8f7ec0b6f6a5d \
+	&& git checkout -b $MW_VERSION 0e72588433a0423660fac124549b77403cb3eba5 \
 	# PageSchemas
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PageSchemas $MW_HOME/extensions/PageSchemas \
 	&& cd $MW_HOME/extensions/PageSchemas \
@@ -727,27 +728,37 @@ RUN set -x; \
 	# YouTube
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/YouTube $MW_HOME/extensions/YouTube \
 	&& cd $MW_HOME/extensions/YouTube \
-	&& git checkout -q 7ed328ab60779938eb1557d54d7d8454012df08c
+	&& git checkout -q 7ed328ab60779938eb1557d54d7d8454012df08c \
+	# GoogleLogin
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
+	&& cd $MW_HOME/extensions/GoogleLogin \
+	&& git checkout -q 01fa815e2f858c1d31f8d4d0c34b355c73a34e1b
 
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
-    # HeaderFooter throws the errors, see WIK-702?focusedCommentId=41302 \
-    rm -fr $MW_HOME/extensions/HeaderFooter \
-    && git clone --single-branch -b fix-mw36 https://github.com/JeroenDeDauw/HeaderFooter.git $MW_HOME/extensions/HeaderFooter \
-    && cd $MW_HOME/extensions/HeaderFooter \
-    && git checkout -q 579df9effa112c45e5d83cd8e4ee052a37c15343 \
-    # Throws the errors, see WIK-702?focusedCommentId=41196
-    && rm -fr $MW_HOME/extensions/NumerAlpha \
-    # see WLDR-242
-    && cd $MW_HOME/extensions/PageForms \
-    && git checkout -q fb9511cd59845b9d2e5bbeb2964a5c4fca698c13 \
-    # missed in Canasta
-    && cd $MW_HOME/extensions/EmailAuthorization \
-    && git submodule update --init --recursive
+	# HeaderFooter throws the errors, see WIK-702?focusedCommentId=41302 \
+	rm -fr $MW_HOME/extensions/HeaderFooter \
+	&& git clone --single-branch -b fix-mw36 https://github.com/JeroenDeDauw/HeaderFooter.git $MW_HOME/extensions/HeaderFooter \
+	&& cd $MW_HOME/extensions/HeaderFooter \
+	&& git checkout -q 579df9effa112c45e5d83cd8e4ee052a37c15343 \
+	# Throws the errors, see WIK-702?focusedCommentId=41196
+	&& rm -fr $MW_HOME/extensions/NumerAlpha \
+	# see WLDR-242
+	&& cd $MW_HOME/extensions/PageForms \
+	&& git checkout -q fb9511cd59845b9d2e5bbeb2964a5c4fca698c13 \
+	# missed in Canasta
+	&& cd $MW_HOME/extensions/EmailAuthorization \
+	&& git submodule update --init --recursive
 
 # Patch composer
 RUN set -x; \
 	sed -i 's="monolog/monolog": "2.2.0",="monolog/monolog": "^2.2",=g' $MW_HOME/composer.json
+
+# GoogleLogin: removed explicit monolog/monolog v2 dependency
+COPY _sources/patches/GoogleLogin.monolog.diff /tmp/GoogleLogin.monolog.diff
+RUN set -x; \
+	cd $MW_HOME/extensions/GoogleLogin \
+	&& git apply /tmp/GoogleLogin.monolog.diff
 
 # WikiTeq AL-12
 COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
