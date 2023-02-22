@@ -738,7 +738,7 @@ RUN set -x; \
 RUN set -x; \
 	# 1_39 throws the error: Error converting between wikitext and HTML for VisualEditor, see WIK-702?focusedCommentId=41751
 	cd $MW_HOME/extensions/CommentStreams \
-	&& git fetch master \
+	&& git fetch origin master \
 	&& git checkout -q 99f95fe7a53c530c0acefaf1bf12f9c0c9ef1d48 \
 	# HeaderFooter throws the errors, see WIK-702?focusedCommentId=41302 \
 	&& rm -fr $MW_HOME/extensions/HeaderFooter \

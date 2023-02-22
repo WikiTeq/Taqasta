@@ -209,6 +209,7 @@ const DOCKER_EXTENSIONS = [
 	'VEForAll',
 	'Validator',
 	'Variables',
+	'VariablesLua',
 	'VisualEditor', # bundled
 	'VoteNY',
 	'WatchAnalytics',
