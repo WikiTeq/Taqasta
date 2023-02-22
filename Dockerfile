@@ -740,7 +740,7 @@ RUN set -x; \
     && cd $MW_HOME/extensions/GoogleLogin \
     && git checkout -q c81f4df8bebcbf3a217e99e5d224051106f2732e \
     # VariablesLue
-    && git clone --single-branch -b master https://github.com/Liquipedia/VariablesLua.git \
+    && git clone --single-branch -b master https://github.com/Liquipedia/VariablesLua.git $MW_HOME/extensions/VariablesLua \
     && cd $MW_HOME/extensions/VariablesLua \
     && git checkout -q dced585ef5ddcfbaa49c510c49c3b398ecc6f1c6
 
