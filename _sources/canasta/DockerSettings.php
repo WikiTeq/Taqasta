@@ -125,6 +125,7 @@ const DOCKER_EXTENSIONS = [
 	'MassPasswordReset',
 	'Math',
 	'MediaUploader',
+	'Mermaid',
 	'MintyDocs',
 	'MobileDetect',
 	'MobileFrontend',
