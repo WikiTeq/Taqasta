@@ -749,6 +749,9 @@ RUN set -x; \
 	&& git clone --single-branch -b fix-mw36 https://github.com/JeroenDeDauw/HeaderFooter.git $MW_HOME/extensions/HeaderFooter \
 	&& cd $MW_HOME/extensions/HeaderFooter \
 	&& git checkout -q 579df9effa112c45e5d83cd8e4ee052a37c15343 \
+	# SimpleMathJax add Fix path to ext.SimpleMathJax.js in ResourceModules \
+	&& rm -fr $MW_HOME/extensions/SimpleMathJax \
+	&& git clone --single-branch -b resources https://github.com/WikiTeq/SimpleMathJax.git $MW_HOME/extensions/SimpleMathJax \
 	# Throws the errors, see WIK-702?focusedCommentId=41196
 	&& rm -fr $MW_HOME/extensions/NumerAlpha \
 	# does not work? see WIK-702?focusedCommentId=41955
