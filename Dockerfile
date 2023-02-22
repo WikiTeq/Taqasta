@@ -594,10 +594,6 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/EncryptedUploads \
 	&& cd EncryptedUploads \
 	&& git checkout -q bbb538554c3b4358703c726b7b48ca9da8a64113 \
-	# Favorites
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Favorites $MW_HOME/extensions/Favorites \
-	&& cd $MW_HOME/extensions/Favorites \
-	&& git checkout -q d7f27b7e758e162e8d21ca2ba40b3027df4dc5f3 \
 	# Flow
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Flow $MW_HOME/extensions/Flow \
 	&& cd $MW_HOME/extensions/Flow \

@@ -87,7 +87,6 @@ const DOCKER_EXTENSIONS = [
 	'EventLogging',
 	'EventStreamConfig',
 	'ExternalData',
-	'Favorites',
 	'FlexDiagrams',
 	'Flow',
 	'GTag',
