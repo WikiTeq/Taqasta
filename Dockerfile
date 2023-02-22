@@ -732,8 +732,12 @@ RUN set -x; \
 
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
+	# 1_39 throws the error: Error converting between wikitext and HTML for VisualEditor, see WIK-702?focusedCommentId=41751
+	cd $MW_HOME/extensions/CommentStreams \
+	&& git fetch master \
+	&& git checkout -q 99f95fe7a53c530c0acefaf1bf12f9c0c9ef1d48 \
 	# HeaderFooter throws the errors, see WIK-702?focusedCommentId=41302 \
-	rm -fr $MW_HOME/extensions/HeaderFooter \
+	&& rm -fr $MW_HOME/extensions/HeaderFooter \
 	&& git clone --single-branch -b fix-mw36 https://github.com/JeroenDeDauw/HeaderFooter.git $MW_HOME/extensions/HeaderFooter \
 	&& cd $MW_HOME/extensions/HeaderFooter \
 	&& git checkout -q 579df9effa112c45e5d83cd8e4ee052a37c15343 \
