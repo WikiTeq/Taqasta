@@ -728,7 +728,11 @@ RUN set -x; \
 	# GoogleLogin
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
 	&& cd $MW_HOME/extensions/GoogleLogin \
-	&& git checkout -q 01fa815e2f858c1d31f8d4d0c34b355c73a34e1b
+	&& git checkout -q 01fa815e2f858c1d31f8d4d0c34b355c73a34e1b \
+	# VariablesLue
+	&& git clone --single-branch -b master https://github.com/Liquipedia/VariablesLua.git $MW_HOME/extensions/VariablesLua \
+	&& cd $MW_HOME/extensions/VariablesLua \
+	&& git checkout -q dced585ef5ddcfbaa49c510c49c3b398ecc6f1c6
 
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
