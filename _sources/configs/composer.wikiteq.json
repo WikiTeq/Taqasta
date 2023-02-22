@@ -25,7 +25,6 @@
 				"extensions/DataTransfer/composer.json",
 				"extensions/Elastica/composer.json",
 				"extensions/OATHAuth/composer.json",
-				"extensions/TimedMediaHandler/composer.json",
 				"extensions/AntiSpoof/composer.json",
 				"extensions/TemplateStyles/composer.json",
 				"extensions/Widgets/composer.json",

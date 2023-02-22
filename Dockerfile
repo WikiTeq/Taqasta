@@ -739,6 +739,8 @@ RUN set -x; \
 	&& git checkout -q 579df9effa112c45e5d83cd8e4ee052a37c15343 \
 	# Throws the errors, see WIK-702?focusedCommentId=41196
 	&& rm -fr $MW_HOME/extensions/NumerAlpha \
+	# does not work? see WIK-702?focusedCommentId=41955
+	&& rm -fr $MW_HOME/extensions/TimedMediaHandler \
 	# see WLDR-242
 	&& cd $MW_HOME/extensions/PageForms \
 	&& git checkout -q fb9511cd59845b9d2e5bbeb2964a5c4fca698c13 \

@@ -194,7 +194,6 @@ const DOCKER_EXTENSIONS = [
 	'TemplateWizard',
 	'TextExtracts', # bundled
 	'Thanks',
-	'TimedMediaHandler',
 	'TinyMCE',
 	'TitleBlacklist', # bundled
 	'TitleIcon',
