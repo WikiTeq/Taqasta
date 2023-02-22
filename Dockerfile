@@ -736,10 +736,14 @@ RUN set -x; \
 
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
-	# 1_39 throws the error: Error converting between wikitext and HTML for VisualEditor, see WIK-702?focusedCommentId=41751
+	# Include the "Use correct load flag for getTitleOrPageId" fix
 	cd $MW_HOME/extensions/CommentStreams \
-	&& git fetch origin master \
-	&& git checkout -q 99f95fe7a53c530c0acefaf1bf12f9c0c9ef1d48 \
+	&& git fetch \
+	&& git checkout -q 567178f0eac7172536aac4aea20f4cd97b8ad891 \
+	# It throws the error: Class 'VEForAll\\RequestContext' not found"
+	&& cd $MW_HOME/extensions/VEForAll \
+	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/VEForAll refs/changes/35/891335/1  \
+	&& git checkout -b change-891335 FETCH_HEAD \
 	# HeaderFooter throws the errors, see WIK-702?focusedCommentId=41302 \
 	&& rm -fr $MW_HOME/extensions/HeaderFooter \
 	&& git clone --single-branch -b fix-mw36 https://github.com/JeroenDeDauw/HeaderFooter.git $MW_HOME/extensions/HeaderFooter \
