@@ -635,9 +635,7 @@ RUN set -x; \
 	# Mpdf
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Mpdf.git $MW_HOME/extensions/Mpdf \
 	&& cd $MW_HOME/extensions/Mpdf \
-# TODO remove me when merged
-	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/Mpdf refs/changes/51/891351/3 && git checkout -b change-891351 FETCH_HEAD \
-#	&& git checkout -q 1c1a5a4b0caba3164d765c7e893610dccbe33c96 \
+	&& git checkout -q fb6ff534526f3b9a554cc4172db6e3715adfef36 \
 	# NCBITaxonomyLookup
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/NCBITaxonomyLookup $MW_HOME/extensions/NCBITaxonomyLookup \
 	&& cd $MW_HOME/extensions/NCBITaxonomyLookup \
