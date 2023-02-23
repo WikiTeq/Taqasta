@@ -754,10 +754,10 @@ RUN set -x; \
 	&& git clone --single-branch -b master https://github.com/WikiTeq/SimpleMathJax.git $MW_HOME/extensions/SimpleMathJax \
 	&& cd $MW_HOME/extensions/SimpleMathJax \
 	&& git checkout -q 1ef413553dca4143294842fac99b56425d815396 \
-	# SocialProfile breaks Special:SpecialPages, see WIK-702?focusedCommentId=41955
-	&& cd $MW_HOME/extensions/SocialProfile \
-	&& git fetch origin master \
-	&& git checkout -q 3ba3b1808d2ba5d48470a6258eb6e716ccc5473a \
+#	# SocialProfile breaks Special:SpecialPages, see WIK-702?focusedCommentId=41955
+#	&& cd $MW_HOME/extensions/SocialProfile \
+#	&& git fetch origin master \
+#	&& git checkout -q 3ba3b1808d2ba5d48470a6258eb6e716ccc5473a \
 	# Throws the errors, see WIK-702?focusedCommentId=41196
 	&& rm -fr $MW_HOME/extensions/NumerAlpha \
 	# does not work? see WIK-702?focusedCommentId=41955
