@@ -740,6 +740,10 @@ RUN set -x; \
 	cd $MW_HOME/extensions/CommentStreams \
 	&& git fetch \
 	&& git checkout -q 567178f0eac7172536aac4aea20f4cd97b8ad891 \
+	# it breaks Special:ChangeContentModel, see MFAM-124
+	&& cd $MW_HOME/extensions/Lingo \
+	&& git fetch \
+	&& git checkout -q23511cdf80c4665d992b0822a7c90ded6572d395 \
 	# It throws the error: Class 'VEForAll\\RequestContext' not found"
 	&& cd $MW_HOME/extensions/VEForAll \
 	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/VEForAll refs/changes/35/891335/1  \
