@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 ARG COMPOSER_TOKEN
 
 ENV MW_VERSION=REL1_39 \
-	MW_CORE_VERSION=1.39.1 \
+	MW_CORE_VERSION=1.39.2 \
 	WWW_ROOT=/var/www/mediawiki \
 	MW_HOME=/var/www/mediawiki/w \
 	MW_LOG=/var/log/mediawiki \
