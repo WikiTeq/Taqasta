@@ -234,6 +234,9 @@ if [ ! -e "$MW_VOLUME/LocalSettings.php" ] && [ ! -e "$MW_HOME/LocalSettings.php
 
             # Append inclusion of DockerSettings.php
             echo "@include('DockerSettings.php');" >> "$MW_VOLUME/LocalSettings.php"
+
+            # Run post-include update due to SMW
+            php maintenance/update.php --quick
         fi
     fi
 fi
