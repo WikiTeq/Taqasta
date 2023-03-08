@@ -142,7 +142,7 @@ const DOCKER_EXTENSIONS = [
 	'OpenIDConnect',
 	'PDFEmbed',
 	'PageExchange',
-//	'PageForms',   must be enabled manually after enableSemantics()
+	'PageForms', # PageForms has to be enabled after enableSemantic()
 	'PageImages', # bundled
 	'PageSchemas',
 	'ParserFunctions', # bundled
@@ -170,7 +170,7 @@ const DOCKER_EXTENSIONS = [
 	'SemanticDrilldown',
 	'SemanticExternalQueryLookup',
 	'SemanticExtraSpecialProperties',
-	'SemanticMediaWiki',
+	'SemanticMediaWiki',  # requires enableSemantic() to be called so have a special check
 	'SemanticQueryInterface',
 	'SemanticResultFormats',
 	'SemanticScribunto',
@@ -348,6 +348,10 @@ if ( isset( $dockerLoadSkins['chameleon'] ) ) {
 }
 
 ####################### Extension Settings #######################
+
+$isPageFormsEnabled = false;
+$isSemanticMediaWikiEnabled = false;
+
 // The variable will be an array [ 'extensionName' => 'extensionName, ... ]
 // made by see array_combine( $dockerLoadExtensions, $dockerLoadExtensions ) below
 $dockerLoadExtensions = getenv( 'MW_LOAD_EXTENSIONS' );
@@ -357,6 +361,16 @@ if ( $dockerLoadExtensions ) {
 	if ( $dockerLoadExtensions ) {
 		$dockerLoadExtensions = array_combine( $dockerLoadExtensions, $dockerLoadExtensions );
 		foreach ( $dockerLoadExtensions as $extension ) {
+			if ($extension === 'PageForms') {
+				// skip loading here
+				$isPageFormsEnabled = true;
+				continue;
+			}
+			if ($extension === 'SemanticMediaWiki') {
+				// skip loading here
+				$isSemanticMediaWikiEnabled = true;
+				continue;
+			}
 			if ( file_exists( "$wgExtensionDirectory/$extension/extension.json" ) ) {
 				wfLoadExtension( $extension );
 			} else {
@@ -365,6 +379,14 @@ if ( $dockerLoadExtensions ) {
 		}
 	}
 }
+
+if ($isSemanticMediaWikiEnabled) {
+	enableSemantics();
+}
+
+if ($isPageFormsEnabled) {
+	wfLoadExtension('PageForms');
+};
 
 # SyntaxHighlight_GeSHi
 $wgPygmentizePath = '/usr/bin/pygmentize';
