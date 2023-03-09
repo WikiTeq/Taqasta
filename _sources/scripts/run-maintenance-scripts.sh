@@ -74,7 +74,7 @@ waitelastic() {
     fi
 
     echo >&2 'Waiting for elasticsearch to start'
-    ./wait-for-it.sh -t 60 "$WG_CIRRUS_SEARCH_SERVER"
+    /wait-for-it.sh -t 60 "$WG_CIRRUS_SEARCH_SERVER"
 
     for i in {300..0}; do
         result=0
