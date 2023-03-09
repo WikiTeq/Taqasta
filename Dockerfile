@@ -3,8 +3,6 @@ FROM debian:11.5 as base
 LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
-ARG COMPOSER_TOKEN
-
 ENV MW_VERSION=REL1_39 \
 	MW_CORE_VERSION=1.39.2 \
 	WWW_ROOT=/var/www/mediawiki \
