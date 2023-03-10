@@ -36,6 +36,7 @@ const DOCKER_SKINS = [
 ];
 
 const DOCKER_EXTENSIONS = [
+	'SemanticMediaWiki', // keep it at the top to be enabled first, because some Semantic extension don't work in other case.
 	'AJAXPoll',
 	'AbuseFilter',
 	'AdminLinks',
@@ -164,10 +165,10 @@ const DOCKER_EXTENSIONS = [
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
 	'SemanticCompoundQueries',
-//	'SemanticDependencyUpdater',   must be enabled manually after enableSemantics()
+	'SemanticDependencyUpdater', //  must be enabled after SemanticMediaWiki
 	'SemanticDrilldown',
 	'SemanticExtraSpecialProperties',
-	'SemanticMediaWiki',
+//	'SemanticMediaWiki', moved the top to be enabled first, because some Semantic extension don't work in other case.
 	'SemanticQueryInterface',
 	'SemanticResultFormats',
 	'SemanticScribunto',
@@ -357,7 +358,15 @@ if ( $dockerLoadExtensions ) {
 	$dockerLoadExtensions = array_intersect( DOCKER_EXTENSIONS, $dockerLoadExtensions );
 	if ( $dockerLoadExtensions ) {
 		$dockerLoadExtensions = array_combine( $dockerLoadExtensions, $dockerLoadExtensions );
+		// Enable SemanticMediaWiki first, because some Semantic extension don't work in other case
+		if ( isset( $dockerLoadExtensions['SemanticMediaWiki'] ) ) {
+			wfLoadExtension( 'SemanticMediaWiki' );
+		}
 		foreach ( $dockerLoadExtensions as $extension ) {
+			if ( $extension === 'SemanticMediaWiki' ) {
+				// Already loaded above ^
+				continue;
+			}
 			if ( file_exists( "$wgExtensionDirectory/$extension/extension.json" ) ) {
 				wfLoadExtension( $extension );
 			} else {
