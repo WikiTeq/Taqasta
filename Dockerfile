@@ -769,11 +769,7 @@ RUN set -x; \
 	&& git checkout -q fb9511cd59845b9d2e5bbeb2964a5c4fca698c13 \
 	# missed in Canasta
 	&& cd $MW_HOME/extensions/EmailAuthorization \
-	&& git submodule update --init --recursive \
-	# MinervaNeue (commented out in Canasta Dockerfile)
-	&& git clone -b $MW_VERSION --single-branch https://gerrit.wikimedia.org/r/mediawiki/skins/MinervaNeue $MW_HOME/skins/MinervaNeue \
-	&& cd $MW_HOME/skins/MinervaNeue \
-	&& git checkout -q 934fcafdd3c27accce25c5de2fc98ac15676cd66
+	&& git submodule update --init --recursive
 
 # Patch composer
 RUN set -x; \
