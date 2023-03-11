@@ -742,7 +742,11 @@ RUN set -x; \
     # VariablesLue
     && git clone --single-branch -b master https://github.com/Liquipedia/VariablesLua.git $MW_HOME/extensions/VariablesLua \
     && cd $MW_HOME/extensions/VariablesLua \
-    && git checkout -q dced585ef5ddcfbaa49c510c49c3b398ecc6f1c6
+    && git checkout -q dced585ef5ddcfbaa49c510c49c3b398ecc6f1c6 \
+    # AWS
+    && git clone --single-branch -b master https://github.com/edwardspec/mediawiki-aws-s3.git $MW_HOME/extensions/AWS \
+    && cd $MW_HOME/extensions/AWS \
+    && git checkout -q 98cc058f1cedd305fe68207809335f40e0f9c53e
 
 # ReplaceText (switch to more recent commit due to bug on submodule HEAD)
 RUN set -x; \
