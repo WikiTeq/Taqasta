@@ -884,17 +884,6 @@ RUN set -x; \
 	cd $MW_HOME \
 	&& find . \( -name ".git" -o -name ".gitignore" -o -name ".gitmodules" -o -name ".gitattributes" \) -exec rm -rf -- {} +
 
-# Generate list of installed extensions
-RUN set -x; \
-	cd $MW_HOME/extensions \
-	&& for i in $(ls -d */); do echo "#cfLoadExtension('${i%%/}');"; done > $MW_ORIGIN_FILES/installedExtensions.txt \
-	# Dirty hack for SemanticMediawiki
-	&& sed -i "s/#cfLoadExtension('SemanticMediaWiki');/#enableSemantics('localhost');/g" $MW_ORIGIN_FILES/installedExtensions.txt \
-	&& cd $MW_HOME/skins \
-	&& for i in $(ls -d */); do echo "#cfLoadSkin('${i%%/}');"; done > $MW_ORIGIN_FILES/installedSkins.txt \
-	#Loads Vector skin by default in the LocalSettings.php
-	&& sed -i "s/#cfLoadSkin('Vector');/cfLoadSkin('Vector');/" $MW_ORIGIN_FILES/installedSkins.txt
-
 # Move files around
 RUN set -x; \
 	# Move files to $MW_ORIGIN_FILES directory
