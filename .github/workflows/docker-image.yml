@@ -2,7 +2,7 @@ name: Docker build and push
 
 # limit concurrency
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#examples-using-concurrency-and-the-default-behavior
-concurrency: docker_canasta_main
+concurrency: docker_taqasta_main
 
 on:
   push:
@@ -18,7 +18,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: canasta
+  IMAGE_NAME: taqasta
 
 jobs:
   # Test the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
@@ -53,7 +53,7 @@ jobs:
         run: |
 
           # Image ID
-          IMAGE_ID=ghcr.io/canastawiki/$IMAGE_NAME
+          IMAGE_ID=ghcr.io/wikiteq/$IMAGE_NAME
 
           # Date
           BDATE=$(date +%Y%m%d)
@@ -69,8 +69,8 @@ jobs:
           # Strip git ref prefix from version and use it as suffix for version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           
-          # Get the Canasta version from the "VERSION" file
-          CANASTA_VERSION=$(cat VERSION)
+          # Get the Taqasta version from the "VERSION" file
+          TAQASTA_VERSION=$(cat VERSION)
 
           # For pull requests just extract the PR number
           PR_NUMBER=""
@@ -90,16 +90,18 @@ jobs:
           REGISTRY_TAGS=$IMAGE_ID:$VERSION
 
           # For master branch also supply an extra tag: <MW_VERSION>-latest,<MW_VERSION>-<DATE>-<SHA>
-          [ "$VERSION" == "latest" ] && REGISTRY_TAGS=$REGISTRY_TAGS,$IMAGE_ID:$CANASTA_VERSION,$IMAGE_ID:$MEDIAWIKI_MAJOR_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-$BDATE-$(git rev-parse --short HEAD)
+          [ "$VERSION" == "latest" ] && REGISTRY_TAGS=$REGISTRY_TAGS,$IMAGE_ID:$TAQASTA_VERSION,$IMAGE_ID:$MEDIAWIKI_MAJOR_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-$BDATE-$(git rev-parse --short HEAD)
 
+          SHA_SHORT=${{ github.sha }}
+          [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
+          
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           echo REGISTRY_TAGS=$REGISTRY_TAGS
-          echo headref=${{ github.head_ref }}
+          echo SHA_SHORT=$SHA_SHORT
+          echo EventName=${{ github.event_name }}
           
-          SHA_SHORT=${{ github.sha }}
-          [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
-        
+          echo headref=${{ github.head_ref }}
           echo "Final image tag to be pushed:"
           echo $REGISTRY_TAGS
           echo "REGISTRY_TAGS=$REGISTRY_TAGS" >> $GITHUB_OUTPUT
@@ -108,7 +110,7 @@ jobs:
           echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -136,6 +138,8 @@ jobs:
         with:
           context: .
           platforms: linux/amd64, linux/arm64
+          secrets: |
+            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
@@ -163,6 +167,6 @@ jobs:
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: comment
-          message: ":whale: The image based on [${{ steps.generate.outputs.SHA_SHORT }}](https://github.com/WikiTeq/docker-wikiteq-canasta/pull/${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ steps.generate.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }})"
+          message: ":whale: The image based on [${{ steps.generate.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ steps.generate.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }})"
           recreate: true
           fail: false
