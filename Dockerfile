@@ -818,7 +818,8 @@ RUN set -x; \
 	cd $MW_HOME/extensions/Flow \
 	&& git apply /tmp/flow-conversion-utils.patch
 
-# TODO send to upstream, see https://wikiteq.atlassian.net/browse/MW-81
+# TODO send to upstream, see https://wikiteq.atlassian.net/browse/MW-64 and https://wikiteq.atlassian.net/browse/MW-81
+COPY _sources/patches/skin-refreshed.patch /tmp/skin-refreshed.patch
 COPY _sources/patches/skin-refreshed-737080.diff /tmp/skin-refreshed-737080.diff
 RUN set -x; \
 	cd $MW_HOME/skins/Refreshed \
