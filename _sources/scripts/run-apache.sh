@@ -73,9 +73,6 @@ make_dir_writable "$MW_VOLUME" -not '(' -path "$MW_VOLUME/images" -prune ')'
 touch "$WWW_ROOT/.maintenance"
 /run-maintenance-scripts.sh &
 
-# Running php-fpm
-/run-php-fpm.sh &
-
 ############### Run Apache ###############
 # Make sure we're not confused by old, incompletely-shutdown Apache
 # context after restarting the container.  Apache won't start correctly
