@@ -102,6 +102,7 @@ const DOCKER_EXTENSIONS = [
 	'HeaderFooter',
 	'HeaderTabs',
 	'IframePage',
+	'JWTAuth',
 	'ImageMap', # bundled
 	'InputBox', # bundled
 	'Interwiki', # bundled
