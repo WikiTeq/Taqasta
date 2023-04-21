@@ -783,6 +783,18 @@ RUN set -x; \
 	cd $MW_HOME/extensions/MassPasswordReset \
 	&& git apply /tmp/MassPasswordReset.patch
 
+# PageForms WLDR-318
+COPY _sources/patches/PF_AutocompleteWidget.js.numeric.values.fix.diff /tmp/PF_AutocompleteWidget.js.numeric.values.fix.diff
+RUN set -x; \
+    cd $MW_HOME/extensions/PageForms \
+    && git apply /tmp/PF_AutocompleteWidget.js.numeric.values.fix.diff
+
+# PageForms WLDR-319
+COPY _sources/patches/PF.5.5.1.usedisplaytitle.autocomplete.forminput.diff /tmp/PF.5.5.1.usedisplaytitle.autocomplete.forminput.diff
+RUN set -x; \
+    cd $MW_HOME/extensions/PageForms \
+    && git apply /tmp/PF.5.5.1.usedisplaytitle.autocomplete.forminput.diff
+
 # Composer dependencies
 COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
 # Run with secret mounted to /run/secrets/COMPOSER_TOKEN
