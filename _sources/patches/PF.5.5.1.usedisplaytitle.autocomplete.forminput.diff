@@ -1,17 +1,17 @@
 diff --git a/includes/PF_AutocompleteAPI.php b/includes/PF_AutocompleteAPI.php
-index a7a89b00..9912f7de 100644
+index 9b734641..d9ba1e6f 100644
 --- a/includes/PF_AutocompleteAPI.php
 +++ b/includes/PF_AutocompleteAPI.php
 @@ -19,6 +19,8 @@ class PFAutocompleteAPI extends ApiBase {
  	}
- 
+
  	public function execute() {
 +		global $wgPageFormsUseDisplayTitle;
 +
  		$params = $this->extractRequestParams();
  		$substr = $params['substr'];
  		$namespace = $params['namespace'];
-@@ -34,14 +36,20 @@ class PFAutocompleteAPI extends ApiBase {
+@@ -35,14 +37,20 @@ class PFAutocompleteAPI extends ApiBase {
  		$base_cargo_table = $params['base_cargo_table'];
  		$base_cargo_field = $params['base_cargo_field'];
  		$basevalue = $params['basevalue'];
@@ -24,17 +24,17 @@ index a7a89b00..9912f7de 100644
 +			$usedisplaytitle = $wgPageFormsUseDisplayTitle;
 +		}
  		// $limit = $params['limit'];
- 
+
  		if ( $baseprop === null && $base_cargo_table === null && strlen( $substr ) == 0 ) {
  			$this->dieWithError( [ 'apierror-missingparam', 'substr' ], 'param_substr' );
  		}
- 
+
 -		global $wgPageFormsUseDisplayTitle;
 -		$map = false;
  		if ( $baseprop !== null ) {
  			if ( $property !== null ) {
  				$data = $this->getAllValuesForProperty( $property, null, $baseprop, $basevalue );
-@@ -51,22 +59,19 @@ class PFAutocompleteAPI extends ApiBase {
+@@ -52,29 +60,25 @@ class PFAutocompleteAPI extends ApiBase {
  		} elseif ( $wikidata !== null ) {
  			$data = PFValuesUtils::getAllValuesFromWikidata( urlencode( $wikidata ), $substr );
  		} elseif ( $category !== null ) {
@@ -52,6 +52,14 @@ index a7a89b00..9912f7de 100644
 +			if ( $usedisplaytitle ) {
  				$data = PFValuesUtils::disambiguateLabels( $data );
  			}
+ 		} elseif ( $query !== null ) {
+ 			$query = $this->processSemanticQuery( $query, $substr );
+ 			$data = PFValuesUtils::getAllPagesForQuery( $query );
+-			$map = $wgPageFormsUseDisplayTitle;
+-			if ( $map ) {
++			if ( $usedisplaytitle ) {
+ 				$data = PFValuesUtils::disambiguateLabels( $data );
+ 			}
  		} elseif ( $cargo_table !== null && $cargo_field !== null ) {
  			$data = self::getAllValuesForCargoField( $cargo_table, $cargo_field, $cargo_where, $substr, $base_cargo_table, $base_cargo_field, $basevalue );
  		} elseif ( $namespace !== null ) {
@@ -60,7 +68,7 @@ index a7a89b00..9912f7de 100644
  		} elseif ( $external_url !== null ) {
  			$data = PFValuesUtils::getValuesFromExternalURL( $external_url, $substr );
  		} else {
-@@ -104,7 +109,7 @@ class PFAutocompleteAPI extends ApiBase {
+@@ -112,7 +116,7 @@ class PFAutocompleteAPI extends ApiBase {
  		if ( $external_url === null ) {
  			$formattedData = [];
  			foreach ( $data as $index => $value ) {
@@ -69,15 +77,15 @@ index a7a89b00..9912f7de 100644
  					$formattedData[] = [ 'title' => $index, 'displaytitle' => $value ];
  				} else {
  					$formattedData[] = [ 'title' => $value ];
-@@ -143,6 +148,7 @@ class PFAutocompleteAPI extends ApiBase {
+@@ -152,6 +156,7 @@ class PFAutocompleteAPI extends ApiBase {
  			'base_cargo_table' => null,
  			'base_cargo_field' => null,
  			'basevalue' => null,
 +			'usedisplaytitle' => null,
  		];
  	}
- 
-@@ -157,6 +163,7 @@ class PFAutocompleteAPI extends ApiBase {
+
+@@ -167,6 +172,7 @@ class PFAutocompleteAPI extends ApiBase {
  			'external_url' => 'Alias for external URL from which to get values',
  			'baseprop' => 'A previous property in the form to check against',
  			'basevalue' => 'The value to check for the previous property',
@@ -86,7 +94,7 @@ index a7a89b00..9912f7de 100644
  		];
  	}
 diff --git a/includes/PF_ValuesUtils.php b/includes/PF_ValuesUtils.php
-index 5bf99517..bea85cb8 100644
+index cfeb74cd..87781047 100644
 --- a/includes/PF_ValuesUtils.php
 +++ b/includes/PF_ValuesUtils.php
 @@ -268,13 +268,13 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
@@ -102,7 +110,7 @@ index 5bf99517..bea85cb8 100644
  			return [ $top_category ];
  		}
 -		global $wgPageFormsUseDisplayTitle;
- 
+
  		$db = wfGetDB( DB_REPLICA );
  		$top_category = str_replace( ' ', '_', $top_category );
 @@ -290,7 +290,7 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
@@ -125,7 +133,7 @@ index 5bf99517..bea85cb8 100644
  		if ( $source_name === null ) {
  			return [];
  		}
- 
+
 +		// Fallback to default config value if no override is defined
 +		if ( $usedisplaytitle === null ) {
 +			$usedisplaytitle = $wgPageFormsUseDisplayTitle;
@@ -152,7 +160,7 @@ index cf8567e1..318fd496 100644
  		$inAutofocus = true;
  		$hasPopup = $hasReturnTo = false;
 +		$useDisplayTitle = null;
- 
+
  		// Assign params.
  		foreach ( $params as $i => $param ) {
 @@ -106,6 +107,8 @@ class PFFormInputParserFunction {
@@ -167,7 +175,7 @@ index cf8567e1..318fd496 100644
 @@ -139,6 +142,9 @@ class PFFormInputParserFunction {
  			$formInputAttrs['data-possible-namespaces'] = $possibleNamespacesStr;
  		}
- 
+
 +		if ( $useDisplayTitle !== null ) {
 +			$formInputAttrs['data-usedisplaytitle'] = $useDisplayTitle;
 +		}
@@ -181,7 +189,7 @@ index 5d9941ba..963e2e73 100644
 @@ -83,6 +83,10 @@ pf.AutocompleteWidget.prototype.getLookupRequest = function () {
  		requestParams.namespace = this.config.autocompletesettings;
  	}
- 
+
 +	if ( typeof this.config.usedisplaytitle !== 'undefined' ) {
 +		requestParams.usedisplaytitle = this.config.usedisplaytitle;
 +	}
@@ -207,7 +215,7 @@ index e72d9525..1a5fef66 100644
 @@ -42,6 +42,9 @@
  			}
  		}
- 
+
 +		if ( this.attr('data-usedisplaytitle') !== undefined ) {
 +			autocompleteWidgetConfig['usedisplaytitle'] = this.attr('data-usedisplaytitle');
 +		}
