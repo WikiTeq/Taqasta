@@ -742,11 +742,7 @@ RUN set -x; \
     # VariablesLue
     && git clone --single-branch -b master https://github.com/Liquipedia/VariablesLua.git $MW_HOME/extensions/VariablesLua \
     && cd $MW_HOME/extensions/VariablesLua \
-    && git checkout -q dced585ef5ddcfbaa49c510c49c3b398ecc6f1c6 \
-    # JWTAuth
-    && git clone --single-branch -b main https://github.com/jeffw16/JWTAuth.git $MW_HOME/extensions/JWTAuth \
-    && cd $MW_HOME/extensions/JWTAuth \
-    && git checkout -q 6c6e0474ce38e0c261c9c14a119c5c7f25b81d48
+    && git checkout -q dced585ef5ddcfbaa49c510c49c3b398ecc6f1c6
 
 # ReplaceText (switch to more recent commit due to bug on submodule HEAD)
 RUN set -x; \
@@ -782,6 +778,12 @@ COPY _sources/patches/MassPasswordReset.patch /tmp/MassPasswordReset.patch
 RUN set -x; \
 	cd $MW_HOME/extensions/MassPasswordReset \
 	&& git apply /tmp/MassPasswordReset.patch
+
+# PageForms WLDR-319, WLDR-318
+COPY _sources/patches/PF.5.5.1.usedisplaytitle.autocomplete.forminput.diff /tmp/PF.5.5.1.usedisplaytitle.autocomplete.forminput.diff
+RUN set -x; \
+    cd $MW_HOME/extensions/PageForms \
+    && git apply /tmp/PF.5.5.1.usedisplaytitle.autocomplete.forminput.diff
 
 # Composer dependencies
 COPY _sources/configs/composer.canasta.json $MW_HOME/composer.local.json
