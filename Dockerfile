@@ -395,6 +395,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-MyVariables $MW_HOME/extensions/MyVariables \
 	&& cd $MW_HOME/extensions/MyVariables \
 	&& git checkout -q 8b45be10c9b0a484824c55d8cc48399290384260 \
+	# NCBITaxonomyLookup
+	&& git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/NCBITaxonomyLookup $MW_HOME/extensions/NCBITaxonomyLookup \
+	&& cd $MW_HOME/extensions/NCBITaxonomyLookup \
+	&& git checkout -q 8f4a7ed7bdc14378d4dbfba7aec0e1d8eece96ca \
 	# NewUserMessage
 	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-NewUserMessage $MW_HOME/extensions/NewUserMessage \
 	&& cd $MW_HOME/extensions/NewUserMessage \
@@ -638,10 +642,6 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Mpdf.git $MW_HOME/extensions/Mpdf \
 	&& cd $MW_HOME/extensions/Mpdf \
 	&& git checkout -q fb6ff534526f3b9a554cc4172db6e3715adfef36 \
-	# NCBITaxonomyLookup
-	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/NCBITaxonomyLookup $MW_HOME/extensions/NCBITaxonomyLookup \
-	&& cd $MW_HOME/extensions/NCBITaxonomyLookup \
-	&& git checkout -b $MW_VERSION 0e72588433a0423660fac124549b77403cb3eba5 \
 	# PageSchemas
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PageSchemas $MW_HOME/extensions/PageSchemas \
 	&& cd $MW_HOME/extensions/PageSchemas \
@@ -734,7 +734,11 @@ RUN set -x; \
 	# VariablesLue
 	&& git clone --single-branch -b master https://github.com/Liquipedia/VariablesLua.git $MW_HOME/extensions/VariablesLua \
 	&& cd $MW_HOME/extensions/VariablesLua \
-	&& git checkout -q dced585ef5ddcfbaa49c510c49c3b398ecc6f1c6
+	&& git checkout -q dced585ef5ddcfbaa49c510c49c3b398ecc6f1c6 \
+	# JWTAuth
+	&& git clone --single-branch -b main https://github.com/jeffw16/JWTAuth.git $MW_HOME/extensions/JWTAuth \
+	&& cd $MW_HOME/extensions/JWTAuth \
+	&& git checkout -q 6c6e0474ce38e0c261c9c14a119c5c7f25b81d48
 
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
@@ -790,6 +794,12 @@ COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
 RUN set -x; \
 	cd $MW_HOME/extensions/FlexDiagrams \
 	&& git apply /tmp/FlexDiagrams.0.4.fix.diff
+
+# PageForms WLDR-319, WLDR-318
+COPY _sources/patches/PF.5.6.usedisplaytitle.autocomplete.forminput.diff /tmp/PF.5.6.usedisplaytitle.autocomplete.forminput.diff
+RUN set -x; \
+    cd $MW_HOME/extensions/PageForms \
+    && git apply /tmp/PF.5.6.usedisplaytitle.autocomplete.forminput.diff
 
 # Composer dependencies
 # Original Canasta string:
@@ -886,6 +896,7 @@ ENV MW_AUTOUPDATE=true \
 	MW_MAINTENANCE_CIRRUSSEARCH_FORCEINDEX=1 \
 	MW_ENABLE_JOB_RUNNER=true \
 	MW_JOB_RUNNER_PAUSE=2 \
+	MW_JOB_RUNNER_MEMORY_LIMIT=512M \
 	MW_ENABLE_TRANSCODER=true \
 	MW_JOB_TRANSCODER_PAUSE=60 \
 	MW_MAP_DOMAIN_TO_DOCKER_GATEWAY=0 \
