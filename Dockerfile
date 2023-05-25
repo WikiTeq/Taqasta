@@ -398,7 +398,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/NewUserMessage \
 	&& git checkout -q 206f32880fa7bf70b191d33ed80b8626bca39efe \
 	# NumerAlpha
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/NumerAlpha $MW_HOME/extensions/NumerAlpha \
+	&& git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/NumerAlpha $MW_HOME/extensions/NumerAlpha \
 	&& cd $MW_HOME/extensions/NumerAlpha \
 	&& git checkout -q f792da2842527b4f1ea1c12fd3618b0e288276d2 \
 	# OpenGraphMeta
