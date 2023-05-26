@@ -18,9 +18,9 @@ ENV MW_VERSION=REL1_39 \
 RUN set x; \
 	apt-get clean \
 	&& apt-get update \
-	&& apt-get install -y aptitude \
+	&& apt-get --no-install-recommends install -y aptitude \
 	&& aptitude -y upgrade \
-	&& aptitude install -y \
+	&& aptitude --without-recommends install -y \
 	git \
 	apache2 \
 	software-properties-common \
