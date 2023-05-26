@@ -732,7 +732,8 @@ RUN set -x; \
 	# JWTAuth
 	&& git clone --single-branch -b main https://github.com/jeffw16/JWTAuth.git $MW_HOME/extensions/JWTAuth \
 	&& cd $MW_HOME/extensions/JWTAuth \
-	&& git checkout -q 6c6e0474ce38e0c261c9c14a119c5c7f25b81d48
+	&& git checkout -q 6c6e0474ce38e0c261c9c14a119c5c7f25b81d48 \
+    && ls -al
 
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
