@@ -761,7 +761,8 @@ RUN set -x; \
 	# LiquidThreads
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LiquidThreads $MW_HOME/extensions/LiquidThreads \
 	&& cd $MW_HOME/extensions/LiquidThreads \
-	&& git checkout -q 00d4cfb74c18e6524dc2c16347229fffef7043f7
+	&& git checkout -q 00d4cfb74c18e6524dc2c16347229fffef7043f7 \
+    && ls -al
 
 # M
 RUN set -x; \
