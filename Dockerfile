@@ -483,7 +483,7 @@ RUN set -x; \
 # O
 RUN set -x; \
 	cd $MW_HOME/extensions \
-  # OpenGraphMeta
+	# OpenGraphMeta
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/OpenGraphMeta $MW_HOME/extensions/OpenGraphMeta \
 	&& cd $MW_HOME/extensions/OpenGraphMeta \
 	&& git checkout -q d319702cd4ceda1967c233ef8e021b67b3fc355f \
