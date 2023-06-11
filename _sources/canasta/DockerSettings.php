@@ -290,7 +290,10 @@ $wgShellLocale = "en_US.utf8";
 ## Set $wgCacheDirectory to a writable directory on the web server
 ## to make your wiki go slightly faster. The directory should not
 ## be publicly accessible from the web.
-$wgCacheDirectory = getenv( 'MW_USE_CACHE_DIRECTORY' ) ? "$IP/cache" : false;
+$wgCacheDirectory = getenv( 'MW_USE_CACHE_DIRECTORY' ) ? "$DOCKER_MW_VOLUME/cache" : false;
+if ( $wgCacheDirectory ) {
+	$wgLocalisationCacheConf['store'] = 'array';
+}
 
 # Do not overwrite $wgSecretKey with empty string if MW_SECRET_KEY is not defined
 $wgSecretKey = getenv( 'MW_SECRET_KEY' ) ?: $wgSecretKey;

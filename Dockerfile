@@ -862,10 +862,8 @@ RUN set -x; \
 RUN set -x; \
 	# Move files to $MW_ORIGIN_FILES directory
 	mv $MW_HOME/images $MW_ORIGIN_FILES/ \
-	&& mv $MW_HOME/cache $MW_ORIGIN_FILES/ \
-	# Create symlinks from $MW_VOLUME to the wiki root for images and cache directories
-	&& ln -s $MW_VOLUME/images $MW_HOME/images \
-	&& ln -s $MW_VOLUME/cache $MW_HOME/cache
+	# Create symlinks from $MW_VOLUME to the wiki root for images directory
+	&& ln -s $MW_VOLUME/images $MW_HOME/images
 
 FROM base as final
 
@@ -910,7 +908,8 @@ ENV MW_AUTOUPDATE=true \
 	LOG_FILES_REMOVE_OLDER_THAN_DAYS=10 \
 	MEDIAWIKI_MAINTENANCE_AUTO_ENABLED=false \
 	MW_DEBUG_MODE=false \
-	MW_SENTRY_DSN=""
+	MW_SENTRY_DSN="" \
+	MW_USE_CACHE_DIRECTORY=1
 
 COPY _sources/configs/msmtprc /etc/
 COPY _sources/configs/mediawiki.conf /etc/apache2/sites-enabled/
