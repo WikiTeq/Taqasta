@@ -21,7 +21,7 @@ while true; do
     sleep 1
     php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --type="createPage" >> "$logfileNow" 2>&1
     sleep 1
-    php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --type="refreshLinks" >> "$logfileNow" 2>&1
+    php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --type="refreshLinks" --maxjobs=25 >> "$logfileNow" 2>&1
     sleep 1
     php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --type="htmlCacheUpdate" --maxjobs=500 >> "$logfileNow" 2>&1
     sleep 1
