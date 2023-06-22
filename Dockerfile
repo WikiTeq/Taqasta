@@ -142,10 +142,10 @@ RUN set -x; \
 # Formats, Semantic Scribunto, SimpleBatchUpload, SubPageList.
 RUN set -x; \
 	cd $MW_HOME/extensions \
-	# AdminLinks
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/AdminLinks $MW_HOME/extensions/AdminLinks \
+	# AdminLinks (v. 0.6.1)
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/AdminLinks $MW_HOME/extensions/AdminLinks \
 	&& cd $MW_HOME/extensions/AdminLinks \
-	&& git checkout -q ad7805941ee29378484d1ef3595041f7d2c15913 \
+	&& git checkout -q 3e2671c21fd4b8644552069ee60220035b6e96f5 \
 	# AdvancedSearch
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/AdvancedSearch $MW_HOME/extensions/AdvancedSearch \
 	&& cd $MW_HOME/extensions/AdvancedSearch \
@@ -158,10 +158,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/AntiSpoof $MW_HOME/extensions/AntiSpoof \
 	&& cd $MW_HOME/extensions/AntiSpoof \
 	&& git checkout -q 01cf89a678d5bab6610d24e07d3534356a5880cb \
-	# ApprovedRevs (v. 1.8.1)
+	# ApprovedRevs (v. 1.8.2)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/ApprovedRevs $MW_HOME/extensions/ApprovedRevs \
 	&& cd $MW_HOME/extensions/ApprovedRevs \
-	&& git checkout -q a8cb4bd840465a7db1e10654a0969cfc961d8428 \
+	&& git checkout -q 53b67bf7e1e8ac3d20c2fd41ad2ab1c708c045a6 \
 	# Arrays
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Arrays $MW_HOME/extensions/Arrays \
 	&& cd $MW_HOME/extensions/Arrays \
@@ -174,10 +174,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/BreadCrumbs2 $MW_HOME/extensions/BreadCrumbs2 \
 	&& cd $MW_HOME/extensions/BreadCrumbs2 \
 	&& git checkout -q d53357a6839e94800a617de4fc451b6c64d0a1c8 \
-	# Cargo (v. 3.4.1)
+	# Cargo (v. 3.4.2)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/Cargo $MW_HOME/extensions/Cargo \
 	&& cd $MW_HOME/extensions/Cargo \
-	&& git checkout -q 04bfe84ef4dc806eab0ec52b361a78542d799474 \
+	&& git checkout -q 7e8ea881cdb41e79687d059670fc68872a6a892c \
 	# CharInsert
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CharInsert $MW_HOME/extensions/CharInsert \
 	&& cd $MW_HOME/extensions/CharInsert \
@@ -280,10 +280,10 @@ RUN set -x; \
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/ExternalData $MW_HOME/extensions/ExternalData \
 	&& cd $MW_HOME/extensions/ExternalData \
 	&& git checkout -q 5d30e60a65ca53a3fb5b39826deb2e6917892e22 \
-	# FlexDiagrams
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/FlexDiagrams $MW_HOME/extensions/FlexDiagrams \
+	# FlexDiagrams (v. 0.5)
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/FlexDiagrams $MW_HOME/extensions/FlexDiagrams \
 	&& cd $MW_HOME/extensions/FlexDiagrams \
-	&& git checkout -q 550d0de3e2525d42952d7bc9d291b26455fe07ce \
+	&& git checkout -q eefc9e29aedfc6d8ffaf4f4e50043b390ebd7adc \
 	# GlobalNotice
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GlobalNotice $MW_HOME/extensions/GlobalNotice \
 	&& cd $MW_HOME/extensions/GlobalNotice \
@@ -417,10 +417,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PageExchange $MW_HOME/extensions/PageExchange \
 	&& cd $MW_HOME/extensions/PageExchange \
 	&& git checkout -q 28482410564e38d2b97ab7321e99c4281c6e5877 \
-	# PageForms (v. 5.6)
+	# PageForms (v. 5.6.1)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/PageForms $MW_HOME/extensions/PageForms \
 	&& cd $MW_HOME/extensions/PageForms \
-	&& git checkout -q d9b0e47a83d951c585f95c97ea10ea8be95adec9 \
+	&& git checkout -q f90d67ecc2c111e82db454c71592c83384ff9704 \
 	# PluggableAuth
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PluggableAuth $MW_HOME/extensions/PluggableAuth \
 	&& cd $MW_HOME/extensions/PluggableAuth \
@@ -537,10 +537,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/VoteNY $MW_HOME/extensions/VoteNY \
 	&& cd $MW_HOME/extensions/VoteNY \
 	&& git checkout -q 11c103f4b9167a8d8d5e850d8a781c6f49b249c1 \
-	# WatchAnalytics (v. 3.2.0)
+	# WatchAnalytics (v. 4.1.0)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/WatchAnalytics $MW_HOME/extensions/WatchAnalytics \
 	&& cd $MW_HOME/extensions/WatchAnalytics \
-	&& git checkout -q f6e4d07a93baf502358ce0af01c0ac7e59cc6f4b \
+	&& git checkout -q 793a03b21992c63bc431e3bf0835351958315fb8 \
 	# WhoIsWatching
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WhoIsWatching $MW_HOME/extensions/WhoIsWatching \
 	&& cd $MW_HOME/extensions/WhoIsWatching \
@@ -764,9 +764,6 @@ RUN set -x; \
 #	&& git checkout -q 3ba3b1808d2ba5d48470a6258eb6e716ccc5473a \
 	# does not work? see WIK-702?focusedCommentId=41955
 	&& rm -fr $MW_HOME/extensions/TimedMediaHandler \
-	# see WLDR-242
-	&& cd $MW_HOME/extensions/PageForms \
-	&& git checkout -q fb9511cd59845b9d2e5bbeb2964a5c4fca698c13 \
 	# missed in Canasta
 	&& cd $MW_HOME/extensions/EmailAuthorization \
 	&& git submodule update --init --recursive
