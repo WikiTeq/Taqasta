@@ -96,6 +96,7 @@ const DOCKER_EXTENSIONS = [
 	'GoogleAnalyticsMetrics',
 	'GoogleDocCreator',
 	'GoogleDocTag',
+	'GoogleLogin',
 	'Graph',
 	'HTMLTags',
 	'HeadScript',
