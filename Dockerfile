@@ -923,10 +923,6 @@ RUN set -x; \
 	cd $MW_HOME/extensions/CommentStreams \
 	&& git fetch \
 	&& git checkout -q 567178f0eac7172536aac4aea20f4cd97b8ad891 \
-	# it breaks Special:ChangeContentModel, see MFAM-124
-	&& cd $MW_HOME/extensions/Lingo \
-	&& git fetch \
-	&& git checkout -q 23511cdf80c4665d992b0822a7c90ded6572d395 \
 	# HeaderFooter throws the errors, see WIK-702?focusedCommentId=41302 \
 	&& rm -fr $MW_HOME/extensions/HeaderFooter \
 	&& git clone --single-branch -b fix-mw36 https://github.com/JeroenDeDauw/HeaderFooter.git $MW_HOME/extensions/HeaderFooter \
