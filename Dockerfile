@@ -398,7 +398,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/LDAPProvider \
 	&& git checkout -q 80f8cc8156b0cd250d0dfacd9378ed0db7c2091d \
 	# Lingo
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Lingo $MW_HOME/extensions/Lingo \
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/Lingo $MW_HOME/extensions/Lingo \
 	&& cd $MW_HOME/extensions/Lingo \
 	&& git checkout -q 8cf46aa5df030c6bce68015fb305a26f93b9fa6c \
 	# LinkSuggest
