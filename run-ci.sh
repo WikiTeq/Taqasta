@@ -25,6 +25,8 @@ php maintenance/update.php --quick > /dev/null
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite maintenance_suite
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite parsertests
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite languages
+php -v
+php -i
 php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --exclude-group Dump,Broken
 
 # Qunit
