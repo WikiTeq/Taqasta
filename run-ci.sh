@@ -29,6 +29,7 @@ cat tests/phpunit/includes/HooksTest.php | grep -A 5 testCallHook_Deprecated
 cat tests/phpunit/includes/HooksTest.php | grep -A 5 "function someStatic"
 php -v
 #php -i
-php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --exclude-group Dump,Broken
+#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --exclude-group Dump,Broken
+php tests/phpunit/phpunit.php tests/phpunit/includes/HooksTest.php
 
 # Qunit
