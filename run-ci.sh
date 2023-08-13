@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Setup
-apt -qq update
-apt -qq install -y php7.4-sqlite3 sqlite3 sqlitebrowser nodejs npm
+apt update -q
+apt install -q -y php7.4-sqlite3 sqlite3 sqlitebrowser nodejs npm
 composer -n --quiet update
 
 php maintenance/install.php --dbtype sqlite --dbuser root --dbname mw --dbpath $(pwd) --pass AdminPassword WikiName AdminUser
@@ -25,6 +25,6 @@ php maintenance/update.php --quick
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite maintenance_suite
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite parsertests
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite languages
-phpunit --colors=always --stop-on-failure --stop-on-error --exclude-group Dump,Broken
+composer exec phpunit --colors=always --stop-on-failure --stop-on-error --exclude-group Dump,Broken
 
 # Qunit
