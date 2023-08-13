@@ -21,7 +21,7 @@ env:
 
 jobs:
   # Test the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
-  test:
+  lint:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
@@ -33,6 +33,44 @@ jobs:
           dockerfile: "Dockerfile"
           config: "hadolint.yaml"
 
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          install: true
+
+      -
+        name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          tags: test-image:latest
+          push: false
+          secrets: |
+            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: test-image:latest
+          shell: bash
+          run: bash run-ci.sh
+
   # Push image to GitHub Packages.
   # The image tag pattern is:
   # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
@@ -40,7 +78,7 @@ jobs:
   # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
   # <MW_CORE_VERSION> being parsed from the Dockerfile
   push:
-    needs: [test]
+    needs: [lint,test]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
