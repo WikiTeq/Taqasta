@@ -25,6 +25,6 @@ php maintenance/update.php --quick
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite maintenance_suite
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite parsertests
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite languages
-composer exec phpunit --colors=always --stop-on-failure --stop-on-error --exclude-group Dump,Broken
+composer exec phpunit --stop-on-failure --stop-on-error --exclude-group Dump,Broken
 
 # Qunit
