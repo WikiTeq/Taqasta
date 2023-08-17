@@ -827,7 +827,7 @@ RUN set -x; \
 	# Sentry (WikiTeq fork that uses sentry/sentry 3.x)
 	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extensions-Sentry.git $MW_HOME/extensions/Sentry \
 	&& cd $MW_HOME/extensions/Sentry \
-	&& git checkout -q d0e599a23f374ee7260ebe421437e39cba89c2ba \
+	&& git checkout -q 9d9162d83f921b66f6c14ed354d20607ecafa030 \
 	# ShowMe
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ShowMe $MW_HOME/extensions/ShowMe \
 	&& cd $MW_HOME/extensions/ShowMe \
