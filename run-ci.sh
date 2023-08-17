@@ -5,7 +5,7 @@ apt update -qq > /dev/null
 apt install -y php7.4-sqlite3 sqlite3 sqlitebrowser nodejs npm -qq > /dev/null
 composer -n --quiet update
 
-php maintenance/install.php --dbtype sqlite --dbuser root --dbname mw --dbpath $(pwd) --pass AdminPassword WikiName AdminUser > /dev/null
+php maintenance/install.php --scriptpath / --dbtype sqlite --dbuser root --dbname mw --dbpath $(pwd) --pass AdminPassword WikiName AdminUser > /dev/null
 
 echo 'error_reporting(0);' >> LocalSettings.php
 echo 'wfLoadExtension("Bootstrap");' >> LocalSettings.php
