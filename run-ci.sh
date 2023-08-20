@@ -59,7 +59,7 @@ echo "Running tests..."
 
 #cat tests/phpunit/includes/HooksTest.php | grep -A 5 testCallHook_Deprecated
 #cat tests/phpunit/includes/HooksTest.php | grep -A 5 "function someStatic"
-#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error
+#php tests/phpunit/phpunit.php -c tests/phpunit/suite.xml --stop-on-failure --stop-on-error
 
 composer phpunit:entrypoint -- --stop-on-failure --stop-on-error
 
