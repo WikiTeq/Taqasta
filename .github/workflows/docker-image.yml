@@ -139,7 +139,7 @@ jobs:
       -
         name: Build image
         uses: docker/build-push-action@v3
-        id: build
+        id: docker_build
         with:
           context: .
           load: true
