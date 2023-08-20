@@ -89,6 +89,10 @@ jobs:
           mysql user: 'mediawiki'
           mysql password: 'mediawiki'
 
+      # Debug
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       -
         name: Run PHPUnit
         uses: addnab/docker-run-action@v3
