@@ -29,9 +29,7 @@ php maintenance/install.php \
   --installdbpass mediawiki \
   --skins Vector \
   WikiName \
-  AdminUser
-
-#> /dev/null 2>&1
+  AdminUser > /dev/null 2>&1
 
 echo "Configuring test LocalSettings file..."
 echo 'error_reporting(0);' >> LocalSettings.php
@@ -61,6 +59,8 @@ echo "Running tests..."
 
 #cat tests/phpunit/includes/HooksTest.php | grep -A 5 testCallHook_Deprecated
 #cat tests/phpunit/includes/HooksTest.php | grep -A 5 "function someStatic"
-php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error
+#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error
+
+composer phpunit:entrypoint -- --stop-on-failure --stop-on-error
 
 # Qunit
