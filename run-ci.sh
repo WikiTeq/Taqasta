@@ -6,9 +6,12 @@
 # The script is executed within the container
 
 # Setup
-apt update -qq > /dev/null
-apt install -y php7.4-sqlite3 sqlite3 sqlitebrowser nodejs npm -qq > /dev/null
-composer -n --quiet update
+apt update -qq > /dev/null 2>&1
+apt install -y nodejs npm -qq > /dev/null 2>&1
+
+rm composer.local.json
+rm -rf vendor
+composer -n --quiet update > /dev/null 2>&1
 
 php maintenance/install.php \
   --scriptpath '' \
@@ -22,12 +25,10 @@ php maintenance/install.php \
   --installdbuser root \
   --installdbpass mediawiki \
   WikiName \
-  AdminUser
-
-#  > /dev/null
+  AdminUser > /dev/null 2>&1
 
 echo 'error_reporting(0);' >> LocalSettings.php
-echo 'wfLoadExtension("Bootstrap");' >> LocalSettings.php
+#echo 'wfLoadExtension("Bootstrap");' >> LocalSettings.php
 echo '$wgShowExceptionDetails = false;' >> LocalSettings.php
 echo '$wgShowDBErrorBacktrace = false;' >> LocalSettings.php
 echo '$wgDevelopmentWarnings = false;' >> LocalSettings.php
@@ -36,7 +37,7 @@ echo '$wgMainCacheType = "redis";' >> LocalSettings.php
 echo '$wgSessionCacheType = "redis";' >> LocalSettings.php
 echo '$wgPhpCli = "/usr/bin/php";' >> LocalSettings.php
 
-php maintenance/update.php --quick > /dev/null
+php maintenance/update.php --quick > /dev/null 2>&1
 
 # Lint
 # composer run-script test
