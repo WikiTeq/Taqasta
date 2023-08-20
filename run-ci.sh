@@ -5,7 +5,8 @@ apt update -qq > /dev/null
 apt install -y php7.4-sqlite3 sqlite3 sqlitebrowser nodejs npm -qq > /dev/null
 composer -n --quiet update
 
-sleep 10
+docker ps -a
+docker logs
 
 php maintenance/install.php \
   --scriptpath / \
