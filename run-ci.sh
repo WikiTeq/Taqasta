@@ -29,9 +29,11 @@ php maintenance/install.php \
   --installdbpass mediawiki \
   --skins Vector \
   WikiName \
-  AdminUser > /dev/null 2>&1
+  AdminUser
 
-echo "Configuing test LocalSettings file..."
+#> /dev/null 2>&1
+
+echo "Configuring test LocalSettings file..."
 echo 'error_reporting(0);' >> LocalSettings.php
 #echo 'wfLoadExtension("Bootstrap");' >> LocalSettings.php
 echo '$wgShowExceptionDetails = false;' >> LocalSettings.php
@@ -59,6 +61,6 @@ echo "Running tests..."
 
 #cat tests/phpunit/includes/HooksTest.php | grep -A 5 testCallHook_Deprecated
 #cat tests/phpunit/includes/HooksTest.php | grep -A 5 "function someStatic"
-php tests/phpunit/phpunit.php
+php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error
 
 # Qunit
