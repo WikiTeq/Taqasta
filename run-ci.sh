@@ -12,6 +12,10 @@ php maintenance/install.php \
   --dbname mediawiki \
   --dbpass mediawiki \
   --pass AdminPassword \
+  --dbport 3306 \
+  --dbserver 127.0.0.1 \
+  --installdbuser root \
+  --installdbpass mediawiki \
   WikiName \
   AdminUser
 

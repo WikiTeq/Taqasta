@@ -71,12 +71,13 @@ jobs:
       - name: Start Redis
         uses: supercharge/redis-github-action@1.6.0
         with:
-          redis-version: 6.2.4-v4
+          redis-version: 6
 
       - name: Shutdown Ubuntu MySQL (SUDO)
         run: sudo service mysql stop
 
-      - uses: getong/mariadb-action@v1.1
+      - name: Start MariaDB
+        uses: getong/mariadb-action@v1.1
         with:
           host port: 3306
           container port: 3307
