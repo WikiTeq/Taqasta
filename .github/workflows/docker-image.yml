@@ -99,6 +99,7 @@ jobs:
         with:
           image: test-image:latest
           shell: bash
+          options: --add-host=host.docker.internal:host-gateway
           run: bash run-ci.sh
 
   # Push image to GitHub Packages.
