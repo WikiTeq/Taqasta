@@ -26,6 +26,9 @@ echo 'wfLoadExtension("Bootstrap");' >> LocalSettings.php
 echo '$wgShowExceptionDetails = false;' >> LocalSettings.php
 echo '$wgShowDBErrorBacktrace = false;' >> LocalSettings.php
 echo '$wgDevelopmentWarnings = false;' >> LocalSettings.php
+echo '$wgObjectCaches["redis"] = [ "class" => "RedisBagOStuff", "servers" => [ "host.docker.internal:6379" ] ];' >> LocalSettings.php
+echo '$wgMainCacheType = "redis";' >> LocalSettings.php
+echo '$wgSessionCacheType = "redis";' >> LocalSettings.php
 
 php maintenance/update.php --quick > /dev/null
 
@@ -42,6 +45,6 @@ php maintenance/update.php --quick > /dev/null
 
 #cat tests/phpunit/includes/HooksTest.php | grep -A 5 testCallHook_Deprecated
 #cat tests/phpunit/includes/HooksTest.php | grep -A 5 "function someStatic"
-#php tests/phpunit/phpunit.php tests/phpunit/includes/HooksTest.php
+php tests/phpunit/phpunit.php
 
 # Qunit

@@ -1057,11 +1057,8 @@ COPY _sources/canasta/DockerSettings.php $MW_HOME/
 COPY _sources/canasta/getMediawikiSettings.php /
 COPY _sources/configs/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 
-COPY run-ci.sh $MW_HOME/run-ci.sh
-
 RUN set -x; \
 	chmod -v +x /*.sh \
-	&& chmod -v +x $MW_HOME/run-ci.sh \
 	# Sitemap directory
 	&& ln -s $MW_VOLUME/sitemap $MW_HOME/sitemap \
 	# Comment out ErrorLog and CustomLog parameters, we use rotatelogs in mediawiki.conf for the log files

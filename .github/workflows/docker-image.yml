@@ -72,6 +72,7 @@ jobs:
         uses: supercharge/redis-github-action@1.6.0
         with:
           redis-version: 6
+          redis-port: 6379
 
       - name: Shutdown Ubuntu MySQL (SUDO)
         run: sudo service mysql stop
@@ -99,7 +100,7 @@ jobs:
         with:
           image: test-image:latest
           shell: bash
-          options: --add-host=host.docker.internal:host-gateway
+          options: --add-host=host.docker.internal:host-gateway -v ${{ github.workspace }}/run-ci.sh:/var/www/mediawiki/w/run-ci.sh
           run: bash run-ci.sh
 
   # Push image to GitHub Packages.
