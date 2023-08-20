@@ -5,7 +5,17 @@ apt update -qq > /dev/null
 apt install -y php7.4-sqlite3 sqlite3 sqlitebrowser nodejs npm -qq > /dev/null
 composer -n --quiet update
 
-php maintenance/install.php --scriptpath / --dbtype sqlite --dbuser root --dbname mw --dbpath $(pwd) --pass AdminPassword WikiName AdminUser > /dev/null
+php maintenance/install.php \
+  --scriptpath / \
+  --dbtype mysql \
+  --dbuser root \
+  --dbname mediawiki \
+  --dbpass mediawiki \
+  --pass AdminPassword \
+  WikiName \
+  AdminUser
+
+#  > /dev/null
 
 echo 'error_reporting(0);' >> LocalSettings.php
 echo 'wfLoadExtension("Bootstrap");' >> LocalSettings.php
@@ -25,11 +35,9 @@ php maintenance/update.php --quick > /dev/null
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite maintenance_suite
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite parsertests
 #php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite languages
-cat tests/phpunit/includes/HooksTest.php | grep -A 5 testCallHook_Deprecated
-cat tests/phpunit/includes/HooksTest.php | grep -A 5 "function someStatic"
-php -v
-#php -i
-#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --exclude-group Dump,Broken
-php tests/phpunit/phpunit.php tests/phpunit/includes/HooksTest.php
+
+#cat tests/phpunit/includes/HooksTest.php | grep -A 5 testCallHook_Deprecated
+#cat tests/phpunit/includes/HooksTest.php | grep -A 5 "function someStatic"
+#php tests/phpunit/phpunit.php tests/phpunit/includes/HooksTest.php
 
 # Qunit

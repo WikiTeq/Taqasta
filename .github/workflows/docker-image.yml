@@ -68,6 +68,26 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.6.0
+        with:
+          redis-version: 6.2.4-v4
+
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
+
+      - uses: getong/mariadb-action@v1.1
+        with:
+          host port: 3306
+          container port: 3307
+          character set server: 'utf8'
+          collation server: 'utf8_general_ci'
+          mariadb version: '10.4.10'
+          mysql database: 'mediawiki'
+          mysql root password: 'mediawiki'
+          mysql user: 'mediawiki'
+          mysql password: 'mediawiki'
+
       -
         name: Run PHPUnit
         uses: addnab/docker-run-action@v3
