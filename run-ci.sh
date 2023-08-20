@@ -16,7 +16,7 @@ php maintenance/install.php \
   --dbpass mediawiki \
   --pass AdminPassword \
   --dbport 3306 \
-  --dbserver 127.0.0.1 \
+  --dbserver host.docker.internal \
   --installdbuser root \
   --installdbpass mediawiki \
   WikiName \
