@@ -20,6 +20,87 @@ env:
   IMAGE_NAME: taqasta
 
 jobs:
+
+  # The image tag pattern is:
+  # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
+  # for tags: <TAG>
+  # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
+  # <MW_CORE_VERSION> being parsed from the Dockerfile
+  tags:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
+    outputs:
+      REGISTRY_TAGS: ${{ steps.generate.outputs.REGISTRY_TAGS }}
+      REGISTRY_TAGS_VERSION: ${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}
+      REGISTRY_TAGS_PR_NUMBER: ${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}
+      SHA_SHORT: ${{ steps.generate.outputs.SHA_SHORT }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Generate tags
+        id: generate
+        run: |
+
+          # Image ID
+          IMAGE_ID=ghcr.io/wikiteq/$IMAGE_NAME
+
+          # Date
+          BDATE=$(date +%Y%m%d)
+
+          # Extract MW version from Dockerfile
+          MEDIAWIKI_VERSION=$(sed -nr 's/MW_CORE_VERSION\=([0-9\.]+)/\1/p' Dockerfile | sed "s/ \\\//" | sed "s/\t//")
+          # Extract MW major version (like 1.35)
+          MEDIAWIKI_MAJOR_VERSION=${MEDIAWIKI_VERSION%.*}
+
+          # Change all uppercase to lowercase, just in case
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version and use it as suffix for version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Get the Taqasta version from the "VERSION" file
+          TAQASTA_VERSION=$(cat VERSION)
+
+          # For pull requests just extract the PR number
+          PR_NUMBER=""
+          [ "${{ github.event_name }}" == "pull_request" ] && VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\)/merge,\1,')
+          [ "${{ github.event_name }}" == "pull_request" ] && PR_NUMBER=$VERSION
+
+          # Append version
+          [ "${{ github.event_name }}" == "pull_request" ] && VERSION=$MEDIAWIKI_VERSION-$BDATE-$VERSION
+
+          # Strip "v" prefix from tag name if it's a tag
+          # [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention if it's a master branch build
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          # Compose REGISTRY_TAGS variable
+          REGISTRY_TAGS=$IMAGE_ID:$VERSION
+
+          # For master branch also supply an extra tag: <MW_VERSION>-latest,<MW_VERSION>-<DATE>-<SHA>
+          [ "$VERSION" == "latest" ] && REGISTRY_TAGS=$REGISTRY_TAGS,$IMAGE_ID:$TAQASTA_VERSION,$IMAGE_ID:$MEDIAWIKI_MAJOR_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-$BDATE-$(git rev-parse --short HEAD)
+
+          SHA_SHORT=${{ github.sha }}
+          [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          echo REGISTRY_TAGS=$REGISTRY_TAGS
+          echo SHA_SHORT=$SHA_SHORT
+          echo EventName=${{ github.event_name }}
+
+          echo headref=${{ github.head_ref }}
+          echo "Final image tag to be pushed:"
+          echo $REGISTRY_TAGS
+          echo "REGISTRY_TAGS=$REGISTRY_TAGS" >> $GITHUB_OUTPUT
+          echo "REGISTRY_TAGS_VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "REGISTRY_TAGS_PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
+
+
   # Test the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
   lint:
     runs-on: ubuntu-latest
@@ -34,7 +115,7 @@ jobs:
           config: "hadolint.yaml"
 
   test:
-    needs: [lint]
+    needs: [lint,tags]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
@@ -61,7 +142,7 @@ jobs:
         with:
           context: .
           load: true
-          tags: test-image:latest
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           push: false
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +152,7 @@ jobs:
       - name: Start Redis
         uses: supercharge/redis-github-action@1.6.0
         with:
-          redis-version: 6
+          redis-version: 7
           redis-port: 6379
 
       - name: Shutdown Ubuntu MySQL (SUDO)
@@ -104,79 +185,13 @@ jobs:
           run: bash run-ci.sh
 
   # Push image to GitHub Packages.
-  # The image tag pattern is:
-  # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
-  # for tags: <TAG>
-  # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
-  # <MW_CORE_VERSION> being parsed from the Dockerfile
   push:
-    needs: [lint,test]
+    needs: [lint,tags,test]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Generate tags
-        id: generate
-        run: |
-
-          # Image ID
-          IMAGE_ID=ghcr.io/wikiteq/$IMAGE_NAME
-
-          # Date
-          BDATE=$(date +%Y%m%d)
-
-          # Extract MW version from Dockerfile
-          MEDIAWIKI_VERSION=$(sed -nr 's/MW_CORE_VERSION\=([0-9\.]+)/\1/p' Dockerfile | sed "s/ \\\//" | sed "s/\t//")
-          # Extract MW major version (like 1.35)
-          MEDIAWIKI_MAJOR_VERSION=${MEDIAWIKI_VERSION%.*}
-
-          # Change all uppercase to lowercase, just in case
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          # Strip git ref prefix from version and use it as suffix for version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          
-          # Get the Taqasta version from the "VERSION" file
-          TAQASTA_VERSION=$(cat VERSION)
-
-          # For pull requests just extract the PR number
-          PR_NUMBER=""
-          [ "${{ github.event_name }}" == "pull_request" ] && VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\)/merge,\1,')
-          [ "${{ github.event_name }}" == "pull_request" ] && PR_NUMBER=$VERSION
-
-          # Append version
-          [ "${{ github.event_name }}" == "pull_request" ] && VERSION=$MEDIAWIKI_VERSION-$BDATE-$VERSION
-
-          # Strip "v" prefix from tag name if it's a tag
-          # [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention if it's a master branch build
-          [ "$VERSION" == "master" ] && VERSION=latest
-
-          # Compose REGISTRY_TAGS variable
-          REGISTRY_TAGS=$IMAGE_ID:$VERSION
-
-          # For master branch also supply an extra tag: <MW_VERSION>-latest,<MW_VERSION>-<DATE>-<SHA>
-          [ "$VERSION" == "latest" ] && REGISTRY_TAGS=$REGISTRY_TAGS,$IMAGE_ID:$TAQASTA_VERSION,$IMAGE_ID:$MEDIAWIKI_MAJOR_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-$BDATE-$(git rev-parse --short HEAD)
-
-          SHA_SHORT=${{ github.sha }}
-          [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
-          
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          echo REGISTRY_TAGS=$REGISTRY_TAGS
-          echo SHA_SHORT=$SHA_SHORT
-          echo EventName=${{ github.event_name }}
-          
-          echo headref=${{ github.head_ref }}
-          echo "Final image tag to be pushed:"
-          echo $REGISTRY_TAGS
-          echo "REGISTRY_TAGS=$REGISTRY_TAGS" >> $GITHUB_OUTPUT
-          echo "REGISTRY_TAGS_VERSION=$VERSION" >> $GITHUB_OUTPUT
-          echo "REGISTRY_TAGS_PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
-          echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -210,7 +225,7 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
-          tags: ${{ steps.generate.outputs.REGISTRY_TAGS }}
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
@@ -218,7 +233,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
       -
         name: Image tags debug
-        run: echo ${{ steps.generate.outputs.REGISTRY_TAGS }}
+        run: echo ${{ needs.tags.outputs.REGISTRY_TAGS }}
 
       -
         name: Notify about image tag
@@ -229,6 +244,6 @@ jobs:
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: comment
-          message: ":whale: The image based on [${{ steps.generate.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ steps.generate.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }})"
+          message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
           recreate: true
           fail: false

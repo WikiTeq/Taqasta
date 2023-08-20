@@ -1,12 +1,17 @@
 #!/bin/bash
 
+# This script is run by GitHub Actions workflow
+# It requires MariaDB and Redis to be installed via supercharge/redis-github-action and getong/mariadb-action
+# priori to running the script and the `host.docker.internal` to be bind via `--add-host` doccker param
+# The script is executed within the container
+
 # Setup
 apt update -qq > /dev/null
 apt install -y php7.4-sqlite3 sqlite3 sqlitebrowser nodejs npm -qq > /dev/null
 composer -n --quiet update
 
 php maintenance/install.php \
-  --scriptpath / \
+  --scriptpath '' \
   --dbtype mysql \
   --dbuser root \
   --dbname mediawiki \
@@ -29,6 +34,7 @@ echo '$wgDevelopmentWarnings = false;' >> LocalSettings.php
 echo '$wgObjectCaches["redis"] = [ "class" => "RedisBagOStuff", "servers" => [ "host.docker.internal:6379" ] ];' >> LocalSettings.php
 echo '$wgMainCacheType = "redis";' >> LocalSettings.php
 echo '$wgSessionCacheType = "redis";' >> LocalSettings.php
+echo '$wgPhpCli = "/usr/bin/php";' >> LocalSettings.php
 
 php maintenance/update.php --quick > /dev/null
 
