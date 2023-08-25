@@ -62,7 +62,7 @@ echo "Running tests..."
 #php tests/phpunit/phpunit.php -c tests/phpunit/suite.xml --stop-on-failure --stop-on-error
 
 # replicate WMF Jenkins command
-composer run --timeout=0 phpunit:entrypoint -- --testsuite extensions --group Database --exclude-group Broken,ParserFuzz,Stub,Standalone --stop-on-failure --stop-on-error
+composer run --timeout=0 phpunit:entrypoint -- --exclude-group Broken,ParserFuzz,Stub,Standalone --stop-on-failure --stop-on-error
 #composer phpunit:entrypoint -- --stop-on-failure --stop-on-error
 
 # Qunit
