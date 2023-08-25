@@ -50,7 +50,14 @@ php maintenance/update.php --quick > /dev/null 2>&1
 
 # PHPUnit
 echo "Running tests..."
-# replicate WMF Jenkins commands
-composer run phpunit -- --exclude-group Broken,ParserFuzz,Stub --stop-on-failure --stop-on-error
+
+# PHPUnit unit tests
+composer phpunit:unit -- --exclude-group Broken,ParserFuzz,Stub
+# PHPUnit default suite (without database or standalone)
+composer run --timeout=0 phpunit:entrypoint -- --exclude-group Broken,ParserFuzz,Stub,Database,Standalone
+# PHPUnit default suite (with database)
+composer run --timeout=0 phpunit:entrypoint -- --group Database --exclude-group Broken,ParserFuzz,Stub,Standalone
+
+#composer run phpunit -- --exclude-group Broken,ParserFuzz,Stub --stop-on-failure --stop-on-error
 
 # Qunit
