@@ -50,19 +50,7 @@ php maintenance/update.php --quick > /dev/null 2>&1
 
 # PHPUnit
 echo "Running tests..."
-#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite integration
-#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite documentation
-#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite tests
-#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite maintenance_suite
-#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite parsertests
-#php tests/phpunit/phpunit.php --stop-on-failure --stop-on-error --testsuite languages
-
-#cat tests/phpunit/includes/HooksTest.php | grep -A 5 testCallHook_Deprecated
-#cat tests/phpunit/includes/HooksTest.php | grep -A 5 "function someStatic"
-#php tests/phpunit/phpunit.php -c tests/phpunit/suite.xml --stop-on-failure --stop-on-error
-
-# replicate WMF Jenkins command
-composer run phpunit:unit -- --exclude-group Broken,ParserFuzz,Stub --stop-on-failure --stop-on-error
-#composer phpunit:entrypoint -- --stop-on-failure --stop-on-error
+# replicate WMF Jenkins commands
+composer run phpunit -- --exclude-group Broken,ParserFuzz,Stub --stop-on-failure --stop-on-error
 
 # Qunit
