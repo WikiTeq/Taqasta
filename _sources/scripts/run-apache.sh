@@ -68,11 +68,19 @@ make_dir_writable "$MW_VOLUME" -not '(' -path "$MW_VOLUME/images" -prune ')'
 
 # Check and update permissions of wiki images in background.
 # It can take a long time and should not block Apache from starting.
-/update-images-permissions.sh &
+if isTrue "$FAST_BOOT"; then
+    /update-images-permissions.sh &
+else
+    /update-images-permissions.sh
+fi
 
 # Run maintenance scripts in background.
 touch "$WWW_ROOT/.maintenance"
-/run-maintenance-scripts.sh &
+if isTrue "$FAST_BOOT"; then
+    /run-maintenance-scripts.sh &
+else
+    /run-maintenance-scripts.sh
+fi
 
 ############### Run Apache ###############
 # Make sure we're not confused by old, incompletely-shutdown Apache
