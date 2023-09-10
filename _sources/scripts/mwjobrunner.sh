@@ -18,7 +18,7 @@ while true; do
     # Those jobs should be very "cheap" to run
     php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --type="enotifNotify" 2>&1 | grep -v "^Job queue is empty.$" >> "$logfileNow"
     sleep 1
-    php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --type="createPage" 2&>1 | grep -v "^Job queue is empty.$" >> "$logfileNow"
+    php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --type="createPage" 2>&1 | grep -v "^Job queue is empty.$" >> "$logfileNow"
     sleep 1
     php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --type="htmlCacheUpdate" --maxjobs=500 2>&1 | grep -v "^Job queue is empty.$" >> "$logfileNow"
     # Due to the way we do varnish cache reloading, we want to aim for htmlCacheUpdate jobs
