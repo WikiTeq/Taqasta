@@ -268,7 +268,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/CookieWarning \
 	&& git checkout -q bc991e93133bd69fe45e07b3d4554225decc7dae \
     # Cloudflare
-	&& git clone --single-branch -b $MW_VERSION https://github.com/harugon/mediawiki-extensions-cloudflare.git $MW_HOME/extensions/Cloudflare \
+	&& git clone --single-branch -b master https://github.com/harugon/mediawiki-extensions-cloudflare.git $MW_HOME/extensions/Cloudflare \
 	&& cd $MW_HOME/extensions/Cloudflare \
 	&& git checkout -q fc17309a510b4d9b2eb5cc215b83b258958c8ada
 
