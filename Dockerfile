@@ -575,6 +575,10 @@ RUN set -x; \
 	&& rmdir SemanticQueryInterface \
 	&& ln -s SQI.php SemanticQueryInterface.php \
 	&& rm -fr .git \
+	# SemanticWatchlist
+	&& git clone --single-branch -b $MW_VERSION https://github.com/WikiTeq/SemanticWatchlistSMW.git $MW_HOME/extensions/SemanticWatchlist \
+	&& cd $MW_HOME/extensions/SemanticWatchlist \
+	&& git checkout -q 8cd53157e7227ec7aeca5a9cad52c3745526a4d3 \
 	# Sentry
 	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extensions-Sentry.git $MW_HOME/extensions/Sentry \
 	&& cd $MW_HOME/extensions/Sentry \
