@@ -20,34 +20,26 @@ env:
   IMAGE_NAME: taqasta
 
 jobs:
-  # Test the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
-  test:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
-    steps:
-      - uses: actions/checkout@v3
-      -
-        name: Run linter (hadolint)
-        uses: vedmaka/hadolint-action@master
-        with:
-          dockerfile: "Dockerfile"
-          config: "hadolint.yaml"
 
-  # Push image to GitHub Packages.
   # The image tag pattern is:
   # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
   # for tags: <TAG>
   # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
   # <MW_CORE_VERSION> being parsed from the Dockerfile
-  push:
-    needs: [test]
+  tags:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
+    # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
+    outputs:
+      REGISTRY_TAGS: ${{ steps.generate.outputs.REGISTRY_TAGS }}
+      REGISTRY_TAGS_VERSION: ${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}
+      REGISTRY_TAGS_PR_NUMBER: ${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}
+      SHA_SHORT: ${{ steps.generate.outputs.SHA_SHORT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Generate tags
+
+      - name: Generate tags
         id: generate
         run: |
 
@@ -67,7 +59,7 @@ jobs:
 
           # Strip git ref prefix from version and use it as suffix for version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          
+
           # Get the Taqasta version from the "VERSION" file
           TAQASTA_VERSION=$(cat VERSION)
 
@@ -93,13 +85,13 @@ jobs:
 
           SHA_SHORT=${{ github.sha }}
           [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
-          
+
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           echo REGISTRY_TAGS=$REGISTRY_TAGS
           echo SHA_SHORT=$SHA_SHORT
           echo EventName=${{ github.event_name }}
-          
+
           echo headref=${{ github.head_ref }}
           echo "Final image tag to be pushed:"
           echo $REGISTRY_TAGS
@@ -107,6 +99,103 @@ jobs:
           echo "REGISTRY_TAGS_VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "REGISTRY_TAGS_PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
           echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
+
+
+  # Test the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
+  lint:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      -
+        name: Run linter (hadolint)
+        uses: vedmaka/hadolint-action@master
+        with:
+          dockerfile: "Dockerfile"
+          config: "hadolint.yaml"
+
+  test:
+    needs: [lint,tags]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          install: true
+
+      -
+        name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      -
+        name: Build image
+        uses: docker/build-push-action@v3
+        id: docker_build
+        with:
+          context: .
+          load: true
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          push: false
+          secrets: |
+            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.6.0
+        with:
+          redis-version: 7
+          redis-port: 6379
+
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
+
+      - name: Start MariaDB
+        uses: getong/mariadb-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          character set server: 'utf8'
+          collation server: 'utf8_general_ci'
+          mariadb version: '10.4.10'
+          mysql database: 'mediawiki'
+          mysql root password: 'mediawiki'
+          mysql user: 'mediawiki'
+          mysql password: 'mediawiki'
+
+      # Debug
+#      - name: Setup upterm session
+#        uses: lhotari/action-upterm@v1
+
+      -
+        name: Run PHPUnit
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ${{ steps.docker_build.outputs.imageid }}
+          shell: bash
+          options: >
+            --add-host=host.docker.internal:host-gateway
+            -v ${{ github.workspace }}/run-ci.sh:/var/www/mediawiki/w/run-ci.sh
+            -v ${{ github.workspace }}/images:/var/www/mediawiki/w/images
+          run: bash run-ci.sh
+
+  # Push image to GitHub Packages.
+  push:
+    needs: [lint,tags,test]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -140,7 +229,7 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
-          tags: ${{ steps.generate.outputs.REGISTRY_TAGS }}
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
@@ -148,7 +237,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
       -
         name: Image tags debug
-        run: echo ${{ steps.generate.outputs.REGISTRY_TAGS }}
+        run: echo ${{ needs.tags.outputs.REGISTRY_TAGS }}
 
       -
         name: Notify about image tag
@@ -159,6 +248,6 @@ jobs:
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: comment
-          message: ":whale: The image based on [${{ steps.generate.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ steps.generate.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }})"
+          message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
           recreate: true
           fail: false
