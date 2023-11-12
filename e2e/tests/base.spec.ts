@@ -2,7 +2,7 @@ import {test, expect} from '@playwright/test';
 import {defineConfig} from '@playwright/test';
 
 export default defineConfig({
-    timeout: 5 * 60 * 1000,
+    timeout: 5 * 60 * 1000, // 5 minutes per test
 });
 
 test('has successful installation message', async ({page}) => {

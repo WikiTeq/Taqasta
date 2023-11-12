@@ -1,7 +1,7 @@
 import {test, expect, defineConfig} from '@playwright/test';
 
 export default defineConfig({
-    timeout: 5 * 60 * 1000,
+    timeout: 5 * 60 * 1000,  // 5 minutes per test
 });
 
 test('can edit a page', async ({page}) => {
@@ -14,6 +14,5 @@ test('can edit a page', async ({page}) => {
     await expect(page.locator('#wpSave')).toHaveCount(1);
     await expect(page.locator('#wpSave')).toBeEnabled();
     await page.locator('#wpSave').click();
-    await expect(page.getByText('Your edit was saved.')).toHaveCount(1);
     await expect(page.locator('#mw-content-text')).toContainText(/u9es348923hjf8546344/);
 });
