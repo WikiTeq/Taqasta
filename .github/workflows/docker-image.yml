@@ -145,14 +145,14 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64, linux/arm64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
-          tags: localhost:5000/taqasta/taqasta:latest
+          tags: localhost:5000/taqasta:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -264,7 +264,7 @@ jobs:
       -
         name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64, linux/arm64
