@@ -1,3 +1,4 @@
+# # Note: this is a dummy Compose file for CI, do not modify or use it until you know what you're doing
 version: '3.1'
 services:
     db:
