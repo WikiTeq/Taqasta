@@ -40,7 +40,6 @@ jobs:
   # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
   # <MW_CORE_VERSION> being parsed from the Dockerfile
   tags:
-    needs: [lint]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     outputs:
@@ -116,6 +115,8 @@ jobs:
   build:
     needs: [tags]
     runs-on: ubuntu-latest
+    outputs:
+      builder_name: ${{ steps.docker_build.outputs.name }}
 #    services:
 #      registry:
 #        image: registry:2
@@ -133,7 +134,6 @@ jobs:
         uses: docker/setup-buildx-action@v3
         with:
           install: true
-          driver-opts: network=host
 
       - name: Cache Docker layers
         uses: actions/cache@v3
@@ -151,6 +151,7 @@ jobs:
           platforms: linux/amd64, linux/arm64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          push: false
 #          push: true
 #          tags: localhost:5000/taqasta:latest
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
@@ -176,7 +177,6 @@ jobs:
         uses: docker/setup-buildx-action@v3
         with:
           install: true
-          driver-opts: network=host
 
       - name: Cache Docker layers
         uses: actions/cache@v3
@@ -186,13 +186,27 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64, linux/arm64
+          secrets: |
+            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          push: false
+          builder: ${{ needs.build.outputs.builder_name }}
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true
+
       - name: Setup Docker Compose
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_BUILDKIT: 1
-          COMPOSE_DOCKER_CLI_BUILD: 1
         shell: bash
-        run: docker-compose up -d
+        run: DOCKER_BUILDKIT=1 docker-compose up -d --builder ${{ needs.build.outputs.builder_name }}
 
 #      - name: Setup Docker Compose
 #        uses: yu-ichiro/spin-up-docker-compose-action@main
