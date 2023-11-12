@@ -114,12 +114,6 @@ jobs:
   # Pre-build the image, deploy via compose and run e2e
   deploy-e2e:
     needs: [tags]
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment_pages.outputs.page_url }}
     timeout-minutes: 60
     outputs:
       pages_url: ${{ steps.deployment_pages.outputs.page_url }}
@@ -174,7 +168,7 @@ jobs:
 
       - name: Give containers a moment to init
         shell: bash
-        run: sleep 10s
+        run: sleep 60s
 
       - name: Wait for wiki
         shell: bash
@@ -193,25 +187,20 @@ jobs:
       - name: Run Playwright tests
         working-directory: ./e2e
         run: npx playwright test
-      - uses: actions/upload-artifact@v3
-        if: failure()
+#      - uses: actions/upload-artifact@v3
+#        if: failure()
+#        with:
+#          name: playwright-report
+#          path: e2e/playwright-report/
+#          retention-days: 7
+
+      - name: Upload screenshots as a github-pages artifact
+        uses: actions/upload-pages-artifact@v2
         with:
           name: playwright-report
           path: e2e/playwright-report/
           retention-days: 7
-
-      - name: Deploy to GitHub Pages
-        if: failure()
-        id: deployment_pages
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: playwright-report
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Wait for wiki
-        if: failure()
-        shell: bash
-        run: echo ${{ steps.deployment_pages.outputs.page_url }}
+          if-no-files-found: error
 
       - name: Stop containers
         if: always()
@@ -290,3 +279,21 @@ jobs:
           message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ needs.push.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
           recreate: true
           fail: false
+
+  report-pages:
+    needs: [deploy-e2e]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment_pages.outputs.page_url }}
+    if: failure() && ( github.event_name == 'push' || github.event_name == 'pull_request' )
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment_pages
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: playwright-report
+          token: ${{ secrets.GITHUB_TOKEN }}
