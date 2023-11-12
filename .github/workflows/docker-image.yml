@@ -142,6 +142,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
+      # We could perform the build in a separate job, but why for? let's save some bandwidth on caches
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v5
@@ -165,12 +166,13 @@ jobs:
 
       - name: Give containers a moment to init
         shell: bash
-        run: sleep 30s
+        run: sleep 10s
 
       - name: Wait for wiki
         shell: bash
         run: curl --head -X GET --retry 10 --retry-connrefused --retry-delay 10 http://localhost:8000
 
+      # todo, migrate to docker image? https://playwright.dev/docs/docker
       - uses: actions/setup-node@v4
         with:
           node-version: 20
