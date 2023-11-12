@@ -164,23 +164,13 @@ jobs:
         shell: bash
         run: DOCKER_BUILDKIT=1 docker compose up -d
 
-#      - name: Setup Docker Compose
-#        uses: yu-ichiro/spin-up-docker-compose-action@main
-#        env:
-#          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          DOCKER_BUILDKIT: 1
-#          COMPOSE_DOCKER_CLI_BUILD: 1
-#        with:
-#          file: docker-compose.yml
-#          cache-key: ${{ runner.os }}-buildx-${{ github.sha }}
-
       - name: Give containers a moment to init
         shell: bash
         run: sleep 30s
 
       - name: Test cURL
         shell: bash
-        run: curl -IXGET http://locahost:8000
+        run: docker compose ps && docker compose logs --tail 100 web
 
       - uses: actions/setup-node@v4
         with:
@@ -200,6 +190,11 @@ jobs:
           name: playwright-report
           path: e2e/playwright-report/
           retention-days: 7
+
+      - name: Stop containers
+        if: always()
+        shell: bash
+        run: docker-compose down
 
   # Builds from cache & push the image to GitHub registry this time
   push:
