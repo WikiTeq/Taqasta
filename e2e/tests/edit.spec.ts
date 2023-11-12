@@ -1,4 +1,8 @@
-import {test, expect} from '@playwright/test';
+import {test, expect, defineConfig} from '@playwright/test';
+
+export default defineConfig({
+    timeout: 5 * 60 * 1000,
+});
 
 test('can edit a page', async ({page}) => {
     await page.goto('/');

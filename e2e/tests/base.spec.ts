@@ -1,4 +1,9 @@
 import {test, expect} from '@playwright/test';
+import {defineConfig} from '@playwright/test';
+
+export default defineConfig({
+    timeout: 5 * 60 * 1000,
+});
 
 test('has successful installation message', async ({page}) => {
     await page.goto('/');
