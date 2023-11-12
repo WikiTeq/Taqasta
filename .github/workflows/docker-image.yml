@@ -116,11 +116,11 @@ jobs:
   build:
     needs: [tags]
     runs-on: ubuntu-latest
-#    services:
-#      registry:
-#        image: registry:2
-#        ports:
-#          - 5000:5000
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
       - name: Checkout
@@ -133,6 +133,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
         with:
           install: true
+          driver-opts: network=host
 
       - name: Cache Docker layers
         uses: actions/cache@v3
@@ -150,8 +151,8 @@ jobs:
           platforms: linux/amd64, linux/arm64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          push: false
-          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          push: true
+          tags: localhost:5000/taqasta/taqasta:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -159,6 +160,11 @@ jobs:
   deploy-e2e:
     needs: [build]
     timeout-minutes: 30
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
@@ -169,6 +175,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
         with:
           install: true
+          driver-opts: network=host
 
       - name: Cache Docker layers
         uses: actions/cache@v3
@@ -179,16 +186,22 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Setup Docker Compose
-        uses: yu-ichiro/spin-up-docker-compose-action@main
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_BUILDKIT: 1
           COMPOSE_DOCKER_CLI_BUILD: 1
-        with:
-          file: docker-compose.yml
-          cache-key: ${{ runner.os }}-buildx-${{ github.sha }}
-#          shared: true
-#          registry: true
+        shell: bash
+        run: docker-compose up -d
+
+#      - name: Setup Docker Compose
+#        uses: yu-ichiro/spin-up-docker-compose-action@main
+#        env:
+#          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          DOCKER_BUILDKIT: 1
+#          COMPOSE_DOCKER_CLI_BUILD: 1
+#        with:
+#          file: docker-compose.yml
+#          cache-key: ${{ runner.os }}-buildx-${{ github.sha }}
 
       - name: Give containers a moment to init
         shell: bash
