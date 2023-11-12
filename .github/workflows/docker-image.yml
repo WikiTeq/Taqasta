@@ -33,6 +33,23 @@ jobs:
           dockerfile: "Dockerfile"
           config: "hadolint.yaml"
 
+  e2e:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.39.0-jammy
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Run your tests
+        run: npx playwright test
+
+
   # Push image to GitHub Packages.
   # The image tag pattern is:
   # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
