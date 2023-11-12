@@ -15,11 +15,7 @@ services:
             - mysql:/var/lib/mysql
 
     web:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            args:
-                COMPOSER_TOKEN: ${COMPOSER_TOKEN:-}
+        image: localhost:5000/taqasta/taqasta:latest
         restart: unless-stopped
         ports:
             - "${PORT:-127.0.0.1:8081}:80"
