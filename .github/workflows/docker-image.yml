@@ -180,6 +180,7 @@ jobs:
 
   # Do some end-to-end testing
   e2e:
+    needs: [deploy]
     timeout-minutes: 30
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
@@ -206,7 +207,7 @@ jobs:
 
   # Builds from cache & push the image to GitHub registry this time
   push:
-    needs: [deploy]
+    needs: [e2e]
     runs-on: ubuntu-latest
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
