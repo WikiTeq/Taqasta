@@ -188,7 +188,7 @@ jobs:
           file: docker-compose.yml
           cache-key: ${{ runner.os }}-buildx-${{ github.sha }}
 #          shared: true
-#          registry:  true
+#          registry: true
 
       - name: Give containers a moment to init
         shell: bash
@@ -261,7 +261,7 @@ jobs:
         name: Image tags debug
         run: echo ${{ needs.tags.outputs.REGISTRY_TAGS }}
 
-  # Send a message to the PR thread
+  # Send a message to the PR  thread
   notify:
     needs: [tags,push]
     runs-on: ubuntu-latest
