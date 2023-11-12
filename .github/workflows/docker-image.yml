@@ -151,7 +151,6 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
-          builder: ${{ needs.build.outputs.builder_name }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -168,9 +167,9 @@ jobs:
         shell: bash
         run: sleep 30s
 
-      - name: Test cURL
+      - name: Wait for wiki
         shell: bash
-        run: docker compose ps && docker compose logs --tail 100 web
+        run: curl --head -X GET --retry 10 --retry-connrefused --retry-delay 10 http://localhost:8000
 
       - uses: actions/setup-node@v4
         with:
@@ -185,7 +184,7 @@ jobs:
         working-directory: ./e2e
         run: npx playwright test
       - uses: actions/upload-artifact@v3
-        if: always()
+        if: failure()
         with:
           name: playwright-report
           path: e2e/playwright-report/
