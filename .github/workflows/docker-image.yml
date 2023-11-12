@@ -21,7 +21,7 @@ env:
 
 jobs:
   # Lint the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
-  test:
+  lint:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
@@ -40,7 +40,7 @@ jobs:
   # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
   # <MW_CORE_VERSION> being parsed from the Dockerfile
   tags:
-    needs: [ test ]
+    needs: [lint]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     outputs:
@@ -187,7 +187,7 @@ jobs:
         with:
           file: docker-compose.yml
           cache-key: ${{ runner.os }}-buildx-${{ github.sha }}
-          shared: true
+#          shared: true
 #          registry: true
 
       - name: Give containers a moment to init
