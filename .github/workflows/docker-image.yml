@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: 18
       - name: Test
-        run: echo pwd
+        run: pwd
       - name: Install dependencies
         run: npm ci
       - name: Run your tests
