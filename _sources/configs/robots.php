@@ -5,9 +5,11 @@
 ini_set( 'display_errors', 0 );
 error_reporting( 0 );
 
-if ( getenv( 'MW_ENABLE_SITEMAP_GENERATOR') == 'true' ) {
+$enableSitemapEnv = getenv( 'MW_ENABLE_SITEMAP_GENERATOR');
+// match the value check to the isTrue function at _sources/scripts/functions.sh
+if ( !empty( $enableSitemapEnv ) && in_array( $enableSitemapEnv, [ 'true', 'True', 'TRUE', '1' ] ) ) {
 	$server = getenv( 'MW_SITE_SERVER' );
-	$script = shell_exec( 'php /getMediawikiSettings.php --variable="wgScriptPath" --format="string"' ); //'/w';
+	$script = shell_exec( 'php /getMediawikiSettings.php --variable="wgScriptPath" --format="string"' );
 	$subdir = getenv( 'MW_SITEMAP_SUBDIR' );
 	$identifier = getenv( 'MW_SITEMAP_IDENTIFIER' );
 
