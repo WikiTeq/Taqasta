@@ -114,7 +114,15 @@ jobs:
   # Pre-build the image, deploy via compose and run e2e
   deploy-e2e:
     needs: [tags]
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment_pages.outputs.page_url }}
     timeout-minutes: 60
+    outputs:
+      pages_url: ${{ steps.deployment_pages.outputs.page_url }}
 #    services:
 #      registry:
 #        image: registry:2
@@ -191,6 +199,18 @@ jobs:
           name: playwright-report
           path: e2e/playwright-report/
           retention-days: 7
+
+      - name: Deploy to GitHub Pages
+        if: failure()
+        id: deployment_pages
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: playwright-report
+
+      - name: Wait for wiki
+        if: failure()
+        shell: bash
+        run: echo ${{ steps.deployment_pages.outputs.page_url }}
 
       - name: Stop containers
         if: always()
