@@ -206,6 +206,7 @@ jobs:
         uses: actions/deploy-pages@v2
         with:
           artifact_name: playwright-report
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Wait for wiki
         if: failure()
