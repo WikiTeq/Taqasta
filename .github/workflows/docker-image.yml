@@ -148,7 +148,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
@@ -191,7 +191,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
