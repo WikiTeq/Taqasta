@@ -188,7 +188,7 @@ jobs:
           file: docker-compose.yml
           cache-key: ${{ runner.os }}-buildx-${{ github.sha }}
 #          shared: true
-#          registry: true
+#          registry:  true
 
       - name: Give containers a moment to init
         shell: bash
