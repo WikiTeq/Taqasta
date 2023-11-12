@@ -195,7 +195,7 @@ jobs:
       - name: Stop containers
         if: always()
         shell: bash
-        run: docker-compose down
+        run: docker-compose down --volumes --timeout 60
 
   # Builds from cache & push the image to GitHub registry this time
   push:
