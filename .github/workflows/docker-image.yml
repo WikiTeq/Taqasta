@@ -206,7 +206,7 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_BUILDKIT: 1
         shell: bash
-        run: DOCKER_BUILDKIT=1 docker-compose up -d --builder ${{ needs.build.outputs.builder_name }}
+        run: DOCKER_BUILDKIT=1 docker-compose up -d
 
 #      - name: Setup Docker Compose
 #        uses: yu-ichiro/spin-up-docker-compose-action@main
