@@ -207,7 +207,7 @@ jobs:
 
   # Builds from cache & push the image to GitHub registry this time
   push:
-    needs: [e2e]
+    needs: [tags,e2e]
     runs-on: ubuntu-latest
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
