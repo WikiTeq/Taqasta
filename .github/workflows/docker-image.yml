@@ -161,7 +161,7 @@ jobs:
   # Deploy via Compose
   deploy-e2e:
     needs: [build]
-    timeout-minutes: 30
+    timeout-minutes: 60
 #    services:
 #      registry:
 #        image: registry:2
@@ -206,7 +206,7 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_BUILDKIT: 1
         shell: bash
-        run: DOCKER_BUILDKIT=1 docker-compose up -d
+        run: DOCKER_BUILDKIT=1 docker compose up -d
 
 #      - name: Setup Docker Compose
 #        uses: yu-ichiro/spin-up-docker-compose-action@main
@@ -222,10 +222,9 @@ jobs:
         shell: bash
         run: sleep 30s
 
-      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
       - name: Install dependencies
         working-directory: ./e2e
         run: npm ci
@@ -240,7 +239,7 @@ jobs:
         with:
           name: playwright-report
           path: e2e/playwright-report/
-          retention-days: 10
+          retention-days: 7
 
   # Builds from cache & push the image to GitHub registry this time
   push:
