@@ -347,9 +347,11 @@ RUN set -x; \
 	# FlexDiagrams (v. 0.5)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/FlexDiagrams $MW_HOME/extensions/FlexDiagrams \
 	&& cd $MW_HOME/extensions/FlexDiagrams \
-	&& git checkout -q eefc9e29aedfc6d8ffaf4f4e50043b390ebd7adc \
+	&& git checkout -q eefc9e29aedfc6d8ffaf4f4e50043b390ebd7adc
+
+RUN --mount=type=secret,id=ACCESS_TOKEN \
     # FHIR
-    && git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extension-FHIR.git $MW_HOME/extensions/FHIR \
+    git clone --single-branch -b master https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-FHIR.git $MW_HOME/extensions/FHIR \
     && cd $MW_HOME/extensions/FHIR \
     && git checkout -q bdfbae01db37dff2a2a9221e829fbbbfd94b0042
 
