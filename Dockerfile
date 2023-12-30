@@ -4,7 +4,7 @@ LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
 ENV MW_VERSION=REL1_39 \
-	MW_CORE_VERSION=1.39.5 \
+	MW_CORE_VERSION=1.39.6 \
 	WWW_ROOT=/var/www/mediawiki \
 	MW_HOME=/var/www/mediawiki/w \
 	MW_LOG=/var/log/mediawiki \
@@ -359,7 +359,7 @@ RUN --mount=type=secret,id=ACCESS_TOKEN \
     # CLEAR
     git clone -b master https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-CLEAR.git $MW_HOME/extensions/CLEAR \
     && cd $MW_HOME/extensions/CLEAR \
-    && git checkout -q 15ba9661a1349b4d6ac88605e52cb40d0305a422
+    && git checkout -q f5e020867790eee79c7ccc2e04f608514d5931c6
 
 # G
 RUN set -x; \
@@ -475,7 +475,7 @@ RUN set -x; \
 	# MobileFrontend
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileFrontend $MW_HOME/extensions/MobileFrontend \
 	&& cd $MW_HOME/extensions/MobileFrontend \
-	&& git checkout -q f0bed5588f76b827038fb9af73fb9677e5804077 \
+	&& git checkout -q 7f9ecd976796d02988b40dff4a790c315d4651e6 \
 	# MsUpload
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MsUpload $MW_HOME/extensions/MsUpload \
 	&& cd $MW_HOME/extensions/MsUpload \
