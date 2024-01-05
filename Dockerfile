@@ -569,6 +569,9 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SemanticDrilldown $MW_HOME/extensions/SemanticDrilldown \
 	&& cd $MW_HOME/extensions/SemanticDrilldown \
 	&& git checkout -q e960979ec5a3b1e662b3742cee7e7ef4056f9a46 \
+	# SemanticWatchlist \
+	# TODO Replace with upstream when fixed (it can be installed using composer)
+	&& git clone --single-branch -b WIK-1373/fix-addToAdminLinks https://github.com/WikiTeq/SemanticWatchlistSMW.git $MW_HOME/extensions/SemanticWatchlist \
 	# SimpleChanges
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges $MW_HOME/extensions/SimpleChanges \
 	&& cd $MW_HOME/extensions/SimpleChanges \
