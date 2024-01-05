@@ -182,7 +182,7 @@ RUN set -x; \
 	# AdminLinks (v. 0.6.1)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/AdminLinks $MW_HOME/extensions/AdminLinks \
 	&& cd $MW_HOME/extensions/AdminLinks \
-	&& git checkout -q 3e2671c21fd4b8644552069ee60220035b6e96f5 \
+	&& git checkout -q 60eda7201636218b80d83a637b70e5c753900e41 \
 	# AdvancedSearch
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/AdvancedSearch $MW_HOME/extensions/AdvancedSearch \
 	&& cd $MW_HOME/extensions/AdvancedSearch \
