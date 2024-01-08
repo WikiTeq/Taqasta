@@ -353,13 +353,13 @@ RUN --mount=type=secret,id=ACCESS_TOKEN \
     # FHIR
     git clone -b master https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-FHIR.git $MW_HOME/extensions/FHIR \
     && cd $MW_HOME/extensions/FHIR \
-    && git checkout -q 727d00d0b033b3a6ba7474a5d08e0ceeab2f95ca
+    && git checkout -q c848fc3a51b6293aa22800b1d61480a81e644e70
 
 RUN --mount=type=secret,id=ACCESS_TOKEN \
     # CLEAR
     git clone -b master https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-CLEAR.git $MW_HOME/extensions/CLEAR \
     && cd $MW_HOME/extensions/CLEAR \
-    && git checkout -q f5e020867790eee79c7ccc2e04f608514d5931c6
+    && git checkout -q c5d4e2778b67765ba07a2a33ea48191522922eb9
 
 # G
 RUN set -x; \
@@ -1013,8 +1013,8 @@ ENV MW_AUTOUPDATE=true \
 	MW_DB_SERVER=db \
 	MW_DB_USER=root \
 	MW_CIRRUS_SEARCH_SERVERS=elasticsearch \
-	MW_MAINTENANCE_CIRRUSSEARCH_UPDATECONFIG=1 \
-	MW_MAINTENANCE_CIRRUSSEARCH_FORCEINDEX=1 \
+	MW_MAINTENANCE_CIRRUSSEARCH_UPDATECONFIG=2 \
+	MW_MAINTENANCE_CIRRUSSEARCH_FORCEINDEX=2 \
 	MW_ENABLE_JOB_RUNNER=true \
 	MW_JOB_RUNNER_PAUSE=2 \
 	MW_JOB_RUNNER_MEMORY_LIMIT=512M \
