@@ -941,11 +941,11 @@ RUN set -x; \
     cd $MW_HOME/extensions/PageForms \
     && git apply /tmp/PF.5.6.usedisplaytitle.autocomplete.forminput.diff
 
-# Fixes PHP parsoid errors when user replies on a flow message, see https://phabricator.wikimedia.org/T260648#6645078
-COPY _sources/patches/flow-conversion-utils.patch /tmp/flow-conversion-utils.patch
+# Fix SkinPerPage handling of invalid skin names, DEMO-99
+COPY _sources/patches/SkinPerPage-handle-invalid.patch /tmp/SkinPerPage-handle-invalid.patch
 RUN set -x; \
-	cd $MW_HOME/extensions/Flow \
-	&& git apply /tmp/flow-conversion-utils.patch
+	cd $MW_HOME/extensions/SkinPerPage \
+	&& git apply /tmp/SkinPerPage-handle-invalid.patch
 
 # Cleanup all .git leftovers
 RUN set -x; \
