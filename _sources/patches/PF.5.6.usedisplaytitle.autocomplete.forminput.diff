@@ -1,10 +1,10 @@
 diff --git a/includes/PF_AutocompleteAPI.php b/includes/PF_AutocompleteAPI.php
-index 9b734641..cdf543a7 100644
+index 095e67a5..d38e7d88 100644
 --- a/includes/PF_AutocompleteAPI.php
 +++ b/includes/PF_AutocompleteAPI.php
 @@ -19,6 +19,8 @@ class PFAutocompleteAPI extends ApiBase {
  	}
-
+ 
  	public function execute() {
 +		global $wgPageFormsUseDisplayTitle;
 +
@@ -24,11 +24,11 @@ index 9b734641..cdf543a7 100644
 +			$usedisplaytitle = $wgPageFormsUseDisplayTitle;
 +		}
  		// $limit = $params['limit'];
-
+ 
  		if ( $baseprop === null && $base_cargo_table === null && strlen( $substr ) == 0 ) {
  			$this->dieWithError( [ 'apierror-missingparam', 'substr' ], 'param_substr' );
  		}
-
+ 
 -		global $wgPageFormsUseDisplayTitle;
  		$map = false;
  		if ( $baseprop !== null ) {
@@ -43,7 +43,7 @@ index 9b734641..cdf543a7 100644
 +			$data = PFValuesUtils::getAllPagesForCategory( $category, 3, $substr, $usedisplaytitle );
 +			if ( $usedisplaytitle ) {
 +				$map = true;
- 				$data = PFValuesUtils::disambiguateLabels( $data );
+ 				$data = PFMappingUtils::disambiguateLabels( $data );
  			}
  		} elseif ( $concept !== null ) {
  			$data = PFValuesUtils::getAllPagesForConcept( $concept, $substr );
@@ -51,16 +51,16 @@ index 9b734641..cdf543a7 100644
 -			if ( $map ) {
 +			if ( $usedisplaytitle ) {
 +				$map = true;
- 				$data = PFValuesUtils::disambiguateLabels( $data );
+ 				$data = PFMappingUtils::disambiguateLabels( $data );
  			}
  		} elseif ( $query !== null ) {
- 			$query = $this->processSemanticQuery( $query, $substr );
+ 			$query = PFValuesUtils::processSemanticQuery( $query, $substr );
  			$data = PFValuesUtils::getAllPagesForQuery( $query );
 -			$map = $wgPageFormsUseDisplayTitle;
 -			if ( $map ) {
 +			if ( $usedisplaytitle ) {
 +				$map = true;
- 				$data = PFValuesUtils::disambiguateLabels( $data );
+ 				$data = PFMappingUtils::disambiguateLabels( $data );
  			}
  		} elseif ( $cargo_table !== null && $cargo_field !== null ) {
  			$data = self::getAllValuesForCargoField( $cargo_table, $cargo_field, $cargo_where, $substr, $base_cargo_table, $base_cargo_field, $basevalue );
@@ -70,15 +70,15 @@ index 9b734641..cdf543a7 100644
  		} elseif ( $external_url !== null ) {
  			$data = PFValuesUtils::getValuesFromExternalURL( $external_url, $substr );
  		} else {
-@@ -152,6 +160,7 @@ class PFAutocompleteAPI extends ApiBase {
+@@ -154,6 +162,7 @@ class PFAutocompleteAPI extends ApiBase {
  			'base_cargo_table' => null,
  			'base_cargo_field' => null,
  			'basevalue' => null,
 +			'usedisplaytitle' => null,
  		];
  	}
-
-@@ -167,6 +176,7 @@ class PFAutocompleteAPI extends ApiBase {
+ 
+@@ -169,6 +178,7 @@ class PFAutocompleteAPI extends ApiBase {
  			'external_url' => 'Alias for external URL from which to get values',
  			'baseprop' => 'A previous property in the form to check against',
  			'basevalue' => 'The value to check for the previous property',
@@ -87,10 +87,10 @@ index 9b734641..cdf543a7 100644
  		];
  	}
 diff --git a/includes/PF_ValuesUtils.php b/includes/PF_ValuesUtils.php
-index cfeb74cd..87781047 100644
+index 336f86c4..f9603265 100644
 --- a/includes/PF_ValuesUtils.php
 +++ b/includes/PF_ValuesUtils.php
-@@ -268,13 +268,13 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
+@@ -265,13 +265,13 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
  	 * @param string $top_category
  	 * @param int $num_levels
  	 * @param string|null $substring
@@ -103,10 +103,10 @@ index cfeb74cd..87781047 100644
  			return [ $top_category ];
  		}
 -		global $wgPageFormsUseDisplayTitle;
-
+ 
  		$db = wfGetDB( DB_REPLICA );
  		$top_category = str_replace( ' ', '_', $top_category );
-@@ -290,7 +290,7 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
+@@ -287,7 +287,7 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
  				$conditions = [];
  				$conditions[] = 'cl_from = page_id';
  				$conditions['cl_to'] = $category;
@@ -115,7 +115,7 @@ index cfeb74cd..87781047 100644
  					$tables['pp_displaytitle'] = 'page_props';
  					$tables['pp_defaultsort'] = 'page_props';
  					$columns['pp_displaytitle_value'] = 'pp_displaytitle.pp_value';
-@@ -658,11 +658,18 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
+@@ -655,11 +655,18 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
  	 * @param string $source_type
  	 * @return string[]
  	 */
@@ -126,7 +126,7 @@ index cfeb74cd..87781047 100644
  		if ( $source_name === null ) {
  			return [];
  		}
-
+ 
 +		// Fallback to default config value if no override is defined
 +		if ( $usedisplaytitle === null ) {
 +			$usedisplaytitle = $wgPageFormsUseDisplayTitle;
@@ -135,7 +135,7 @@ index cfeb74cd..87781047 100644
  		// The query depends on whether this is a Cargo field, SMW
  		// property, category, SMW concept or namespace.
  		if ( $source_type == 'cargo field' ) {
-@@ -678,7 +685,7 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
+@@ -675,7 +682,7 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language \"" . $wgLanguageCode
  		} elseif ( $source_type == 'property' ) {
  			$names_array = self::getAllValuesForProperty( $source_name );
  		} elseif ( $source_type == 'category' ) {
@@ -145,18 +145,18 @@ index cfeb74cd..87781047 100644
  			$names_array = self::getAllPagesForConcept( $source_name );
  		} elseif ( $source_type == 'query' ) {
 diff --git a/includes/parserfunctions/PF_FormInputParserFunction.php b/includes/parserfunctions/PF_FormInputParserFunction.php
-index cf8567e1..318fd496 100644
+index 76fbd8ca..ad573b27 100644
 --- a/includes/parserfunctions/PF_FormInputParserFunction.php
 +++ b/includes/parserfunctions/PF_FormInputParserFunction.php
-@@ -59,6 +59,7 @@ class PFFormInputParserFunction {
+@@ -61,6 +61,7 @@ class PFFormInputParserFunction {
  		$inPlaceholder = null;
  		$inAutofocus = true;
  		$hasPopup = $hasReturnTo = false;
 +		$useDisplayTitle = null;
-
+ 
  		// Assign params.
  		foreach ( $params as $i => $param ) {
-@@ -106,6 +107,8 @@ class PFFormInputParserFunction {
+@@ -108,6 +109,8 @@ class PFFormInputParserFunction {
  				$inQueryArr['reload'] = '1';
  			} elseif ( $paramName == 'no autofocus' ) {
  				$inAutofocus = false;
@@ -165,10 +165,10 @@ index cf8567e1..318fd496 100644
  			} else {
  				$value = urlencode( $value );
  				parse_str( "$paramName=$value", $arr );
-@@ -139,6 +142,9 @@ class PFFormInputParserFunction {
+@@ -141,6 +144,9 @@ class PFFormInputParserFunction {
  			$formInputAttrs['data-possible-namespaces'] = $possibleNamespacesStr;
  		}
-
+ 
 +		if ( $useDisplayTitle !== null ) {
 +			$formInputAttrs['data-usedisplaytitle'] = $useDisplayTitle;
 +		}
@@ -176,13 +176,13 @@ index cf8567e1..318fd496 100644
  			$formInputAttrs['data-placeholder'] = $inPlaceholder;
  		}
 diff --git a/libs/PF_AutocompleteWidget.js b/libs/PF_AutocompleteWidget.js
-index 5d9941ba..7a336528 100644
+index 330089ef..a2f8f474 100644
 --- a/libs/PF_AutocompleteWidget.js
 +++ b/libs/PF_AutocompleteWidget.js
-@@ -83,6 +83,10 @@ pf.AutocompleteWidget.prototype.getLookupRequest = function () {
+@@ -83,6 +83,10 @@ pf.AutocompleteWidget.prototype.getLookupRequest = function() {
  		requestParams.namespace = this.config.autocompletesettings;
  	}
-
+ 
 +	if ( typeof this.config.usedisplaytitle !== 'undefined' ) {
 +		requestParams.usedisplaytitle = this.config.usedisplaytitle;
 +	}
@@ -190,25 +190,14 @@ index 5d9941ba..7a336528 100644
  	return api.get( requestParams );
  };
  /**
-@@ -117,8 +121,8 @@ pf.AutocompleteWidget.prototype.getLookupMenuOptionsFromData = function ( data )
- 	for ( i = 0; i < data.length; i++ ) {
- 		item = new OO.ui.MenuOptionWidget( {
- 			// this data will be passed to onLookupMenuChoose when item is selected
--			data: data[ i ].title,
--			label: this.highlightText( data[ i ].title )
-+			data: data[ i ].title.toString(),
-+			label: this.highlightText( data[ i ].title.toString() )
- 		} );
- 		items.push( item );
- 	}
 diff --git a/libs/PF_formInput.js b/libs/PF_formInput.js
-index e72d9525..1a5fef66 100644
+index 0d336a75..35e1a4f2 100644
 --- a/libs/PF_formInput.js
 +++ b/libs/PF_formInput.js
 @@ -42,6 +42,9 @@
  			}
  		}
-
+ 
 +		if ( this.attr('data-usedisplaytitle') !== undefined ) {
 +			autocompleteWidgetConfig['usedisplaytitle'] = this.attr('data-usedisplaytitle');
 +		}

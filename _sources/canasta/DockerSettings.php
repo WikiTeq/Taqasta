@@ -76,11 +76,11 @@ const DOCKER_EXTENSIONS = [
 	'DeleteBatch',
 	'Description2',
 	'Disambiguator',
-	'DiscussionTools',
+	'DiscussionTools', # bundled
 	'DismissableSiteNotice',
 	'DisplayTitle',
 	'DynamicPageList3',
-	'Echo',
+	'Echo', # bundled
 	'EditAccount',
 	'Editcount',
 	'Elastica',
@@ -116,10 +116,11 @@ const DOCKER_EXTENSIONS = [
 	'Lingo',
 	'LinkSuggest',
 	'LinkTarget',
-	'Linter',
+	'Linter', # bundled
 	'LiquidThreads',
 	'LockAuthor',
 	'Lockdown',
+	'LoginNotify', # bundled
 	'LookupUser',
 	'Loops',
 	'MagicNoCache',
@@ -127,7 +128,7 @@ const DOCKER_EXTENSIONS = [
 	'MassMessage',
 	'MassMessageEmail',
 	'MassPasswordReset',
-	'Math',
+	'Math', # bundled
 	'MediaUploader',
 	'Mermaid',
 	'MintyDocs',
@@ -157,7 +158,6 @@ const DOCKER_EXTENSIONS = [
 	'PubmedParser',
 	'RegularTooltips',
 	'RemoteWiki',
-	'Renameuser', # bundled
 	'ReplaceText', # bundled
 	'RevisionSlider',
 	'RottenLinks',
@@ -197,7 +197,7 @@ const DOCKER_EXTENSIONS = [
 	'TemplateStyles',
 	'TemplateWizard',
 	'TextExtracts', # bundled
-	'Thanks',
+	'Thanks', # bundled
 	'TinyMCE',
 	'TitleBlacklist', # bundled
 	'TitleIcon',
