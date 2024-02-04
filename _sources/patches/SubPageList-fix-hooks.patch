@@ -1,0 +1,40 @@
+From a0ee317b903b08b4ec59455e2708b2f84b36727e Mon Sep 17 00:00:00 2001
+From: Daniel Scherzer <daniel@wikiteq.com>
+Date: Sun, 4 Feb 2024 16:34:51 -0500
+Subject: [PATCH] Setup: remove `array` typehint for global $wgHooks
+
+In 1.40+ it is a FauxGlobalHookArray, see T331602 and
+core commit db729e46f6da1381ed36aa965fd768ed22809cba
+---
+ src/Setup.php | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/Setup.php b/src/Setup.php
+index 9ed0170..e190a38 100644
+--- a/src/Setup.php
++++ b/src/Setup.php
+@@ -27,7 +27,7 @@ class Setup {
+ 	private $extension;
+ 
+ 	/**
+-	 * @var array[]
++	 * @var array[]|\MediaWiki\HookContainer\FauxGlobalHookArray
+ 	 */
+ 	private $hooks;
+ 
+@@ -38,10 +38,10 @@ class Setup {
+ 
+ 	/**
+ 	 * @param Extension $extension
+-	 * @param array $hooks
++	 * @param array|\MediaWiki\HookContainer\FauxGlobalHookArray $hooks
+ 	 * @param string $rootDirectory
+ 	 */
+-	public function __construct( Extension $extension, array &$hooks, $rootDirectory ) {
++	public function __construct( Extension $extension, &$hooks, $rootDirectory ) {
+ 		$this->hooks =& $hooks;
+ 		$this->extension = $extension;
+ 		$this->rootDirectory = $rootDirectory;
+-- 
+2.43.0.windows.1
+

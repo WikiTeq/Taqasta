@@ -978,6 +978,14 @@ RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME \
     # deauth
     && composer config -g --unset github-oauth.github.com
 
+# 1.41 compatibility for SEL-190:
+# SubPageList: fix `TypeError: Argument 2 passed to
+#     SubPageList\Setup::__construct() must be of the type array, object given`
+COPY _sources/patches/SubPageList-fix-hooks.patch /tmp/SubPageList-fix-hooks.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/SubPageList \
+	&& git apply /tmp/SubPageList-fix-hooks.patch
+
 # Move files around
 RUN set -x; \
 	# Move files to $MW_ORIGIN_FILES directory
