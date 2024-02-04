@@ -318,7 +318,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/DisplayTitle \
 	&& git checkout -q c485a2a89a1fd9cb6a4eda4f821de86b2a034f70 \
 	# DynamicPageList3
-	&& git clone --single-branch -b $MW_VERSION https://github.com/Universal-Omega/DynamicPageList3.git $MW_HOME/extensions/DynamicPageList3 \
+	&& git clone --single-branch -b master https://github.com/Universal-Omega/DynamicPageList3.git $MW_HOME/extensions/DynamicPageList3 \
 	&& cd $MW_HOME/extensions/DynamicPageList3 \
 	&& git checkout -q 25c9fd08e68b558e40e089e17bd7ad15eb07f98b
 
