@@ -776,6 +776,10 @@ RUN set -x; \
 # M
 RUN set -x; \
 	cd $MW_HOME/extensions \
+	# MagicLinkAuthentication
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MagicLinkAuthentication $MW_HOME/extensions/MagicLinkAuthentication \
+	&& cd $MW_HOME/extensions/MagicLinkAuthentication \
+	&& git checkout -q ba38e2a18c4f6d740d9a2775ab21736c45f09dc4 \
    	# MassPasswordReset
 	&& cd $MW_HOME/extensions \
 	&& git clone https://github.com/nischayn22/MassPasswordReset.git \

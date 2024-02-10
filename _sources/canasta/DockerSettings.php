@@ -122,6 +122,7 @@ const DOCKER_EXTENSIONS = [
 	'Lockdown',
 	'LookupUser',
 	'Loops',
+	'MagicLinkAuthentication',
 	'MagicNoCache',
 	'Maps',
 	'MassMessage',
