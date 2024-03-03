@@ -795,7 +795,7 @@ RUN --mount=type=secret,id=ACCESS_TOKEN \
     # OneTimePassword
     git clone -b master https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-OneTimePassword.git $MW_HOME/extensions/OneTimePassword \
     && cd $MW_HOME/extensions/OneTimePassword \
-    && git checkout -q e05e2d16a30201b1c774cb97b3e708802758f91d
+    && git checkout -q 5ea4c3891d2115a1c1214c5796c67504de4a6c26
 
 # P
 RUN set -x; \
