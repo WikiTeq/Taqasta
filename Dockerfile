@@ -351,15 +351,15 @@ RUN set -x; \
 
 RUN --mount=type=secret,id=ACCESS_TOKEN \
     # FHIR
-    git clone -b master https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-FHIR.git $MW_HOME/extensions/FHIR \
+    git clone -b release/0.95.1 https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-FHIR.git $MW_HOME/extensions/FHIR \
     && cd $MW_HOME/extensions/FHIR \
-    && git checkout -q 0ba399d5ef9854f4f622c5ba5222efc88894948b
+    && git checkout -q 6519eb8e503c1a07852495ced836773007b46547
 
 RUN --mount=type=secret,id=ACCESS_TOKEN \
     # CLEAR
-    git clone -b master https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-CLEAR.git $MW_HOME/extensions/CLEAR \
+    git clone -b release/0.95.1 https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-CLEAR.git $MW_HOME/extensions/CLEAR \
     && cd $MW_HOME/extensions/CLEAR \
-    && git checkout -q f2b2631d9a01c9c02bc98bfa4adbb5572d655701
+    && git checkout -q fa8e9a470cd39138548e95b89a44d5e6a998046d
 
 # G
 RUN set -x; \
@@ -793,7 +793,7 @@ RUN set -x; \
 # O
 RUN --mount=type=secret,id=ACCESS_TOKEN \
     # OneTimePassword
-    git clone -b master https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-OneTimePassword.git $MW_HOME/extensions/OneTimePassword \
+    git clone -b release/0.95.1 https://WikiteqMachine:$(cat /run/secrets/ACCESS_TOKEN)@github.com/WikiTeq/mediawiki-extension-OneTimePassword.git $MW_HOME/extensions/OneTimePassword \
     && cd $MW_HOME/extensions/OneTimePassword \
     && git checkout -q 5ea4c3891d2115a1c1214c5796c67504de4a6c26
 
