@@ -87,9 +87,9 @@ RUN set x; \
 # For some reason sury provides other versions, see
 # https://github.com/oerdnj/deb.sury.org/wiki/Frequently-Asked-Questions
 RUN set -x; \
-	update-alternatives --set php /usr/bin/php8.1 &&
-	update-alternatives --set phar /usr/bin/phar8.1 &&
-	update-alternatives --set phar.phar /usr/bin/phar.phar8.1
+	update-alternatives --set php /usr/bin/php8.1 \
+	&& update-alternatives --set phar /usr/bin/phar8.1 \
+	&& update-alternatives --set phar.phar /usr/bin/phar.phar8.1
 
 # Post install configuration
 RUN set -x; \
