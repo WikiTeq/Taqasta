@@ -66,7 +66,7 @@ RUN set x; \
 	php8.1-tidy \
 	php8.1-zip \
 	php-luasandbox \
-	php-tideways \
+	php8.1-tideways \
 	monit \
 	zip \
 	weasyprint \
