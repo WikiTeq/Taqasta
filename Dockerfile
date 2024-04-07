@@ -46,6 +46,9 @@ RUN set x; \
 	rsync \
 	lynx \
 	poppler-utils \
+	lsb-release \
+	&& wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+	&& echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list \
 	&& aptitude update \
 	&& aptitude install -y \
 	php8.1 \
