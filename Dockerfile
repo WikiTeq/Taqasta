@@ -762,10 +762,9 @@ RUN set -x; \
 RUN set -x; \
 	cd $MW_HOME/extensions \
   	# Lazyload
-	# TODO change me when https://github.com/mudkipme/mediawiki-lazyload/pull/15 will be merged
 	&& git clone https://github.com/mudkipme/mediawiki-lazyload.git $MW_HOME/extensions/Lazyload \
 	&& cd $MW_HOME/extensions/Lazyload \
-	&& git checkout -b $MW_VERSION 30a01cc149822353c9404ec178ec01848bae65c5 \
+	&& git checkout -b $MW_VERSION 92172c30ee5ac764627e397b19eddd536155394e \
 	# LiquidThreads
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LiquidThreads $MW_HOME/extensions/LiquidThreads \
 	&& cd $MW_HOME/extensions/LiquidThreads \
