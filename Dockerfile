@@ -69,6 +69,7 @@ RUN set x; \
 # Lua sandbox
 	php-pear \
 	php8.1-dev \
+	liblua5.1-0 \
 	liblua5.1-0-dev \
 	monit \
 	zip \
