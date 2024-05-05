@@ -84,7 +84,7 @@ RUN set x; \
 #    xvfb \ + 14.9 MB
 #    lilypond \ + 301 MB
 	&& pecl -d php_suffix=8.1 install luasandbox \
-	&& apt --auto-remove remove php-pear php8.1-dev liblua5.1-0-dev \
+	&& aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev \
 	&& aptitude clean \
 	&& rm -rf /var/lib/apt/lists/*
 
