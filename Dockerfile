@@ -239,9 +239,9 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/CharInsert \
 	&& git checkout -q 54c0f0ca9119a3ce791fb5d53edd4ec32035a5c5 \
 	# CheckUser
-	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/CheckUser $MW_HOME/extensions/CheckUser \
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CheckUser $MW_HOME/extensions/CheckUser \
 	&& cd $MW_HOME/extensions/CheckUser \
-	&& git checkout -q 062963ad1f4e025443b2b36bad375fb07ddb6fed \
+	&& git checkout -q 920b1220e3d723164da6dec57e352eb102ae4385 \
 	# CirrusSearch
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CirrusSearch $MW_HOME/extensions/CirrusSearch \
 	&& cd $MW_HOME/extensions/CirrusSearch \
