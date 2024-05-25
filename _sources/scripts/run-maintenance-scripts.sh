@@ -253,6 +253,27 @@ if [ -e "$MW_VOLUME/LocalSettings.php" ] && [ ! -e "$MW_HOME/LocalSettings.php" 
     ln -s "$MW_VOLUME/LocalSettings.php" "$MW_HOME/LocalSettings.php"
 fi
 
+# Import dumps if any
+if mountpoint -q -- "$MW_IMPORT_VOLUME"; then
+    echo "Found $MW_IMPORT_VOLUME, checking for XML dump presence.."
+    FILES_IMPORTED=0
+    for filename in $MW_IMPORT_VOLUME/*.xml; do
+	    echo "Found $filename file, importing.."
+        php maintenance/importDump.php \
+            --username-prefix="" \
+            --memory-limit=max \
+            --report 1 \
+            "$filename"
+        FILES_IMPORTED=$((FILES_IMPORTED + 1))
+    done
+    if [ "$FILES_IMPORTED" -gt "0" ]; then
+        echo "Running post-import maintenance scripts.."
+        php maintenance/rebuildrecentchanges.php
+        php maintenance/initSiteStats.php
+    fi
+    echo "Imported $FILES_IMPORTED files!"
+fi
+
 rm "$WWW_ROOT/.maintenance"
 
 # Reload the settings
