@@ -567,7 +567,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/SaveSpinner \
 	&& git checkout -q 1e819e2fff7fad6999bafe71d866c3af50836c42 \
 	# SemanticDependencyUpdater (WikiTeq fork)
-	&& git clone --single-branch -b master https://github.com/WikiTeq/SemanticDependencyUpdater.git $MW_HOME/extensions/SemanticDependencyUpdater \
+	&& git clone --single-branch -b old-master https://github.com/WikiTeq/SemanticDependencyUpdater.git $MW_HOME/extensions/SemanticDependencyUpdater \
 	&& cd $MW_HOME/extensions/SemanticDependencyUpdater \
 	&& git checkout -q 3eedd54d4b4d4bfb6f15c2f56162b38095ebdb4c \
 	# SemanticDrilldown
