@@ -598,11 +598,37 @@ if ( $wgSentryDsn ) {
 	wfLoadExtension( 'Sentry' );
 }
 
+# Profiling
 if ( isset( $_REQUEST['forceprofile'] ) ) {
-	$wgProfiler['class'] = 'ProfilerXhprof';
-	$wgProfiler['output'] = [ 'ProfilerOutputText' ];
-	$wgProfiler['visible'] = false;
-	$wgUseCdn = false; // make sure profile is not cached
+	if ( extension_loaded( 'tideways_xhprof' ) ) {
+		$wgProfiler = [
+			'class'  => ProfilerXhprof::class,
+			'flags'  => TIDEWAYS_XHPROF_FLAGS_CPU | TIDEWAYS_XHPROF_FLAGS_NO_BUILTINS,
+			'output' => 'text',
+			'visible' => false,
+		];
+
+		// make sure the profiler's HTML comment is not cached
+		$wgUseCdn = false;
+	}
+
+	// in addition to the tideways plaintext profile dump, capture an excimer profile in the logs dir
+	if ( extension_loaded( 'excimer' ) ) {
+		$excimer = new ExcimerProfiler();
+		$excimer->setPeriod( 0.001 ); // 1ms
+		$excimer->setEventType( EXCIMER_REAL );
+		$excimer->start();
+		register_shutdown_function( function () use ( $excimer ) {
+			$excimer->stop();
+			$data = $excimer->getLog()->getSpeedscopeData();
+			$data['profiles'][0]['name'] = $_SERVER['REQUEST_URI'];
+			$now = ( new DateTime )->format( 'Y-m-d_His_v' );
+			file_put_contents(
+				getenv( 'MW_LOG' ) . '/speedscope-' . $now . '-' . MW_ENTRY_POINT . '.json',
+				json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+			);
+		} );
+	}
 }
 
 # Include all php files in config/settings directory
