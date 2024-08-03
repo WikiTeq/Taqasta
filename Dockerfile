@@ -67,6 +67,7 @@ RUN set x; \
 	php8.1-tidy \
 	php8.1-zip \
 	php8.1-tideways \
+	php8.1-excimer \
 # Lua sandbox
 	php-pear \
 	php8.1-dev \
