@@ -4,7 +4,7 @@ LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
 ENV MW_VERSION=REL1_43 \
-	MW_CORE_VERSION=1.43.0-wmf.16 \
+	MW_CORE_VERSION=wmf/1.43.0-wmf.16 \
 	WWW_ROOT=/var/www/mediawiki \
 	MW_HOME=/var/www/mediawiki/w \
 	MW_LOG=/var/log/mediawiki \
@@ -120,7 +120,7 @@ RUN set -x; \
 FROM base as core
 # MediaWiki core
 RUN set -x; \
-	git clone --depth 1 -b $MW_CORE_VERSION https://github.com/wikimedia/mediawiki.git $MW_HOME \
+	git clone --depth 1 -b $MW_CORE_VERSION https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME \
 	&& cd $MW_HOME \
 	&& git submodule update --init --recursive
 
