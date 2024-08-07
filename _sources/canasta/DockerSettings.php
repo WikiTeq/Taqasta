@@ -348,7 +348,7 @@ if ( $emulateLocalSettingsDoesNotExists ) {
 	define( "CANASTA_CONFIG_FILE", $canastaLocalSettingsFilePath );
 
 	// Do the same what function wfWebStartNoLocalSettings() does
-	require_once "$IP/includes/CanastaNoLocalSettings.php";
+	require_once "$IP/includes/Output/CanastaNoLocalSettings.php";
 	die();
 }
 
