@@ -269,11 +269,11 @@ RUN set -x; \
 	# Modify config
 	&& sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf \
 	&& a2enmod expires remoteip \
-	&& a2disconf other-vhosts-access-log \
+	&& a2disconf other-vhosts-access-log
 	# For Widgets extension
-	&& mkdir -p $MW_ORIGIN_FILES/extensions/Widgets \
-	&& mv $MW_HOME/extensions/Widgets/compiled_templates $MW_ORIGIN_FILES/extensions/Widgets/ \
-	&& ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates
+#	&& mkdir -p $MW_ORIGIN_FILES/extensions/Widgets \
+#	&& mv $MW_HOME/extensions/Widgets/compiled_templates $MW_ORIGIN_FILES/extensions/Widgets/ \
+#	&& ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates
 
 COPY _sources/images/Powered-by-Canasta.png /var/www/mediawiki/w/resources/assets/
 
