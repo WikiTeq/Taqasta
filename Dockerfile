@@ -550,7 +550,7 @@ RUN set -x; \
 	# RevisionSlider
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/RevisionSlider $MW_HOME/extensions/RevisionSlider \
 	&& cd $MW_HOME/extensions/RevisionSlider \
-	&& git checkout -q 3cae51a322a5ca0f359e83efcb5fac38e73e346e \
+	&& git checkout -q f4ddb246c84fd548e002271071794d8b108dbb0f \
 	# RottenLinks
 	&& git clone --single-branch -b master https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
 	&& cd $MW_HOME/extensions/RottenLinks \
