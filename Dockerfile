@@ -150,11 +150,11 @@ RUN set -x; \
 	# CologneBlue
 	&& git clone -b $MW_VERSION --single-branch https://gerrit.wikimedia.org/r/mediawiki/skins/CologneBlue $MW_HOME/skins/CologneBlue \
 	&& cd $MW_HOME/skins/CologneBlue \
-	&& git checkout -q 4d588eb78d7e64e574f631c5897579537305437d \
+	&& git checkout -q 5216abcc51084bb5e296a792d84a24facbd9ff44 \
 	# Modern
 	&& git clone -b $MW_VERSION --single-branch https://gerrit.wikimedia.org/r/mediawiki/skins/Modern $MW_HOME/skins/Modern \
 	&& cd $MW_HOME/skins/Modern \
-	&& git checkout -q fb6c2831b5f150e9b82d98d661710695a2d0f8f2 \
+	&& git checkout -q 2a237ea7e4f49961b2492b66dfd3faba8d787253 \
 	# Pivot
 	&& git clone -b v2.3.0 https://github.com/wikimedia/mediawiki-skins-Pivot $MW_HOME/skins/pivot \
 	&& cd $MW_HOME/skins/pivot \
@@ -162,7 +162,7 @@ RUN set -x; \
 	# Refreshed
 	&& git clone -b $MW_VERSION --single-branch https://gerrit.wikimedia.org/r/mediawiki/skins/Refreshed $MW_HOME/skins/Refreshed \
 	&& cd $MW_HOME/skins/Refreshed \
-	&& git checkout -q 86f33620f25335eb62289aa18d342ff3b980d8b8
+	&& git checkout -q 0f1e8d16bb27cd5a2fc6c272866edd474bde2731
 
 # TODO send to upstream, see https://wikiteq.atlassian.net/browse/MW-64 and https://wikiteq.atlassian.net/browse/MW-81
 COPY _sources/patches/skin-refreshed.patch /tmp/skin-refreshed.patch
@@ -204,15 +204,15 @@ RUN set -x; \
 	# AdvancedSearch
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/AdvancedSearch $MW_HOME/extensions/AdvancedSearch \
 	&& cd $MW_HOME/extensions/AdvancedSearch \
-	&& git checkout -q 1a44eafc93a17938333b74a37cb4deff2192e50a \
+	&& git checkout -q cb52331641fb0f6cb1a2389dc5ae12662d81745d \
 	# AJAXPoll
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/AJAXPoll $MW_HOME/extensions/AJAXPoll \
 	&& cd $MW_HOME/extensions/AJAXPoll \
-	&& git checkout -q 8429d8d4cba5be6df04e3fec17b0daabbf10cfa7 \
+	&& git checkout -q ddd6bf09cf5574c0b11f03fec807027683db0e49 \
 	# AntiSpoof
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/AntiSpoof $MW_HOME/extensions/AntiSpoof \
 	&& cd $MW_HOME/extensions/AntiSpoof \
-	&& git checkout -q 01cf89a678d5bab6610d24e07d3534356a5880cb \
+	&& git checkout -q dbb701dc410eac6edb7850f05cd7aab2731ffde8 \
 	# ApprovedRevs (v. 1.8.2)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/ApprovedRevs $MW_HOME/extensions/ApprovedRevs \
 	&& cd $MW_HOME/extensions/ApprovedRevs \
@@ -220,7 +220,7 @@ RUN set -x; \
 	# Arrays
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Arrays $MW_HOME/extensions/Arrays \
 	&& cd $MW_HOME/extensions/Arrays \
-	&& git checkout -q f42c28848f494f5f5843fa03da73f25437d2d36b
+	&& git checkout -q 07e5e6c2dd7c2bf6e87bc5195a594be08cc7f257
 
 # B
 RUN set -x; \
@@ -228,11 +228,11 @@ RUN set -x; \
  	# BetaFeatures
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/BetaFeatures $MW_HOME/extensions/BetaFeatures \
 	&& cd $MW_HOME/extensions/BetaFeatures \
-	&& git checkout -q 09cca44341f9695446c4e9fc9e8fec3fdcb197b0 \
+	&& git checkout -q e126af90b8f6f02d433b8df1ea37aeb8f2eddbea \
 	# BreadCrumbs2
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/BreadCrumbs2 $MW_HOME/extensions/BreadCrumbs2 \
 	&& cd $MW_HOME/extensions/BreadCrumbs2 \
-	&& git checkout -q d53357a6839e94800a617de4fc451b6c64d0a1c8
+	&& git checkout -q ad58059a5f4990f93a1a1e21e206f01ff9fdbcfe
 
 # C
 RUN set -x; \
@@ -244,47 +244,47 @@ RUN set -x; \
 	# CharInsert
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CharInsert $MW_HOME/extensions/CharInsert \
 	&& cd $MW_HOME/extensions/CharInsert \
-	&& git checkout -q 54c0f0ca9119a3ce791fb5d53edd4ec32035a5c5 \
+	&& git checkout -q 2bb7109088bb3ea9e730ca0f0692a12b77b90f41 \
 	# CheckUser
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CheckUser $MW_HOME/extensions/CheckUser \
 	&& cd $MW_HOME/extensions/CheckUser \
-	&& git checkout -q 920b1220e3d723164da6dec57e352eb102ae4385 \
+	&& git checkout -q 06daa11a5c31d753728dc445593e6a7433e38e8c \
 	# CirrusSearch
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CirrusSearch $MW_HOME/extensions/CirrusSearch \
 	&& cd $MW_HOME/extensions/CirrusSearch \
-	&& git checkout -q 8296300873aaffe815800cf05c84fa04c8cbd2c0 \
+	&& git checkout -q 8758053ae98bc93d17cfa45d6afe22f135e3effe \
 	# CodeMirror
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CodeMirror $MW_HOME/extensions/CodeMirror \
 	&& cd $MW_HOME/extensions/CodeMirror \
-	&& git checkout -q 27efed79972ca181a194d17f4a94f4192fd5a493 \
+	&& git checkout -q c5e56dd79641dab073f3a606cf1d6e1d03770128 \
 	# Collection
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection $MW_HOME/extensions/Collection \
 	&& cd $MW_HOME/extensions/Collection \
-	&& git checkout -q e00e70c6fcec963c8876e410e52c83c75ed60827 \
+	&& git checkout -q 7551dfcf307ce61fdb5cedc678e948ca363b3341 \
 	# CommentStreams
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CommentStreams $MW_HOME/extensions/CommentStreams \
 	&& cd $MW_HOME/extensions/CommentStreams \
-	&& git checkout -q 274bb10bc2d39fd137650dbc0dfc607c766d1aaa \
+	&& git checkout -q 75e71e0575ef55a4d25e255222fd7e56b77e8b8d \
 	# CommonsMetadata
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CommonsMetadata $MW_HOME/extensions/CommonsMetadata \
 	&& cd $MW_HOME/extensions/CommonsMetadata \
-	&& git checkout -q 8ee30de3b1cabbe55c484839127493fd5fa5d076 \
+	&& git checkout -q 18228fd920e4a2d3bc445ac4696f75693fdc77a4 \
 	# ConfirmAccount
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ConfirmAccount $MW_HOME/extensions/ConfirmAccount \
 	&& cd $MW_HOME/extensions/ConfirmAccount \
-	&& git checkout -q c06d5dfb43811a2dee99099476c57af2b6d762c4 \
+	&& git checkout -q 4c50f5255ba096a96d1af8479998daa0cfe856de \
 	# ContactPage
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ContactPage $MW_HOME/extensions/ContactPage \
 	&& cd $MW_HOME/extensions/ContactPage \
-	&& git checkout -q f509796056ae1fc597b6e3c3c268fac35bf66636 \
+	&& git checkout -q 6560e1881eb5af17391b22e11f9aed464961241b \
 	# ContributionScores
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ContributionScores $MW_HOME/extensions/ContributionScores \
 	&& cd $MW_HOME/extensions/ContributionScores \
-	&& git checkout -q 0c08d338a1150c76e74ae490cd4d5f5b9f6daa5f \
+	&& git checkout -q 645c9459940e88125cc1685cb65cd391b7f58ac8 \
 	# CookieWarning
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CookieWarning $MW_HOME/extensions/CookieWarning \
 	&& cd $MW_HOME/extensions/CookieWarning \
-	&& git checkout -q bc991e93133bd69fe45e07b3d4554225decc7dae \
+	&& git checkout -q f25720c5f4b29edc1e889a87006cd5f5826aeefa \
 	# Cloudflare
 	&& git clone --single-branch -b master https://github.com/harugon/mediawiki-extensions-cloudflare.git $MW_HOME/extensions/Cloudflare \
 	&& cd $MW_HOME/extensions/Cloudflare \
@@ -296,31 +296,31 @@ RUN set -x; \
 	# DataTransfer
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DataTransfer $MW_HOME/extensions/DataTransfer \
 	&& cd $MW_HOME/extensions/DataTransfer \
-	&& git checkout -q 2f9f949f71f0bb7d1bd8b6b97c795b9428bb1c71 \
+	&& git checkout -q 1f681dbba5021dd4715d4d44818596a5681b080c \
 	# DeleteBatch
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DeleteBatch $MW_HOME/extensions/DeleteBatch \
 	&& cd $MW_HOME/extensions/DeleteBatch \
-	&& git checkout -q 82078d60fc59a718f429ddebe5e99de8a8734413 \
+	&& git checkout -q 581c6049a289b1e0236989cf17121896ee4bce09 \
 	# Description2
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Description2 $MW_HOME/extensions/Description2 \
 	&& cd $MW_HOME/extensions/Description2 \
-	&& git checkout -q d2a5322a44f940de873050573e35fba4eb3063f8 \
+	&& git checkout -q 52395a6c56c85cc3e11e7bfa0aa1108cc709b33d \
 	# Disambiguator
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Disambiguator $MW_HOME/extensions/Disambiguator \
 	&& cd $MW_HOME/extensions/Disambiguator \
-	&& git checkout -q b7e7fad5f9f3dccfb902a3cbfd3bf2b16df91871 \
+	&& git checkout -q 3de37ee6aa79a499e67fdc0e6e0443e2a1d10bf5 \
 	# DismissableSiteNotice
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DismissableSiteNotice $MW_HOME/extensions/DismissableSiteNotice \
 	&& cd $MW_HOME/extensions/DismissableSiteNotice \
-	&& git checkout -q 88129f80f077ec9e4932148056c8cfc1ed0361c7 \
+	&& git checkout -q 09dd5602b0489f0fec451b93f2f0ebdde9b6c5fc \
 	# DisplayTitle
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DisplayTitle $MW_HOME/extensions/DisplayTitle \
 	&& cd $MW_HOME/extensions/DisplayTitle \
-	&& git checkout -q c485a2a89a1fd9cb6a4eda4f821de86b2a034f70 \
+	&& git checkout -q 6ab49ce111f0b461b69e10f7121fd2bac98eb991 \
 	# DynamicPageList3
-	&& git clone --single-branch -b $MW_VERSION https://github.com/Universal-Omega/DynamicPageList3.git $MW_HOME/extensions/DynamicPageList3 \
+	&& git clone --single-branch -b master https://github.com/Universal-Omega/DynamicPageList3.git $MW_HOME/extensions/DynamicPageList3 \
 	&& cd $MW_HOME/extensions/DynamicPageList3 \
-	&& git checkout -q e4faf608b0f5a77c4a4c3576a2a28216c7d2bbbf
+	&& git checkout -q 498c396c790ca90845714a8c4ff4942be5c2c27d
 
 # E
 RUN set -x; \
@@ -328,15 +328,15 @@ RUN set -x; \
 	# Editcount
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Editcount $MW_HOME/extensions/Editcount \
 	&& cd $MW_HOME/extensions/Editcount \
-	&& git checkout -q 41544ffceb1356f91575dc6772a48b172751d7cc \
+	&& git checkout -q 90e0d33caaf50ff8e75989361ceefc59a814aec2 \
 	# Elastica
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Elastica $MW_HOME/extensions/Elastica \
 	&& cd $MW_HOME/extensions/Elastica \
-	&& git checkout -q e4ead38b71ed4f3df8dc689fe448b749771b4ed4 \
+	&& git checkout -q 6b6e87c21d6340e86a13cfe92bbdb7f6fa16d464 \
 	# EmailAuthorization
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/EmailAuthorization $MW_HOME/extensions/EmailAuthorization \
 	&& cd $MW_HOME/extensions/EmailAuthorization \
-	&& git checkout -q 2016da1b354f741d89b5dc207d4a84e11ffe9bce \
+	&& git checkout -q bdf58d6e987d98a2ebd1c42f57eab27beb97520b \
 	# EmbedVideo
 	# (Canasta uses hydrawiki, but we switched to StarCitizenWiki's fork which
 	# which is maintained, WE-286)
@@ -346,11 +346,11 @@ RUN set -x; \
 	# EventLogging
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging $MW_HOME/extensions/EventLogging \
 	&& cd $MW_HOME/extensions/EventLogging \
-	&& git checkout -q 2740dbcd139be279ca2a4db039739b4f796b4178 \
+	&& git checkout -q 42387cae85f914044ef10b16e981cb791cf4924d \
 	# EventStreamConfig
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/EventStreamConfig $MW_HOME/extensions/EventStreamConfig \
 	&& cd $MW_HOME/extensions/EventStreamConfig \
-	&& git checkout -q 1aae8cb6c312e49f0126091a59a453cb224657f9 \
+	&& git checkout -q 14bee740bfae40c82940761ecb4e91f840263b4d \
 	# ExternalData (v. 3.2)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/ExternalData $MW_HOME/extensions/ExternalData \
 	&& cd $MW_HOME/extensions/ExternalData \
@@ -370,7 +370,7 @@ RUN set -x; \
 	# GlobalNotice
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GlobalNotice $MW_HOME/extensions/GlobalNotice \
 	&& cd $MW_HOME/extensions/GlobalNotice \
-	&& git checkout -q 15a40bff4641f00a5a8dda3d36795b1c659c19a7 \
+	&& git checkout -q e2065eeb8eccb0486480e620f33cc174a3f0a5ec \
 	# GoogleAnalyticsMetrics
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleAnalyticsMetrics $MW_HOME/extensions/GoogleAnalyticsMetrics \
 	&& cd $MW_HOME/extensions/GoogleAnalyticsMetrics \
@@ -378,11 +378,11 @@ RUN set -x; \
 	# GoogleDocCreator
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleDocCreator $MW_HOME/extensions/GoogleDocCreator \
 	&& cd $MW_HOME/extensions/GoogleDocCreator \
-	&& git checkout -q 9e53ecfa4149688a2352a7898c2a2005632e1b7d \
+	&& git checkout -q be55ad17d811fa1c014e3f7570a6adb298b1cc50 \
 	# Graph
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Graph $MW_HOME/extensions/Graph \
 	&& cd $MW_HOME/extensions/Graph \
-	&& git checkout -q 9c229eafdf406c95a4a666a6b7f2a9d0d3d682e4
+	&& git checkout -q f2dbc6741d21041e8be6ee19c8cde56d377b97e1
 
 # H
 RUN set -x; \
@@ -398,7 +398,7 @@ RUN set -x; \
 	# HTMLTags
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/HTMLTags $MW_HOME/extensions/HTMLTags \
 	&& cd $MW_HOME/extensions/HTMLTags \
-	&& git checkout -q b8cb3131c5e76f5c037c8474fe14e51f2e877f03
+	&& git checkout -q 905e33a266cc9818b75bd5723cad876ce78edaba
 
 # L
 RUN set -x; \
@@ -406,19 +406,19 @@ RUN set -x; \
 	# LabeledSectionTransclusion
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LabeledSectionTransclusion $MW_HOME/extensions/LabeledSectionTransclusion \
 	&& cd $MW_HOME/extensions/LabeledSectionTransclusion \
-	&& git checkout -q 187abfeaafbad35eed4254f7a7ee0638980e932a \
+	&& git checkout -q 442b67900411e0feb4953965d0177fa709da95be \
 	# LDAPAuthentication2
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LDAPAuthentication2 $MW_HOME/extensions/LDAPAuthentication2 \
 	&& cd $MW_HOME/extensions/LDAPAuthentication2 \
-	&& git checkout -q 6bc584893d3157d5180e0e3ed93c3dbbc5b93056 \
+	&& git checkout -q dbd16a56558bf58ff52c47c118066bf154cbb535 \
 	# LDAPAuthorization
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LDAPAuthorization $MW_HOME/extensions/LDAPAuthorization \
 	&& cd $MW_HOME/extensions/LDAPAuthorization \
-	&& git checkout -q e6815d29c22f4b4eb85f868372a729ad49d7d3c8 \
+	&& git checkout -q ea995cc821a2ea88f65b7ff7f77bee80c48b79ce \
 	# LDAPProvider
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LDAPProvider $MW_HOME/extensions/LDAPProvider \
 	&& cd $MW_HOME/extensions/LDAPProvider \
-	&& git checkout -q 80f8cc8156b0cd250d0dfacd9378ed0db7c2091d \
+	&& git checkout -q e669d2463a456298a2f18389b6400fbb425d71bb \
 	# Lingo
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/Lingo $MW_HOME/extensions/Lingo \
 	&& cd $MW_HOME/extensions/Lingo \
@@ -426,27 +426,27 @@ RUN set -x; \
 	# LinkSuggest
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LinkSuggest $MW_HOME/extensions/LinkSuggest \
 	&& cd $MW_HOME/extensions/LinkSuggest \
-	&& git checkout -q 6005d191e35d1d6bed5a4e7bd1bedc5fa0030bf1 \
+	&& git checkout -q 6b81189ca2f50f69714a37baa8629f732fa8dbb4 \
 	# LinkTarget
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LinkTarget $MW_HOME/extensions/LinkTarget \
 	&& cd $MW_HOME/extensions/LinkTarget \
-	&& git checkout -q e5d592dcc72a00e06604ee3f65dfb8f99977c156 \
+	&& git checkout -q b173d65cde9a86000fd23bf668106b62d0e7b32f \
 	# LockAuthor
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LockAuthor $MW_HOME/extensions/LockAuthor \
 	&& cd $MW_HOME/extensions/LockAuthor \
-	&& git checkout -q 4ebc4f221a0987b64740014a9380e9c3522f271d \
+	&& git checkout -q 1456da695c631b0631ba129ef8df7abcc2c96af0 \
 	# Lockdown
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Lockdown $MW_HOME/extensions/Lockdown \
 	&& cd $MW_HOME/extensions/Lockdown \
-	&& git checkout -q ffcb6e8892ad35bb731fad1dc24712a245ab86d0 \
+	&& git checkout -q 71786f3d506be6e871ac8b6e113e87c585513791 \
 	# LookupUser
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LookupUser $MW_HOME/extensions/LookupUser \
 	&& cd $MW_HOME/extensions/LookupUser \
-	&& git checkout -q 5fa17d449b6bedb3e8cee5b239af6cadae31da70 \
+	&& git checkout -q 54a27285f7bbc7925ab71b80be2e478771720480 \
 	# Loops
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Loops $MW_HOME/extensions/Loops \
 	&& cd $MW_HOME/extensions/Loops \
-	&& git checkout -q 0eb05a81b9b53f5381eefb4f8b6959b6dcdec1d8 \
+	&& git checkout -q 44d18b00e09f3471a43c8a04d6a0d3da65ab619d \
     # LuaCache
     && git clone --single-branch -b master https://github.com/HydraWiki/LuaCache.git $MW_HOME/extensions/LuaCache \
     && cd $MW_HOME/extensions/LuaCache \
@@ -458,19 +458,19 @@ RUN set -x; \
 	# MagicNoCache
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MagicNoCache $MW_HOME/extensions/MagicNoCache \
 	&& cd $MW_HOME/extensions/MagicNoCache \
-	&& git checkout -q 93534c12dac0e821c46c94b21053d274a6e557de \
+	&& git checkout -q 8b97aa193cb84055395a129b0b46e82b528c170a \
 	# MassMessage
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MassMessage $MW_HOME/extensions/MassMessage \
 	&& cd $MW_HOME/extensions/MassMessage \
-	&& git checkout -q d6a86291bb975c3dc7778f370006f1145cc834bd \
+	&& git checkout -q 0e8faed2500148ce24db753d884dfd5c2129fa46 \
 	# MassMessageEmail
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MassMessageEmail $MW_HOME/extensions/MassMessageEmail \
 	&& cd $MW_HOME/extensions/MassMessageEmail \
-	&& git checkout -q edd96f14c6d108d56bcecb18b5bb7b3355437732 \
+	&& git checkout -q 7a92d4c74e299c35404b6ae78cf385b71684e3e4 \
 	# MediaUploader
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MediaUploader $MW_HOME/extensions/MediaUploader \
 	&& cd $MW_HOME/extensions/MediaUploader \
-	&& git checkout -q 1edd91c506c1c0319e7b9a3e71d639130760b1fd \
+	&& git checkout -q 5add75ce4147029c91693738dc77cfcf4f98218a \
 	# MintyDocs (1.0)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/MintyDocs $MW_HOME/extensions/MintyDocs \
 	&& cd $MW_HOME/extensions/MintyDocs \
@@ -478,15 +478,15 @@ RUN set -x; \
 	# MobileFrontend
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileFrontend $MW_HOME/extensions/MobileFrontend \
 	&& cd $MW_HOME/extensions/MobileFrontend \
-	&& git checkout -q 7f9ecd976796d02988b40dff4a790c315d4651e6 \
+	&& git checkout -q 86c32654d7e47bcbba4b27771a382916b7f37920 \
 	# MsUpload
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MsUpload $MW_HOME/extensions/MsUpload \
 	&& cd $MW_HOME/extensions/MsUpload \
-	&& git checkout -q 8c2403b09186f5f25f0c28369e6aff3c285047df \
+	&& git checkout -q e8c2f23c46dfb56123115e1570485cee5b22edde \
 	# MyVariables
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MyVariables $MW_HOME/extensions/MyVariables \
 	&& cd $MW_HOME/extensions/MyVariables \
-	&& git checkout -q 8b45be10c9b0a484824c55d8cc48399290384260
+	&& git checkout -q 93a5b6e31397d0eb987b8615712e31342af7c254
 
 # N
 RUN set -x; \
@@ -499,7 +499,7 @@ RUN set -x; \
 	# NewUserMessage
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/NewUserMessage $MW_HOME/extensions/NewUserMessage \
 	&& cd $MW_HOME/extensions/NewUserMessage \
-	&& git checkout -q 206f32880fa7bf70b191d33ed80b8626bca39efe \
+	&& git checkout -q b2fc8e3cdbf16bb22caec8f5f3005bd239466ee6 \
 	# NumerAlpha
 	&& git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/NumerAlpha $MW_HOME/extensions/NumerAlpha \
 	&& cd $MW_HOME/extensions/NumerAlpha \
@@ -511,18 +511,18 @@ RUN set -x; \
 	# OpenGraphMeta
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/OpenGraphMeta $MW_HOME/extensions/OpenGraphMeta \
 	&& cd $MW_HOME/extensions/OpenGraphMeta \
-	&& git checkout -q d319702cd4ceda1967c233ef8e021b67b3fc355f \
+	&& git checkout -q 38cdfd6f5c5790dfc4ba4ad3bcd7a34fad91be1b \
 	# OpenIDConnect
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/OpenIDConnect $MW_HOME/extensions/OpenIDConnect \
 	&& cd $MW_HOME/extensions/OpenIDConnect \
-	&& git checkout -q f193befe9d66249e694fcdaa7b1b2afbf4a2ffde
+	&& git checkout -q 957026f2a186c0f1c585dc96881eb31aa6b785fa
 # P
 RUN set -x; \
 	cd $MW_HOME/extensions \
 	# PageExchange
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PageExchange $MW_HOME/extensions/PageExchange \
 	&& cd $MW_HOME/extensions/PageExchange \
-	&& git checkout -q 28482410564e38d2b97ab7321e99c4281c6e5877 \
+	&& git checkout -q 0dd74b2027026caafb4d85ec3cb999e42d8e9b1d \
 	# PageForms (v. 5.6.1)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/PageForms $MW_HOME/extensions/PageForms \
 	&& cd $MW_HOME/extensions/PageForms \
@@ -530,11 +530,11 @@ RUN set -x; \
 	# PluggableAuth
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PluggableAuth $MW_HOME/extensions/PluggableAuth \
 	&& cd $MW_HOME/extensions/PluggableAuth \
-	&& git checkout -q 1884a127cd5947ad7484d3b55711db3f6515d439 \
+	&& git checkout -q f0a83a8e0b5bffefb58007c74d2a87720e965f4c \
 	# Popups
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Popups $MW_HOME/extensions/Popups \
 	&& cd $MW_HOME/extensions/Popups \
-	&& git checkout -q ff4d2156e1f7f4c11f7396cb0cd70d387abd8187 \
+	&& git checkout -q 37f2b5d2ed6be223e01616330b33cbdfe680dcb9 \
 	# PagePort
 	&& git clone --single-branch -b master https://github.com/WikiTeq/PagePort.git $MW_HOME/extensions/PagePort \
 	&& cd $MW_HOME/extensions/PagePort \
@@ -546,7 +546,7 @@ RUN set -x; \
 	# RegularTooltips
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/RegularTooltips $MW_HOME/extensions/RegularTooltips \
 	&& cd $MW_HOME/extensions/RegularTooltips \
-	&& git checkout -q 1af807bb6d5cfbd1e471e38bf70d6a392fb7eda2 \
+	&& git checkout -q a84c32e20a1ca199813b0d53be5055348181feb8 \
 	# RevisionSlider
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/RevisionSlider $MW_HOME/extensions/RevisionSlider \
 	&& cd $MW_HOME/extensions/RevisionSlider \
@@ -554,7 +554,7 @@ RUN set -x; \
 	# RottenLinks
 	&& git clone --single-branch -b master https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
 	&& cd $MW_HOME/extensions/RottenLinks \
-	&& git checkout -q a96e99d0a61a42d59587a67db0720ce245a7ee46
+	&& git checkout -q f4ddb246c84fd548e002271071794d8b108dbb0f
 
 # S
 RUN set -x; \
@@ -562,23 +562,23 @@ RUN set -x; \
 	# SandboxLink
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SandboxLink $MW_HOME/extensions/SandboxLink \
 	&& cd $MW_HOME/extensions/SandboxLink \
-	&& git checkout -q 9ab23288a010c3894c59cd5ba3096d93d57c15c5 \
+	&& git checkout -q 4398bbdce866ad60fb04962e18d314109ab5d7a5 \
 	# SaveSpinner
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SaveSpinner $MW_HOME/extensions/SaveSpinner \
 	&& cd $MW_HOME/extensions/SaveSpinner \
-	&& git checkout -q 1e819e2fff7fad6999bafe71d866c3af50836c42 \
+	&& git checkout -q 33421c7a72aaa96cd09909492d4cd1820b31f049 \
 	# SemanticDependencyUpdater (WikiTeq fork)
 	&& git clone --single-branch -b old-master https://github.com/WikiTeq/SemanticDependencyUpdater.git $MW_HOME/extensions/SemanticDependencyUpdater \
 	&& cd $MW_HOME/extensions/SemanticDependencyUpdater \
 	&& git checkout -q 3eedd54d4b4d4bfb6f15c2f56162b38095ebdb4c \
 	# SemanticDrilldown
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SemanticDrilldown $MW_HOME/extensions/SemanticDrilldown \
+	&& git clone --single-branch -b master https://github.com/SemanticMediaWiki/SemanticDrilldown.git $MW_HOME/extensions/SemanticDrilldown \
 	&& cd $MW_HOME/extensions/SemanticDrilldown \
-	&& git checkout -q e960979ec5a3b1e662b3742cee7e7ef4056f9a46 \
+	&& git checkout -q d0290de96d6b8265f01330730462e0cdbc71c3d5 \
 	# SimpleChanges
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges $MW_HOME/extensions/SimpleChanges \
 	&& cd $MW_HOME/extensions/SimpleChanges \
-	&& git checkout -q 5352de89dfaf043f646a44582b26f07822f02be7 \
+	&& git checkout -q 575b2c809efed552d34ad29b8b8f6fe648e1421d \
 	# SimpleMathJax
 	&& git clone --single-branch https://github.com/jmnote/SimpleMathJax.git $MW_HOME/extensions/SimpleMathJax \
 	&& cd $MW_HOME/extensions/SimpleMathJax \
@@ -586,11 +586,11 @@ RUN set -x; \
 	# SkinPerPage
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SkinPerPage $MW_HOME/extensions/SkinPerPage \
 	&& cd $MW_HOME/extensions/SkinPerPage \
-	&& git checkout -q 31ecd2d0d4515d44cbef540ce219fb8d019bb6b1 \
+	&& git checkout -q 2954e3aab262402dc3da8aed35e4e011ad7de0b5 \
 	# SmiteSpam
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SmiteSpam $MW_HOME/extensions/SmiteSpam \
 	&& cd $MW_HOME/extensions/SmiteSpam \
-	&& git checkout -q 268f212b7e366711d8e7b54c7faf5b750fa014ad
+	&& git checkout -q bc4ff6876f60e68a52ac7a740b39c8979aa10c29
 
 # T
 RUN set -x; \
@@ -598,23 +598,23 @@ RUN set -x; \
 	# TemplateStyles
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/TemplateStyles $MW_HOME/extensions/TemplateStyles \
 	&& cd $MW_HOME/extensions/TemplateStyles \
-	&& git checkout -q 2a93b56e370ab8b8e020ed29c507104b56f1d11a \
+	&& git checkout -q 14edaa52ef1dd8fdd3b70b1b5e4c10a8c8ee6c2d \
 	# TemplateWizard
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/TemplateWizard $MW_HOME/extensions/TemplateWizard \
 	&& cd $MW_HOME/extensions/TemplateWizard \
-	&& git checkout -q d486e3475f84118fd9b5c77d60254daa2f56f654 \
+	&& git checkout -q e39b2f6b79be655821170183ef4100589f7a02a0 \
 	# TimedMediaHandler
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/TimedMediaHandler $MW_HOME/extensions/TimedMediaHandler \
 	&& cd $MW_HOME/extensions/TimedMediaHandler \
-	&& git checkout -q 2e64302c68e58693650e91b7869fa5aecf1aaf23 \
+	&& git checkout -q fe962d820a8ce9f16492b78ba243f5516acaf0f0 \
 	# TinyMCE
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/TinyMCE $MW_HOME/extensions/TinyMCE \
 	&& cd $MW_HOME/extensions/TinyMCE \
-	&& git checkout -q 06436ec3a53c6cd53c458e4e8ab3ec8d1a23029b \
+	&& git checkout -q 34e6dec066da738ced2cb8f54573a246d552f437 \
 	# TitleIcon
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/TitleIcon $MW_HOME/extensions/TitleIcon \
 	&& cd $MW_HOME/extensions/TitleIcon \
-	&& git checkout -q 7c6c83f4859642542393612ad961a258378e0cac
+	&& git checkout -q ddefbabc33596b320bdaea4df003f9f094ef91d3
 
 # U
 RUN set -x; \
@@ -622,23 +622,23 @@ RUN set -x; \
 	# UniversalLanguageSelector
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/UniversalLanguageSelector $MW_HOME/extensions/UniversalLanguageSelector \
 	&& cd $MW_HOME/extensions/UniversalLanguageSelector \
-	&& git checkout -q 8216e434c38ddeba74e5ad758bfbbcc83861fa60 \
+	&& git checkout -q dcb77f3562e954b4f37b4ce3754eadddd76446eb \
 	# UploadWizard
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/UploadWizard $MW_HOME/extensions/UploadWizard \
 	&& cd $MW_HOME/extensions/UploadWizard \
-	&& git checkout -q 847413694b519c76da7196023651c8d584137d2f \
+	&& git checkout -q c530d94f0acfc77e44d8014fe0013afcfc7748dd \
 	# UrlGetParameters
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/UrlGetParameters $MW_HOME/extensions/UrlGetParameters \
 	&& cd $MW_HOME/extensions/UrlGetParameters \
-	&& git checkout -q d36f92810c762b301035ff1b4f42792ed9a1018b \
+	&& git checkout -q 6cff5f7dfc7db6b8af1fdca47d8a1e6e662c54a8 \
 	# UserFunctions
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/UserFunctions $MW_HOME/extensions/UserFunctions \
 	&& cd $MW_HOME/extensions/UserFunctions \
-	&& git checkout -q b532b1047080c3738327ee2f3b541e563e06ca19 \
+	&& git checkout -q ec1b7a1dcf876e7983948ae2032a5c63bebca27e \
 	# UserMerge
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/UserMerge $MW_HOME/extensions/UserMerge \
 	&& cd $MW_HOME/extensions/UserMerge \
-	&& git checkout -q 183bb7a8f78cbe365bec0fbd4b3ecdd4fae1a359 \
+	&& git checkout -q 573930bed690c46c402e6d73cc39a77f1f9abc80 \
 	# UserPageViewTracker (v. 0.7)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/UserPageViewTracker $MW_HOME/extensions/UserPageViewTracker \
 	&& cd $MW_HOME/extensions/UserPageViewTracker \
@@ -650,7 +650,7 @@ RUN set -x; \
 	# Variables
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Variables $MW_HOME/extensions/Variables \
 	&& cd $MW_HOME/extensions/Variables \
-	&& git checkout -q b4a9063f16a928567e3b6788cda9246c2e94797f \
+	&& git checkout -q 5f64a33a48a899a98a6d4fc68539248865c3574a \
 	# VEForAll (v. 0.5.1)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/VEForAll $MW_HOME/extensions/VEForAll \
 	&& cd $MW_HOME/extensions/VEForAll \
@@ -658,7 +658,7 @@ RUN set -x; \
 	# VoteNY
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/VoteNY $MW_HOME/extensions/VoteNY \
 	&& cd $MW_HOME/extensions/VoteNY \
-	&& git checkout -q 11c103f4b9167a8d8d5e850d8a781c6f49b249c1
+	&& git checkout -q c13364574ab35aed2b3c57c3b15c7c5d80ddbd05
 
 # W
 RUN set -x; \
@@ -670,23 +670,23 @@ RUN set -x; \
 	# WhoIsWatching
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WhoIsWatching $MW_HOME/extensions/WhoIsWatching \
 	&& cd $MW_HOME/extensions/WhoIsWatching \
-	&& git checkout -q 836a31018e26ab7c993088c4cca31a89efec2ee5 \
+	&& git checkout -q 4af3edd700f8e9e43ff00a17ff61e0078b7da8e7 \
 	# Widgets
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Widgets $MW_HOME/extensions/Widgets \
 	&& cd $MW_HOME/extensions/Widgets \
-	&& git checkout -q 197d429f971b2aebbce29b7a91a194e1f8181e64 \
+	&& git checkout -q 93e93398b6c87d145bc055d1997caccc563cf015 \
 	# WikiForum
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiForum $MW_HOME/extensions/WikiForum \
 	&& cd $MW_HOME/extensions/WikiForum \
-	&& git checkout -q a2685b60af86890f199a5f3b6581918369e6a571 \
+	&& git checkout -q 46d8f399c5968a7781c15ae7563e6641e6e41390 \
 	# WikiSEO
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiSEO $MW_HOME/extensions/WikiSEO \
 	&& cd $MW_HOME/extensions/WikiSEO \
-	&& git checkout -q 610cffa3345333b53d4dda7b55b2012fbfcee9de \
+	&& git checkout -q 1269f35bac001c30cc65889ccca286b2de58e2e4 \
 	# WSOAuth
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WSOAuth $MW_HOME/extensions/WSOAuth \
 	&& cd $MW_HOME/extensions/WSOAuth \
-	&& git checkout -q 3c54c4899dd63989bc3214273bf1c5807c7ac5db
+	&& git checkout -q ffa60cb9a11fd28262180d379ae6a1e176bc6671
 
 #### WikiTeq extensions ####
 
@@ -696,7 +696,7 @@ RUN set -x; \
 	# Buggy
 	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-Buggy.git $MW_HOME/extensions/Buggy \
 	&& cd $MW_HOME/extensions/Buggy \
-	&& git checkout -q 768d2ec62de692ab62fc0c9f1820e22058d09d4b
+	&& git checkout -q 1f235a7a1c6661f7d99ace656390b7d6db11f3df
 
 # C
 RUN set -x; \
@@ -704,11 +704,11 @@ RUN set -x; \
   	# ChangeAuthor
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ChangeAuthor $MW_HOME/extensions/ChangeAuthor \
 	&& cd $MW_HOME/extensions/ChangeAuthor \
-	&& git checkout -q c297a88407c6dea60dfa03b1a7d5f4cd78d9e0c9 \
+	&& git checkout -q 6d172c2d7f2b9926a12c388ad062bc9271140ddb \
 	# Citoid
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Citoid $MW_HOME/extensions/Citoid \
 	&& cd $MW_HOME/extensions/Citoid \
-	&& git checkout -q 1e605c7d89368c334cbe83b4da8e1b6d72ae9c33
+	&& git checkout -q be913d5a13d1c09893f44f38fe1c68ee709bdb4e
 
 # E
 RUN set -x; \
@@ -716,11 +716,11 @@ RUN set -x; \
    	# EditAccount
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/EditAccount $MW_HOME/extensions/EditAccount \
 	&& cd $MW_HOME/extensions/EditAccount \
-	&& git checkout -q a9a0d7002483d2165300afd108a8f4b3c2c485ff \
+	&& git checkout -q d2b47d3873a205198bc153533513ffe8f0f67834 \
 	# Flow
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Flow $MW_HOME/extensions/Flow \
 	&& cd $MW_HOME/extensions/Flow \
-	&& git checkout -q fc6af96ab80e9c4da4b4cb8dde313f1d718f71b5
+	&& git checkout -q 0ef9309097d3fe6e29df6cc4eccebaa5b1a667d6
 
 # G
 RUN set -x; \
@@ -728,7 +728,7 @@ RUN set -x; \
   	# GoogleDocTag
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleDocTag $MW_HOME/extensions/GoogleDocTag \
 	&& cd $MW_HOME/extensions/GoogleDocTag \
-	&& git checkout -q b71c875b033f79e17a54e6fccd2bfde26bff9163 \
+	&& git checkout -q 132064263e57d379bddd6005f19c51883b448314 \
 	# GTag
 	&& git clone https://github.com/SkizNet/mediawiki-GTag.git $MW_HOME/extensions/GTag \
 	&& cd $MW_HOME/extensions/GTag \
@@ -740,7 +740,7 @@ RUN set -x; \
    	# HeadScript
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/HeadScript $MW_HOME/extensions/HeadScript \
 	&& cd $MW_HOME/extensions/HeadScript \
-	&& git checkout -q 168f588f5f7895b1ebe99a14e4eeb97bb03c8b6b
+	&& git checkout -q 80718cb2c39b728402c5c33da017132a790e4dbb
 
 # I
 RUN set -x; \
@@ -748,7 +748,7 @@ RUN set -x; \
    	# IframePage
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/IframePage $MW_HOME/extensions/IframePage \
 	&& cd $MW_HOME/extensions/IframePage \
-	&& git checkout -q 8010e02bab480ccecf2db828c187d90ed027c563
+	&& git checkout -q 97e425f31b5c2326e1bd6dba083835d7cd8217d6
 
 # L
 RUN set -x; \
@@ -761,7 +761,7 @@ RUN set -x; \
 	# LiquidThreads
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LiquidThreads $MW_HOME/extensions/LiquidThreads \
 	&& cd $MW_HOME/extensions/LiquidThreads \
-	&& git checkout -q 00d4cfb74c18e6524dc2c16347229fffef7043f7
+	&& git checkout -q 77e499df26de53607e8330bf86dddc3c6fb343fb
 
 # M
 RUN set -x; \
@@ -774,11 +774,11 @@ RUN set -x; \
 	# MobileDetect
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileDetect $MW_HOME/extensions/MobileDetect \
 	&& cd $MW_HOME/extensions/MobileDetect \
-	&& git checkout -q ccb0bdd7fa77d33adcfd2401c69e771c942df639 \
+	&& git checkout -q 98220688ccc9c420a805c550ac659373a7312384 \
 	# Mpdf
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Mpdf.git $MW_HOME/extensions/Mpdf \
 	&& cd $MW_HOME/extensions/Mpdf \
-	&& git checkout -q fb6ff534526f3b9a554cc4172db6e3715adfef36
+	&& git checkout -q 7e731eae23140e57143d71eca64ca56e4eaae2bc
 
 # P
 RUN set -x; \
@@ -786,7 +786,7 @@ RUN set -x; \
    	# PageSchemas
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PageSchemas $MW_HOME/extensions/PageSchemas \
 	&& cd $MW_HOME/extensions/PageSchemas \
-	&& git checkout -q a8d117c111f08869f542b6a6b15ba7ca4e93d8b5 \
+	&& git checkout -q ce6a2e218b5d1f41703819284534df0b686a0f8d \
 	# PDFEmbed
 	&& git clone https://github.com/WolfgangFahl/PDFEmbed.git $MW_HOME/extensions/PDFEmbed \
 	&& cd $MW_HOME/extensions/PDFEmbed \
@@ -807,7 +807,7 @@ RUN set -x; \
 	# SelectCategory
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory $MW_HOME/extensions/SelectCategory \
 	&& cd $MW_HOME/extensions/SelectCategory \
-	&& git checkout -q 072f7a5df0346f4f4fccaf54510641e0a0ce2922 \
+	&& git checkout -q ff6ee455772cb5faa1b7ff41b72483300d00c0bf \
 	# SemanticQueryInterface
 	&& git clone https://github.com/vedmaka/SemanticQueryInterface.git $MW_HOME/extensions/SemanticQueryInterface \
 	&& cd $MW_HOME/extensions/SemanticQueryInterface \
@@ -823,7 +823,7 @@ RUN set -x; \
 	# ShowMe
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ShowMe $MW_HOME/extensions/ShowMe \
 	&& cd $MW_HOME/extensions/ShowMe \
-	&& git checkout -q 4190783befb0d440bb61149728cd7399a862c0fc \
+	&& git checkout -q 7831e584e64d278cb2b3ad9aeb7b85424ab13382 \
 	# SimpleTooltip
 	&& git clone https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
 	&& cd $MW_HOME/extensions/SimpleTooltip \
@@ -839,11 +839,11 @@ RUN set -x; \
 	# SkinPerNamespace
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SkinPerNamespace $MW_HOME/extensions/SkinPerNamespace \
 	&& cd $MW_HOME/extensions/SkinPerNamespace \
-	&& git checkout -q 14762eadecd791904886aa15fa5a2f845dc005f0 \
+	&& git checkout -q d050af582adb3c41f4c9b62caeacffabc9091b94 \
 	# Survey
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Survey $MW_HOME/extensions/Survey \
 	&& cd $MW_HOME/extensions/Survey \
-	&& git checkout -q a723508305d618623615f324f90755c4a8b74bbf
+	&& git checkout -q f83c879c71147047bad65e2b2575e53d45ad5312
 
 # T
 RUN set -x; \
@@ -859,11 +859,11 @@ RUN set -x; \
 	# Tabs
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Tabs $MW_HOME/extensions/Tabs \
 	&& cd $MW_HOME/extensions/Tabs \
-	&& git checkout -q f2187a37d14d67543380576366f1f07a26078ddd \
+	&& git checkout -q 2e892da5e21991326620c6f7067b181ad9d02747 \
 	# TwitterTag
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/TwitterTag $MW_HOME/extensions/TwitterTag \
 	&& cd $MW_HOME/extensions/TwitterTag \
-	&& git checkout -q 0f22e65539d0e96a71c1e4694614d7c14860f524
+	&& git checkout -q 1622d8763e3315079382f9c6054d7569ea61c78b
 
 # U
 RUN set -x; \
@@ -879,7 +879,7 @@ RUN set -x; \
    	# YouTube
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/YouTube $MW_HOME/extensions/YouTube \
 	&& cd $MW_HOME/extensions/YouTube \
-	&& git checkout -q 7ed328ab60779938eb1557d54d7d8454012df08c
+	&& git checkout -q 9367ead999e51c610473c955cbffd1e65bddea3b
 
 # G
 RUN set -x; \
@@ -887,7 +887,7 @@ RUN set -x; \
    	# GoogleLogin
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
 	&& cd $MW_HOME/extensions/GoogleLogin \
-	&& git checkout -q 3fec50489daa23fb9eeeb3872a6d2f8c3957e7b0
+	&& git checkout -q 487ebd3a20d6b7fd2a4f2b963a93c358d3ced1a0
 
 # V
 RUN set -x; \
