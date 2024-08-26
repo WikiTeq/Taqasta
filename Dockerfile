@@ -884,11 +884,10 @@ RUN set -x; \
 # G
 RUN set -x; \
 	cd $MW_HOME/extensions \
-   	# GoogleLogin, using master so that monolog version dependency is relaxed,
-	# should switch back to MW_VERSION for 1.43
-	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
+   	# GoogleLogin
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
 	&& cd $MW_HOME/extensions/GoogleLogin \
-	&& git checkout -q 84e19580575af1497faacdc45bd01581dcfc3f96
+	&& git checkout -q 487ebd3a20d6b7fd2a4f2b963a93c358d3ced1a0
 
 # V
 RUN set -x; \
@@ -942,6 +941,14 @@ RUN set -x; \
     && git apply /tmp/PF.5.6.usedisplaytitle.autocomplete.forminput.diff \
     # WLDR-303
     && GIT_COMMITTER_EMAIL=docker@docker.invalid git cherry-pick -x 94ceca65c23a2894da1a26445077c786671aef0c
+
+# Loosen monolog dependency to prevent conflicts; we could check out
+# e5ce4ec2e3861e2dabbdf063140dd88e1241025c where this was done, but that causes
+# conflicts with `google/apiclient` with the GoogleAnalyticsMetrics extension
+COPY _sources/patches/GoogleLogin.monolog.patch /tmp/GoogleLogin.monolog.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/GoogleLogin \
+	&& git apply /tmp/GoogleLogin.monolog.patch
 
 # Cleanup all .git leftovers
 RUN set -x; \
