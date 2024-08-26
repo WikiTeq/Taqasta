@@ -884,10 +884,11 @@ RUN set -x; \
 # G
 RUN set -x; \
 	cd $MW_HOME/extensions \
-   	# GoogleLogin
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
+   	# GoogleLogin, using master so that monolog version dependency is relaxed,
+	# should switch back to MW_VERSION for 1.43
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
 	&& cd $MW_HOME/extensions/GoogleLogin \
-	&& git checkout -q 487ebd3a20d6b7fd2a4f2b963a93c358d3ced1a0
+	&& git checkout -q 84e19580575af1497faacdc45bd01581dcfc3f96
 
 # V
 RUN set -x; \
