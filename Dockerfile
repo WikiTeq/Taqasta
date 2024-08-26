@@ -183,10 +183,10 @@ FROM base as extensions
 # Extensions
 #
 # The following extensions are bundled into MediaWiki and do not need to be separately installed (though in some cases
-# they are modified): AbuseFilter, CategoryTree, Cite, CiteThisPage, CodeEditor, ConfirmEdit, Gadgets, ImageMap,
-# InputBox, Interwiki, LocalisationUpdate, Math, MultimediaViewer, Nuke, OATHAuth, PageImages, ParserFunctions,
-# PdfHandler, Poem, Renameuser, Replace Text, Scribunto, SecureLinkFixer, SpamBlacklist, SyntaxHighlight, TemplateData,
-# TextExtracts, TitleBlacklist, VisualEditor, WikiEditor.
+# they are modified): AbuseFilter, CategoryTree, Cite, CiteThisPage, CodeEditor, ConfirmEdit, DiscussionTools, Echo,
+# Gadgets, ImageMap, InputBox, Interwiki, Linter, LoginNotify, LocalisationUpdate, Math, MultimediaViewer, Nuke,
+# OATHAuth, PageImages, ParserFunctions, PdfHandler, Poem, Replace Text, Scribunto, SecureLinkFixer, SpamBlacklist,
+# SyntaxHighlight, TemplateData, TextExtracts, Thanks, TitleBlacklist, VisualEditor, WikiEditor.
 #
 # The following extensions are downloaded via Composer and also do not need to be downloaded here: Bootstrap,
 # BootstrapComponents, Maps, Mermaid, Semantic Breadcrumb Links, Semantic Compound Queries, Semantic Extra Special
@@ -325,10 +325,6 @@ RUN set -x; \
 # E
 RUN set -x; \
 	cd $MW_HOME/extensions \
-	# Echo
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Echo $MW_HOME/extensions/Echo \
-	&& cd $MW_HOME/extensions/Echo \
-	&& git checkout -q 7ad986ac9dd4ab961f4ab7eccafa41fa2f486b75 \
 	# Editcount
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Editcount $MW_HOME/extensions/Editcount \
 	&& cd $MW_HOME/extensions/Editcount \
@@ -435,10 +431,6 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LinkTarget $MW_HOME/extensions/LinkTarget \
 	&& cd $MW_HOME/extensions/LinkTarget \
 	&& git checkout -q e5d592dcc72a00e06604ee3f65dfb8f99977c156 \
-	# Linter
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Linter $MW_HOME/extensions/Linter \
-	&& cd $MW_HOME/extensions/Linter \
-	&& git checkout -q 8bc1727955da7468f096aa5c5b5790923db43d20 \
 	# LockAuthor
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LockAuthor $MW_HOME/extensions/LockAuthor \
 	&& cd $MW_HOME/extensions/LockAuthor \
@@ -611,10 +603,6 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/TemplateWizard $MW_HOME/extensions/TemplateWizard \
 	&& cd $MW_HOME/extensions/TemplateWizard \
 	&& git checkout -q d486e3475f84118fd9b5c77d60254daa2f56f654 \
-	# Thanks
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Thanks $MW_HOME/extensions/Thanks \
-	&& cd $MW_HOME/extensions/Thanks \
-	&& git checkout -q 03b6a52f263604c819e69b78c157f6ef5adb053e \
 	# TimedMediaHandler
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/TimedMediaHandler $MW_HOME/extensions/TimedMediaHandler \
 	&& cd $MW_HOME/extensions/TimedMediaHandler \
@@ -721,14 +709,6 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Citoid $MW_HOME/extensions/Citoid \
 	&& cd $MW_HOME/extensions/Citoid \
 	&& git checkout -q 1e605c7d89368c334cbe83b4da8e1b6d72ae9c33
-
-# D
-RUN set -x; \
-	cd $MW_HOME/extensions \
-	# DiscussionTools
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DiscussionTools $MW_HOME/extensions/DiscussionTools \
-	&& cd $MW_HOME/extensions/DiscussionTools \
-	&& git checkout -q 472ceb15288844e610d5f09c872dcc86dd624f7d
 
 # E
 RUN set -x; \
