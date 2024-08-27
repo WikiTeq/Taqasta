@@ -1,0 +1,25 @@
+From 0c99843af590300edf7322fdbc4e318d63272ebe Mon Sep 17 00:00:00 2001
+From: Daniel Scherzer <daniel@wikiteq.com>
+Date: Sun, 25 Aug 2024 21:07:08 -0700
+Subject: [PATCH] Relax `monolog/monolog` dependency
+
+---
+ composer.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/composer.json b/composer.json
+index 3bec35c..4fd3816 100644
+--- a/composer.json
++++ b/composer.json
+@@ -4,7 +4,7 @@
+ 	"license": "MIT",
+ 	"require": {
+ 		"google/apiclient": "^2.0.0@RC",
+-		"monolog/monolog": "~2.2.0"
++		"monolog/monolog": "^2.2.0"
+ 	},
+ 	"require-dev": {
+ 		"mediawiki/mediawiki-codesniffer": "41.0.0",
+-- 
+2.43.0.windows.1
+
