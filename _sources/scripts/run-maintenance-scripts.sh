@@ -369,7 +369,7 @@ run_import () {
         	echo "WARNING! The directory contains XML files, did you forget to migrate the dump to PagePort?"
         	return
         fi
-        php "extensions/PagePort/maintenance/importPages.php --source $MW_IMPORT_VOLUME"
+        php extensions/PagePort/maintenance/importPages.php --source "$MW_IMPORT_VOLUME"
         echo "Imported completed!"
     fi
 }
