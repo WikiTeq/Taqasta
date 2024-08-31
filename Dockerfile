@@ -1059,7 +1059,8 @@ ENV MW_AUTOUPDATE=true \
 	MEDIAWIKI_MAINTENANCE_AUTO_ENABLED=false \
 	MW_SENTRY_DSN="" \
 	MW_USE_CACHE_DIRECTORY=1 \
-	APACHE_REMOTE_IP_HEADER=X-Forwarded-For
+	APACHE_REMOTE_IP_HEADER=X-Forwarded-For \
+	MW_AUTO_IMPORT=1
 
 COPY _sources/configs/msmtprc /etc/
 COPY _sources/configs/mediawiki.conf /etc/apache2/sites-enabled/
