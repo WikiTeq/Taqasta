@@ -1072,6 +1072,7 @@ COPY _sources/scripts/*.php $MW_HOME/maintenance/
 COPY _sources/configs/robots.php $WWW_ROOT/
 COPY _sources/configs/robots.txt $WWW_ROOT/
 COPY _sources/configs/.htaccess $WWW_ROOT/
+COPY _sources/configs/custom-htaccess.conf /var/www/mediawiki/htaccess_configs/custom-htaccess.conf
 COPY _sources/images/favicon.ico $WWW_ROOT/
 COPY _sources/canasta/DockerSettings.php $MW_HOME/
 COPY _sources/canasta/getMediawikiSettings.php /
@@ -1088,8 +1089,9 @@ RUN set -x; \
 	# Make web installer work with Canasta
 	&& cp "$MW_HOME/includes/NoLocalSettings.php" "$MW_HOME/includes/CanastaNoLocalSettings.php" \
 	&& sed -i 's/MW_CONFIG_FILE/CANASTA_CONFIG_FILE/g' "$MW_HOME/includes/CanastaNoLocalSettings.php" \
-	# Modify config
+	# Modify config to allow htaccess overrides and add IncludeOptional for custom htaccess
 	&& sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf \
+	&& echo "IncludeOptional /var/www/mediawiki/htaccess_configs/custom-htaccess.conf" >> $WWW_ROOT/.htaccess \
 	&& a2enmod expires remoteip \
 	&& a2disconf other-vhosts-access-log \
 	# For Widgets extension
