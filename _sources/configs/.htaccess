@@ -46,3 +46,6 @@ RewriteRule ^(.*)$ %{DOCUMENT_ROOT}/w/index.php [L]
     ExpiresByType font/woff "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
+
+# Include custom rules from additional .conf files
+IncludeOptional /var/www/mediawiki/htaccess_configs/*.conf
