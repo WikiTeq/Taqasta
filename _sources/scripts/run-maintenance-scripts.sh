@@ -358,7 +358,7 @@ run_autoupdate () {
     fi
 
     ### GoogleLogin
-    GoogleLoginVersion=$(php /getMediawikiSettings.php --versions GoogleLogin)
+    GoogleLoginVersion=$(php /getMediawikiSettings.php --version GoogleLogin)
     # TODO ideally we should run the maintenance script if the PublicSuffixArray does not exist
     if  [ -n "$GoogleLoginVersion" ]; then
         wgGLAllowedDomainsMD5=$(get_mediawiki_variable wgGLAllowedDomains md5)

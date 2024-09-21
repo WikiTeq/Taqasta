@@ -22,6 +22,12 @@ class GetMediawikiSettings extends Maintenance {
 			true
 		);
 		$this->addOption(
+			'version',
+			'',
+			false,
+			true
+		);
+		$this->addOption(
 			'versions',
 			'',
 			false,
@@ -57,7 +63,7 @@ class GetMediawikiSettings extends Maintenance {
 			} else { // the last chance to fetch a value from global variable
 				$return = $GLOBALS[$variableName] ?? '';
 			}
-		} elseif ( $this->hasOption( 'versions' ) ) {
+		} elseif ( $this->hasOption( 'versions' ) || $this->hasOption( 'version' ) ) {
 			$return = [
 				'MediaWiki' => SpecialVersion::getVersion( 'nodb' ),
 			];
@@ -72,9 +78,12 @@ class GetMediawikiSettings extends Maintenance {
 					$return[$name] .= " ($gitVersion)";
 				}
 			}
-			$versionName = $this->getOption( 'versions' );
+			$versionName = $this->hasOption( 'version' ) ? $this->getOption( 'version' ) : null;
 			if ( $versionName ) {
-				$return = $return[$versionName] ?? '';
+				$return = $return[$versionName] ?? null;
+				if ( $return === '' ) {
+					$return = '-';
+				}
 			}
 		} elseif ( $this->hasOption( 'isSMWValid' ) ) {
 			$extThings = self::getExtensionsThings();
