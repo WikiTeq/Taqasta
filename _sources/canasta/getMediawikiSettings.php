@@ -72,6 +72,10 @@ class GetMediawikiSettings extends Maintenance {
 					$return[$name] .= " ($gitVersion)";
 				}
 			}
+			$versionName = $this->getOption( 'versions' );
+			if ( $versionName ) {
+				$return = $return[$versionName] ?? '';
+			}
 		} elseif ( $this->hasOption( 'isSMWValid' ) ) {
 			$extThings = self::getExtensionsThings();
 			if ( isset( $extThings['SemanticMediaWiki'] ) ) {
