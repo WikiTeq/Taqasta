@@ -17,37 +17,37 @@ class GetMediawikiSettings extends Maintenance {
 		parent::__construct();
 		$this->addOption(
 			'variable',
-			'',
+			'Returns the value of a variable',
 			false,
 			true
 		);
 		$this->addOption(
 			'version',
-			'',
+			'Returns the version of the installed extension or MediaWiki',
 			false,
 			true
 		);
 		$this->addOption(
 			'versions',
-			'',
+			'Returns the versions of all installed extensions and MediaWiki',
 			false,
 			false
 		);
 		$this->addOption(
 			'isSMWValid',
-			''
+			'Returns "true" if SMW does not require to run the update.php maintenance script',
 		);
 		$this->addOption(
 			'SMWUpgradeKey',
-			''
+			'Returns the SMW upgrading key (this key verifies that a correct upgrade)',
 		);
 		$this->addOption(
 			'SWMIncompleteSetupTasks',
-			''
+			'Returns list of the SMW maintenance tasks that should be run',
 		);
 		$this->addOption(
 			'format',
-			'',
+			'Sets the output format. By default, it returns the value as a string or JSON if the returned value is an array. Possible values: string, json, md5, first (the first valuse from the array), and imploded array with separator: semicolon, space',
 			false,
 			true
 		);
