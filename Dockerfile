@@ -404,6 +404,14 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/HTMLTags \
 	&& git checkout -q b8cb3131c5e76f5c037c8474fe14e51f2e877f03
 
+# J
+RUN set -x; \
+	cd $MW_HOME/extensions \
+	# JsonConfig (required for Graph)
+	&& git clone -b REL1_39 https://github.com/wikimedia/mediawiki-extensions-JsonConfig.git $MW_HOME/extensions/JsonConfig \
+	&& cd $MW_HOME/extensions/JsonConfig \
+	&& git checkout -q 62a7c8ad741152e5719408aae969944591b600cf
+
 # L
 RUN set -x; \
 	cd $MW_HOME/extensions \
