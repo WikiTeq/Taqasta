@@ -1,10 +1,10 @@
-FROM debian:12.5 as base
+FROM debian:12.5 AS base
 
 LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
 ENV MW_VERSION=REL1_39 \
-	MW_CORE_VERSION=1.39.10 \
+	MW_CORE_VERSION=1.39.8 \
 	WWW_ROOT=/var/www/mediawiki \
 	MW_HOME=/var/www/mediawiki/w \
 	MW_LOG=/var/log/mediawiki \
