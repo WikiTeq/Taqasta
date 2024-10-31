@@ -159,9 +159,9 @@ RUN set -x; \
 	&& cd $MW_HOME/skins/Modern \
 	&& git checkout -q 2ab0a8068541352b0e26d216fb7bfc8456baf337 \
 	# Pivot
-	&& git clone -b v2.3.0 https://github.com/wikimedia/mediawiki-skins-Pivot $MW_HOME/skins/pivot \
+	&& git clone -b $MW_VERSION --single-branch https://gerrit.wikimedia.org/r/mediawiki/skins/Pivot $MW_HOME/skins/pivot \
 	&& cd $MW_HOME/skins/pivot \
-	&& git checkout -q d79af7514347eb5272936243d4013118354c85c1 \
+	&& git checkout -q e95137969241c202baa452ac39e38cfecd57fc64 \
 	# Refreshed
 	&& git clone -b $MW_VERSION --single-branch https://gerrit.wikimedia.org/r/mediawiki/skins/Refreshed $MW_HOME/skins/Refreshed \
 	&& cd $MW_HOME/skins/Refreshed \
