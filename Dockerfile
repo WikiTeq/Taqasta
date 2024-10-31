@@ -538,7 +538,7 @@ RUN set -x; \
 	# PagePort
 	&& git clone --single-branch -b master https://github.com/WikiTeq/PagePort.git $MW_HOME/extensions/PagePort \
 	&& cd $MW_HOME/extensions/PagePort \
-	&& git checkout -q b43642914f72a997439608710f010644c25d7ee7
+	&& git checkout -q d4d734c26c215ed7306be8cd1edc4b0cd8d561cd
 
 # R
 RUN set -x; \
