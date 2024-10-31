@@ -884,11 +884,9 @@ RUN set -x; \
 RUN set -x; \
 	cd $MW_HOME/extensions \
    	# GoogleLogin
-	&& git clone --single-branch -b REL1_39 https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
 	&& cd $MW_HOME/extensions/GoogleLogin \
-	# TODO Switch to the REL1_XX branch when the patches are merged, WIK-1434
-	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin refs/changes/30/1074530/2  \
-	&& git checkout FETCH_HEAD
+	&& git checkout -q d15d480a753aa433a5e024c5ca1ea78999947fe2
 
 # V
 RUN set -x; \
@@ -942,6 +940,12 @@ RUN set -x; \
     && git apply /tmp/PF.5.6.usedisplaytitle.autocomplete.forminput.diff \
     # WLDR-303
     && GIT_COMMITTER_EMAIL=docker@docker.invalid git cherry-pick -x 94ceca65c23a2894da1a26445077c786671aef0c
+
+# GoogleLogin gerrit patches 1070987 and 1074530 applied to REL1_43
+COPY _sources/patches/GoogleLogin-fixes.patch /tmp/GoogleLogin-fixes.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/GoogleLogin \
+	&& git apply /tmp/GoogleLogin-fixes.patch
 
 # Cleanup all .git leftovers
 RUN set -x; \
