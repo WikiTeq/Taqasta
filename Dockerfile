@@ -916,10 +916,6 @@ RUN set -x; \
 
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
-	# Include the "Use correct load flag for getTitleOrPageId" fix
-	cd $MW_HOME/extensions/CommentStreams \
-	&& git fetch \
-	&& git checkout -q 567178f0eac7172536aac4aea20f4cd97b8ad891 \
 	# SimpleMathJax add Fix path to ext.SimpleMathJax.js in ResourceModules \
 	&& rm -fr $MW_HOME/extensions/SimpleMathJax \
 	&& git clone --single-branch -b master https://github.com/WikiTeq/SimpleMathJax.git $MW_HOME/extensions/SimpleMathJax \
