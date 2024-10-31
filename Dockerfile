@@ -918,7 +918,7 @@ RUN set -x; \
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
 	# does not work? see WIK-702?focusedCommentId=41955
-	&& rm -fr $MW_HOME/extensions/TimedMediaHandler \
+	rm -fr $MW_HOME/extensions/TimedMediaHandler \
 	# missed in Canasta
 	&& cd $MW_HOME/extensions/EmailAuthorization \
 	&& git submodule update --init --recursive
