@@ -9,6 +9,7 @@ on:
     # Only activate for `master` branch
     branches:
       - master
+      - REL1_43
     # Plus for all tags
     tags:
       - '*'
@@ -58,7 +59,7 @@ jobs:
           BDATE=$(date +%Y%m%d)
 
           # Extract MW version from Dockerfile
-          MEDIAWIKI_VERSION=$(sed -nr 's/MW_CORE_VERSION\=([0-9\.]+)/\1/p' Dockerfile | sed "s/ \\\//" | sed "s/\t//")
+          MEDIAWIKI_VERSION=$(sed -nr 's/MW_CORE_VERSION\=(\S+)/\1/p' Dockerfile | sed "s/ \\\//" | sed "s/\t//")
           # Extract MW major version (like 1.35)
           MEDIAWIKI_MAJOR_VERSION=${MEDIAWIKI_VERSION%.*}
 
@@ -90,6 +91,8 @@ jobs:
 
           # For master branch also supply an extra tag: <MW_VERSION>-latest,<MW_VERSION>-<DATE>-<SHA>
           [ "$VERSION" == "latest" ] && REGISTRY_TAGS=$REGISTRY_TAGS,$IMAGE_ID:$TAQASTA_VERSION,$IMAGE_ID:$MEDIAWIKI_MAJOR_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-latest,$IMAGE_ID:$MEDIAWIKI_VERSION-$BDATE-$(git rev-parse --short HEAD)
+
+          [ "${{ github.ref }}" == "REL1_43" ] && REGISTRY_TAGS=$REGISTRY_TAGS,$IMAGE_ID:$VERSION-$BDATE-$(git rev-parse --short HEAD)
 
           SHA_SHORT=${{ github.sha }}
           [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
