@@ -124,7 +124,7 @@ FROM base AS core
 RUN set -x; \
 	git clone --depth 1 -b $MW_CORE https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME \
 	&& cd $MW_HOME \
-	&& git checkout -q 3f9b46636b88759ef46cb46fe163ea13567d1851
+	&& git checkout -q 3f9b46636b88759ef46cb46fe163ea13567d1851 \
 	&& git submodule update --init --recursive
 
 # Add Bootstrap to LocalSettings.php if the web installer added the Chameleon skin
