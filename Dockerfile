@@ -124,7 +124,7 @@ FROM base AS core
 RUN set -x; \
 	git clone --depth 1 -b REL1_43 https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME \
 	&& cd $MW_HOME \
-	&& git checkout -q 3f9b46636b88759ef46cb46fe163ea13567d1851 \
+	&& git checkout -q e9d784aec5311435c1894c5f4d31222be15a1ad8 \
 	&& git submodule update --init --recursive
 
 # Add Bootstrap to LocalSettings.php if the web installer added the Chameleon skin
@@ -900,9 +900,9 @@ RUN set -x; \
 RUN set -x; \
     cd $MW_HOME/extensions \
     # WSSlots
-    && git clone --single-branch -b master https://github.com/Open-CSP/WSSlots.git $MW_HOME/extensions/WSSlots \
+    && git clone --single-branch -b REL1_43 https://github.com/WikiTeq/WSSlots.git $MW_HOME/extensions/WSSlots \
     && cd $MW_HOME/extensions/WSSlots \
-    && git checkout -q dfdcd6adea3fae512c4469704ef93accff83937f
+    && git checkout -q a46d1309ab11034aa7e3a762e392346c1b0ecd67
 
 # J
 RUN set -x; \
