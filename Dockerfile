@@ -4,7 +4,7 @@ LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
 ENV MW_VERSION=REL1_43 \
-	MW_CORE_VERSION=1.43-alpha-3f9b466 \
+	MW_CORE_VERSION=1.43-alpha-8d8e568 \
 	WWW_ROOT=/var/www/mediawiki \
 	MW_HOME=/var/www/mediawiki/w \
 	MW_LOG=/var/log/mediawiki \
@@ -124,7 +124,7 @@ FROM base AS core
 RUN set -x; \
 	git clone --depth 1 -b REL1_43 https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME \
 	&& cd $MW_HOME \
-	&& git checkout -q e9d784aec5311435c1894c5f4d31222be15a1ad8 \
+	&& git checkout -q 8d8e568f547c7b6d3b3132ef422e3ddad3c5a51d \
 	&& git submodule update --init --recursive
 
 # Add Bootstrap to LocalSettings.php if the web installer added the Chameleon skin
@@ -685,6 +685,18 @@ RUN set -x; \
 	&& git checkout -q 5084a6f6a3640e16940a2de15c8deef4d89b9b6c
 
 #### WikiTeq extensions ####
+
+# A
+RUN set -x; \
+	cd $MW_HOME/extensions \
+  	# AddMessages
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/AddMessages $MW_HOME/extensions/AddMessages \
+	&& cd $MW_HOME/extensions/AddMessages \
+	&& git checkout -q 2c2bf5f314ff8b1e822dc964597fb227cacb87ee \
+	# Auth_remoteuser
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Auth_remoteuser $MW_HOME/extensions/Auth_remoteuser \
+	&& cd $MW_HOME/extensions/Auth_remoteuser \
+	&& git checkout -q 0a27d7d0696495d56540c1045241b82fde9ebd4f
 
 # B
 RUN set -x; \

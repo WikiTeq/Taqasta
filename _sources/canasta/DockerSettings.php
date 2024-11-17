@@ -39,11 +39,13 @@ const DOCKER_EXTENSIONS = [
 	'SemanticMediaWiki', // keep it at the top to be enabled first, because some Semantic extension don't work in other case.
 	'AJAXPoll',
 	'AbuseFilter',
+	'AddMessages',
 	'AdminLinks',
 	'AdvancedSearch',
 	'AntiSpoof',
 	'ApprovedRevs',
 	'Arrays',
+	'Auth_remoteuser',
 	'BetaFeatures',
 	'Bootstrap',
 	'BootstrapComponents',
