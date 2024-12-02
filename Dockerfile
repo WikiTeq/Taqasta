@@ -53,6 +53,7 @@ RUN set x; \
 	&& aptitude update \
 	&& aptitude install -y \
 	php8.1 \
+ 	php8.1-ldap \
 	php8.1-mysql \
 	php8.1-cli \
 	php8.1-gd \
@@ -415,15 +416,15 @@ RUN set -x; \
 	# LDAPAuthentication2
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LDAPAuthentication2 $MW_HOME/extensions/LDAPAuthentication2 \
 	&& cd $MW_HOME/extensions/LDAPAuthentication2 \
-	&& git checkout -q 6bc584893d3157d5180e0e3ed93c3dbbc5b93056 \
+	&& git checkout -q 7bb88f979cc85ae01ef128bc5ee806fe4d44594c \
 	# LDAPAuthorization
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LDAPAuthorization $MW_HOME/extensions/LDAPAuthorization \
 	&& cd $MW_HOME/extensions/LDAPAuthorization \
-	&& git checkout -q e6815d29c22f4b4eb85f868372a729ad49d7d3c8 \
+	&& git checkout -q d1f680b286466b072ec275c516e63d49e906009e \
 	# LDAPProvider
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LDAPProvider $MW_HOME/extensions/LDAPProvider \
 	&& cd $MW_HOME/extensions/LDAPProvider \
-	&& git checkout -q 80f8cc8156b0cd250d0dfacd9378ed0db7c2091d \
+	&& git checkout -q 8765eeacbf80927f8f48a03e6f92dfe47f6901c2 \
 	# Lingo
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/Lingo $MW_HOME/extensions/Lingo \
 	&& cd $MW_HOME/extensions/Lingo \
