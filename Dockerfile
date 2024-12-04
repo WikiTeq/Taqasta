@@ -4,7 +4,7 @@ LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
 ENV MW_VERSION=REL1_43 \
-	MW_CORE_VERSION=1.43-alpha-6ed44af \
+	MW_CORE_VERSION=1.43-alpha-9d44ba5 \
 	WWW_ROOT=/var/www/mediawiki \
 	MW_HOME=/var/www/mediawiki/w \
 	MW_LOG=/var/log/mediawiki \
@@ -125,7 +125,7 @@ FROM base AS core
 RUN set -x; \
 	git clone --depth 1 -b REL1_43 https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME \
 	&& cd $MW_HOME \
-	&& git checkout -q 6ed44af225bda1cd36bca9a4225ee9096ec47fdc \
+	&& git checkout -q 9d44ba51d4029b491c8e90cd5aef691cb97e24e9 \
 	&& git submodule update --init --recursive
 
 # Add Bootstrap to LocalSettings.php if the web installer added the Chameleon skin
