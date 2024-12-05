@@ -2,13 +2,16 @@
 
 BOOTSTRAP_LOGFILE="$MW_LOG/_bootstrap_$(date -u +%Y%m%d).log"
 
+echo "See Bash XTrace in the $BOOTSTRAP_LOGFILE file"
+
 # Open file descriptor 3 for logging xtrace output
 exec 3>"$BOOTSTRAP_LOGFILE"
 
-# Redirect both stdout and stderr to the log file and console using tee
-exec > >(tee -a "$BOOTSTRAP_LOGFILE") 2>&1
+# Redirect stdout and stderr to the log file using tee,
+# with stdbuf to handle buffering issues
+exec > >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE") 2>&1
 
-# Enable xtrace and redirect the xtrace output to file descriptor 3 only
+# Enable xtrace and Redirect the xtrace output to log file only
 BASH_XTRACEFD=3
 set -x
 
