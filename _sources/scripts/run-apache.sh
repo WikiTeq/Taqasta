@@ -27,7 +27,7 @@ mkdir -p "$MW_VOLUME"/extensions/SemanticMediaWiki/config
 mkdir -p "$MW_VOLUME"/extensions/GoogleLogin/cache
 mkdir -p "$MW_VOLUME"/l10n_cache
 
-printf "\nCheck wiki settings for errors..."
+printf "\nCheck wiki settings for errors... "
 if ! php /getMediawikiSettings.php --version MediaWiki; then
     printf "\n===================================== ERROR ======================================\n\n"
     echo "An error occurred while checking the wiki settings."
