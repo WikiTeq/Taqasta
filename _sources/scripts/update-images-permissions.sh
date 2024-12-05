@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sleep 0.01
+
 # Check if BOOTSTRAP_LOGFILE is defined and not empty
 if [ -n "$BOOTSTRAP_LOGFILE" ]; then
     # If BOOTSTRAP_LOGFILE is defined, set up logging
@@ -8,6 +10,8 @@ if [ -n "$BOOTSTRAP_LOGFILE" ]; then
     BASH_XTRACEFD=3
 fi
 set -x
+
+printf "\n\n===== update-images-permissions.sh =====\n\n\n"
 
 . /functions.sh
 
