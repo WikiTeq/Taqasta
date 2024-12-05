@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Open file descriptor 3 for logging xtrace output
-exec 3>>"$LOGFILE"
+exec 3>>"$BOOTSTRAP_LOGFILE"
 
 # Redirect stdout and stderr through tee to the console and log file
-exec > >(stdbuf -oL tee -a "$LOGFILE") 2>&1
+exec > >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE") 2>&1
 
 sleep 0.02
 printf "\n\n===== run-maintenance-script.sh =====\n\n\n"
