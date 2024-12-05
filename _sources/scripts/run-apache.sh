@@ -1,5 +1,15 @@
 #!/bin/bash
 
+BOOTSTRAP_LOGFILE="$MW_LOG/_bootstrap_$(date -u +%Y%m%d).log"
+
+# Open file descriptor 3 for logging xtrace output
+exec 3>"$BOOTSTRAP_LOGFILE"
+
+# Redirect both stdout and stderr to the log file and console using tee
+exec > >(tee -a "$BOOTSTRAP_LOGFILE") 2>&1
+
+# Enable xtrace and redirect the xtrace output to file descriptor 3 only
+BASH_XTRACEFD=3
 set -x
 
 . /functions.sh
