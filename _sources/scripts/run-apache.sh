@@ -27,6 +27,15 @@ mkdir -p "$MW_VOLUME"/extensions/SemanticMediaWiki/config
 mkdir -p "$MW_VOLUME"/extensions/GoogleLogin/cache
 mkdir -p "$MW_VOLUME"/l10n_cache
 
+# Check wiki settings (LocalSettings.php) for errors
+if ! php /getMediawikiSettings.php --version MediaWiki; then
+    printf "\n\n===================================== ERROR ======================================\n\n"
+    echo "An error occurred while checking the wiki settings."
+    echo "There is an error in the wiki settings files, or you missed to run the \"git submodule update --init --recursive\" command"
+    printf "\n==================================================================================\n\n"
+    exit 1
+fi
+
 /update-docker-gateway.sh
 
 # Write log files to $MW_VOLUME/log directory if target folders are not mounted
