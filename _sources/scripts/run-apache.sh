@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export BOOTSTRAP_LOGFILE="$MW_LOG/_bootstrap_$(date -u +%Y%m%d).log"
+BOOTSTRAP_LOGFILE="$MW_LOG/_bootstrap_$(date -u +%Y%m%d).log"
+export BOOTSTRAP_LOGFILE
 
 echo "See Bash XTrace in the $BOOTSTRAP_LOGFILE file"
 
