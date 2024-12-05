@@ -10,7 +10,7 @@ exec 3>"$BOOTSTRAP_LOGFILE"
 
 # Redirect stdout and stderr to the log file using tee,
 # with stdbuf to handle buffering issues
-exec > >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE") 2>&1
+exec > >(stdbuf -o0 tee -a "$BOOTSTRAP_LOGFILE") 2>&1
 
 # Enable xtrace and Redirect the xtrace output to log file only
 BASH_XTRACEFD=3
