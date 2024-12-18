@@ -20,6 +20,8 @@ set -x
 
 . /functions.sh
 
+export_vars_from_docker_secret_files
+
 if ! mountpoint -q -- "$MW_VOLUME"; then
     echo "Folder $MW_VOLUME contains important data and must be mounted to persistent storage!"
     if ! isTrue "$MW_ALLOW_UNMOUNTED_VOLUME"; then
