@@ -40,16 +40,28 @@ export_vars_from_docker_secret_files() {
       continue
     fi
 
-    file_paths="${!env_var}" # Get the value of the _FILE variable (space-separated paths)
+    file_paths="${!env_var}" # Get paths to secret files
 
-    # Check each file path and use the first valid one
+    # Process each file path and use the first valid one
     for file_path in $file_paths; do
       if [[ -f "$file_path" && -r "$file_path" ]]; then
-        # Read the first valid file's content
+        # Read file content
         content=$(<"$file_path")
-        export "$base_var=$content" # Set and export the base variable with the file's content
-        echo "* Defined variable $base_var using $file_path file"
-        break # Stop after successfully reading the first file
+
+        # Export the variable for the current session
+        export "$base_var=$content"
+
+        # Check if the value is already in /etc/environment
+        if grep -q "^$base_var=" /etc/environment; then
+          # Remove variable if it already exists (to allow updating)
+          sed -i "/^${base_var}=/d" /etc/environment
+        fi
+
+        # Append the updated value to /etc/environment
+        echo "$base_var=$content" >> /etc/environment
+
+        echo "* Updated or added variable $base_var using $file_path"
+        break # Stop after first valid file
       fi
     done
   done
