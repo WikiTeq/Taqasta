@@ -963,6 +963,13 @@ RUN set -x; \
     # WLDR-303
     && GIT_COMMITTER_EMAIL=docker@docker.invalid git cherry-pick -x 94ceca65c23a2894da1a26445077c786671aef0c
 
+# Apply patch to hook MassMessage to MassMessageEmail, DEMO-122
+# This should be removed after upgrading to MW 1.43 and MassMessage 0.5
+COPY _sources/patches/mass-message-email-hook.patch /tmp/MassMessage-email-hook.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/MassMessage \
+	&& git apply /tmp/MassMessage-email-hook.patch
+
 # Fixes PHP parsoid errors when user replies on a flow message, see https://phabricator.wikimedia.org/T260648#6645078
 COPY _sources/patches/flow-conversion-utils.patch /tmp/flow-conversion-utils.patch
 RUN set -x; \

@@ -1,0 +1,32 @@
+From 0825fe697bd9b6c9c778798ae233e9cf5c437474 Mon Sep 17 00:00:00 2001
+From: Brent Laabs <bslaabs@gmail.com>
+Date: Thu, 19 Dec 2024 02:16:08 -0800
+Subject: [PATCH] Include hook for MassMessageEmail inside MassMessage (1.39)
+
+Per the extension's install instructions, we need to patch in
+a new hook into MassMessage, so that emails are sent instead of
+just messaging on talk pages.  This should only be relevant for
+Mediawiki 1.39 LTS, as the hook is included in the >=1.43
+version of MassMessage.
+---
+ includes/Job/MassMessageJob.php | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/includes/Job/MassMessageJob.php b/includes/Job/MassMessageJob.php
+index 634c194..0a80ad3 100644
+--- a/includes/Job/MassMessageJob.php
++++ b/includes/Job/MassMessageJob.php
+@@ -317,7 +317,9 @@ class MassMessageJob extends Job {
+ 			&& !$targetPage->inNamespace( NS_TOPIC );
+ 
+ 		// If the page is using a different discussion system, handle it specially
+-		if ( $isLqtThreads || $isStructuredDiscussion ) {
++		if ( !\Hooks::run( 'MassMessageJobBeforeMessageSent', [ $this, $targetPage, $subject, $message, $pageSubject, $pageMessage, $comment ] ) ) {
++			return true;
++		} elseif ( $isLqtThreads || $isStructuredDiscussion ) {
+ 			$subject = $messageBuilder->buildPlaintextSubject( $subject, $pageSubject );
+ 			$message = $messageBuilder->buildMessage(
+ 				$messageBuilder->stripTildes( $message ),
+-- 
+2.45.1
+
