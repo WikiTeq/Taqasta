@@ -1029,7 +1029,11 @@ ENV MW_AUTOUPDATE=true \
 	MW_DB_SERVER=db \
 	MW_DB_NAME=mediawiki \
 	MW_DB_USER=root \
+	MW_DB_PASS_FILE="/run/secrets/db_password /run/secrets/db_root_password" \
 	MW_DB_INSTALLDB_USER=root \
+	MW_DB_INSTALLDB_PASS_FILE=/run/secrets/db_root_password \
+	MW_ADMIN_USER_FILE=/run/secrets/mw_admin_user \
+	MW_ADMIN_PASS_FILE=/run/secrets/mw_admin_password \
 	MW_REDIS_SERVERS=redis:6379 \
 	MW_CIRRUS_SEARCH_SERVERS=elasticsearch \
 	MW_MAINTENANCE_CIRRUSSEARCH_UPDATECONFIG=2 \
@@ -1055,6 +1059,7 @@ ENV MW_AUTOUPDATE=true \
 	LOG_FILES_REMOVE_OLDER_THAN_DAYS=10 \
 	MEDIAWIKI_MAINTENANCE_AUTO_ENABLED=false \
 	MW_SENTRY_DSN="" \
+	MW_SENTRY_DSN_FILE=/run/secrets/mw_sentry_dns \
 	MW_USE_CACHE_DIRECTORY=1 \
 	APACHE_REMOTE_IP_HEADER=X-Forwarded-For \
 	MW_AUTO_IMPORT=1
@@ -1093,7 +1098,11 @@ RUN set -x; \
 	# For Widgets extension
 	&& mkdir -p $MW_ORIGIN_FILES/extensions/Widgets \
 	&& mv $MW_HOME/extensions/Widgets/compiled_templates $MW_ORIGIN_FILES/extensions/Widgets/ \
-	&& ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates
+	&& ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates \
+	# Modify /etc/bash.bashrc
+	&& echo 'if [ -f /etc/environment ]; then' >> /etc/bash.bashrc \
+	&& echo '    export $(grep -v "^#" /etc/environment | xargs)' >> /etc/bash.bashrc \
+	&& echo 'fi' >> /etc/bash.bashrc
 
 COPY _sources/images/Powered-by-Canasta.png /var/www/mediawiki/w/resources/assets/
 
