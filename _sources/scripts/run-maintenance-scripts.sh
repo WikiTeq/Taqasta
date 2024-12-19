@@ -1,9 +1,17 @@
 #!/bin/bash
 
 sleep 0.02
-printf "\n\n===== run-maintenance-script.sh =====\n\n\n"
 
+# Check if BOOTSTRAP_LOGFILE is defined and not empty
+if [ -n "$BOOTSTRAP_LOGFILE" ]; then
+    # If BOOTSTRAP_LOGFILE is defined, set up logging
+    # Open file descriptor 3 for logging xtrace output
+    exec 3>>"$BOOTSTRAP_LOGFILE"
+    BASH_XTRACEFD=3
+fi
 set -x
+
+printf "\n\n===== run-maintenance-script.sh =====\n\n\n"
 
 . /functions.sh
 
@@ -24,9 +32,6 @@ WG_SITE_NAME=$(get_mediawiki_variable wgSitename)
 WG_SEARCH_TYPE=$(get_mediawiki_variable wgSearchType)
 WG_CIRRUS_SEARCH_SERVER=$(get_hostname_with_port "$(get_mediawiki_variable wgCirrusSearchServers first)" 9200)
 VERSION_HASH=$(php /getMediawikiSettings.php --versions --format=md5)
-if [ -z "$MW_DB_INSTALLDB_PASS" ] && [ -f /run/secrets/db_root_password ]; then
-    MW_DB_INSTALLDB_PASS=$(< /run/secrets/db_root_password)
-fi
 
 waitdatabase() {
     if [ -n "$db_started" ]; then
@@ -209,12 +214,6 @@ if [ ! -e "$MW_VOLUME/LocalSettings.php" ] && [ ! -e "$MW_HOME/LocalSettings.php
             echo "Database exists. Create a symlink to DockerSettings.php as LocalSettings.php"
             ln -s "$MW_HOME/DockerSettings.php" "$MW_VOLUME/LocalSettings.php"
         else
-            if [ -z "$MW_ADMIN_USER" ] && [ -f /run/secrets/mw_admin_user ]; then
-                MW_ADMIN_USER=$(< /run/secrets/mw_admin_user)
-            fi
-            if [ -z "${MW_ADMIN_PASS}" ] && [ -f /run/secrets/mw_admin_password ]; then
-                MW_ADMIN_PASS=$(< /run/secrets/mw_admin_password)
-            fi
             for x in MW_DB_INSTALLDB_PASS MW_ADMIN_USER MW_ADMIN_PASS
             do
                 if [ -z "${!x}" ]; then
