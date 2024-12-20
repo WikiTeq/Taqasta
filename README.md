@@ -27,6 +27,30 @@ need to manually go through the MediaWiki installation process, while Taqasta
 will perform it automatically. This is especially helpful if you want to copy
 the configuration of an existing wiki.
 
+## Environment Variable Management with `*_FILE`
+
+Taqasta simplifies the configuration of environment variables by supporting `*_FILE`
+variables, which allow you to specify paths to files (e.g., Docker secrets) that contain
+the variable’s value. If the corresponding environment variable is not already defined
+and the file exists, its content is automatically read and assigned to the environment variable.
+For example, if `MW_DB_PASS_FILE` is specified and points to a valid file,
+the variable `MW_DB_PASS` will be automatically populated with the file's content.
+
+### Predefined Variables
+
+Several environment variables are predefined in Taqasta, allowing you to easily use
+Docker secret files without needing to manually define `*_FILE` variables.
+Below is the list of predefined `*_FILE` environment variables and their
+corresponding default paths:
+
+```
+MW_DB_PASS_FILE="/run/secrets/db_password /run/secrets/db_root_password"
+MW_DB_INSTALLDB_PASS_FILE=/run/secrets/db_root_password
+MW_ADMIN_USER_FILE=/run/secrets/mw_admin_user
+MW_ADMIN_PASS_FILE=/run/secrets/mw_admin_password
+MW_SENTRY_DSN_FILE=/run/secrets/mw_sentry_dns
+```
+
 Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
 various extensions and other tweaks that the WikiTeq team uses.
