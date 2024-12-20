@@ -29,7 +29,6 @@ make_dir_writable() {
          -exec chgrp "$WWW_GROUP" {} \; -exec chmod g=rwX {} \;
 }
 
-
 export_vars_from_docker_secret_files() {
   # Iterate over all environment variables ending with '_FILE'
   for env_var in $(compgen -v | grep '_FILE$'); do
@@ -60,7 +59,7 @@ export_vars_from_docker_secret_files() {
         # Append the updated value to /etc/environment
         echo "$base_var=$content" >> /etc/environment
 
-        echo "* Updated or added variable $base_var using $file_path"
+        echo "* Defined variable $base_var with value from $file_path"
         break # Stop after first valid file
       fi
     done
