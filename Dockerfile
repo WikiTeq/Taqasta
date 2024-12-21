@@ -131,10 +131,6 @@ RUN set -x; \
 	cd $MW_HOME \
 	&& git apply /tmp/core-local-settings-generator.patch
 
-# Patch composer
-RUN set -x; \
-	sed -i 's="monolog/monolog": "2.2.0",="monolog/monolog": "^2.2",=g' $MW_HOME/composer.json
-
 # Cleanup all .git leftovers
 RUN set -x; \
 	cd $MW_HOME \
