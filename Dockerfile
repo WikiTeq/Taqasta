@@ -753,7 +753,7 @@ RUN set -x; \
    	# IframePage
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/IframePage $MW_HOME/extensions/IframePage \
 	&& cd $MW_HOME/extensions/IframePage \
-	&& git checkout -q IframePage
+	&& git checkout -q 31f27b2388c2032e121a062561924419ce2fe0e9
 
 # L
 RUN set -x; \
