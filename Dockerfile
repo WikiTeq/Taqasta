@@ -936,12 +936,10 @@ RUN set -x; \
 	&& git apply /tmp/FlexDiagrams.0.4.fix.diff
 
 # PageForms WLDR-319, WLDR-318
-COPY _sources/patches/PF.5.6.usedisplaytitle.autocomplete.forminput.diff /tmp/PF.5.6.usedisplaytitle.autocomplete.forminput.diff
+COPY _sources/patches/pageforms-5.9-displaytitle.patch /tmp/pageforms-5.9-displaytitle.patch
 RUN set -x; \
     cd $MW_HOME/extensions/PageForms \
-    && git apply /tmp/PF.5.6.usedisplaytitle.autocomplete.forminput.diff \
-    # WLDR-303
-    && GIT_COMMITTER_EMAIL=docker@docker.invalid git cherry-pick -x 94ceca65c23a2894da1a26445077c786671aef0c
+    && git apply /tmp/pageforms-5.9-displaytitle.patch
 
 # GoogleLogin gerrit patches 1070987 and 1074530 applied to REL1_43
 COPY _sources/patches/GoogleLogin-fixes.patch /tmp/GoogleLogin-fixes.patch
