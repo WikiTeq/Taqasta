@@ -1071,6 +1071,7 @@ COPY _sources/configs/scan.conf /etc/clamd.d/scan.conf
 COPY _sources/configs/php_*.ini /etc/php/8.1/cli/conf.d/
 COPY _sources/configs/php_*.ini /etc/php/8.1/apache2/conf.d/
 COPY _sources/scripts/*.sh /
+COPY _sources/scripts/profile.d/* /etc/profile.d/
 COPY _sources/scripts/*.php $MW_HOME/maintenance/
 COPY _sources/configs/robots.php $WWW_ROOT/
 COPY _sources/configs/robots.txt $WWW_ROOT/
@@ -1098,11 +1099,7 @@ RUN set -x; \
 	# For Widgets extension
 	&& mkdir -p $MW_ORIGIN_FILES/extensions/Widgets \
 	&& mv $MW_HOME/extensions/Widgets/compiled_templates $MW_ORIGIN_FILES/extensions/Widgets/ \
-	&& ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates \
-	# Modify /etc/bash.bashrc
-	&& echo 'if [ -f /etc/environment ]; then' >> /etc/bash.bashrc \
-	&& echo '    export $(grep -v "^#" /etc/environment | xargs)' >> /etc/bash.bashrc \
-	&& echo 'fi' >> /etc/bash.bashrc
+	&& ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates
 
 COPY _sources/images/Powered-by-Canasta.png /var/www/mediawiki/w/resources/assets/
 
