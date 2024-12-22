@@ -35,6 +35,7 @@ the variable’s value. If the corresponding environment variable is not already
 and the file exists, its content is automatically read and assigned to the environment variable.
 For example, if `MW_DB_PASS_FILE` is specified and points to a valid file,
 the variable `MW_DB_PASS` will be automatically populated with the file's content.
+When the secret files changed, the docker container should be restarted to apply the changes.
 
 ### Predefined Variables
 

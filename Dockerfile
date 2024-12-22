@@ -1112,6 +1112,4 @@ WORKDIR $MW_HOME
 HEALTHCHECK --interval=1m --timeout=10s \
 	CMD wget -q --method=HEAD localhost/w/api.php
 
-SHELL ["/bin/bash", "-l", "-c"]
-
 CMD ["/run-apache.sh"]
