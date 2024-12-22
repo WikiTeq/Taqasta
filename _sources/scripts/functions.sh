@@ -30,38 +30,34 @@ make_dir_writable() {
 }
 
 export_vars_from_docker_secret_files() {
-  # Iterate over all environment variables ending with '_FILE'
-  for env_var in $(compgen -v | grep '_FILE$'); do
-    base_var="${env_var%_FILE}" # Get variable name without the "_FILE" suffix
+    [ -f /etc/environment_secrets ] && rm /etc/environment_secrets
 
-    # Skip if the base variable is already defined
-    if [[ -n "${!base_var}" ]]; then
-      continue
-    fi
+    # Iterate over all environment variables ending with '_FILE'
+    for env_var in $(compgen -v | grep '_FILE$'); do
+        base_var="${env_var%_FILE}" # Get variable name without the "_FILE" suffix
 
-    file_paths="${!env_var}" # Get paths to secret files
-
-    # Process each file path and use the first valid one
-    for file_path in $file_paths; do
-      if [[ -f "$file_path" && -r "$file_path" ]]; then
-        # Read file content
-        content=$(<"$file_path")
-
-        # Export the variable for the current session
-        export "$base_var=$content"
-
-        # Check if the value is already in /etc/environment
-        if grep -q "^$base_var=" /etc/environment; then
-          # Remove variable if it already exists (to allow updating)
-          sed -i "/^${base_var}=/d" /etc/environment
+        # Skip if the base variable is already defined
+        if [[ -n "${!base_var}" ]]; then
+            continue
         fi
 
-        # Append the updated value to /etc/environment
-        echo "$base_var=$content" >> /etc/environment
+        file_paths="${!env_var}" # Get paths to secret files
 
-        echo "* Defined variable $base_var with value from $file_path"
-        break # Stop after first valid file
-      fi
+        # Process each file path and use the first valid one
+        for file_path in $file_paths; do
+            if [[ -f "$file_path" && -r "$file_path" ]]; then
+                # Read file content
+                content=$(<"$file_path")
+
+                # Export the variable for the current session
+                export "$base_var=$content"
+
+                # Append the updated value to /etc/environment_secrets
+                echo "$base_var=$content" >> /etc/environment_secrets
+
+                echo "* Defined variable $base_var with value from $file_path"
+                break # Stop after first valid file
+            fi
+        done
     done
-  done
 }
