@@ -173,7 +173,6 @@ const DOCKER_EXTENSIONS = [
 	'SemanticDrilldown',
 	'SemanticExtraSpecialProperties',
 //	'SemanticMediaWiki', moved the top to be enabled first, because some Semantic extension don't work in other case.
-	'SemanticQueryInterface',
 	'SemanticResultFormats',
 	'SemanticScribunto',
 	'SemanticWatchlist',
