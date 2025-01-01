@@ -808,6 +808,7 @@ RUN set -x; \
 	# SelectCategory
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory $MW_HOME/extensions/SelectCategory \
 	&& cd $MW_HOME/extensions/SelectCategory \
+	&& git checkout -q 1f351647af2e235e11139aa8f1b70c19a3556c61 \
 	# Sentry (WikiTeq fork that uses sentry/sentry 3.x)
 	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extensions-Sentry.git $MW_HOME/extensions/Sentry \
 	&& cd $MW_HOME/extensions/Sentry \
