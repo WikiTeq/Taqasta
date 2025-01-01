@@ -808,15 +808,6 @@ RUN set -x; \
 	# SelectCategory
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory $MW_HOME/extensions/SelectCategory \
 	&& cd $MW_HOME/extensions/SelectCategory \
-	&& git checkout -q 1f351647af2e235e11139aa8f1b70c19a3556c61 \
-	# SemanticQueryInterface
-	&& git clone https://github.com/vedmaka/SemanticQueryInterface.git $MW_HOME/extensions/SemanticQueryInterface \
-	&& cd $MW_HOME/extensions/SemanticQueryInterface \
-	&& git checkout -q 0016305a95ecbb6ed4709bfa3fc6d9995d51336f \
-	&& mv SemanticQueryInterface/* . \
-	&& rmdir SemanticQueryInterface \
-	&& ln -s SQI.php SemanticQueryInterface.php \
-	&& rm -fr .git \
 	# Sentry (WikiTeq fork that uses sentry/sentry 3.x)
 	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extensions-Sentry.git $MW_HOME/extensions/Sentry \
 	&& cd $MW_HOME/extensions/Sentry \
