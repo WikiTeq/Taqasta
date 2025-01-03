@@ -6,6 +6,7 @@ export BOOTSTRAP_LOGFILE
 
 echo "==== STARTING $date ===="
 echo "See Bash XTrace in the $BOOTSTRAP_LOGFILE file"
+echo
 
 # Open file descriptor 3 for logging xtrace output
 exec 3> >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE" >/dev/null)
@@ -19,6 +20,8 @@ BASH_XTRACEFD=3
 set -x
 
 . /functions.sh
+
+export_vars_from_docker_secret_files
 
 if ! mountpoint -q -- "$MW_VOLUME"; then
     echo "Folder $MW_VOLUME contains important data and must be mounted to persistent storage!"
