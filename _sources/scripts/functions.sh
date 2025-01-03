@@ -30,6 +30,9 @@ make_dir_writable() {
 }
 
 export_vars_from_docker_secret_files() {
+    # Remove the /etc/environment_secrets file if it exists
+    # to ensure it is recreated from scratch with only the current variables,
+    # preventing conflicts with previously defined values.
     [ -f /etc/environment_secrets ] && rm /etc/environment_secrets
 
     # Iterate over all environment variables ending with '_FILE'
