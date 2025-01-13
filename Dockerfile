@@ -241,7 +241,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/DataTransfer \
 	&& git checkout -q 70b1911e695b3f01d0f3d059308888bc8fec361c \
 	# DebugMode, see https://www.mediawiki.org/wiki/Extension:DebugMode
-	&& git clone --single-branch -b master https://github.com/wikimedia/mediawiki-extensions-DebugMode.git $MW_HOME/extensions/DebugMode \
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/DebugMode $MW_HOME/extensions/DebugMode \
 	&& cd $MW_HOME/extensions/DebugMode \
 	&& git checkout -q ea803a501175fb3009f0fcde7d9168ef8e374399 \
 	# Description2
