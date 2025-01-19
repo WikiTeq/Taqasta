@@ -159,6 +159,10 @@ jobs:
           cache-to: type=gha,mode=max
           load: true
 
+      - name: Set up environment
+        shell: bash
+        run: mv .env.ci .env
+
       - name: Setup Docker Compose
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}

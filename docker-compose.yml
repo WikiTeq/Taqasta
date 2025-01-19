@@ -24,8 +24,6 @@ services:
             - "${PORT:-127.0.0.1:8000}:80"
         links:
             - db
-        env_file:
-            - .env.ci
         environment:
             - MW_ADMIN_USER=${MW_ADMIN_USER:-admin}
             - MW_ADMIN_PASS=${MW_ADMIN_PASS:-Passsw0rd!}
