@@ -20,9 +20,9 @@ test('has a signup link', async ({page}) => {
     await expect(page.locator('#pt-createaccount')).toContainText(/Create account/);
 });
 
-test('has chameleon skin enabled by default', async ({page}) => {
+test('has vector skin enabled by default', async ({page}) => {
     await page.goto('/');
-    await expect(page.locator('body')).toHaveClass(/skin-chameleon/);
+    await expect(page.locator('body')).toHaveClass(/skin-vector-legacy/);
 });
 
 test('edit for anonymous is enabled by default', async ({page}) => {
