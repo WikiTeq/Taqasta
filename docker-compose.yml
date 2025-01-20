@@ -61,10 +61,22 @@ services:
             - MW_DEBUG_MODE
         volumes:
             - mediawiki:/mediawiki
-            - settings:/var/www/mediawiki/w/_settings
+            - ./e2e/LocalSettings.php:/var/www/mediawiki/w/_settings/LocalSettings.php
+
+    e2e:
+        build:
+            context: ./e2e
+            dockerfile: Dockerfile
+        links:
+            - web
+        volumes:
+            - ./e2e/playwright.config.ts:/e2e/playwright.config.ts
+            - ./e2e/tests/:/e2e/tests
+            - ./e2e/playwright-report/:/e2e/playwright-report
+        profiles:
+            - e2elocal
 
 volumes:
     mediawiki:
     mysql:
     initdb:
-    settings:
