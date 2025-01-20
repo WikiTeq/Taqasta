@@ -26,3 +26,6 @@ wfLoadExtension( 'VisualEditor' );
 
 // Avoid beta welcome popup that might interfere with the save button
 $wgVisualEditorShowBetaWelcome = false;
+
+// Allow testing uploads without needing to log in
+$wgGroupPermissions['*']['upload'] = true;
