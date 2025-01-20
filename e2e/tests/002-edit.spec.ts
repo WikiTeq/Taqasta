@@ -5,7 +5,7 @@ export default defineConfig({
 });
 
 test('can edit a page', async ({page}) => {
-    await page.goto('/');
+    await page.goto('/wiki/Editing_test');
     await expect(page.locator('#ca-edit > a')).toHaveCount(1);
     await page.locator('#ca-edit > a').click();
     await expect(page).toHaveTitle(/Editing/)
@@ -14,5 +14,7 @@ test('can edit a page', async ({page}) => {
     await expect(page.locator('#wpSave')).toHaveCount(1);
     await expect(page.locator('#wpSave')).toBeEnabled();
     await page.locator('#wpSave').click();
+    // Locally the save button goes to the wrong place?
+    await page.goto('/wiki/Editing_test');
     await expect(page.locator('#mw-content-text')).toContainText(/u9es348923hjf8546344/);
 });

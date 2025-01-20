@@ -6,32 +6,32 @@ export default defineConfig({
 });
 
 test('has successful installation message', async ({page}) => {
-    await page.goto('/');
+    await page.goto('/wiki/Main_Page');
     await expect(page.locator('#content')).toContainText(/MediaWiki has been installed/);
 });
 
 test('has a login link', async ({page}) => {
-    await page.goto('/');
+    await page.goto('/wiki/Main_Page');
     await expect(page.locator('#pt-login')).toContainText(/Log in/);
 });
 
 test('has a signup link', async ({page}) => {
-    await page.goto('/');
+    await page.goto('/wiki/Main_Page');
     await expect(page.locator('#pt-createaccount')).toContainText(/Create account/);
 });
 
 test('has vector skin enabled by default', async ({page}) => {
-    await page.goto('/');
+    await page.goto('/wiki/Main_Page');
     await expect(page.locator('body')).toHaveClass(/skin-vector-legacy/);
 });
 
 test('edit for anonymous is enabled by default', async ({page}) => {
-    await page.goto('/');
+    await page.goto('/wiki/Main_Page');
     await expect(page.locator('#ca-edit')).toHaveCount(1);
 });
 
 test('visual editor is enabled', async ({page}) => {
-    await page.goto('/');
+    await page.goto('/wiki/Main_Page');
     await expect(page.locator('#ca-ve-edit')).toHaveCount(1);
 });
 
