@@ -66,8 +66,11 @@ RUN set x; \
 	php8.1-curl \
 	php8.1-tidy \
 	php8.1-zip \
-	php8.1-tideways \
+	php8.1-tideways
+
+RUN set x; \
 # Lua sandbox
+	aptitude install -y \
 	php-pear \
 	php8.1-dev \
 	liblua5.1-0 \
