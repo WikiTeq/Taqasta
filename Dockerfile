@@ -85,6 +85,7 @@ RUN set x; \
 	jq \
 #	xvfb \ + 14.9 MB
 #	lilypond \ + 301 MB
+	# testing
 	&& pecl -d php_suffix=8.1 install luasandbox \
 	&& pecl -d php_suffix=8.1 install excimer \
 	&& aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev \
