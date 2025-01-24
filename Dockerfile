@@ -508,7 +508,8 @@ RUN set -x; \
 	# OpenIDConnect
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/OpenIDConnect $MW_HOME/extensions/OpenIDConnect \
 	&& cd $MW_HOME/extensions/OpenIDConnect \
-	&& git checkout -q 1d741bde52bc702a68e328bce07a629731fb245a
+	&& git checkout -q f68146b341213ded4552540eb29ede133c6ff0b5
+
 # P
 RUN set -x; \
 	cd $MW_HOME/extensions \
