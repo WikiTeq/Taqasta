@@ -290,10 +290,10 @@ RUN set -x; \
 # D
 RUN set -x; \
 	cd $MW_HOME/extensions \
-	# DataTransfer
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DataTransfer $MW_HOME/extensions/DataTransfer \
+	# DataTransfer (v. 1.6.2)
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/DataTransfer $MW_HOME/extensions/DataTransfer \
 	&& cd $MW_HOME/extensions/DataTransfer \
-	&& git checkout -q 2cc7e74d4922c8dc375dfcc9391c1b6d21195995 \
+	&& git checkout -q 2693332aeb146681e54bb1131a3330235f14f742 \
 	# DeleteBatch
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DeleteBatch $MW_HOME/extensions/DeleteBatch \
 	&& cd $MW_HOME/extensions/DeleteBatch \
