@@ -568,9 +568,8 @@ RUN set -x; \
 	# SimpleChanges
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges $MW_HOME/extensions/SimpleChanges \
 	&& cd $MW_HOME/extensions/SimpleChanges \
-	# Switch back to REL1_39 once https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117621 is merged
-	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges refs/changes/21/1117621/1 \
-	&& git checkout FETCH_HEAD \
+	# Switch back to REL1_43 once https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618 is merged
+	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges refs/changes/18/1117618/1 && git checkout FETCH_HEAD \
 	# SimpleMathJax
 	&& git clone --single-branch https://github.com/jmnote/SimpleMathJax.git $MW_HOME/extensions/SimpleMathJax \
 	&& cd $MW_HOME/extensions/SimpleMathJax \
