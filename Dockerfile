@@ -290,10 +290,10 @@ RUN set -x; \
 # D
 RUN set -x; \
 	cd $MW_HOME/extensions \
-	# DataTransfer
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DataTransfer $MW_HOME/extensions/DataTransfer \
+	# DataTransfer (v. 1.6.2)
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/DataTransfer $MW_HOME/extensions/DataTransfer \
 	&& cd $MW_HOME/extensions/DataTransfer \
-	&& git checkout -q 2cc7e74d4922c8dc375dfcc9391c1b6d21195995 \
+	&& git checkout -q 2693332aeb146681e54bb1131a3330235f14f742 \
 	# DeleteBatch
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/DeleteBatch $MW_HOME/extensions/DeleteBatch \
 	&& cd $MW_HOME/extensions/DeleteBatch \
@@ -508,7 +508,8 @@ RUN set -x; \
 	# OpenIDConnect
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/OpenIDConnect $MW_HOME/extensions/OpenIDConnect \
 	&& cd $MW_HOME/extensions/OpenIDConnect \
-	&& git checkout -q 1d741bde52bc702a68e328bce07a629731fb245a
+	&& git checkout -q f68146b341213ded4552540eb29ede133c6ff0b5
+
 # P
 RUN set -x; \
 	cd $MW_HOME/extensions \
@@ -567,7 +568,8 @@ RUN set -x; \
 	# SimpleChanges
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges $MW_HOME/extensions/SimpleChanges \
 	&& cd $MW_HOME/extensions/SimpleChanges \
-	&& git checkout -q 024aca4c80d2a6b697f3d85e99de8e198b126999 \
+	# Switch back to REL1_43 once https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618 is merged
+	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges refs/changes/18/1117618/1 && git checkout FETCH_HEAD \
 	# SimpleMathJax
 	&& git clone --single-branch https://github.com/jmnote/SimpleMathJax.git $MW_HOME/extensions/SimpleMathJax \
 	&& cd $MW_HOME/extensions/SimpleMathJax \
