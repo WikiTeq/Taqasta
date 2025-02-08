@@ -667,9 +667,10 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/Widgets \
 	&& git checkout -q 50da5c66923ec5169f5606cc1d76f38f0b759d71 \
 	# WikiForum
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiForum $MW_HOME/extensions/WikiForum \
+	# The master branch contains needed features, see MW-353
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiForum $MW_HOME/extensions/WikiForum \
 	&& cd $MW_HOME/extensions/WikiForum \
-	&& git checkout -q 34526466f179d6998e60ea98dbd3f78a90213520 \
+	&& git checkout -q 2f28b51b58d8e9714cba210a74656851209f944f \
 	# WikiSEO
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiSEO $MW_HOME/extensions/WikiSEO \
 	&& cd $MW_HOME/extensions/WikiSEO \
