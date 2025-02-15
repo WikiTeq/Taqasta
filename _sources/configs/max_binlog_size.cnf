@@ -1,0 +1,2 @@
+[mysqld]
+max_binlog_size=100M
