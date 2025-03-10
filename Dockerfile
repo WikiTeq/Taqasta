@@ -532,7 +532,7 @@ RUN set -x; \
 	# PagePort (code moved to gerrit after REL1_43 cut)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/PagePort $MW_HOME/extensions/PagePort \
 	&& cd $MW_HOME/extensions/PagePort \
-	&& git checkout -q 0679a33d62559367fce2486c4ccae02f27c26d9f
+	&& git checkout -q 0a72ffe3674f1a229f1cd1bfb00aee332ac3481e
 
 # R
 RUN set -x; \
