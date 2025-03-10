@@ -1,5 +1,4 @@
 # # Note: this is a dummy Compose file for CI, do not modify or use it until you know what you're doing
-version: '3.1'
 services:
     db:
         image: mysql:8.0
@@ -49,6 +48,10 @@ services:
             dockerfile: Dockerfile
         links:
             - web
+        # Load `npx playwright show-report --host 0.0.0.0` to access reports
+        # on localhost:9323
+        ports:
+            - 9323:9323
         volumes:
             - ./e2e/playwright.config.ts:/e2e/playwright.config.ts
             - ./e2e/tests/:/e2e/tests

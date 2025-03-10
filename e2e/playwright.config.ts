@@ -22,8 +22,8 @@ export default defineConfig({
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: (process.env.CI || process.env.TAQASTA_E2E_IN_DOCKER) ? 1 : 0,
+  /* No retries */
+  retries: 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -32,12 +32,17 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: baseURL,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    /* Keep traces for failed tests. See https://playwright.dev/docs/trace-viewer */
+    trace: 'retain-on-failure',
+    /* Screenshot, see https://playwright.dev/docs/api/class-testoptions#test-options-screenshot */
+    screenshot: 'only-on-failure',
   },
 
   // global timeout per suite
   globalTimeout: 60 * 60 * 1000,
+
+  /* 5 minutes per test */
+  timeout: 5 * 60 * 1000,
 
   /* Configure projects for major browsers */
   projects: [

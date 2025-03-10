@@ -1,9 +1,4 @@
 import {test, expect} from '@playwright/test';
-import {defineConfig} from '@playwright/test';
-
-export default defineConfig({
-    timeout: 5 * 60 * 1000, // 5 minutes per test
-});
 
 test('has successful installation message', async ({page}) => {
     await page.goto('/wiki/Main_Page');
@@ -27,12 +22,12 @@ test('has vector skin enabled by default', async ({page}) => {
 
 test('edit for anonymous is enabled by default', async ({page}) => {
     await page.goto('/wiki/Main_Page');
-    await expect(page.locator('#ca-edit')).toHaveCount(1);
+    await expect(page.locator('#ca-edit')).toBeVisible();
 });
 
 test('visual editor is enabled', async ({page}) => {
     await page.goto('/wiki/Main_Page');
-    await expect(page.locator('#ca-ve-edit')).toHaveCount(1);
+    await expect(page.locator('#ca-ve-edit')).toBeVisible();
 });
 
 test('special version works', async ({page}) => {
