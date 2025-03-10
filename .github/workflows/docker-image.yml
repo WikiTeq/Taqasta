@@ -195,7 +195,7 @@ jobs:
       - name: Run Playwright tests
         working-directory: ./e2e
         run: npx playwright test
-#      - uses: actions/upload-artifact@v3
+#      - uses: actions/upload-artifact@v4
 #        if: failure()
 #        with:
 #          name: playwright-report
@@ -203,7 +203,7 @@ jobs:
 #          retention-days: 7
 
       - name: Upload screenshots as a github-pages artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         if: failure()
         with:
           name: playwright-report
@@ -295,7 +295,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment_pages
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
         with:
           artifact_name: playwright-report
           token: ${{ secrets.GITHUB_TOKEN }}
