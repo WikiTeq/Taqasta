@@ -1004,7 +1004,11 @@ ENV MW_AUTOUPDATE=true \
 	MW_DB_SERVER=db \
 	MW_DB_NAME=mediawiki \
 	MW_DB_USER=root \
+	MW_DB_PASS_FILE="/run/secrets/db_password /run/secrets/db_root_password" \
 	MW_DB_INSTALLDB_USER=root \
+	MW_DB_INSTALLDB_PASS_FILE=/run/secrets/db_root_password \
+	MW_ADMIN_USER_FILE=/run/secrets/mw_admin_user \
+	MW_ADMIN_PASS_FILE=/run/secrets/mw_admin_password \
 	MW_REDIS_SERVERS=redis:6379 \
 	MW_CIRRUS_SEARCH_SERVERS=elasticsearch \
 	MW_MAINTENANCE_CIRRUSSEARCH_UPDATECONFIG=2 \
@@ -1030,6 +1034,7 @@ ENV MW_AUTOUPDATE=true \
 	LOG_FILES_REMOVE_OLDER_THAN_DAYS=10 \
 	MEDIAWIKI_MAINTENANCE_AUTO_ENABLED=false \
 	MW_SENTRY_DSN="" \
+	MW_SENTRY_DSN_FILE=/run/secrets/mw_sentry_dns \
 	MW_USE_CACHE_DIRECTORY=1 \
 	APACHE_REMOTE_IP_HEADER=X-Forwarded-For \
 	MW_AUTO_IMPORT=1
@@ -1041,6 +1046,7 @@ COPY _sources/configs/scan.conf /etc/clamd.d/scan.conf
 COPY _sources/configs/php_*.ini /etc/php/8.1/cli/conf.d/
 COPY _sources/configs/php_*.ini /etc/php/8.1/apache2/conf.d/
 COPY _sources/scripts/*.sh /
+COPY _sources/scripts/profile.d/* /etc/profile.d/
 COPY _sources/scripts/*.php $MW_HOME/maintenance/
 COPY _sources/configs/robots.php $WWW_ROOT/
 COPY _sources/configs/robots.txt $WWW_ROOT/
@@ -1068,7 +1074,9 @@ RUN set -x; \
 	# For Widgets extension
 	&& mkdir -p $MW_ORIGIN_FILES/extensions/Widgets \
 	&& mv $MW_HOME/extensions/Widgets/compiled_templates $MW_ORIGIN_FILES/extensions/Widgets/ \
-	&& ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates
+	&& ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates \
+	# Modify /etc/bash.bashrc (loaded for `docker-compose exec web bash` command)
+	&& echo '. /etc/profile.d/load-env-vars.sh' >> /etc/bash.bashrc
 
 COPY _sources/images/Powered-by-Canasta.png /var/www/mediawiki/w/resources/assets/
 
