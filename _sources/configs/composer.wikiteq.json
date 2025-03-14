@@ -1,8 +1,8 @@
 {
 	"require": {
 		"mediawiki/semantic-media-wiki": "4.2.0",
-		"mediawiki/chameleon-skin": "4.2.1",
-		"mediawiki/bootstrap-components": "5.0.0",
+		"mediawiki/chameleon-skin": "5.0.0",
+		"mediawiki/bootstrap-components": "5.2.1",
 		"mediawiki/mermaid": "3.1.0",
 		"mediawiki/remote-wiki": "dev-master#da859c2c5081d96a6492f178686251136d35ec23",
 		"mediawiki/semantic-compound-queries": "2.2.0",
