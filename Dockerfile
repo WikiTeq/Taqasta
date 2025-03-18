@@ -1,6 +1,6 @@
 FROM debian:12.5 AS base
 
-LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
+LABEL maintainers="contact@wikiteq.com,pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
 ENV MW_VERSION=REL1_43 \
