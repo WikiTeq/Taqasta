@@ -1020,9 +1020,11 @@ ENV MW_AUTOUPDATE=true \
 	MW_SITEMAP_SUBDIR="" \
 	MW_SITEMAP_IDENTIFIER="mediawiki" \
 	MW_CONFIG_DIR=/mediawiki/config \
-	# E_ALL = 32767
-	# E_ALL & ~E_DEPRECATED & ~E_STRICT = 22527
-	# E_ALL & ~E_USER_DEPRECATED & ~E_DEPRECATED & ~E_STRICT = 6143
+	# The value should be a numeric error reporting level, not a named constant like `E_ALL`.
+	# Below are examples of commonly used numeric values:
+	#   32767 : E_ALL (all errors and warnings)
+	#   22527 : E_ALL & ~E_DEPRECATED & ~E_STRICT (exclude deprecated and strict errors)
+	#   6143  : E_ALL & ~E_USER_DEPRECATED & ~E_DEPRECATED & ~E_STRICT (exclude user-deprecated, deprecated, and strict errors)
 	PHP_ERROR_REPORTING=6143 \
 	PHP_UPLOAD_MAX_FILESIZE=10M \
 	PHP_POST_MAX_SIZE=10M \
