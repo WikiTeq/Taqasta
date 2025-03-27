@@ -1,6 +1,6 @@
 FROM debian:12.5 AS base
 
-LABEL maintainers="pavel@wikiteq.com,alexey@wikiteq.com"
+LABEL maintainers="contact@wikiteq.com,pavel@wikiteq.com,alexey@wikiteq.com"
 LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
 
 ENV MW_VERSION=REL1_43 \
@@ -532,7 +532,7 @@ RUN set -x; \
 	# PagePort (code moved to gerrit after REL1_43 cut)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/PagePort $MW_HOME/extensions/PagePort \
 	&& cd $MW_HOME/extensions/PagePort \
-	&& git checkout -q 0679a33d62559367fce2486c4ccae02f27c26d9f
+	&& git checkout -q 0a72ffe3674f1a229f1cd1bfb00aee332ac3481e
 
 # R
 RUN set -x; \
@@ -667,9 +667,10 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/Widgets \
 	&& git checkout -q 50da5c66923ec5169f5606cc1d76f38f0b759d71 \
 	# WikiForum
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiForum $MW_HOME/extensions/WikiForum \
+	# The master branch contains needed features, see MW-353
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiForum $MW_HOME/extensions/WikiForum \
 	&& cd $MW_HOME/extensions/WikiForum \
-	&& git checkout -q 34526466f179d6998e60ea98dbd3f78a90213520 \
+	&& git checkout -q 2f28b51b58d8e9714cba210a74656851209f944f \
 	# WikiSEO
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiSEO $MW_HOME/extensions/WikiSEO \
 	&& cd $MW_HOME/extensions/WikiSEO \
