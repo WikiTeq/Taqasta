@@ -255,10 +255,10 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/CodeMirror \
 	&& git checkout -q 5b6096aaed463519b8f99aa79fadb4498b474905 \
 	# Collection (patched version, see SEB2-16)
-	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection $MW_HOME/extensions/Collection \
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection $MW_HOME/extensions/Collection \
 	&& cd $MW_HOME/extensions/Collection \
 	# TODO replace with checkout to a commit when the patch merged, https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131358
-	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection refs/changes/04/1131404/2 \
+	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection refs/changes/00/1131800/1 \
 	&& git reset --hard FETCH_HEAD \
 	# CommentStreams
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CommentStreams $MW_HOME/extensions/CommentStreams \
