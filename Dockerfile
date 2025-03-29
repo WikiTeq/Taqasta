@@ -329,7 +329,7 @@ RUN set -x; \
 	# Echo
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Echo $MW_HOME/extensions/Echo \
 	&& cd $MW_HOME/extensions/Echo \
-	&& git checkout -q If90ea177df35e9e05bde3cea4a4456b3ddd75475 \
+	&& git checkout -q ff71eeab07c766e76a84d424e0edbcf77aeeb557 \
 	# Editcount
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Editcount $MW_HOME/extensions/Editcount \
 	&& cd $MW_HOME/extensions/Editcount \
