@@ -323,6 +323,10 @@ RUN set -x; \
 # E
 RUN set -x; \
 	cd $MW_HOME/extensions \
+	# Echo (patched WLDR-367) \
+	# TODO this patch should be added in MW 1.43.1+, check and remove this rewind then
+	&& cd $MW_HOME/extensions/Echo \
+	&& git checkout -q 629e7a3ce07e7d987895315ef6bf9de32261f390 \
 	# Editcount
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Editcount $MW_HOME/extensions/Editcount \
 	&& cd $MW_HOME/extensions/Editcount \
