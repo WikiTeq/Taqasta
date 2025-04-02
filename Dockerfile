@@ -123,7 +123,8 @@ FROM base AS core
 RUN set -x; \
 	git clone --depth 1 -b $MW_CORE_VERSION https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME \
 	&& cd $MW_HOME \
-	&& git submodule update --init --recursive
+	&& git submodule update --init --recursive \
+	&& rm -fr $MW_HOME/extensions/Echo # TODO the extension (fixed version) will be added below
 
 # Add Bootstrap to LocalSettings.php if the web installer added the Chameleon skin
 COPY _sources/patches/core-local-settings-generator.patch /tmp/core-local-settings-generator.patch
@@ -324,7 +325,9 @@ RUN set -x; \
 RUN set -x; \
 	cd $MW_HOME/extensions \
 	# Echo (patched WLDR-367) \
-	# TODO this patch should be added in MW 1.43.1+, check and remove this rewind then
+	# TODO this patch should be added in MW 1.43.1+, check and remove this then \
+	# TODO DON'T FORGET TO REMOVE "rm -fr $MW_HOME/extensions/Echo" above
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Echo $MW_HOME/extensions/Echo \
 	&& cd $MW_HOME/extensions/Echo \
 	&& git checkout -q 629e7a3ce07e7d987895315ef6bf9de32261f390 \
 	# Editcount
