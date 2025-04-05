@@ -900,7 +900,7 @@ RUN set -x; \
 	# WSSlots
 	&& git clone --single-branch -b REL1_43 https://github.com/WikiTeq/WSSlots.git $MW_HOME/extensions/WSSlots \
 	&& cd $MW_HOME/extensions/WSSlots \
-	&& git checkout -q a46d1309ab11034aa7e3a762e392346c1b0ecd67
+	&& git checkout -q 9a39063a848130030c35944dea047386315051ae
 
 # J
 RUN set -x; \
