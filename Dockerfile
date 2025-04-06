@@ -884,7 +884,9 @@ RUN set -x; \
    	# GoogleLogin
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
 	&& cd $MW_HOME/extensions/GoogleLogin \
-	&& git checkout -q 0c653d036198d5fd52f8588776b95415ccc0eef4
+	# TODO Switch to the REL1_XX branch when the patch is merged, MN-103
+	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin refs/changes/54/1134354/1  \
+	&& git checkout FETCH_HEAD
 
 # V
 RUN set -x; \
@@ -931,12 +933,6 @@ COPY _sources/patches/pageforms-5.9-displaytitle.patch /tmp/pageforms-5.9-displa
 RUN set -x; \
 	cd $MW_HOME/extensions/PageForms \
 	&& git apply /tmp/pageforms-5.9-displaytitle.patch
-
-# GoogleLogin gerrit patches 1070987 and 1074530 applied to REL1_43
-COPY _sources/patches/GoogleLogin-fixes.patch /tmp/GoogleLogin-fixes.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/GoogleLogin \
-	&& git apply /tmp/GoogleLogin-fixes.patch
 
 # GoogleAnalyticsMetrics pins google/apiclient to 2.12.6, relax it
 COPY _sources/patches/GoogleAnalyticsMetrics-relax-pin.patch /tmp/GoogleAnalyticsMetrics-relax-pin.patch
