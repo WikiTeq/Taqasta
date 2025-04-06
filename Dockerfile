@@ -257,7 +257,7 @@ RUN set -x; \
 	# Collection (patched version, see SEB2-16)
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection $MW_HOME/extensions/Collection \
 	&& cd $MW_HOME/extensions/Collection \
-	# TODO replace with checkout to a commit when the patch merged, https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131358
+	# TODO replace with checkout to a commit when the patch merged, https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131800
 	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection refs/changes/00/1131800/1 \
 	&& git reset --hard FETCH_HEAD \
 	# CommentStreams
