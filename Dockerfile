@@ -254,10 +254,12 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CodeMirror $MW_HOME/extensions/CodeMirror \
 	&& cd $MW_HOME/extensions/CodeMirror \
 	&& git checkout -q 5b6096aaed463519b8f99aa79fadb4498b474905 \
-	# Collection
+	# Collection (patched version, see SEB2-16)
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection $MW_HOME/extensions/Collection \
 	&& cd $MW_HOME/extensions/Collection \
-	&& git checkout -q 85442735f3b05c6b92f44183d4d043f430f1e889 \
+	# TODO replace with checkout to a commit when the patch merged, https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131800
+	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection refs/changes/00/1131800/1 \
+	&& git reset --hard FETCH_HEAD \
 	# CommentStreams
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CommentStreams $MW_HOME/extensions/CommentStreams \
 	&& cd $MW_HOME/extensions/CommentStreams \
@@ -807,7 +809,7 @@ RUN set -x; \
 	# No 1.43 branch
 	&& git clone https://github.com/nischayn22/Scopus.git $MW_HOME/extensions/Scopus \
 	&& cd $MW_HOME/extensions/Scopus \
-	&& git checkout -b REL1_39 4fe8048459d9189626d82d9d93a0d5f906c43746 \
+	&& git checkout -q 4fe8048459d9189626d82d9d93a0d5f906c43746 \
 	# SelectCategory
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory $MW_HOME/extensions/SelectCategory \
 	&& cd $MW_HOME/extensions/SelectCategory \
@@ -822,7 +824,7 @@ RUN set -x; \
 	&& git checkout -q 44e3569219e804829e1ff770bb9bd02b7dd7ec2b \
 	# SimpleTooltip
 	# No 1.43 branch
-	&& git clone --single-branch -b master https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
+	&& git clone --single-branch -b main https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
 	&& cd $MW_HOME/extensions/SimpleTooltip \
 	&& git checkout -b REL1_39 3146514ecda810d6ce9feb79ac8e0e0015f242eb \
 	# SimpleTippy
