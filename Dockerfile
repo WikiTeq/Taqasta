@@ -548,7 +548,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/RevisionSlider \
 	&& git checkout -q b10b2150133e77099a37b089003170c0111eb681 \
 	# RottenLinks
-	&& git clone --single-branch -b master https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
+	&& git clone --single-branch -b main https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
 	&& cd $MW_HOME/extensions/RottenLinks \
 	&& git checkout -q cb1d7376e7f900606b8f998e01280adf645d97c6
 
@@ -809,7 +809,7 @@ RUN set -x; \
 	# No 1.43 branch
 	&& git clone https://github.com/nischayn22/Scopus.git $MW_HOME/extensions/Scopus \
 	&& cd $MW_HOME/extensions/Scopus \
-	&& git checkout -b REL1_39 4fe8048459d9189626d82d9d93a0d5f906c43746 \
+	&& git checkout -q 4fe8048459d9189626d82d9d93a0d5f906c43746 \
 	# SelectCategory
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory $MW_HOME/extensions/SelectCategory \
 	&& cd $MW_HOME/extensions/SelectCategory \
@@ -824,7 +824,7 @@ RUN set -x; \
 	&& git checkout -q 44e3569219e804829e1ff770bb9bd02b7dd7ec2b \
 	# SimpleTooltip
 	# No 1.43 branch
-	&& git clone --single-branch -b master https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
+	&& git clone --single-branch -b main https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
 	&& cd $MW_HOME/extensions/SimpleTooltip \
 	&& git checkout -b REL1_39 3146514ecda810d6ce9feb79ac8e0e0015f242eb \
 	# SimpleTippy
