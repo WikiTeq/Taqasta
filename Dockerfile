@@ -546,7 +546,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/RevisionSlider \
 	&& git checkout -q b10b2150133e77099a37b089003170c0111eb681 \
 	# RottenLinks
-	&& git clone --single-branch -b master https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
+	&& git clone --single-branch -b main https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
 	&& cd $MW_HOME/extensions/RottenLinks \
 	&& git checkout -q cb1d7376e7f900606b8f998e01280adf645d97c6
 
