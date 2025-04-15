@@ -45,10 +45,11 @@ mkdir -p "$MW_VOLUME"/l10n_cache
 
 # Evaluate PHP_ERROR_REPORTING environment variable into an integer value
 if [ -n "$PHP_ERROR_REPORTING" ]; then
-  PHP_ERROR_REPORTING_CALCULATED=$(calculate_php_error_reporting "$PHP_ERROR_REPORTING")
+    echo "PHP_ERROR_REPORTING environment variable is set to: $PHP_ERROR_REPORTING"
+    PHP_ERROR_REPORTING_CALCULATED=$(calculate_php_error_reporting "$PHP_ERROR_REPORTING")
 else
-  echo "PHP_ERROR_REPORTING environment variable is unset or empty. Defaulting to E_ALL."
-  PHP_ERROR_REPORTING_CALCULATED=$(calculate_php_error_reporting "E_ALL")
+    echo "PHP_ERROR_REPORTING environment variable is unset or empty. Defaulting to E_ALL."
+    PHP_ERROR_REPORTING_CALCULATED=$(calculate_php_error_reporting "E_ALL")
 fi
 export PHP_ERROR_REPORTING_CALCULATED
 echo "PHP_ERROR_REPORTING_CALCULATED set to: $PHP_ERROR_REPORTING_CALCULATED"
