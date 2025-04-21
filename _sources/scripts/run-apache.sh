@@ -7,6 +7,18 @@ export BOOTSTRAP_LOGFILE
 echo "==== STARTING $date ===="
 echo "See Bash XTrace in the $BOOTSTRAP_LOGFILE file"
 
+echo "Checking permissions of Mediawiki log dir $MW_LOG..."
+if ! mountpoint -q -- "$MW_LOG"; then
+    mkdir -p "$MW_VOLUME/log/mediawiki"
+    rsync -avh --ignore-existing "$MW_LOG/" "$MW_VOLUME/log/mediawiki/"
+    mv "$MW_LOG" "${MW_LOG}_old"
+    ln -s "$MW_VOLUME/log/mediawiki" "$MW_LOG"
+    chmod -R o=rwX "$MW_VOLUME/log/mediawiki"
+else
+    chgrp -R "$WWW_GROUP" "$MW_LOG"
+    chmod -R go=rwX "$MW_LOG"
+fi
+
 # Open file descriptor 3 for logging xtrace output
 exec 3> >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE" >/dev/null)
 
@@ -43,16 +55,13 @@ mkdir -p "$MW_VOLUME"/extensions/SemanticMediaWiki/config
 mkdir -p "$MW_VOLUME"/extensions/GoogleLogin/cache
 mkdir -p "$MW_VOLUME"/l10n_cache
 
-# Evaluate PHP_ERROR_REPORTING environment variable into an integer value
-if [ -n "$PHP_ERROR_REPORTING" ]; then
-    echo "PHP_ERROR_REPORTING environment variable is set to: $PHP_ERROR_REPORTING"
-    PHP_ERROR_REPORTING_CALCULATED=$(calculate_php_error_reporting "$PHP_ERROR_REPORTING")
-else
-    echo "PHP_ERROR_REPORTING environment variable is unset or empty. Defaulting to E_ALL."
-    PHP_ERROR_REPORTING_CALCULATED=$(calculate_php_error_reporting "E_ALL")
-fi
-export PHP_ERROR_REPORTING_CALCULATED
-echo "PHP_ERROR_REPORTING_CALCULATED set to: $PHP_ERROR_REPORTING_CALCULATED"
+echo "PHP_ERROR_REPORTING environment variable is set to: $PHP_ERROR_REPORTING"
+# Update PHP configuration files with error reporting settings
+# First remove any existing error_reporting line, then add the new one
+sed -i '/^error_reporting/d' /etc/php/8.1/cli/conf.d/php_cli_error_reporting.ini
+sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.1/cli/conf.d/php_cli_error_reporting.ini
+sed -i '/^error_reporting/d' /etc/php/8.1/apache2/conf.d/php_cli_error_reporting.ini
+sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.1/apache2/conf.d/php_cli_error_reporting.ini
 
 printf "\nCheck wiki settings for errors... "
 if ! php /getMediawikiSettings.php --version MediaWiki; then
@@ -77,18 +86,6 @@ if ! mountpoint -q -- "$APACHE_LOG_DIR/"; then
 else
     chgrp -R "$WWW_GROUP" "$APACHE_LOG_DIR"
     chmod -R g=rwX "$APACHE_LOG_DIR"
-fi
-
-echo "Checking permissions of Mediawiki log dir $MW_LOG..."
-if ! mountpoint -q -- "$MW_LOG"; then
-    mkdir -p "$MW_VOLUME/log/mediawiki"
-    rsync -avh --ignore-existing "$MW_LOG/" "$MW_VOLUME/log/mediawiki/"
-    mv "$MW_LOG" "${MW_LOG}_old"
-    ln -s "$MW_VOLUME/log/mediawiki" "$MW_LOG"
-    chmod -R o=rwX "$MW_VOLUME/log/mediawiki"
-else
-    chgrp -R "$WWW_GROUP" "$MW_LOG"
-    chmod -R go=rwX "$MW_LOG"
 fi
 
 # Check permissions for sqlite database file in case if sqlite is used
