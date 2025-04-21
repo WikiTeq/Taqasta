@@ -60,8 +60,8 @@ echo "PHP_ERROR_REPORTING environment variable is set to: $PHP_ERROR_REPORTING"
 # First remove any existing error_reporting line, then add the new one
 sed -i '/^error_reporting/d' /etc/php/8.1/cli/conf.d/php_cli_error_reporting.ini
 sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.1/cli/conf.d/php_cli_error_reporting.ini
-sed -i '/^error_reporting/d' /etc/php/8.1/apache2/conf.d/php_cli_error_reporting.ini
-sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.1/apache2/conf.d/php_cli_error_reporting.ini
+sed -i '/^error_reporting/d' /etc/php/8.1/apache2/conf.d/php_apache2_error_reporting.ini
+sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.1/apache2/conf.d/php_apache2_error_reporting.ini
 
 printf "\nCheck wiki settings for errors... "
 if ! php /getMediawikiSettings.php --version MediaWiki; then
