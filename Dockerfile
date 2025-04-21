@@ -563,7 +563,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/RevisionSlider \
 	&& git checkout -q 3cae51a322a5ca0f359e83efcb5fac38e73e346e \
 	# RottenLinks
-	&& git clone --single-branch -b master https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
+	&& git clone --single-branch -b main https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
 	&& cd $MW_HOME/extensions/RottenLinks \
 	&& git checkout -q a96e99d0a61a42d59587a67db0720ce245a7ee46
 
@@ -850,9 +850,9 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/ShowMe \
 	&& git checkout -q 4190783befb0d440bb61149728cd7399a862c0fc \
 	# SimpleTooltip
-	&& git clone https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
+	&& git clone --single-branch -b main https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
 	&& cd $MW_HOME/extensions/SimpleTooltip \
-	&& git checkout -b $MW_VERSION a918f4a6f095e9d8cc9fde0efad7acef472d2e94 \
+	&& git checkout -q a918f4a6f095e9d8cc9fde0efad7acef472d2e94 \
 	# SimpleTippy
 	&& git clone https://github.com/vedmaka/mediawiki-extension-SimpleTippy.git $MW_HOME/extensions/SimpleTippy \
 	&& cd $MW_HOME/extensions/SimpleTippy \
