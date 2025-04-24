@@ -1041,8 +1041,11 @@ COPY _sources/configs/msmtprc /etc/
 COPY _sources/configs/mediawiki.conf /etc/apache2/sites-enabled/
 COPY _sources/configs/status.conf /etc/apache2/mods-available/
 COPY _sources/configs/scan.conf /etc/clamd.d/scan.conf
-COPY _sources/configs/php_*.ini /etc/php/8.1/cli/conf.d/
-COPY _sources/configs/php_*.ini /etc/php/8.1/apache2/conf.d/
+
+# UPDATE code related to PHP_ERROR_REPORTING in run-apache.sh when the paths changed
+COPY _sources/configs/php_cli_*.ini _sources/configs/php_common_*.ini /etc/php/8.1/cli/conf.d/
+COPY _sources/configs/php_apache2_*.ini _sources/configs/php_common_*.ini /etc/php/8.1/apache2/conf.d/
+
 COPY _sources/scripts/*.sh /
 COPY _sources/scripts/*.php $MW_HOME/maintenance/
 COPY _sources/configs/robots.php $WWW_ROOT/
