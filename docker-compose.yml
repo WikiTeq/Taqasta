@@ -21,7 +21,7 @@ services:
         restart: unless-stopped
         ports:
             - "${PORT:-127.0.0.1:8000}:80"
-        links:
+        depends_on:
             - db
         environment:
             - MW_ADMIN_USER=${MW_ADMIN_USER:-admin}
@@ -46,7 +46,7 @@ services:
         build:
             context: ./e2e
             dockerfile: Dockerfile
-        links:
+        depends_on:
             - web
         # Load `npx playwright show-report --host 0.0.0.0` to access reports
         # on localhost:9323

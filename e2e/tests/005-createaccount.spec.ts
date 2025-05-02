@@ -32,14 +32,12 @@ test('can create an account', async ({page}) => {
     await expect(page.locator('#wpCreateaccount')).toBeEnabled();
     await page.locator('#wpCreateaccount').click();
 
-    // Check the user exists - should redirect automatically
-    // But not in docker container where the redirect is to localhost but the
-    // actual wiki is accessible at `web:`, there we need to do it ourselves
-    if ( process.env.TAQASTA_E2E_IN_DOCKER ) {
-        await page.goto('/wiki/Special:MyPage');
-    } else {
-        await page.waitForURL('**/wiki/User:' + username);
-    }
+    // Check success message
+    await expect(page.locator('#firstHeading')).toContainText("Welcome, " + username);
+
+    // Use Special:MyPage to check the current user, will redirect to the
+    // user page
+    await page.goto('/wiki/Special:MyPage');
     await expect(page.locator('#firstHeading')).toContainText("User:" + username);
 });
 
