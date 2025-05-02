@@ -10,8 +10,7 @@ RUN npx playwright install chromium --with-deps
 
 ENV TAQASTA_E2E_IN_DOCKER=true
 
-# The command gets run via `docker compose exec e2e npx ...` since we want
-# to wait for the wiki to finish starting up. The command here just keeps
-# the container running forever until it is manually taken down
+# The command gets run via `docker compose exec e2e npx playwright test` since
+# we want to wait for the wiki to finish starting up. The command here just
+# keeps the container running forever until it is manually taken down
 CMD tail -f /dev/null
-# CMD npx playwright test

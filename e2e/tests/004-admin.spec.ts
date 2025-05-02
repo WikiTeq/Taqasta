@@ -20,7 +20,8 @@ test('can log in to existing account', async ({page}) => {
     await expect(page.locator('#wpLoginAttempt')).toBeEnabled();
     await page.locator('#wpLoginAttempt').click();
 
-    // Check the login - use Special:MyPage redirect
+    // Check the login - use Special:MyPage redirect to confirm that we are the
+    // correct user
     await page.goto('/wiki/Special:MyPage');
     await expect(page.locator('#firstHeading')).toContainText("User:" + ADMIN_USER_NAME);
 });

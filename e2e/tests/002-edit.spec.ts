@@ -10,7 +10,11 @@ test('Anonymous user can edit a page', async ({page}) => {
     await expect(page.locator('#wpSave')).toBeVisible();
     await expect(page.locator('#wpSave')).toBeEnabled();
     await page.locator('#wpSave').click();
-    // Locally the save button goes to the wrong place?
-    await page.goto('/wiki/Editing_test');
+    // In docker the redirect is different
+    if ( process.env.TAQASTA_E2E_IN_DOCKER ) {
+        await page.goto('/wiki/Editing_test');
+    } else {
+        await page.waitForURL('**/wiki/Editing_test');
+    }
     await expect(page.locator('#mw-content-text')).toContainText(/u9es348923hjf8546344/);
 });

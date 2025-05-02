@@ -32,11 +32,12 @@ test('Anonymous user can upload a file', async ({page}) => {
     await expect(page.locator('input[name="wpUpload"]')).toBeEnabled();
     await page.locator('input[name="wpUpload"]').click();
 
-    // Check the file page, should be sent there by the upload, except that
-    // the wiki will redirect to http://localhost:8000/... and from within the
-    // e2e container, the wiki is not at http://localhost:8000/, but rather at
-    // http://web/ and the redirect to localhost will be an error, need to
-    // manually get back to the wiki
-    await page.goto('/wiki/File:' + fileName);
+    // Check the file page, should be sent there by the upload, unless
+    // running in docker
+    if ( process.env.TAQASTA_E2E_IN_DOCKER ) {
+        await page.goto('/wiki/File:' + fileName);
+    } else {
+        await page.waitForURL('**/File:' + fileName);
+    }
     await expect(page.locator('#mw-content-text')).toContainText("See commons:File:Example.jpg");
 });
