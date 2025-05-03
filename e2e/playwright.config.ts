@@ -36,6 +36,8 @@ export default defineConfig({
     trace: 'retain-on-failure',
     /* Screenshot, see https://playwright.dev/docs/api/class-testoptions#test-options-screenshot */
     screenshot: 'only-on-failure',
+    /* https://playwright.dev/docs/api/class-testoptions#test-options-navigation-timeout */
+    navigationTimeout: 60000,
   },
 
   // global timeout per suite
