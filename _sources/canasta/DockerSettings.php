@@ -640,6 +640,11 @@ if ( !empty( getenv( 'AWS_IMAGES_BUCKET' ) ) ) {
 		// i.e. '/subdir'
 		$wgAWSBucketTopSubdirectory = getenv( 'AWS_IMAGES_SUBDIR' );
 	}
+
+	// some software (such as MinIO) doesn't use subdomains for buckets
+	if ( !empty( getenv( 'AWS_IMAGES_USEPATH') ) ) {
+		$wgFileBackends['s3']['use_path_style_endpoint'] = true;
+	}
 	// see https://github.com/edwardspec/mediawiki-aws-s3?tab=readme-ov-file#migrating-images
 	// this configuration resembles native images storage structure to allow
 	// for seamless migration of existing images to object storage
