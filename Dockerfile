@@ -908,9 +908,9 @@ RUN set -x; \
 RUN set -x; \
 	cd $MW_HOME/extensions \
 	# JWTAuth
-	&& git clone --single-branch -b main https://github.com/jeffw16/JWTAuth.git $MW_HOME/extensions/JWTAuth \
+	&& git clone --single-branch -b REL1_43 https://github.com/wikimedia/mediawiki-extensions-JWTAuth.git $MW_HOME/extensions/JWTAuth \
 	&& cd $MW_HOME/extensions/JWTAuth \
-	&& git checkout -q c7c0730160a84d6b60e3e1b6b108d790972f0f15 # Upgrade carefully, we had a problem with version 2.0, see MITE-50
+	&& git checkout -q 8bf7978f0ec1c16652366aaf80456a965eb76df0 # Upgrade carefully, we had a problem with version 2.0, see MITE-50
 
 # WikiTeq removes/fixes the extensions with issues in Canasta docker image, remove it if fixed in Canasta
 RUN set -x; \
