@@ -738,7 +738,7 @@ RUN set -x; \
 	# GTag
 	&& git clone https://github.com/SkizNet/mediawiki-GTag.git $MW_HOME/extensions/GTag \
 	&& cd $MW_HOME/extensions/GTag \
-	&& git checkout -q 90d87ea56777b2be3ab5f718b0b6644623a24d04
+	&& git checkout -q 570ceccdb7d6612ba37de0885c98a0b7fa95d341
 
 # H
 RUN set -x; \
