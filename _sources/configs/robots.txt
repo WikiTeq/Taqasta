@@ -1,4 +1,5 @@
 User-agent: *
+Crawl-delay: 5
 Allow: /w/load.php?
 Allow: /w/resources
 Allow: /w/skins
