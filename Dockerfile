@@ -390,7 +390,7 @@ RUN set -x; \
 	# HeaderFooter
 	&& git clone -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/HeaderFooter $MW_HOME/extensions/HeaderFooter \
 	&& cd $MW_HOME/extensions/HeaderFooter \
-	&& git checkout -q b5fa1769548ab6452b86c6ea0fa28197ecf11164 \
+	&& git checkout -q a0d0f4e39f3069925815ca37320f72995aeb80c3 \
 	# HeaderTabs (v2.3)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/HeaderTabs $MW_HOME/extensions/HeaderTabs \
 	&& cd $MW_HOME/extensions/HeaderTabs \
