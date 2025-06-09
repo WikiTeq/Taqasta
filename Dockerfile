@@ -526,7 +526,7 @@ RUN set -x; \
 	# PageForms (v. 5.9)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/PageForms $MW_HOME/extensions/PageForms \
 	&& cd $MW_HOME/extensions/PageForms \
-	&& git checkout -q 35099cf9fab298ceb5fbc51ed2c721eae2728406 \
+	&& git checkout -q ffcfb416a4f18e17df5ff02eed6004c6933c0d8f \
 	# PluggableAuth
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PluggableAuth $MW_HOME/extensions/PluggableAuth \
 	&& cd $MW_HOME/extensions/PluggableAuth \
@@ -931,12 +931,6 @@ COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
 RUN set -x; \
 	cd $MW_HOME/extensions/FlexDiagrams \
 	&& git apply /tmp/FlexDiagrams.0.4.fix.diff
-
-# PageForms WLDR-319, WLDR-318
-COPY _sources/patches/pageforms-5.9-displaytitle.patch /tmp/pageforms-5.9-displaytitle.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/PageForms \
-	&& git apply /tmp/pageforms-5.9-displaytitle.patch
 
 # GoogleLogin gerrit patches 1070987 and 1074530 applied to REL1_43
 COPY _sources/patches/GoogleLogin-fixes.patch /tmp/GoogleLogin-fixes.patch
