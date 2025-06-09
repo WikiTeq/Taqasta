@@ -526,7 +526,7 @@ RUN set -x; \
 	# PageForms (v. 5.9)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/PageForms $MW_HOME/extensions/PageForms \
 	&& cd $MW_HOME/extensions/PageForms \
-	&& git checkout -q 4ac28291df76dd5544d232d2988f69e61c86af3e \
+	&& git checkout -q 35099cf9fab298ceb5fbc51ed2c721eae2728406 \
 	# PluggableAuth
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PluggableAuth $MW_HOME/extensions/PluggableAuth \
 	&& cd $MW_HOME/extensions/PluggableAuth \
