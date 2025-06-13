@@ -213,7 +213,7 @@ RUN set -x; \
 	# ApprovedRevs (v. 1.8.2)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/ApprovedRevs $MW_HOME/extensions/ApprovedRevs \
 	&& cd $MW_HOME/extensions/ApprovedRevs \
-	&& git checkout -q 53b67bf7e1e8ac3d20c2fd41ad2ab1c708c045a6 \
+	&& git checkout -q 15b2cc3a381eb3bed59e36641de9de729c699a83 \
 	# Arrays
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Arrays $MW_HOME/extensions/Arrays \
 	&& cd $MW_HOME/extensions/Arrays \
@@ -390,7 +390,7 @@ RUN set -x; \
 	# HeaderFooter
 	&& git clone -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/HeaderFooter $MW_HOME/extensions/HeaderFooter \
 	&& cd $MW_HOME/extensions/HeaderFooter \
-	&& git checkout -q b5fa1769548ab6452b86c6ea0fa28197ecf11164 \
+	&& git checkout -q a0d0f4e39f3069925815ca37320f72995aeb80c3 \
 	# HeaderTabs (v2.3)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/HeaderTabs $MW_HOME/extensions/HeaderTabs \
 	&& cd $MW_HOME/extensions/HeaderTabs \
@@ -526,7 +526,7 @@ RUN set -x; \
 	# PageForms (v. 5.9)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/PageForms $MW_HOME/extensions/PageForms \
 	&& cd $MW_HOME/extensions/PageForms \
-	&& git checkout -q 4ac28291df76dd5544d232d2988f69e61c86af3e \
+	&& git checkout -q ffcfb416a4f18e17df5ff02eed6004c6933c0d8f \
 	# PluggableAuth
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/PluggableAuth $MW_HOME/extensions/PluggableAuth \
 	&& cd $MW_HOME/extensions/PluggableAuth \
@@ -931,12 +931,6 @@ COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
 RUN set -x; \
 	cd $MW_HOME/extensions/FlexDiagrams \
 	&& git apply /tmp/FlexDiagrams.0.4.fix.diff
-
-# PageForms WLDR-319, WLDR-318
-COPY _sources/patches/pageforms-5.9-displaytitle.patch /tmp/pageforms-5.9-displaytitle.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/PageForms \
-	&& git apply /tmp/pageforms-5.9-displaytitle.patch
 
 # GoogleLogin gerrit patches 1070987 and 1074530 applied to REL1_43
 COPY _sources/patches/GoogleLogin-fixes.patch /tmp/GoogleLogin-fixes.patch
