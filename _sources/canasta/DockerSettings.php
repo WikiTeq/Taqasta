@@ -679,7 +679,7 @@ if ( !empty( getenv( 'AWS_IMAGES_BUCKET' ) ) ) {
 	// for images to work in private mode, $wgUploadPath should point to img_auth.php
 	if ( !empty( getenv( 'AWS_IMAGES_PRIVATE' ) ) ) {
 		$wgFileBackends['s3']['privateWiki'] = true;
-		// When private mode is enabled we MUST revok read right from anonymous users
+		// When private mode is enabled we MUST revoke read right from anonymous users
 		// and MUST configure img_auth.php setting, see QLOUD-124
 		// NOTE: any possible overrides of these settings in any of the subsequently
 		// loaded configs (settings/*.php) must be REMOVED
