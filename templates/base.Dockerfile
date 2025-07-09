@@ -12,11 +12,11 @@ ENV MW_VERSION=REL1_43 \
 
 # System setup
 RUN set x; \
-	apt-get clean \
-	&& apt-get update \
-	&& apt-get --no-install-recommends install -y aptitude \
-	&& aptitude -y upgrade \
-	&& aptitude --without-recommends install -y \
+	apt-get clean && \
+	apt-get update && \
+	apt-get --no-install-recommends install -y aptitude && \
+	aptitude -y upgrade && \
+	aptitude --without-recommends install -y \
 	git \
 	inotify-tools \
 	apache2 \
@@ -43,11 +43,11 @@ RUN set x; \
 	rsync \
 	lynx \
 	poppler-utils \
-	lsb-release \
-	&& wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-	&& echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list \
-	&& aptitude update \
-	&& aptitude install -y \
+	lsb-release && \
+	wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
+	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
+	aptitude update && \
+	aptitude install -y \
 	php8.1 \
 	php8.1-mysql \
 	php8.1-cli \
@@ -78,38 +78,38 @@ RUN set x; \
 	ploticus \
 	djvulibre-bin \
 	fonts-hosny-amiri \
-	jq \
+	jq && \
 	#	xvfb \ + 14.9 MB
 	#	lilypond \ + 301 MB
-	&& pecl -d php_suffix=8.1 install luasandbox \
-	&& pecl -d php_suffix=8.1 install excimer \
-	&& aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev \
-	&& aptitude clean \
-	&& rm -rf /var/lib/apt/lists/*
+	pecl -d php_suffix=8.1 install luasandbox && \
+	pecl -d php_suffix=8.1 install excimer && \
+	aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev && \
+	aptitude clean && \
+	rm -rf /var/lib/apt/lists/*
 
 # FORCE USING PHP 8.1 (same for phar)
 # For some reason sury provides other versions, see
 # https://github.com/oerdnj/deb.sury.org/wiki/Frequently-Asked-Questions
 RUN set -x; \
-	update-alternatives --set php /usr/bin/php8.1 \
-	&& update-alternatives --set phar /usr/bin/phar8.1 \
-	&& update-alternatives --set phar.phar /usr/bin/phar.phar8.1
+	update-alternatives --set php /usr/bin/php8.1 && \
+	update-alternatives --set phar /usr/bin/phar8.1 && \
+	update-alternatives --set phar.phar /usr/bin/phar.phar8.1
 
 # Post install configuration
 RUN set -x; \
 	# Remove default config
-	rm /etc/apache2/sites-enabled/000-default.conf \
-	&& rm /etc/apache2/sites-available/000-default.conf \
-	&& rm -rf /var/www/html \
+	rm /etc/apache2/sites-enabled/000-default.conf && \
+	rm /etc/apache2/sites-available/000-default.conf && \
+	rm -rf /var/www/html && \
 	# Enable rewrite module
-	&& a2enmod rewrite \
+	a2enmod rewrite && \
 	# Create directories
-	&& mkdir -p $MW_HOME \
-	&& mkdir -p $MW_LOG \
-	&& mkdir -p $MW_ORIGIN_FILES \
-	&& mkdir -p $MW_VOLUME
+	mkdir -p $MW_HOME && \
+	mkdir -p $MW_LOG && \
+	mkdir -p $MW_ORIGIN_FILES && \
+	mkdir -p $MW_VOLUME
 
 # Composer
 RUN set -x; \
-	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-	&& composer self-update 2.1.3
+	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+	composer self-update 2.1.3
