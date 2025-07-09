@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# builds a Dockerfile out of Dockerfile.tmpl
+# compiles a Dockerfile out of Dockerfile.tmpl
 
 docker run -it --rm \
     --user "$(id -u)":"$(id -g)" \
