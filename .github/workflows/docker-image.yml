@@ -25,7 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Compile
+        run: bash template.sh
+
       -
         name: Run linter (hadolint)
         uses: vedmaka/hadolint-action@master
@@ -45,7 +49,11 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Compile
+        run: bash template.sh
+
       -
         name: Generate tags
         id: generate
