@@ -26,6 +26,10 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
+
+      - name: Compile
+        run: bash template.sh
+
       -
         name: Run linter (hadolint)
         uses: vedmaka/hadolint-action@master
@@ -50,7 +54,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Generate tags
+
+      - name: Compile
+        run: bash template.sh
+
+      -
+        name: Generate tags
         id: generate
         run: |
 
@@ -143,7 +152,7 @@ jobs:
       # We could perform the build in a separate job, but why for? let's save some bandwidth on caches
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64
