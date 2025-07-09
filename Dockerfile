@@ -260,11 +260,9 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/CodeMirror \
 	&& git checkout -q 5b6096aaed463519b8f99aa79fadb4498b474905 \
 	# Collection (patched version, see SEB2-16)
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection $MW_HOME/extensions/Collection \
+	&& git clone -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection $MW_HOME/extensions/Collection \
 	&& cd $MW_HOME/extensions/Collection \
-	# TODO replace with checkout to a commit when the patch merged, https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131800
-	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection refs/changes/00/1131800/1 \
-	&& git reset --hard FETCH_HEAD \
+	&& git checkout -q 1c5f7012e1fdd5024db5ab0820e44459109f810c \
 	# CommentStreams
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CommentStreams $MW_HOME/extensions/CommentStreams \
 	&& cd $MW_HOME/extensions/CommentStreams \
@@ -575,6 +573,7 @@ RUN set -x; \
 	# SimpleChanges
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges $MW_HOME/extensions/SimpleChanges \
 	&& cd $MW_HOME/extensions/SimpleChanges \
+	&& git checkout -q b8a5d63be2f99b4f82c743217b488743b73c84cd \
 	# Switch back to REL1_43 once https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618 is merged
 	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleChanges refs/changes/18/1117618/1 && git checkout FETCH_HEAD \
 	# SimpleMathJax
@@ -765,9 +764,9 @@ RUN set -x; \
 RUN set -x; \
 	cd $MW_HOME/extensions \
   	# Lazyload
-	&& git clone https://github.com/mudkipme/mediawiki-lazyload.git $MW_HOME/extensions/Lazyload \
+	&& git clone --single-branch -b $MW_VERSION https://github.com/mudkipme/mediawiki-lazyload.git $MW_HOME/extensions/Lazyload \
 	&& cd $MW_HOME/extensions/Lazyload \
-	&& git checkout -b $MW_VERSION 30a01cc149822353c9404ec178ec01848bae65c5 \
+	&& git checkout -q 30a01cc149822353c9404ec178ec01848bae65c5 \
 	# LiquidThreads
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LiquidThreads $MW_HOME/extensions/LiquidThreads \
 	&& cd $MW_HOME/extensions/LiquidThreads \
@@ -776,12 +775,10 @@ RUN set -x; \
 # M
 RUN set -x; \
 	cd $MW_HOME/extensions \
-   	# MassPasswordReset
-	# No 1.43 branch
-	&& cd $MW_HOME/extensions \
-	&& git clone https://github.com/nischayn22/MassPasswordReset.git \
-	&& cd MassPasswordReset \
-	&& git checkout -b REL1_39 04b7e765db994d41f5ca3a910e18f77105218d94 \
+	# MassPasswordReset (has no 1.43 branch)
+	&& git clone https://github.com/nischayn22/MassPasswordReset.git $MW_HOME/extensions/MassPasswordReset \
+	&& cd $MW_HOME/extensions/MassPasswordReset \
+	&& git checkout -q 04b7e765db994d41f5ca3a910e18f77105218d94 \
 	# MobileDetect
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileDetect $MW_HOME/extensions/MobileDetect \
 	&& cd $MW_HOME/extensions/MobileDetect \
@@ -827,11 +824,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ShowMe $MW_HOME/extensions/ShowMe \
 	&& cd $MW_HOME/extensions/ShowMe \
 	&& git checkout -q 44e3569219e804829e1ff770bb9bd02b7dd7ec2b \
-	# SimpleTooltip
-	# No 1.43 branch
-	&& git clone --single-branch -b main https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
+	# SimpleTooltip (has no 1.43 branch)
+	&& git clone https://github.com/Universal-Omega/SimpleTooltip.git $MW_HOME/extensions/SimpleTooltip \
 	&& cd $MW_HOME/extensions/SimpleTooltip \
-	&& git checkout -b REL1_39 3146514ecda810d6ce9feb79ac8e0e0015f242eb \
+	&& git checkout -q 3146514ecda810d6ce9feb79ac8e0e0015f242eb \
 	# SimpleTippy
 	&& git clone --single-branch -b master https://github.com/vedmaka/mediawiki-extension-SimpleTippy.git $MW_HOME/extensions/SimpleTippy \
 	&& cd $MW_HOME/extensions/SimpleTippy \
