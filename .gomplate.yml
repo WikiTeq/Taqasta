@@ -1,0 +1,9 @@
+inputFiles:
+  - Dockerfile.tmpl
+  - _sources/configs/composer.wikiteq.json.tmpl
+outputFiles:
+  - Dockerfile
+  - _sources/configs/composer.wikiteq.json
+datasources:
+  values:
+    url: values.yml
