@@ -1,0 +1,28 @@
+{
+	"require": {
+		{{- range $index, $ext := (ds "values").packages }}
+		"{{ $ext.name }}": "{{ $ext.version }}"{{ if lt $index (sub (len (ds "values").packages) 1) }},{{ end }}
+		{{- end }}
+	},
+	"extra": {
+		"merge-plugin": {
+			"include": [
+				{{- range $index, $ext := (ds "values").extensions }}
+				{{- range $name, $details := $ext -}}
+				{{- if has (index $details "additional steps") "composer update" }}
+				"extensions/{{ $name }}/composer.json"{{ if lt $index (sub (len (ds "values").extensions) 1) }},{{ end }}
+				{{- end }}
+				{{- end -}}
+				{{- end }}
+			]
+		}
+	},
+	"repositories": [
+		{{- range $index, $ext := (ds "values").repositories }}
+		{
+			"type": "{{ $ext.type }}",
+			"url": "{{ $ext.url }}"
+		}{{ if lt $index (sub (len (ds "values").repositories) 1) }},{{ end }}
+		{{- end }}
+	]
+}
