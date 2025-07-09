@@ -1,28 +1,40 @@
 RUN set -x; \
-	mkdir $MW_HOME/extensions \
-	&& cd $MW_HOME/extensions
+	mkdir $MW_HOME/extensions && \
+	cd $MW_HOME/extensions
 
-# https://github.com/docker/docs/issues/8230#issuecomment-475278273
-# We don't want to hit layers limits so have to be a single run
-# The code below generates a RUN command with a list of extensions from values.yml file
+# Split extensions into groups of 10 for better layer caching
+{{- $extensions := (ds "values").extensions -}}
+{{- $groupSize := 10 -}}
+{{- $total := len $extensions -}}
+{{- $groupCount := div (add $total (sub $groupSize 1)) $groupSize -}}
+{{- range $groupIndex := seq 0 (sub $groupCount 1) -}}
+  {{- $start := mul $groupIndex $groupSize -}}
+  {{- $end := add $start $groupSize -}}
+  {{- if gt $end $total -}}
+    {{- $end = $total -}}
+  {{- end }}
+
+# Extensions group {{ add $groupIndex 1 }} ({{ add $start 1 }}-{{ $end }})
 RUN set -x; \
-{{- $total := len (ds "values").extensions -}}
-{{- range $index, $ext := (ds "values").extensions -}}
-{{- /* $ext is a map with a single key = extension name */ -}}
-{{ range $name, $details := $ext }}
+    cd $MW_HOME/extensions && \
+    {{- range $relativeIndex := seq 0 (sub (sub $end $start) 1) -}}
+      {{- $extIndex := add $start $relativeIndex -}}
+      {{- $ext := index $extensions $extIndex -}}
+      {{- range $name, $details := $ext }}
 	# {{ $name }}
-    git clone --single-branch -b {{ default "$MW_VERSION" (index $details "branch") }} \
+	git clone --single-branch -b {{ default "$MW_VERSION" (index $details "branch") }} \
 	{{- if (index $details "repository") }}
 	{{ index $details "repository" }}
 	{{- else }}
 	https://gerrit.wikimedia.org/r/mediawiki/extensions/{{- $name }}
-	{{- end }} $MW_HOME/extensions/{{- $name }} \
-	&& cd $MW_HOME/extensions/{{- $name }} \
-	&& git checkout -q {{ $details.commit}} {{ if not (eq $index (sub $total 1) ) }}\{{ end }}
-{{- end -}}
+	{{- end }} $MW_HOME/extensions/{{- $name }} && \
+	cd $MW_HOME/extensions/{{- $name }} && \
+	git checkout -q {{ $details.commit}}{{ if not (eq $extIndex (sub $end 1) ) }} && \{{ end }}
+      {{- end -}}
+    {{- end }}
 {{- end }}
 
 # Cleanup all .git leftovers
 RUN set -x; \
-	cd $MW_HOME/extensions \
-	&& find . \( -name ".git" -o -name ".gitignore" -o -name ".gitmodules" -o -name ".gitattributes" \) -exec rm -rf -- {} +
+	cd $MW_HOME/extensions && \
+	find . \( -name ".git" -o -name ".gitignore" -o -name ".gitmodules" -o -name ".gitattributes" \) -exec rm -rf -- {} +
