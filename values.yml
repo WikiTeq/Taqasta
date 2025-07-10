@@ -94,6 +94,8 @@ extensions:
       commit: 0cc66c56ebcfdebc0d407d82ae584a5426523d9f
   - GoogleAnalyticsMetrics:
       commit: 441511d7c848f8b59a08dc160fb1062f67778032
+      additional steps:
+        - composer update
   - GoogleDocCreator:
       commit: 9db568cb4113ab99919fcb2e107e3428212f6ee1
   - HeaderFooter:
@@ -254,6 +256,8 @@ extensions:
       commit: e59561c56836a98bc5f5f3068bc81fd67a5d1c41
   - Flow:
       commit: fc462613fcdcefd03d03981d0660610cba21c6f6
+      additional steps:
+        - composer update
   - GoogleDocTag:
       commit: 50dfe68e36742b9c6ab24b734ab4401cf1d65178
   - GTag:
@@ -267,16 +271,21 @@ extensions:
   - Lazyload:
       commit: 30a01cc149822353c9404ec178ec01848bae65c5
       repository: https://github.com/mudkipme/mediawiki-lazyload.git
+      branch: master
   - LiquidThreads:
       commit: f0d9a0de69623655ca57c40bcd10cb933d9ec99f
   - MassPasswordReset:
       commit: 04b7e765db994d41f5ca3a910e18f77105218d94
       repository: https://github.com/nischayn22/MassPasswordReset.git
       branch: master
+      additional steps:
+        - composer update
   - MobileDetect:
       commit: 1c783c4abc9849e1409f386583404762463f263f
   - Mpdf:
       commit: dcd9c9b4587d2caefe6a952ca49be7b72eff1da0
+      additional steps:
+        - composer update
   - PageSchemas:
       commit: 25a55c1aa9c6600e9fd9b03f5d50ccad2a9e83fe
   - PDFEmbed:
@@ -297,6 +306,8 @@ extensions:
       commit: 9d9162d83f921b66f6c14ed354d20607ecafa030
       repository: https://github.com/WikiTeq/mediawiki-extensions-Sentry.git
       branch: master
+      additional steps:
+        - composer update
   - ShowMe:
       commit: 44e3569219e804829e1ff770bb9bd02b7dd7ec2b
   - SimpleTooltip:
