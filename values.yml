@@ -344,7 +344,7 @@ extensions:
   - SimpleTooltip:
       commit: 3146514ecda810d6ce9feb79ac8e0e0015f242eb
       repository: https://github.com/Universal-Omega/SimpleTooltip.git
-      branch: master
+      branch: main
   - SimpleTippy:
       commit: 6b4ddff802db21a4c3443d7ce9dcab5ac39d625a
       repository: https://github.com/vedmaka/mediawiki-extension-SimpleTippy.git
