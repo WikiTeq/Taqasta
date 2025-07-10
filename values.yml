@@ -1,6 +1,7 @@
 # Extensions to bundle
 # Note: if you omit the `branch` property it will default to `$MW_VERSION`, see the Dockerfile
 extensions:
+  # TODO: AbuseFilter OATHAuth TemplateStyles Widgets
   - AdminLinks:
       commit: 60eda7201636218b80d83a637b70e5c753900e41
       branch: master
@@ -10,6 +11,8 @@ extensions:
       commit: fbfd07ef43063e806026d5bd3f95493e2b189378
   - AntiSpoof:
       commit: 29d219c52f412d84182f979a202405664b9424e6
+      additional steps:
+        - composer update
   - ApprovedRevs:
       commit: 15b2cc3a381eb3bed59e36641de9de729c699a83
       branch: master
@@ -19,6 +22,8 @@ extensions:
       commit: 97c210475f82ed5bc86ea3cbf2726162ccbedbfe
       repository: https://github.com/edwardspec/mediawiki-aws-s3.git
       branch: master
+      additional steps:
+        - composer update
   - BetaFeatures:
       commit: e2dc57ca67ca7d4188f3b921d5883ee532754724
   - BreadCrumbs2:
@@ -32,6 +37,8 @@ extensions:
       commit: 53f7c98d3fd003aef8faf95dd08ee05139079fab
   - CirrusSearch:
       commit: 209efea8657680d855eb5495550af26ee60cea82
+      additional steps:
+        - composer update
   - CodeMirror:
       commit: 5b6096aaed463519b8f99aa79fadb4498b474905
   - Collection:
@@ -56,6 +63,8 @@ extensions:
   - DataTransfer:
       commit: 2693332aeb146681e54bb1131a3330235f14f742
       branch: master
+      additional steps:
+        - composer update
   - DeleteBatch:
       commit: 55ec7006ba073f16942ffa91620485b8f6cfc241
   - Description2:
@@ -74,6 +83,8 @@ extensions:
       commit: a81f6e9e404da0e82801fc12d91567d1cc143181
   - Elastica:
       commit: 3f2c3cad516c875091c3536d8d17b0297e8d2d87
+      additional steps:
+        - composer update
   - EmailAuthorization:
       commit: d14a4bb04e2004bb13023dd8a044fc530d558bb8
   - EmbedVideo:
@@ -159,6 +170,8 @@ extensions:
       commit: cb990fcea3b7827f02bcc328e367a7b2387a32a3
   - OpenIDConnect:
       commit: f68146b341213ded4552540eb29ede133c6ff0b5
+      additional steps:
+        - composer update
   - PageExchange:
       commit: afda8c1ebe6e870841df47f9abeba5ac590594d7
   - PageForms:
@@ -241,6 +254,8 @@ extensions:
       commit: 5d27adb6ec53e7b1076a485e93f0b0c272d08937
   - WSOAuth:
       commit: 9f25fade2bcd3fae44c3236072f5ea2eb068b75c
+      additional steps:
+        - composer update
   - AddMessages:
       commit: a0af32f229d93016f3c3e80bcf2065e09f498064
   - Auth_remoteuser:
@@ -346,6 +361,8 @@ extensions:
       commit: 01673ce5f560fabe09b0feb1e65b57cbf58aae39
   - GoogleLogin:
       commit: 0c653d036198d5fd52f8588776b95415ccc0eef4
+      additional steps:
+        - composer update
   - VariablesLua:
       commit: 64a5776f055b33c38602e8a94f7237a6b8cb4c79
       repository: https://github.com/Liquipedia/VariablesLua.git
@@ -354,10 +371,14 @@ extensions:
       commit: 9a39063a848130030c35944dea047386315051ae
       repository: https://github.com/WikiTeq/WSSlots.git
       branch: REL1_43
+      additional steps:
+        - composer update
   - JWTAuth:
       commit: c7c0730160a84d6b60e3e1b6b108d790972f0f15
       repository: https://github.com/jeffw16/JWTAuth.git
       branch: main
+      additional steps:
+        - composer update
 # Skins to bundle
 skins:
   - CologneBlue:
