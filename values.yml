@@ -352,7 +352,7 @@ skins:
       commit: d7c8d45093c82460fe80c98ce9fa775315fd3e30
   - Modern:
       commit: 5597681b7f0423a7e71cda64929c9d60dc999b8c
-  - pivot:
+  - Pivot:
       commit: f6b35ca2b8b07ced0e467d8b99421a41b0af3fa3
   - Refreshed:
       commit: 2570c3ee3996cd8ca3f766131b301c33695f68e6
