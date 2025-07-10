@@ -190,7 +190,7 @@ extensions:
   - SimpleMathJax:
       commit: fab35e6ac66e1f5abd3c91a57719f8180dd346ef
       repository: https://github.com/jmnote/SimpleMathJax.git
-      branch: master
+      branch: main
   - SkinPerPage:
       commit: cd94d4684782457f81517d6f2692f3af300d9242
   - SmiteSpam:
