@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Compile
-        run: bash template.sh
+        run: bash compile.sh
 
       -
         name: Run linter (hadolint)
@@ -56,7 +56,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Compile
-        run: bash template.sh
+        run: bash compile.sh
 
       -
         name: Generate tags
