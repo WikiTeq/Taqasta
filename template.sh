@@ -2,7 +2,7 @@
 
 # compiles a Dockerfile out of Dockerfile.tmpl
 
-docker run -it --rm \
+docker run --rm \
     --user "$(id -u)":"$(id -g)" \
     -v "${PWD}:/build" \
     -w "/build" \
