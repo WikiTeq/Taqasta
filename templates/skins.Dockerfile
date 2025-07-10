@@ -20,7 +20,7 @@ RUN set -x; \
 	https://gerrit.wikimedia.org/r/mediawiki/skins/{{- $name }}
 	{{- end }} $MW_HOME/skins/{{- $name }} && \
 	cd $MW_HOME/skins/{{- $name }} && \
-	git checkout -q {{ $details.commit}} {{ if not (eq $index (sub $total 1) ) }}\{{ end }}
+	git checkout -q {{ $details.commit}}{{ if not (eq $index (sub $total 1) ) }} && \{{ end }}
 {{- end -}}
 {{- end }}
 
