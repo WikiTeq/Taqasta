@@ -42,6 +42,26 @@ RUN set -x; \
     {{- end }}
 {{- end }}
 
+################# Patches #################
+
+# WikiTeq AL-12
+COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
+RUN set -x; \
+	cd $MW_HOME/extensions/FlexDiagrams && \
+	git apply /tmp/FlexDiagrams.0.4.fix.diff
+
+# GoogleLogin gerrit patches 1070987 and 1074530 applied to REL1_43
+COPY _sources/patches/GoogleLogin-fixes.patch /tmp/GoogleLogin-fixes.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/GoogleLogin && \
+	git apply /tmp/GoogleLogin-fixes.patch
+
+# GoogleAnalyticsMetrics pins google/apiclient to 2.12.6, relax it
+COPY _sources/patches/GoogleAnalyticsMetrics-relax-pin.patch /tmp/GoogleAnalyticsMetrics-relax-pin.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/GoogleAnalyticsMetrics && \
+	git apply /tmp/GoogleAnalyticsMetrics-relax-pin.patch
+
 # Cleanup all .git leftovers
 RUN set -x; \
 	cd $MW_HOME/extensions && \
