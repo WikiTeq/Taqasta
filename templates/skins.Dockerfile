@@ -13,7 +13,7 @@ RUN set -x; \
 {{- /* $ext is a map with a single key = skin name */ -}}
 {{ range $name, $details := $ext }}
 	# {{ $name }}
-    git clone --single-branch -b {{ default "$MW_VERSION" (index $details "branch") }} \
+    git clone{{ if not (index $details "full_history") }} --single-branch{{ end }} -b {{ default "$MW_VERSION" (index $details "branch") }} \
 	{{- if (index $details "repository") }}
 	{{ index $details "repository" }}
 	{{- else }}

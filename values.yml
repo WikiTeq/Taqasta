@@ -35,6 +35,7 @@ extensions:
   - CodeMirror:
       commit: 5b6096aaed463519b8f99aa79fadb4498b474905
   - Collection:
+      full_history: true
       commit: 1c5f7012e1fdd5024db5ab0820e44459109f810c
   - CommentStreams:
       commit: 25340d9d06a7547ba31d9dc4ef0ac100a48f70ed
