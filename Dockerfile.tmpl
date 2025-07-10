@@ -1,34 +1,5 @@
 FROM debian:12.5 AS base
 
-LABEL maintainers="contact@wikiteq.com,pavel@wikiteq.com,alexey@wikiteq.com"
-LABEL org.opencontainers.image.source=https://github.com/WikiTeq/Taqasta
-
-{{ template "templates/base.Dockerfile" -}}
-
-FROM base AS core
-
-{{ template "templates/core.Dockerfile" -}}
-
-FROM base AS skins
-
-{{ template "templates/skins.Dockerfile" -}}
-
-FROM base AS extensions
 
 {{ template "templates/extensions.Dockerfile" -}}
 
-FROM base AS composer
-
-{{ template "templates/composer.Dockerfile" -}}
-
-FROM base AS final
-
-{{ template "templates/final.Dockerfile" -}}
-
-EXPOSE 80
-WORKDIR $MW_HOME
-
-HEALTHCHECK --interval=1m --timeout=10s \
-CMD wget -q --method=HEAD localhost/w/api.php
-
-CMD ["/run-apache.sh"]

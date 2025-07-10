@@ -1,7 +1,23 @@
 # Extensions to bundle
 # Note: if you omit the `branch` property it will default to `$MW_VERSION`, see the Dockerfile
 extensions:
-  # TODO: AbuseFilter OATHAuth TemplateStyles Widgets
+  # Bundled extensions are not included into the Dockerfile but considered during composer.local.json compiling
+  - AbuseFilter:
+      bundled: true
+      additional steps:
+        - composer update
+  - OATHAuth:
+      bundled: true
+      additional steps:
+        - composer update
+  - TemplateStyles:
+      bundled: true
+      additional steps:
+        - composer update
+  - Widgets:
+      bundled: true
+      additional steps:
+        - composer update
   - AdminLinks:
       commit: 60eda7201636218b80d83a637b70e5c753900e41
       branch: master

@@ -3,7 +3,15 @@ RUN set -x; \
 	cd $MW_HOME/extensions
 
 # Split extensions into groups of 10 for better layer caching
-{{- $extensions := (ds "values").extensions -}}
+{{- $allExtensions := (ds "values").extensions -}}
+{{- $extensions := coll.Slice -}}
+{{- range $ext := $allExtensions -}}
+  {{- range $name, $details := $ext -}}
+    {{- if not (index $details "bundled") -}}
+      {{- $extensions = $extensions | append $ext -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 {{- $groupSize := 10 -}}
 {{- $total := len $extensions -}}
 {{- $groupCount := div (add $total (sub $groupSize 1)) $groupSize -}}
