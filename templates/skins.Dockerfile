@@ -12,6 +12,7 @@ RUN set -x; \
 {{- range $index, $ext := (ds "values").skins -}}
 {{- /* $ext is a map with a single key = skin name */ -}}
 {{ range $name, $details := $ext }}
+{{- if not (index $details "bundled") }}
 	# {{ $name }}
     git clone{{ if not (index $details "full_history") }} --single-branch{{ end }} -b {{ default "$MW_VERSION" (index $details "branch") }} \
 	{{- if (index $details "repository") }}
@@ -21,6 +22,7 @@ RUN set -x; \
 	{{- end }} $MW_HOME/skins/{{- $name }} && \
 	cd $MW_HOME/skins/{{- $name }} && \
 	git checkout -q {{ $details.commit}}{{ if not (eq $index (sub $total 1) ) }} && \{{ end }}
+{{- end }}
 {{- end -}}
 {{- end }}
 
