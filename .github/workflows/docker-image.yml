@@ -20,12 +20,12 @@ env:
   IMAGE_NAME: taqasta
 
 jobs:
-  # Test the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
-  test:
+  # Lint the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
+  lint:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       -
         name: Run linter (hadolint)
         uses: vedmaka/hadolint-action@master
@@ -33,21 +33,24 @@ jobs:
           dockerfile: "Dockerfile"
           config: "hadolint.yaml"
 
-  # Push image to GitHub Packages.
+  # Generate image tags
   # The image tag pattern is:
   # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
   # for tags: <TAG>
   # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
   # <MW_CORE_VERSION> being parsed from the Dockerfile
-  push:
-    needs: [test]
+  tags:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
+    outputs:
+      REGISTRY_TAGS: ${{ steps.generate.outputs.REGISTRY_TAGS }}
+      REGISTRY_TAGS_VERSION: ${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}
+      REGISTRY_TAGS_PR_NUMBER: ${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}
+      SHA_SHORT: ${{ steps.generate.outputs.SHA_SHORT }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Generate tags
+        uses: actions/checkout@v4
+      - name: Generate tags
         id: generate
         run: |
 
@@ -67,7 +70,7 @@ jobs:
 
           # Strip git ref prefix from version and use it as suffix for version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          
+
           # Get the Taqasta version from the "VERSION" file
           TAQASTA_VERSION=$(cat VERSION)
 
@@ -93,13 +96,13 @@ jobs:
 
           SHA_SHORT=${{ github.sha }}
           [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
-          
+
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           echo REGISTRY_TAGS=$REGISTRY_TAGS
           echo SHA_SHORT=$SHA_SHORT
           echo EventName=${{ github.event_name }}
-          
+
           echo headref=${{ github.head_ref }}
           echo "Final image tag to be pushed:"
           echo $REGISTRY_TAGS
@@ -107,6 +110,111 @@ jobs:
           echo "REGISTRY_TAGS_VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "REGISTRY_TAGS_PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
           echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
+
+  # Pre-build the image, deploy via compose and run e2e
+  deploy-e2e:
+    needs: [tags]
+    timeout-minutes: 60
+    outputs:
+      pages_url: ${{ steps.deployment_pages.outputs.page_url }}
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      # We could perform the build in a separate job, but why for? let's save some bandwidth on caches
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64
+          secrets: |
+            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          push: false
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true
+
+      - name: Set up environment
+        shell: bash
+        run: mv .env.ci .env
+
+      - name: Setup Docker Compose
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_BUILDKIT: 1
+        shell: bash
+        run: DOCKER_BUILDKIT=1 docker compose up -d
+
+      - name: Give containers a moment to init
+        shell: bash
+        run: sleep 30s
+
+      - name: Wait for init
+        shell: bash
+        run: while !  docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 2; done
+
+      - name: Wait for container to be healthy
+        shell: bash
+        run: while ! docker inspect --format='{{json .State.Health.Status}}' $(echo $(basename $(pwd)) | tr '[:upper:]' '[:lower:]')-web-1 | grep -q 'healthy'; do sleep 2; done
+
+      # todo, migrate to docker image? https://playwright.dev/docs/docker
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        working-directory: ./e2e
+        run: npm ci
+      - name: Install Playwright Browsers
+        working-directory: ./e2e
+        run: npx playwright install chromium --with-deps
+      - name: Run Playwright tests
+        working-directory: ./e2e
+        run: npx playwright test
+
+      - name: Upload screenshots as a github-pages artifact
+        uses: actions/upload-pages-artifact@v3
+        if: failure()
+        with:
+          name: playwright-report
+          path: e2e/playwright-report/
+          retention-days: 7
+
+      - name: Stop containers
+        if: always()
+        shell: bash
+        run: docker compose down --volumes --timeout 60
+
+  # Builds from cache & push the image to GitHub registry this time
+  push:
+    needs: [tags,deploy-e2e]
+    runs-on: ubuntu-latest
+    outputs:
+      digest: ${{ steps.docker_build.outputs.digest }}
+      imageid: ${{ steps.docker_build.outputs.imageid }}
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -133,7 +241,7 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
-          tags: ${{ steps.generate.outputs.REGISTRY_TAGS }}
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
@@ -141,17 +249,41 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
       -
         name: Image tags debug
-        run: echo ${{ steps.generate.outputs.REGISTRY_TAGS }}
+        run: echo ${{ needs.tags.outputs.REGISTRY_TAGS }}
 
+  # Send a message to the PR  thread
+  notify:
+    needs: [tags,push]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
       -
         name: Notify about image tag
-        if: github.event_name == 'pull_request' && steps.docker_build.outputs.digest != ''
-        uses: hasura/comment-progress@v2.2.0
+        if: github.event_name == 'pull_request' && needs.push.outputs.digest != ''
+        uses: hasura/comment-progress@v2.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: comment
-          message: ":whale: The image based on [${{ steps.generate.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ steps.generate.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }})"
+          message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ needs.push.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
           recreate: true
           fail: false
+
+  report-pages:
+    needs: [deploy-e2e]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment_pages.outputs.page_url }}
+    if: failure() && ( github.event_name == 'push' || github.event_name == 'pull_request' )
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment_pages
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: playwright-report
+          token: ${{ secrets.GITHUB_TOKEN }}
