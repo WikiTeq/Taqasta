@@ -285,7 +285,7 @@ jobs:
 
   # Send a message to the PR  thread
   notify:
-    needs: [tags,push-amd64,push-arm64]
+    needs: [tags,push]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
