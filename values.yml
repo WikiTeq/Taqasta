@@ -1,7 +1,9 @@
 # Extensions to bundle
-# Note: if you omit the `branch` property it will default to `$MW_VERSION`, see the Dockerfile
+# Note: if you omit the `branch` property, it will default to `$MW_VERSION`, see the Dockerfile
 extensions:
-  # Bundled extensions are not included into the Dockerfile but considered during composer.local.json compiling
+  # Bundled extensions are not included in the Dockerfile but considered during composer.local.json compiling
+  - Account Consent:
+      bundled: true
   - AbuseFilter:
       bundled: true
       additional steps:
@@ -395,7 +397,7 @@ extensions:
       branch: main
       additional steps:
         - composer update
-# Skins to bundle
+# Skins to install
 skins:
   - CologneBlue:
       commit: d7c8d45093c82460fe80c98ce9fa775315fd3e30

@@ -44,6 +44,18 @@ Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
 various extensions and other tweaks that the WikiTeq team uses.
 
+# Adding Extensions
+
+To add a new extension to the Taqasta image:
+
+1. Open `values.yml` in the root directory
+2. Add a new entry under the `extensions` section following YAML schema format (`values.schema.json`)
+3. Run `./validate.sh` to verify that the YAML file is valid against the schema
+4. Run `./compile.sh` to verify that your addition has a valid syntax
+5. Either run `./build` to build the updated image locally or push your change to remote branch to build using CI
+
+See `values.schema.json` for fields definitions
+
 # Submitting changes back to Canasta
 
 1. Ensure your local version of repo has `upstream` set to the Canasta repo:
