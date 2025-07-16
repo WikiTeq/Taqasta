@@ -160,7 +160,7 @@ jobs:
           push: false
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha
-          #cache-to: type=gha,mode=max
+          cache-to: type=gha,mode=max
           load: true
 
       - name: Set up environment
