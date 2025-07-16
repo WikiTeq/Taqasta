@@ -180,7 +180,7 @@ jobs:
 
       - name: Wait for container to be healthy
         shell: bash
-        run: while ! docker inspect --format='{{json .State.Health.Status}}' $(echo $(basename $(pwd)) | tr '[:upper:]' '[:lower:]')-web-1 | grep -q 'healthy'; do sleep 2; done
+        run: while ! docker inspect --format='{{json .State.Health.Status}}' $(echo $(basename $(pwd)) | tr '[:upper:]' '[:lower:]')-web-1 | grep -q 'healthy'; do sleep 1; done
 
       # todo, migrate to docker image? https://playwright.dev/docs/docker
       - uses: actions/setup-node@v4
