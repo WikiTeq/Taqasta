@@ -233,9 +233,12 @@ jobs:
 
   # Builds from cache & push the image to GitHub registry this time
   push:
+    strategy:
+      matrix:
+        platform: [amd64, arm64]
     needs: [tags,deploy-e2e]
     # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
-    runs-on: ubuntu-24.04-arm
+    runs-on: ${{ matrix.platform == 'arm64' && 'ubuntu-24.04-arm64' || 'ubuntu-latest' }}
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
       imageid: ${{ steps.docker_build.outputs.imageid }}
@@ -252,7 +255,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
         with:
           install: true
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/${{ matrix.platform }}
       -
         name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -266,7 +269,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/${{ matrix.platform }}
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
@@ -282,7 +285,7 @@ jobs:
 
   # Send a message to the PR  thread
   notify:
-    needs: [tags,push]
+    needs: [tags,push-amd64,push-arm64]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
