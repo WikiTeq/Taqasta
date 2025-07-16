@@ -27,6 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate YAML
+        run: bash validate.sh
+
       - name: Compile
         run: bash compile.sh
 
@@ -54,6 +57,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate YAML
+        run: bash validate.sh
 
       - name: Compile
         run: bash compile.sh
