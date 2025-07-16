@@ -168,7 +168,7 @@ jobs:
           push: false
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          #cache-to: type=gha,mode=max
           load: true
 
       - name: Set up environment
@@ -252,9 +252,11 @@ jobs:
       imageid: ${{ steps.docker_build.outputs.imageid }}
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
-      - name: Checkout
+      -
+        name: Checkout
         uses: actions/checkout@v4
-      - name: Compile
+      -
+        name: Compile
         run: bash compile.sh
       -
         name: Set up QEMU
