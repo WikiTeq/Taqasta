@@ -154,7 +154,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
@@ -238,7 +238,8 @@ jobs:
   # Builds from cache & push the image to GitHub registry this time
   push:
     needs: [tags,deploy-e2e]
-    runs-on: ubuntu-latest
+    # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
+    runs-on: ubuntu-24.04-arm
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
       imageid: ${{ steps.docker_build.outputs.imageid }}
