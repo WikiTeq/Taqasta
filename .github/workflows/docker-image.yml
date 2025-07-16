@@ -159,7 +159,7 @@ jobs:
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=build-taqasta
+          cache-from: type=gha,scope=build-build-taqasta
           cache-to: type=gha,mode=max,scope=build-build-taqasta
           load: true
 
@@ -277,8 +277,8 @@ jobs:
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=build-taqasta
-          cache-to: type=gha,mode=max,scope=build-taqasta
+          cache-from: type=gha,scope=build-build-taqasta
+          cache-to: type=gha,mode=max,scope=build-build-taqasta
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
