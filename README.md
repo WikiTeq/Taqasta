@@ -27,6 +27,19 @@ need to manually go through the MediaWiki installation process, while Taqasta
 will perform it automatically. This is especially helpful if you want to copy
 the configuration of an existing wiki.
 
+## Build System
+
+Taqasta uses a template-based build system powered by [gomplate](https://gomplate.ca/) (Go templates) to generate the 
+Dockerfile and configuration files:
+
+* The `Dockerfile` and `_sources/configs/composer.wikiteq.json` are compiled from `Dockerfile.tmpl` and `_sources/configs/composer.wikiteq.json.tmpl` using the `compile.sh` script
+* Dockerfile partials are organized in the `templates/` directory
+* The list of extensions and skins bundled into the image is controlled by the `values.yml` file
+
+To build the image, run the `compile.sh` script first to generate the final Dockerfile and configuration files from
+their templates, then proceed with the normal Docker build process. You can use shortcut `build.sh` to build the image
+locally
+
 Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
 various extensions and other tweaks that the WikiTeq team uses.
