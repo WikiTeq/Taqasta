@@ -160,8 +160,8 @@ jobs:
           push: false
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
-          load: true
+          cache-to: type=gha,mode=max,scope=build-${{ github.ref_name }}
+          load: true,scope=build-${{ github.ref_name }}
 
       - name: Set up environment
         shell: bash
@@ -277,8 +277,8 @@ jobs:
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=build-${{ github.ref_name }}
+          cache-to: type=gha,mode=max,scope=build-${{ github.ref_name }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
