@@ -47,6 +47,7 @@ jobs:
   # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
   # <MW_CORE_VERSION> being parsed from the Dockerfile
   tags:
+    needs: [lint]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     outputs:
@@ -148,7 +149,7 @@ jobs:
           install: true
 
       - name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
