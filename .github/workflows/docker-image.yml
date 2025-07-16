@@ -174,13 +174,9 @@ jobs:
         shell: bash
         run: DOCKER_BUILDKIT=1 docker compose up -d
 
-      - name: Give containers a moment to init
-        shell: bash
-        run: sleep 30s
-
       - name: Wait for init
         shell: bash
-        run: while !  docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 2; done
+        run: while !  docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
 
       - name: Wait for container to be healthy
         shell: bash
