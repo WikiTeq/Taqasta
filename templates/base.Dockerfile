@@ -46,7 +46,9 @@ RUN set x; \
 	rsync \
 	lynx \
 	poppler-utils \
-	lsb-release && \
+	lsb-release
+
+RUN set x; \
 	wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
 	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
 	aptitude update && \
@@ -85,7 +87,9 @@ RUN set x; \
 	#	xvfb \ + 14.9 MB
 	#	lilypond \ + 301 MB
 	pecl -d php_suffix=8.1 install luasandbox && \
-	pecl -d php_suffix=8.1 install excimer && \
+	pecl -d php_suffix=8.1 install excimer
+
+RUN set x; \
 	aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev && \
 	aptitude clean && \
 	rm -rf /var/lib/apt/lists/*
