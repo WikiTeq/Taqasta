@@ -7,10 +7,19 @@
 	"extra": {
 		"merge-plugin": {
 			"include": [
-				{{- range $index, $ext := (ds "values").extensions }}
+{{- $allExtensions := (ds "values").extensions -}}
+{{- $extensions := coll.Slice -}}
+{{- range $ext := $allExtensions -}}
+{{- range $name, $details := $ext -}}
+{{- if has (index $details "additional steps") "composer update" -}}
+{{- $extensions = $extensions | append $ext -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+				{{- range $index, $ext := $extensions }}
 				{{- range $name, $details := $ext -}}
 				{{- if has (index $details "additional steps") "composer update" }}
-				"extensions/{{ $name }}/composer.json"{{ if lt $index (sub (len (ds "values").extensions) 1) }},{{ end }}
+				"extensions/{{ $name }}/composer.json"{{ if lt $index (sub (len $extensions) 1 ) }},{{ end }}
 				{{- end }}
 				{{- end -}}
 				{{- end }}
