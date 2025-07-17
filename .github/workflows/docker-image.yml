@@ -153,8 +153,8 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=taqasta-amd64,timeout=60m
-          cache-to: type=gha,mode=max,scope=taqasta-amd64,timeout=60m
+          cache-from: type=gha,timeout=60m
+          cache-to: type=gha,mode=max,timeout=60m
           push: false
           load: true
 
@@ -306,8 +306,8 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=taqasta-${{ matrix.platform }},timeout=60m
-          cache-to: type=gha,mode=max,scope=taqasta-${{ matrix.platform }},timeout=60m
+          cache-from: type=gha,timeout=60m
+          cache-to: type=gha,mode=max,timeout=60m
           push: true
       -
         name: Image digest
