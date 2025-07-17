@@ -157,8 +157,8 @@ jobs:
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=build-build-taqasta,timeout=60m
-          cache-to: type=gha,mode=max,scope=build-build-taqasta,timeout=60m
+          cache-from: type=gha,scope=taqasta-amd64,timeout=60m
+          cache-to: type=gha,mode=max,scope=taqasta-amd64,timeout=60m
           load: true
 
       - name: Set up environment
@@ -232,9 +232,12 @@ jobs:
   # Builds from cache & push the image to GitHub registry this time
   # see https://github.com/orgs/community/discussions/148648#discussioncomment-12144381 merge?
   push:
+    strategy:
+      matrix:
+        platform: [ amd64, arm64 ]
     needs: [tags,deploy-e2e]
     # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
-    runs-on: ubuntu-24.04-arm
+    runs-on: ${{ matrix.platform == 'arm64' && 'ubuntu-22.04-arm64' || 'ubuntu-latest' }}
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
       imageid: ${{ steps.docker_build.outputs.imageid }}
@@ -247,14 +250,11 @@ jobs:
         name: Compile
         run: bash compile.sh
       -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
           install: true
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/${{ matrix.platform }}
       -
         name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -269,13 +269,13 @@ jobs:
         with:
           context: .
           # we expect the cache for amd64 to be used here so no actual amd64 build to happen
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/${{ matrix.platform }}
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=build-build-taqasta,timeout=60m
-          cache-to: type=gha,mode=max,scope=build-build-taqasta,timeout=60m
+          cache-from: type=gha,scope=taqasta-${{ matrix.platform }},timeout=60m
+          cache-to: type=gha,mode=max,scope=taqasta-${{ matrix.platform }},timeout=60m
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -283,7 +283,7 @@ jobs:
         name: Image tags debug
         run: echo ${{ needs.tags.outputs.REGISTRY_TAGS }}
 
-  # Send a message to the PR  thread
+  # Send a message to the PR thread
   notify:
     needs: [tags,push]
     runs-on: ubuntu-latest
