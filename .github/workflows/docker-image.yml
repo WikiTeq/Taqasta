@@ -317,23 +317,23 @@ jobs:
         run: echo ${{ needs.tags.outputs.REGISTRY_TAGS }}
 
   # Send a message to the PR thread
-  notify:
-    needs: [tags,push]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
-    steps:
-      -
-        name: Notify about image tag
-        if: github.event_name == 'pull_request' && needs.push.outputs.digest != ''
-        uses: hasura/comment-progress@v2.3.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          number: ${{ github.event.number }}
-          id: comment
-          message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ needs.push.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
-          recreate: true
-          fail: false
+#  notify:
+#    needs: [tags,push]
+#    runs-on: ubuntu-latest
+#    if: github.event_name == 'push' || github.event_name == 'pull_request'
+#    steps:
+#      -
+#        name: Notify about image tag
+#        if: github.event_name == 'pull_request' && needs.push.outputs.digest != ''
+#        uses: hasura/comment-progress@v2.3.0
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          repository: ${{ github.repository }}
+#          number: ${{ github.event.number }}
+#          id: comment
+#          message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ needs.push.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
+#          recreate: true
+#          fail: false
 
   report-pages:
     needs: [deploy-e2e]
