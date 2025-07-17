@@ -268,7 +268,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          # we expect the cache for amd64 to be used here so no actual amd64 build to happen
+          # we expect the cache for amd64 to be used here so no actual amd64 build should happen
           platforms: linux/${{ matrix.platform }}
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
