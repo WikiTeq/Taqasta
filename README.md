@@ -44,6 +44,17 @@ Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
 various extensions and other tweaks that the WikiTeq team uses.
 
+## Notes on Dockerfile structure
+
+The extensions sources from the values.yml are grouped into individual stages (10 per stage)
+to allow for better cache use and allowing parallel build. Later under the `composer` stage
+the extensions stages results are combined into one extensions directory and extensions patches
+(if any) are applied
+
+While this allows for faster builds and better cache use this also may lead to accidental stages
+caches invalidations if the order of the extensions in the values.yml is changed as the stages
+are created by groups of ten extensions, following the natural order as they appear in the values.yml
+
 # Adding Extensions
 
 To add a new extension to the Taqasta image:
