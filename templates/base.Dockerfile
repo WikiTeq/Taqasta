@@ -10,12 +10,15 @@ ENV MW_VERSION=REL1_43 \
 	WWW_GROUP=www-data \
 	APACHE_LOG_DIR=/var/log/apache2
 
-# System setup
+# Apt and Aptitude setup
 RUN set x; \
 	apt-get clean && \
 	apt-get update && \
 	apt-get --no-install-recommends install -y aptitude && \
-	aptitude -y upgrade && \
+	aptitude -y upgrade
+
+# System setup
+RUN set x; \
 	aptitude --without-recommends install -y \
 	git \
 	inotify-tools \
