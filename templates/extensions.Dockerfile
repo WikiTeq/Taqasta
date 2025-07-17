@@ -1,7 +1,3 @@
-RUN set -x; \
-	mkdir $MW_HOME/extensions && \
-	cd $MW_HOME/extensions
-
 {{- $allExtensions := (ds "values").extensions -}}
 {{- $extensions := coll.Slice -}}
 {{- range $ext := $allExtensions -}}
@@ -24,6 +20,7 @@ RUN set -x; \
 # Extensions group {{ add $groupIndex 1 }} ({{ add $start 1 }}-{{ $end }})
 FROM base AS extensions{{ add $start 1 }}-{{ $end }}
 RUN set -x; \
+	mkdir $MW_HOME/extensions && \
     cd $MW_HOME/extensions && \
     {{- range $relativeIndex := seq 0 (sub (sub $end $start) 1) -}}
       {{- $extIndex := add $start $relativeIndex -}}
