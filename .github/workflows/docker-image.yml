@@ -124,60 +124,24 @@ jobs:
           echo "REGISTRY_TAGS_PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
           echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
 
-
-
-  # Pre-builds the amd64 version of the image for a later deployment e2e step
-  build:
+  # Pre-build amd64 image and run e2e
+  deploy-e2e:
     needs: [tags]
+    timeout-minutes: 60
+    outputs:
+      pages_url: ${{ steps.deployment_pages.outputs.page_url }}
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Compile
-        run: bash compile.sh
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          install: true
-          platforms: linux/amd64
-
-      - name: Build to cache
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/amd64
-          secrets: |
-            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache
-          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache,mode=max
-          push: false
-          load: true
-
-  # Pre-build the image, deploy via compose and run e2e
-  deploy-e2e:
-    needs: [build]
-    timeout-minutes: 60
-    outputs:
-      pages_url: ${{ steps.deployment_pages.outputs.page_url }}
-      report-uploaded: ${{ steps.report-playwright-tests.outputs.was-uploaded }}
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
       - name: Compile
         run: bash compile.sh
@@ -196,10 +160,10 @@ jobs:
           platforms: linux/amd64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          push: false
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=taqasta-amd64,timeout=60m
-          cache-to: type=gha,mode=max,scope=taqasta-amd64,timeout=60m
+          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache
+          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache,mode=max
+          push: false
           load: true
 
       - name: Set up environment
@@ -232,50 +196,28 @@ jobs:
         working-directory: ./e2e
         run: npx playwright install chromium --with-deps
       - name: Run Playwright tests
-        id: run-playwright-tests
         working-directory: ./e2e
         run: npx playwright test
 
       - name: Upload screenshots as a github-pages artifact
         uses: actions/upload-pages-artifact@v3
-        # Only if the actual tests failed, if something else earlier in the
-        # job failed then the tests wouldn't have been run and the report
-        # would not exist to upload
-        if: failure() && steps.run-playwright-tests.outcome == 'failure'
+        if: failure()
         with:
           name: playwright-report
           path: e2e/playwright-report/
           retention-days: 7
-
-      # Need a way to communicate to the report-pages job whether or not we
-      # uploaded a report; only way that seems to be possible is to use an
-      # output from a step (here) and output that from the overall job (above)
-      # and then check that in the report-pages job (below). Since the overall
-      # output gets extracted from a single step, and steps need to have unique
-      # ids, cannot have two different steps that run under the two possible
-      # conditions, need to have a single step that checks the conditions
-      - name: Output if a report was uploaded
-        id: report-playwright-tests
-        if: always()
-        shell: bash
-        run: |
-          if ${{ steps.run-playwright-tests.outcome == 'failure' }}; then
-            echo "was-uploaded=yes" >> $GITHUB_OUTPUT
-          else
-            echo "was-uploaded=no" >> $GITHUB_OUTPUT
-          fi
 
       - name: Stop containers
         if: always()
         shell: bash
         run: docker compose down --volumes --timeout 60
 
-  # Builds from cache & push the image to GitHub registry this time
+  # Builds from cache & push the images to GitHub registry this time
   # see https://github.com/orgs/community/discussions/148648#discussioncomment-12144381 merge?
   push:
     strategy:
       matrix:
-        platform: [arm64,amd64]
+        platform: [amd64,arm64]
     needs: [tags,deploy-e2e]
     # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
     runs-on: ${{ matrix.platform == 'arm64' && 'ubuntu-24.04-arm64' || 'ubuntu-latest' }}
@@ -287,15 +229,7 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
-      -
-        name: Compile
-        run: bash compile.sh
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          install: true
-          platforms: linux/${{ matrix.platform }}
+
       -
         name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -303,6 +237,18 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      -
+        name: Compile
+        run: bash compile.sh
+
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          platforms: linux/${{ matrix.platform }}
+
       -
         name: Build and push
         id: docker_build
@@ -314,8 +260,8 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,timeout=60m
-          cache-to: type=gha,mode=max,timeout=60m
+          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache
+          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache,mode=max
           push: true
       -
         name: Image digest
@@ -325,23 +271,23 @@ jobs:
         run: echo ${{ needs.tags.outputs.REGISTRY_TAGS }}
 
   # Send a message to the PR thread
-#  notify:
-#    needs: [tags,push]
-#    runs-on: ubuntu-latest
-#    if: github.event_name == 'push' || github.event_name == 'pull_request'
-#    steps:
-#      -
-#        name: Notify about image tag
-#        if: github.event_name == 'pull_request' && needs.push.outputs.digest != ''
-#        uses: hasura/comment-progress@v2.3.0
-#        with:
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
-#          repository: ${{ github.repository }}
-#          number: ${{ github.event.number }}
-#          id: comment
-#          message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ needs.push.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
-#          recreate: true
-#          fail: false
+  notify:
+    needs: [tags,push]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      -
+        name: Notify about image tag
+        if: github.event_name == 'pull_request' && needs.push.outputs.digest != ''
+        uses: hasura/comment-progress@v2.3.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: comment
+          message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ needs.push.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
+          recreate: true
+          fail: false
 
   report-pages:
     needs: [deploy-e2e]
