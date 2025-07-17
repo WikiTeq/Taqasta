@@ -125,93 +125,92 @@ jobs:
           echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
 
   # Pre-build amd64 image and run e2e
-  deploy-e2e:
-    needs: [tags]
-    timeout-minutes: 60
-    outputs:
-      pages_url: ${{ steps.deployment_pages.outputs.page_url }}
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Compile
-        run: bash compile.sh
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          install: true
-          platforms: linux/amd64
-
-      - name: Build and load
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/amd64
-          secrets: |
-            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          # TODO: -${{ matrix.platform }} split caches
-          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache
-          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache,mode=max
-          push: false
-          load: true
-
-      - name: Set up environment
-        shell: bash
-        run: mv .env.ci .env
-
-      - name: Setup Docker Compose
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_BUILDKIT: 1
-        shell: bash
-        run: DOCKER_BUILDKIT=1 docker compose up -d
-
-      - name: Wait for init
-        shell: bash
-        run: while !  docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
-
-      - name: Wait for container to be healthy
-        shell: bash
-        run: while ! docker inspect --format='{{json .State.Health.Status}}' $(echo $(basename $(pwd)) | tr '[:upper:]' '[:lower:]')-web-1 | grep -q 'healthy'; do sleep 1; done
-
-      # todo, migrate to docker image? https://playwright.dev/docs/docker
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install dependencies
-        working-directory: ./e2e
-        run: npm ci
-      - name: Install Playwright Browsers
-        working-directory: ./e2e
-        run: npx playwright install chromium --with-deps
-      - name: Run Playwright tests
-        working-directory: ./e2e
-        run: npx playwright test
-
-      - name: Upload screenshots as a github-pages artifact
-        uses: actions/upload-pages-artifact@v3
-        if: failure()
-        with:
-          name: playwright-report
-          path: e2e/playwright-report/
-          retention-days: 7
-
-      - name: Stop containers
-        if: always()
-        shell: bash
-        run: docker compose down --volumes --timeout 60
+#  deploy-e2e:
+#    needs: [tags]
+#    timeout-minutes: 60
+#    outputs:
+#      pages_url: ${{ steps.deployment_pages.outputs.page_url }}
+#    runs-on: ubuntu-latest
+#    if: github.event_name == 'push' || github.event_name == 'pull_request'
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Login to GitHub Container Registry
+#        uses: docker/login-action@v3
+#        with:
+#          registry: ghcr.io
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Compile
+#        run: bash compile.sh
+#
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v3
+#        with:
+#          install: true
+#          platforms: linux/amd64
+#
+#      - name: Build and load
+#        id: docker_build
+#        uses: docker/build-push-action@v6
+#        with:
+#          context: .
+#          platforms: linux/amd64
+#          secrets: |
+#            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+#          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+#          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64
+#          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64,mode=max
+#          push: false
+#          load: true
+#
+#      - name: Set up environment
+#        shell: bash
+#        run: mv .env.ci .env
+#
+#      - name: Setup Docker Compose
+#        env:
+#          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          DOCKER_BUILDKIT: 1
+#        shell: bash
+#        run: DOCKER_BUILDKIT=1 docker compose up -d
+#
+#      - name: Wait for init
+#        shell: bash
+#        run: while !  docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
+#
+#      - name: Wait for container to be healthy
+#        shell: bash
+#        run: while ! docker inspect --format='{{json .State.Health.Status}}' $(echo $(basename $(pwd)) | tr '[:upper:]' '[:lower:]')-web-1 | grep -q 'healthy'; do sleep 1; done
+#
+#      # todo, migrate to docker image? https://playwright.dev/docs/docker
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
+#      - name: Install dependencies
+#        working-directory: ./e2e
+#        run: npm ci
+#      - name: Install Playwright Browsers
+#        working-directory: ./e2e
+#        run: npx playwright install chromium --with-deps
+#      - name: Run Playwright tests
+#        working-directory: ./e2e
+#        run: npx playwright test
+#
+#      - name: Upload screenshots as a github-pages artifact
+#        uses: actions/upload-pages-artifact@v3
+#        if: failure()
+#        with:
+#          name: playwright-report
+#          path: e2e/playwright-report/
+#          retention-days: 7
+#
+#      - name: Stop containers
+#        if: always()
+#        shell: bash
+#        run: docker compose down --volumes --timeout 60
 
   # Builds from cache & push the images to GitHub registry this time
   # see https://github.com/orgs/community/discussions/148648#discussioncomment-12144381 merge?
@@ -220,7 +219,7 @@ jobs:
       max-parallel: 2
       matrix:
         platform: [linux/amd64,linux/arm64]
-    needs: [tags,deploy-e2e]
+    needs: [tags] # deploy-e2e
     # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
     runs-on: ${{ matrix.platform == 'linux/arm64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     outputs:
@@ -267,21 +266,20 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          # TODO: -${{ matrix.platform }} split caches
-          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache
-          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }}
+          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }},mode=max
           #outputs: type=image,push-by-digest=true,name-canonical=true,push=true
           push: true
 
       - name: Save digest
         run: |
-          echo "${{ steps.docker_build.outputs.digest }}" > ${{ runner.temp }}/digest-${{ matrix.platform }}.txt
+          echo "${{ steps.docker_build.outputs.digest }}" > ${{ runner.temp }}/digest-${{ env.PLATFORM_PAIR }}.txt
 
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digest-${{ matrix.platform }}
-          path: ${{ runner.temp }}/digest-${{ matrix.platform }}.txt
+          name: digest-${{ env.PLATFORM_PAIR }}
+          path: ${{ runner.temp }}/digest-${{ env.PLATFORM_PAIR }}.txt
 
   collect-digests:
     needs: [push]
@@ -300,8 +298,8 @@ jobs:
       - name: Get digests
         id: get-digests
         run: |
-          echo "digest-amd64=$(cat ${{ runner.temp }}/digest-amd64.txt)" >> $GITHUB_OUTPUT
-          echo "digest-arm64=$(cat ${{ runner.temp }}/digest-arm64.txt)" >> $GITHUB_OUTPUT
+          echo "digest-amd64=$(cat ${{ runner.temp }}/digest-linux-amd64.txt)" >> $GITHUB_OUTPUT
+          echo "digest-arm64=$(cat ${{ runner.temp }}/digest-linux-arm64.txt)" >> $GITHUB_OUTPUT
 
   merge:
     runs-on: ubuntu-latest
@@ -361,20 +359,20 @@ jobs:
           recreate: true
           fail: false
 
-  report-pages:
-    needs: [deploy-e2e]
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment_pages.outputs.page_url }}
-    if: failure() && ( github.event_name == 'push' || github.event_name == 'pull_request' )
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment_pages
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: playwright-report
-          token: ${{ secrets.GITHUB_TOKEN }}
+#  report-pages:
+#    needs: [deploy-e2e]
+#    runs-on: ubuntu-latest
+#    permissions:
+#      pages: write      # to deploy to Pages
+#      id-token: write   # to verify the deployment originates from an appropriate source
+#    environment:
+#      name: github-pages
+#      url: ${{ steps.deployment_pages.outputs.page_url }}
+#    if: failure() && ( github.event_name == 'push' || github.event_name == 'pull_request' )
+#    steps:
+#      - name: Deploy to GitHub Pages
+#        id: deployment_pages
+#        uses: actions/deploy-pages@v4
+#        with:
+#          artifact_name: playwright-report
+#          token: ${{ secrets.GITHUB_TOKEN }}
