@@ -152,10 +152,11 @@ jobs:
           platforms: linux/amd64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          push: false
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha,scope=taqasta-amd64,timeout=60m
           cache-to: type=gha,mode=max,scope=taqasta-amd64,timeout=60m
+          push: false
+          load: true
 
   # Pre-build the image, deploy via compose and run e2e
   deploy-e2e:
