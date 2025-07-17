@@ -160,8 +160,8 @@ jobs:
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=build-build-taqasta
-          cache-to: type=gha,mode=max,scope=build-build-taqasta
+          cache-from: type=gha,scope=build-build-taqasta,timeout=60m
+          cache-to: type=gha,mode=max,scope=build-build-taqasta,timeout=60m
           load: true
 
       - name: Set up environment
@@ -236,6 +236,7 @@ jobs:
   # see https://github.com/orgs/community/discussions/148648#discussioncomment-12144381 merge?
   push:
     needs: [tags,deploy-e2e]
+    # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
     runs-on: ubuntu-24.04-arm
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
@@ -275,8 +276,8 @@ jobs:
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha,scope=build-build-taqasta
-          cache-to: type=gha,mode=max,scope=build-build-taqasta
+          cache-from: type=gha,scope=build-build-taqasta,timeout=60m
+          cache-to: type=gha,mode=max,scope=build-build-taqasta,timeout=60m
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
