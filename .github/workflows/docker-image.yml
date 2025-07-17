@@ -244,7 +244,7 @@ jobs:
     strategy:
       matrix:
         platform: [arm64,amd64]
-    needs: [tags,deploy-e2e]
+    needs: [tags,build]
     # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
     runs-on: ${{ matrix.platform == 'arm64' && 'ubuntu-24.04-arm64' || 'ubuntu-latest' }}
     outputs:
@@ -311,20 +311,20 @@ jobs:
           recreate: true
           fail: false
 
-  report-pages:
-    needs: [deploy-e2e]
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment_pages.outputs.page_url }}
-    if: failure() && ( github.event_name == 'push' || github.event_name == 'pull_request' )
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment_pages
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: playwright-report
-          token: ${{ secrets.GITHUB_TOKEN }}
+#  report-pages:
+#    needs: [deploy-e2e]
+#    runs-on: ubuntu-latest
+#    permissions:
+#      pages: write      # to deploy to Pages
+#      id-token: write   # to verify the deployment originates from an appropriate source
+#    environment:
+#      name: github-pages
+#      url: ${{ steps.deployment_pages.outputs.page_url }}
+#    if: failure() && ( github.event_name == 'push' || github.event_name == 'pull_request' )
+#    steps:
+#      - name: Deploy to GitHub Pages
+#        id: deployment_pages
+#        uses: actions/deploy-pages@v4
+#        with:
+#          artifact_name: playwright-report
+#          token: ${{ secrets.GITHUB_TOKEN }}
