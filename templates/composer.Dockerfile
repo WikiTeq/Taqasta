@@ -22,7 +22,7 @@ COPY --from=skins $MW_HOME/skins $MW_HOME/skins
     {{- $end = $total -}}
   {{- end }}
 # Extensions group {{ add $groupIndex 1 }} ({{ add $start 1 }}-{{ $end }})
-COPY --from=extensions{{ add $start 1 }}-{{ $end }} $MW_HOME/extensions $MW_HOME/extensions
+COPY --from=extensions{{ add $start 1 }}-{{ $end }} $MW_HOME/extensions/ $MW_HOME/extensions/
 {{- end }}
 
 ################# Patches #################
