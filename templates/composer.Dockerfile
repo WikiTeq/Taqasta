@@ -12,7 +12,7 @@ COPY --from=skins $MW_HOME/skins $MW_HOME/skins
     {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- $groupSize := 10 -}}
+{{- $groupSize := 30 -}}
 {{- $total := len $extensions -}}
 {{- $groupCount := div (add $total (sub $groupSize 1)) $groupSize -}}
 {{- range $groupIndex := seq 0 (sub $groupCount 1) -}}
