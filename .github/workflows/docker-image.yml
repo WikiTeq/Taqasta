@@ -153,8 +153,8 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/${github.repository.toLowerCase()}:buildcache
+          cache-to: type=registry,ref=ghcr.io/${github.repository.toLowerCase()}:buildcache,mode=max
           push: false
           load: true
 
