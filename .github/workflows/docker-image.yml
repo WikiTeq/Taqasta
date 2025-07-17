@@ -216,11 +216,12 @@ jobs:
   # see https://github.com/orgs/community/discussions/148648#discussioncomment-12144381 merge?
   push:
     strategy:
+      max-parallel: 2
       matrix:
         platform: [amd64,arm64]
     needs: [tags,deploy-e2e]
     # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
-    runs-on: ${{ matrix.platform == 'arm64' && 'ubuntu-24.04-arm64' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.platform == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
       imageid: ${{ steps.docker_build.outputs.imageid }}
