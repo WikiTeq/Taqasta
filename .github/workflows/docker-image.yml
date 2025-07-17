@@ -126,7 +126,7 @@ jobs:
 
 
 
-  # Pre-builds the amd64 version of the image for subsequent deploy e2e step
+  # Pre-builds the amd64 version of the image for a later deployment e2e step
   build:
     needs: [tags]
     runs-on: ubuntu-latest
@@ -304,10 +304,10 @@ jobs:
           platforms: linux/${{ matrix.platform }}
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          push: true
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           cache-from: type=gha,scope=taqasta-${{ matrix.platform }},timeout=60m
           cache-to: type=gha,mode=max,scope=taqasta-${{ matrix.platform }},timeout=60m
+          push: true
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
