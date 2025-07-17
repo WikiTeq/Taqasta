@@ -13,8 +13,7 @@ FROM base AS skins
 
 {{ template "templates/skins.Dockerfile" -}}
 
-FROM base AS extensions
-
+# Multiple stages to capitalize on layers caching
 {{ template "templates/extensions.Dockerfile" -}}
 
 FROM base AS composer

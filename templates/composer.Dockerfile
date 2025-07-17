@@ -1,7 +1,49 @@
 # Copy core, skins and extensions
 COPY --from=core $MW_HOME $MW_HOME
 COPY --from=skins $MW_HOME/skins $MW_HOME/skins
-COPY --from=extensions $MW_HOME/extensions $MW_HOME/extensions
+
+# Copy from extensions stages
+{{- $allExtensions := (ds "values").extensions -}}
+{{- $extensions := coll.Slice -}}
+{{- range $ext := $allExtensions -}}
+  {{- range $name, $details := $ext -}}
+    {{- if not (index $details "bundled") -}}
+      {{- $extensions = $extensions | append $ext -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $groupSize := 10 -}}
+{{- $total := len $extensions -}}
+{{- $groupCount := div (add $total (sub $groupSize 1)) $groupSize -}}
+{{- range $groupIndex := seq 0 (sub $groupCount 1) -}}
+  {{- $start := mul $groupIndex $groupSize -}}
+  {{- $end := add $start $groupSize -}}
+  {{- if gt $end $total -}}
+    {{- $end = $total -}}
+  {{- end }}
+# Extensions group {{ add $groupIndex 1 }} ({{ add $start 1 }}-{{ $end }})
+COPY --from=extensions{{ add $start 1 }}-{{ $end }} $MW_HOME/extensions $MW_HOME/extensions
+{{- end }}
+
+################# Patches #################
+
+# WikiTeq AL-12
+COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
+RUN set -x; \
+	cd $MW_HOME/extensions/FlexDiagrams && \
+	git apply /tmp/FlexDiagrams.0.4.fix.diff
+
+# GoogleLogin gerrit patches 1070987 and 1074530 applied to REL1_43
+COPY _sources/patches/GoogleLogin-fixes.patch /tmp/GoogleLogin-fixes.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/GoogleLogin && \
+	git apply /tmp/GoogleLogin-fixes.patch
+
+# GoogleAnalyticsMetrics pins google/apiclient to 2.12.6, relax it
+COPY _sources/patches/GoogleAnalyticsMetrics-relax-pin.patch /tmp/GoogleAnalyticsMetrics-relax-pin.patch
+RUN set -x; \
+	cd $MW_HOME/extensions/GoogleAnalyticsMetrics && \
+	git apply /tmp/GoogleAnalyticsMetrics-relax-pin.patch
 
 # Composer dependencies
 COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
