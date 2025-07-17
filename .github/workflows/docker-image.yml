@@ -124,9 +124,42 @@ jobs:
           echo "REGISTRY_TAGS_PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
           echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
 
+
+
+  # Pre-builds the amd64 version of the image for subsequent deploy e2e step
+  build:
+    needs: [tags]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile
+        run: bash compile.sh
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          platforms: linux/amd64
+
+      - name: Build to cache
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          secrets: |
+            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          push: false
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          cache-from: type=gha,scope=taqasta-amd64,timeout=60m
+          cache-to: type=gha,mode=max,scope=taqasta-amd64,timeout=60m
+
   # Pre-build the image, deploy via compose and run e2e
   deploy-e2e:
-    needs: [tags]
+    needs: [build]
     timeout-minutes: 60
     outputs:
       pages_url: ${{ steps.deployment_pages.outputs.page_url }}
@@ -146,8 +179,7 @@ jobs:
           install: true
           platforms: linux/amd64
 
-      # We could perform the build in a separate job, but why for? let's save some bandwidth on caches
-      - name: Build and push
+      - name: Build and load
         id: docker_build
         uses: docker/build-push-action@v6
         with:
