@@ -161,9 +161,8 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
-          # TODO: -${{ matrix.platform }} split caches
-          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache
-          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64
+          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64,mode=max
           push: false
           load: true
 
