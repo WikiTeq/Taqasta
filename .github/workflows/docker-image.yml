@@ -161,6 +161,7 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          # should be fine, but may need to add branch specific cache plus a fallback to master
           cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64
           cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64,mode=max
           push: false
@@ -266,6 +267,7 @@ jobs:
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          # should be fine, but may need to add branch specific cache plus a fallback to master
           cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }}
           cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }},mode=max
           #outputs: type=image,push-by-digest=true,name-canonical=true,push=true
@@ -281,12 +283,9 @@ jobs:
           name: digest-${{ env.PLATFORM_PAIR }}
           path: ${{ runner.temp }}/digest-${{ env.PLATFORM_PAIR }}.txt
 
-  collect-digests:
-    needs: [push]
+  merge:
     runs-on: ubuntu-latest
-    outputs:
-      digest-amd64: ${{ steps.get-digests.outputs.digest-amd64 }}
-      digest-arm64: ${{ steps.get-digests.outputs.digest-arm64 }}
+    needs: [tags, push]
     steps:
       - name: Download digests
         uses: actions/download-artifact@v4
@@ -295,16 +294,6 @@ jobs:
           pattern: digest-*
           merge-multiple: true
 
-      - name: Get digests
-        id: get-digests
-        run: |
-          echo "digest-amd64=$(cat ${{ runner.temp }}/digest-linux-amd64.txt)" >> $GITHUB_OUTPUT
-          echo "digest-arm64=$(cat ${{ runner.temp }}/digest-linux-arm64.txt)" >> $GITHUB_OUTPUT
-
-  merge:
-    runs-on: ubuntu-latest
-    needs: [tags,collect-digests]
-    steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -317,6 +306,10 @@ jobs:
 
       - name: Create multi-arch manifest
         run: |
+          # Read digests from files
+          DIGEST_AMD64=$(cat ${{ runner.temp }}/digest-linux-amd64.txt)
+          DIGEST_ARM64=$(cat ${{ runner.temp }}/digest-linux-arm64.txt)
+          
           # Convert comma-separated tags to array for iteration
           IFS=',' read -ra TAGS <<< "${{ needs.tags.outputs.REGISTRY_TAGS }}"
           
@@ -326,8 +319,8 @@ jobs:
             echo "Creating manifest for tag: $tag"
             docker buildx imagetools create \
               --tag "$tag" \
-              "$tag@${{ needs.collect-digests.outputs.digest-amd64 }}" \
-              "$tag@${{ needs.collect-digests.outputs.digest-arm64 }}"
+              "$tag@$DIGEST_AMD64" \
+              "$tag@$DIGEST_ARM64"
           done
 
       - name: Verify manifests
