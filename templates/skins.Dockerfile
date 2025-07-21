@@ -14,7 +14,7 @@ RUN set -x; \
 {{ range $name, $details := $ext }}
 {{- if not (index $details "bundled") }}
 	# {{ $name }}
-    git clone{{ if not (index $details "full_history") }} --single-branch{{ end }} -b {{ default "$MW_VERSION" (index $details "branch") }} \
+	git clone{{ if not (index $details "full_history") }} --single-branch{{ end }} -b {{ default "$MW_VERSION" (index $details "branch") }} \
 	{{- if (index $details "repository") }}
 	{{ index $details "repository" }}
 	{{- else }}
