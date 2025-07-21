@@ -266,7 +266,6 @@ jobs:
           # should be fine, but may need to add branch specific cache plus a fallback to master
           cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }}
           cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }},mode=max
-          #outputs: type=image,push-by-digest=true,name-canonical=true,push=true
           push: true
 
       - name: Save digest
