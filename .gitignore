@@ -14,3 +14,5 @@ cscope.out
 # Contains private data
 /.env
 /docker-compose.override.yml
+/Dockerfile
+/_sources/configs/composer.wikiteq.json
