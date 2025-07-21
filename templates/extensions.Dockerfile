@@ -21,7 +21,7 @@
 FROM base AS extensions{{ add $start 1 }}-{{ $end }}
 RUN set -x; \
 	mkdir $MW_HOME/extensions && \
-    cd $MW_HOME/extensions && \
+	cd $MW_HOME/extensions && \
     {{- range $relativeIndex := seq 0 (sub (sub $end $start) 1) -}}
       {{- $extIndex := add $start $relativeIndex -}}
       {{- $ext := index $extensions $extIndex -}}
