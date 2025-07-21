@@ -38,9 +38,4 @@ RUN set -x; \
       {{- end -}}
     {{- end }}
 
-# Cleanup all .git leftovers
-RUN set -x; \
-	cd $MW_HOME/extensions && \
-	find . \( -name ".git" -o -name ".gitignore" -o -name ".gitmodules" -o -name ".gitattributes" \) -exec rm -rf -- {} +
-
 {{- end }}

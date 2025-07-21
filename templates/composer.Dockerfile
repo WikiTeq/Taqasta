@@ -45,6 +45,11 @@ RUN set -x; \
 	cd $MW_HOME/extensions/GoogleAnalyticsMetrics && \
 	git apply /tmp/GoogleAnalyticsMetrics-relax-pin.patch
 
+# Cleanup all .git leftovers
+RUN set -x; \
+	cd $MW_HOME/extensions && \
+	find . \( -name ".git" -o -name ".gitignore" -o -name ".gitmodules" -o -name ".gitattributes" \) -exec rm -rf -- {} +
+
 # Composer dependencies
 COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
 # Run with secret mounted to /run/secrets/COMPOSER_TOKEN
