@@ -38,7 +38,7 @@ Dockerfile and configuration files:
 
 To build the image, run the `compile.sh` script first to generate the final Dockerfile and configuration files from
 their templates, then proceed with the normal Docker build process. You can use shortcut `build.sh` to build the image
-locally
+locally.
 
 Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
@@ -46,14 +46,14 @@ various extensions and other tweaks that the WikiTeq team uses.
 
 ## Notes on Dockerfile structure
 
-The extensions sources from the values.yml are grouped into individual stages (10 per stage)
+The extensions sources from the values.yml are grouped into individual stages (30 per stage)
 to allow for better cache use and allowing parallel build. Later under the `composer` stage
 the extensions stages results are combined into one extensions directory and extensions patches
-(if any) are applied
+(if any) are applied.
 
 While this allows for faster builds and better cache use this also may lead to accidental stages
 caches invalidations if the order of the extensions in the values.yml is changed as the stages
-are created by groups of ten extensions, following the natural order as they appear in the values.yml
+are created by groups of thirty extensions, following the natural order as they appear in the `values.yml`.
 
 # Adding Extensions
 
@@ -63,9 +63,9 @@ To add a new extension to the Taqasta image:
 2. Add a new entry under the `extensions` section following YAML schema format (`values.schema.json`)
 3. Run `./validate.sh` to verify that the YAML file is valid against the schema
 4. Run `./compile.sh` to verify that your addition has a valid syntax
-5. Either run `./build` to build the updated image locally or push your change to remote branch to build using CI
+5. Either run `./build.sh` to build the updated image locally or push your change to remote branch to build using CI
 
-See `values.schema.json` for fields definitions
+See `values.schema.json` for fields definitions.
 
 # Submitting changes back to Canasta
 
