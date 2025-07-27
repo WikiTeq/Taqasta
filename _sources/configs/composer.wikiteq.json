@@ -35,8 +35,6 @@
 				"extensions/WSSlots/composer.json",
 				"extensions/GoogleLogin/composer.json",
 				"extensions/JWTAuth/composer.json",
-				"extensions/FHIR/composer.json",
-				"extensions/CLEAR/composer.json",
 				"extensions/AWS/composer.json"
 			]
 		}
@@ -49,10 +47,6 @@
 		{
 			"type": "vcs",
 			"url": "https://github.com/WikiTeq/mediawiki-extension-RemoteWiki"
-		},
-		{
-			"type": "vcs",
-			"url": "https://github.com/WikiTeq/jsonstreamingparser.git"
 		}
 	]
 }
