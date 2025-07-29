@@ -214,6 +214,7 @@ extensions:
   - SaveSpinner:
       commit: 438ea79d4ba11cfe8a8c3599fba5c473b9760b91
   - SemanticDependencyUpdater:
+      # (WikiTeq fork)
       commit: 8f927a9b0f1eb49359d30a76099fa1252905f64d
       repository: https://github.com/WikiTeq/SemanticDependencyUpdater.git
       branch: old-master
