@@ -43,6 +43,7 @@ extensions:
   - BreadCrumbs2:
       commit: 28e82570da8d7e9e8a422a9a3f55392cf6166e0f
   - Cargo:
+      # 3.5.1
       commit: a2865938165c1389d852df762f8c85073859e5dd
       branch: master
   - CharInsert:
