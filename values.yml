@@ -219,7 +219,9 @@ extensions:
       repository: https://github.com/WikiTeq/SemanticDependencyUpdater.git
       branch: old-master
   - SimpleChanges:
-      commit: b8a5d63be2f99b4f82c743217b488743b73c84cd
+      # Patched version, see https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618
+      commit: 29b601e1426c9585a36760fdd7bcfcb9cc1812b4
+      full_history: true
   - SimpleMathJax:
       commit: fab35e6ac66e1f5abd3c91a57719f8180dd346ef
       repository: https://github.com/jmnote/SimpleMathJax.git
