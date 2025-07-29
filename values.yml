@@ -57,6 +57,8 @@ extensions:
   - CodeMirror:
       commit: 5b6096aaed463519b8f99aa79fadb4498b474905
   - Collection:
+      # (patched version, see SEB2-16)
+      # https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131800
       full_history: true
       commit: 1c5f7012e1fdd5024db5ab0820e44459109f810c
   - CommentStreams:
