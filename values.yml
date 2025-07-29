@@ -389,7 +389,6 @@ extensions:
   - WSSlots:
       commit: 9a39063a848130030c35944dea047386315051ae
       repository: https://github.com/WikiTeq/WSSlots.git
-      branch: REL1_43
       additional steps:
         - composer update
   - JWTAuth:
