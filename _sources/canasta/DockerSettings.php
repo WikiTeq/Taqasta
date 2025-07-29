@@ -32,7 +32,7 @@ const DOCKER_SKINS = [
 	'Timeless', # bundled
 	'Vector', # bundled
 	'chameleon',
-	'pivot',
+	'Pivot',
 ];
 
 const DOCKER_EXTENSIONS = [
