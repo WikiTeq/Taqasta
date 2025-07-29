@@ -3,8 +3,6 @@
 extensions:
   # Bundled extensions are not included in the Dockerfile but considered during composer.local.json compiling
   # NOTE: do not try to keep this sorted, make sure you append new extensions to the end of the list
-  - Account Consent:
-      bundled: true
   - AbuseFilter:
       bundled: true
       additional steps:
