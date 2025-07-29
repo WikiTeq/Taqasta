@@ -16,6 +16,7 @@ extensions:
       additional steps:
         - composer update
   - AdminLinks:
+      # 0.6.3
       commit: 60eda7201636218b80d83a637b70e5c753900e41
       branch: master
   - AdvancedSearch:
