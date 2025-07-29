@@ -16,9 +16,9 @@ extensions:
       additional steps:
         - composer update
   - AdminLinks:
+      branch: master
       # 0.6.3
       commit: 60eda7201636218b80d83a637b70e5c753900e41
-      branch: master
   - AdvancedSearch:
       commit: fc7079d49fba845d786d97e4980c8d8fb522bd71
   - AJAXPoll:
@@ -28,14 +28,14 @@ extensions:
       additional steps:
         - composer update
   - ApprovedRevs:
-      commit: 15b2cc3a381eb3bed59e36641de9de729c699a83
       branch: master
+      commit: 15b2cc3a381eb3bed59e36641de9de729c699a83
   - Arrays:
       commit: 96357a3708ec36ae4b6deebb63991c86268d0e2a
   - AWS:
-      commit: 97c210475f82ed5bc86ea3cbf2726162ccbedbfe
       repository: https://github.com/edwardspec/mediawiki-aws-s3.git
       branch: master
+      commit: 97c210475f82ed5bc86ea3cbf2726162ccbedbfe
       additional steps:
         - composer update
   - BetaFeatures:
@@ -43,9 +43,9 @@ extensions:
   - BreadCrumbs2:
       commit: 28e82570da8d7e9e8a422a9a3f55392cf6166e0f
   - Cargo:
+      branch: master
       # 3.5.1
       commit: a2865938165c1389d852df762f8c85073859e5dd
-      branch: master
   - CharInsert:
       commit: ee7b17910ece1ebaf6ad53857926d797b0ff374d
   - CheckUser:
@@ -59,8 +59,8 @@ extensions:
   - Collection:
       # (patched version, see SEB2-16)
       # https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131800
-      full_history: true
       commit: 376315800252cbfd5b1ad4502441134f076d5db8
+      full_history: true
   - CommentStreams:
       commit: 25340d9d06a7547ba31d9dc4ef0ac100a48f70ed
   - CommonsMetadata:
@@ -74,12 +74,12 @@ extensions:
   - CookieWarning:
       commit: f697459d94ac1aa8c9d3e417a9b0e04f92640447
   - Cloudflare:
-      commit: 9df89f3f5e0ace26b07d146167bab72540082fc8
       repository: https://github.com/harugon/mediawiki-extensions-cloudflare.git
       branch: master
+      commit: 9df89f3f5e0ace26b07d146167bab72540082fc8
   - DataTransfer:
-      commit: 2693332aeb146681e54bb1131a3330235f14f742
       branch: master
+      commit: 2693332aeb146681e54bb1131a3330235f14f742
       additional steps:
         - composer update
   - DeleteBatch:
@@ -93,9 +93,9 @@ extensions:
   - DisplayTitle:
       commit: 920768a8efb9f316aed1f134fc07aa153d612eb7
   - DynamicPageList3:
-      commit: e4faf608b0f5a77c4a4c3576a2a28216c7d2bbbf
       repository: https://github.com/Universal-Omega/DynamicPageList3.git
       branch: REL1_39
+      commit: e4faf608b0f5a77c4a4c3576a2a28216c7d2bbbf
   - Editcount:
       commit: a81f6e9e404da0e82801fc12d91567d1cc143181
   - Elastica:
@@ -105,19 +105,19 @@ extensions:
   - EmailAuthorization:
       commit: d14a4bb04e2004bb13023dd8a044fc530d558bb8
   - EmbedVideo:
-      commit: 3d8124738d3f1696b42b6eba1d11e9aeae660551
       repository: https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo.git
       branch: master
+      commit: 3d8124738d3f1696b42b6eba1d11e9aeae660551
   - EventLogging:
       commit: 411fc0d6c8538b0064e0d75b5302534c7f28ac50
   - EventStreamConfig:
       commit: 38de67f43c8a1fb26115226fe17caf428b7ce381
   - ExternalData:
+      branch: master
       commit: 564932ba8606390f339291a626b67340af536c68
-      branch: master
   - FlexDiagrams:
-      commit: 7e108c024e892b5dbecdada5dba7d62a93450d23
       branch: master
+      commit: 7e108c024e892b5dbecdada5dba7d62a93450d23
   - GlobalNotice:
       commit: 0cc66c56ebcfdebc0d407d82ae584a5426523d9f
   - GoogleAnalyticsMetrics:
@@ -129,8 +129,8 @@ extensions:
   - HeaderFooter:
       commit: a0d0f4e39f3069925815ca37320f72995aeb80c3
   - HeaderTabs:
-      commit: 2fa424dd8adfb31a27613715ef523b918675ea42
       branch: master
+      commit: 2fa424dd8adfb31a27613715ef523b918675ea42
   - HTMLTags:
       commit: 3dc5caa3d586756f39abfef49053136267eb68ef
   - LabeledSectionTransclusion:
@@ -142,8 +142,8 @@ extensions:
   - LDAPProvider:
       commit: c8a4cad128f7aa898c8660648a7da1aef571765d
   - Lingo:
-      commit: f87ea047c6665c4c8d7435d23a3b454d127447a0
       branch: master
+      commit: f87ea047c6665c4c8d7435d23a3b454d127447a0
   - LinkSuggest:
       commit: 145247abb87a61b4c19523ce62de37161780bd14
   - LinkTarget:
@@ -157,9 +157,9 @@ extensions:
   - Loops:
       commit: dee5dd131110a73ebcb3c09cad9eec0e130f9315
   - LuaCache:
-      commit: c654dacff3ae177d8ffc3dfd8c4f5e1e1ca7cb2f
       repository: https://github.com/HydraWiki/LuaCache.git
       branch: master
+      commit: c654dacff3ae177d8ffc3dfd8c4f5e1e1ca7cb2f
   - MagicNoCache:
       commit: 7315339c97c0eb7d528a8f6b14d055812a85fdb2
   - MassMessage:
@@ -169,8 +169,8 @@ extensions:
   - MediaUploader:
       commit: 77d2936cb635478c667d216fec3dcf8e0880e0c7
   - MintyDocs:
-      commit: 760e10ddf4b1dd70caae76286e6afd6342f8f67b
       branch: master
+      commit: 760e10ddf4b1dd70caae76286e6afd6342f8f67b
   - MobileFrontend:
       commit: a44f2808aa9e051f6a56215ce1320018db723808
   - MsUpload:
@@ -192,40 +192,40 @@ extensions:
   - PageExchange:
       commit: afda8c1ebe6e870841df47f9abeba5ac590594d7
   - PageForms:
-      commit: ffcfb416a4f18e17df5ff02eed6004c6933c0d8f
       branch: master
+      commit: ffcfb416a4f18e17df5ff02eed6004c6933c0d8f
   - PluggableAuth:
       commit: 4ef6f74c067f9ff81b78fd64b9780a82ccce97f3
   - Popups:
       commit: 3567c401b261076c68cb4872ec32a8eac47ff681
   - PagePort:
-      commit: 0a72ffe3674f1a229f1cd1bfb00aee332ac3481e
       branch: master
+      commit: 0a72ffe3674f1a229f1cd1bfb00aee332ac3481e
   - RegularTooltips:
       commit: e52d009f1a01575de2abebf802c6e97b24587d9a
   - RevisionSlider:
       commit: b10b2150133e77099a37b089003170c0111eb681
   - RottenLinks:
-      commit: cb1d7376e7f900606b8f998e01280adf645d97c6
       repository: https://github.com/miraheze/RottenLinks.git
       branch: main
+      commit: cb1d7376e7f900606b8f998e01280adf645d97c6
   - SandboxLink:
       commit: 3eae08b2f34e84399e154cc78973c69d4f5c7811
   - SaveSpinner:
       commit: 438ea79d4ba11cfe8a8c3599fba5c473b9760b91
   - SemanticDependencyUpdater:
-      # (WikiTeq fork)
-      commit: 8f927a9b0f1eb49359d30a76099fa1252905f64d
       repository: https://github.com/WikiTeq/SemanticDependencyUpdater.git
       branch: old-master
+      # (WikiTeq fork)
+      commit: 8f927a9b0f1eb49359d30a76099fa1252905f64d
   - SimpleChanges:
       # Patched version, see https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618
       commit: 29b601e1426c9585a36760fdd7bcfcb9cc1812b4
       full_history: true
   - SimpleMathJax:
-      commit: fab35e6ac66e1f5abd3c91a57719f8180dd346ef
       repository: https://github.com/jmnote/SimpleMathJax.git
       branch: main
+      commit: fab35e6ac66e1f5abd3c91a57719f8180dd346ef
   - SkinPerPage:
       commit: cd94d4684782457f81517d6f2692f3af300d9242
   - SmiteSpam:
@@ -249,18 +249,18 @@ extensions:
   - UserMerge:
       commit: 658fd7ac017cee7cd1ccd68a7431ffad31cf056c
   - UserPageViewTracker:
-      commit: f375afc09cf381d662c75d405aa373cf6cb658cd
       branch: master
+      commit: f375afc09cf381d662c75d405aa373cf6cb658cd
   - Variables:
       commit: 81115fae09d0a219078d2a2511de83474fd2eb8f
   - VEForAll:
-      commit: 33b5fa746af51e9c6c770950a197b1c17f5ee253
       branch: master
+      commit: 33b5fa746af51e9c6c770950a197b1c17f5ee253
   - VoteNY:
       commit: d1d57da0ba7418c9e7f98b659a5fa2832d790c2d
   - WatchAnalytics:
-      commit: da4ab0f2455ef9ad2d1593143f638988f9aa1dec
       branch: master
+      commit: da4ab0f2455ef9ad2d1593143f638988f9aa1dec
   - WhoIsWatching:
       commit: ad0d721ab588c77678a33db304a77bd684724a1a
   - Widgets:
@@ -268,8 +268,8 @@ extensions:
       additional steps:
         - composer update
   - WikiForum:
-      commit: 2f28b51b58d8e9714cba210a74656851209f944f
       branch: master
+      commit: 2f28b51b58d8e9714cba210a74656851209f944f
   - WikiSEO:
       commit: 5d27adb6ec53e7b1076a485e93f0b0c272d08937
   - WSOAuth:
@@ -281,8 +281,8 @@ extensions:
   - Auth_remoteuser:
       commit: c985d520c7aea38092ee7208be31f07a7251210d
   - Buggy:
-      commit: 49dc8fd9ae01195127e0106b94fb01beb5022eb7
       repository: https://github.com/wikimedia/mediawiki-extensions-Buggy.git
+      commit: 49dc8fd9ae01195127e0106b94fb01beb5022eb7
   - ChangeAuthor:
       commit: 89105aebc39d85c15149391832376d6ea85702c1
   - Citoid:
@@ -296,23 +296,23 @@ extensions:
   - GoogleDocTag:
       commit: 50dfe68e36742b9c6ab24b734ab4401cf1d65178
   - GTag:
-      commit: 570ceccdb7d6612ba37de0885c98a0b7fa95d341
       repository: https://github.com/SkizNet/mediawiki-GTag.git
       branch: master
+      commit: 570ceccdb7d6612ba37de0885c98a0b7fa95d341
   - HeadScript:
       commit: cc0fb94acd25a20292b0a4d5bbe74bac307b55fe
   - IframePage:
       commit: 31f27b2388c2032e121a062561924419ce2fe0e9
   - Lazyload:
-      commit: 30a01cc149822353c9404ec178ec01848bae65c5
       repository: https://github.com/mudkipme/mediawiki-lazyload.git
       branch: master
+      commit: 30a01cc149822353c9404ec178ec01848bae65c5
   - LiquidThreads:
       commit: f0d9a0de69623655ca57c40bcd10cb933d9ec99f
   - MassPasswordReset:
-      commit: 04b7e765db994d41f5ca3a910e18f77105218d94
       repository: https://github.com/nischayn22/MassPasswordReset.git
       branch: master
+      commit: 04b7e765db994d41f5ca3a910e18f77105218d94
       additional steps:
         - composer update
   - MobileDetect:
@@ -324,59 +324,59 @@ extensions:
   - PageSchemas:
       commit: 25a55c1aa9c6600e9fd9b03f5d50ccad2a9e83fe
   - PDFEmbed:
-      commit: f38758156639b34317ffc6a9e8b5b2624aebae8b
       repository: https://github.com/WolfgangFahl/PDFEmbed.git
       branch: main
+      commit: f38758156639b34317ffc6a9e8b5b2624aebae8b
   - PubmedParser:
-      commit: 509c9a26b5c07fbc476448bd34b38cd8f5ec01b5
       repository: https://github.com/bovender/PubmedParser.git
       branch: main
+      commit: 509c9a26b5c07fbc476448bd34b38cd8f5ec01b5
   - Scopus:
-      commit: 4fe8048459d9189626d82d9d93a0d5f906c43746
       repository: https://github.com/nischayn22/Scopus.git
       branch: master
+      commit: 4fe8048459d9189626d82d9d93a0d5f906c43746
   - SelectCategory:
       commit: 1f351647af2e235e11139aa8f1b70c19a3556c61
   - Sentry:
-      commit: 9d9162d83f921b66f6c14ed354d20607ecafa030
       repository: https://github.com/WikiTeq/mediawiki-extensions-Sentry.git
       branch: master
+      commit: 9d9162d83f921b66f6c14ed354d20607ecafa030
       additional steps:
         - composer update
   - ShowMe:
       commit: 44e3569219e804829e1ff770bb9bd02b7dd7ec2b
   - SimpleTooltip:
-      commit: 3146514ecda810d6ce9feb79ac8e0e0015f242eb
       repository: https://github.com/Universal-Omega/SimpleTooltip.git
       branch: main
+      commit: 3146514ecda810d6ce9feb79ac8e0e0015f242eb
   - SimpleTippy:
-      commit: 6b4ddff802db21a4c3443d7ce9dcab5ac39d625a
       repository: https://github.com/vedmaka/mediawiki-extension-SimpleTippy.git
       branch: master
+      commit: 6b4ddff802db21a4c3443d7ce9dcab5ac39d625a
   - Skinny:
-      commit: fd17e6102ce12b97c70a4448e8732d3be129ff4d
       repository: https://github.com/tinymighty/skinny.git
       branch: master
+      commit: fd17e6102ce12b97c70a4448e8732d3be129ff4d
   - SkinPerNamespace:
       commit: 33590b2659bf87274bb954f0d01377f5d679d94c
   - Survey:
       commit: b0eb0fa7838827d2ce22be2fbd96ed9a6b182b7e
   - Tabber:
-      commit: 6c67baf4d18518fa78e07add4c032d62dd384b06
       repository: https://gitlab.com/hydrawiki/extensions/Tabber.git
       branch: master
+      commit: 6c67baf4d18518fa78e07add4c032d62dd384b06
   - TabberNeue:
-      commit: 799f86514b6b72bb6be1d615232a5c7cf7f6cfa3
       repository: https://github.com/StarCitizenTools/mediawiki-extensions-TabberNeue.git
       branch: main
+      commit: 799f86514b6b72bb6be1d615232a5c7cf7f6cfa3
   - Tabs:
       commit: 505eac44a119ec3d804b8fd16d4c6b1f6abf7258
   - TwitterTag:
       commit: 0ce9a66d1818eb7b77b91fb051957f99fc17351f
   - UploadWizardExtraButtons:
-      commit: accba1b9b6f50e67d709bd727c9f4ad6de78c0c0
       repository: https://github.com/vedmaka/mediawiki-extension-UploadWizardExtraButtons.git
       branch: master
+      commit: accba1b9b6f50e67d709bd727c9f4ad6de78c0c0
   - YouTube:
       commit: 01673ce5f560fabe09b0feb1e65b57cbf58aae39
   - GoogleLogin:
@@ -384,18 +384,18 @@ extensions:
       additional steps:
         - composer update
   - VariablesLua:
-      commit: 64a5776f055b33c38602e8a94f7237a6b8cb4c79
       repository: https://github.com/Liquipedia/VariablesLua.git
       branch: master
+      commit: 64a5776f055b33c38602e8a94f7237a6b8cb4c79
   - WSSlots:
-      commit: 9a39063a848130030c35944dea047386315051ae
       repository: https://github.com/WikiTeq/WSSlots.git
+      commit: 9a39063a848130030c35944dea047386315051ae
       additional steps:
         - composer update
   - JWTAuth:
-      commit: c7c0730160a84d6b60e3e1b6b108d790972f0f15
       repository: https://github.com/jeffw16/JWTAuth.git
       branch: main
+      commit: c7c0730160a84d6b60e3e1b6b108d790972f0f15
       additional steps:
         - composer update
 # Skins to install
