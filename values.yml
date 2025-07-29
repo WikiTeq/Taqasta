@@ -231,8 +231,6 @@ extensions:
       commit: 31a4bd259a921e19b4857befa700e7fc0998b6d2
   - TemplateWizard:
       commit: 4c3057f1bf55f686f044dce40b9e70e14ea8d8ec
-  - TimedMediaHandler:
-      commit: 3cafd5daa4580fb013b7918a4b1cc9e60dd53527
   - TinyMCE:
       commit: 70467c1b6bcfa7e2f5d415040b6a997741402b4a
   - TitleIcon:
