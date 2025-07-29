@@ -17,10 +17,6 @@ extensions:
       bundled: true
       additional steps:
         - composer update
-  - Widgets:
-      bundled: true
-      additional steps:
-        - composer update
   - AdminLinks:
       commit: 60eda7201636218b80d83a637b70e5c753900e41
       branch: master
@@ -266,6 +262,8 @@ extensions:
       commit: ad0d721ab588c77678a33db304a77bd684724a1a
   - Widgets:
       commit: 50da5c66923ec5169f5606cc1d76f38f0b759d71
+      additional steps:
+        - composer update
   - WikiForum:
       commit: 2f28b51b58d8e9714cba210a74656851209f944f
       branch: master
