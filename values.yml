@@ -60,7 +60,7 @@ extensions:
       # (patched version, see SEB2-16)
       # https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131800
       full_history: true
-      commit: 1c5f7012e1fdd5024db5ab0820e44459109f810c
+      commit: 376315800252cbfd5b1ad4502441134f076d5db8
   - CommentStreams:
       commit: 25340d9d06a7547ba31d9dc4ef0ac100a48f70ed
   - CommonsMetadata:
