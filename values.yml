@@ -61,8 +61,7 @@ extensions:
   - Collection:
       # (patched version, see SEB2-16)
       # https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131800
-      commit: e14fef52240981b5d6a6ad1ceebcae9d8b9e797c
-      full_history: true
+      gerrit_ref: refs/changes/00/1131800/1
   - CommentStreams:
       commit: 25340d9d06a7547ba31d9dc4ef0ac100a48f70ed
   - CommonsMetadata:
@@ -222,8 +221,7 @@ extensions:
       commit: 8f927a9b0f1eb49359d30a76099fa1252905f64d
   - SimpleChanges:
       # Patched version, see https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618
-      commit: 29b601e1426c9585a36760fdd7bcfcb9cc1812b4
-      full_history: true
+      gerrit_ref: refs/changes/18/1117618/1
   - SimpleMathJax:
       repository: https://github.com/jmnote/SimpleMathJax.git
       branch: main

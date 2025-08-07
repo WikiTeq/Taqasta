@@ -34,7 +34,11 @@ RUN set -x; \
 	https://gerrit.wikimedia.org/r/mediawiki/extensions/{{- $name }}
 	{{- end }} $MW_HOME/extensions/{{- $name }} && \
 	cd $MW_HOME/extensions/{{- $name }} && \
-	git checkout -q {{ $details.commit}}{{ if not (eq $extIndex (sub $end 1) ) }} && \{{ end }}
+	{{- if and (not (index $details "repository")) (index $details "gerrit_ref") }}
+	git fetch origin '{{ $details.gerrit_ref }}' && git reset --hard FETCH_HEAD && \
+	{{- else }}
+	git checkout -q {{ $details.commit }}{{ if not (eq $extIndex (sub $end 1) ) }} && \{{ end }}
+	{{- end }}
       {{- end -}}
     {{- end }}
 
