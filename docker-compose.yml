@@ -51,7 +51,7 @@ services:
         # Load `npx playwright show-report --host 0.0.0.0` to access reports
         # on localhost:9323
         ports:
-            - 9323:9323
+            - "9323:9323"
         volumes:
             - ./e2e/playwright.config.ts:/e2e/playwright.config.ts
             - ./e2e/tests/:/e2e/tests
