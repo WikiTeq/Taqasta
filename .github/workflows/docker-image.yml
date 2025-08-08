@@ -174,7 +174,7 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_BUILDKIT: 1
         shell: bash
-        run: DOCKER_BUILDKIT=1 docker compose up --verbose -d
+        run: DOCKER_BUILDKIT=1 docker compose --verbose up -d
 
       - name: Wait for init
         shell: bash
