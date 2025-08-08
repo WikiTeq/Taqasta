@@ -150,6 +150,9 @@ jobs:
           install: true
           platforms: linux/amd64
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       - name: Build and load
         id: docker_build
         uses: docker/build-push-action@v6
@@ -164,9 +167,6 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64,mode=max
           push: false
           load: true
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
 
       - name: Set up environment
         shell: bash
