@@ -134,6 +134,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -149,9 +152,6 @@ jobs:
         with:
           install: true
           platforms: linux/amd64
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
 
       - name: Build and load
         id: docker_build
