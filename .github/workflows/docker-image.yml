@@ -165,12 +165,12 @@ jobs:
           push: false
           load: true
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       - name: Set up environment
         shell: bash
         run: mv .env.ci .env
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
 
       - name: Setup Docker Compose
         env:
