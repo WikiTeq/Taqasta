@@ -169,8 +169,8 @@ jobs:
         shell: bash
         run: mv .env.ci .env
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      #- name: Setup upterm session
+      #  uses: lhotari/action-upterm@v1
 
       - name: Setup Docker Compose
         env:
@@ -178,8 +178,7 @@ jobs:
           DOCKER_BUILDKIT: 1
         shell: bash
         run: |
-          docker compose pull
-          DOCKER_BUILDKIT=1 docker compose --verbose up -d
+          DOCKER_BUILDKIT=1 docker compose --verbose up -d --build
 
       - name: Wait for init
         shell: bash
