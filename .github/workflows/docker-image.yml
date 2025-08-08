@@ -178,7 +178,9 @@ jobs:
           DOCKER_BUILDKIT: 1
         shell: bash
         run: |
-          DOCKER_BUILDKIT=1 docker compose --verbose up -d --build
+          DOCKER_BUILDKIT=1 docker compose --verbose up -d db
+          DOCKER_BUILDKIT=1 docker compose --verbose up -d web
+          DOCKER_BUILDKIT=1 docker compose --verbose up -d e2e
 
       - name: Wait for init
         shell: bash
