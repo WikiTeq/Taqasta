@@ -169,6 +169,9 @@ jobs:
         shell: bash
         run: mv .env.ci .env
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       - name: Setup Docker Compose
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
