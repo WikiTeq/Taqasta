@@ -24,9 +24,13 @@ while true; do
     # Job types that need to be run ASAP no matter how many of them are in the queue
     # Those jobs should be very "cheap" to run
     run_jobs_on_demand "enotifNotify"
+    sleep 1
     run_jobs_on_demand "createPage"
+    sleep 1
     run_jobs_on_demand "htmlCacheUpdate" 500
+    sleep 1
     run_jobs_on_demand "refreshLinks" 25
+    sleep 1
     # Rest of the jobs in the queue
     run_jobs_on_demand "" 10
 

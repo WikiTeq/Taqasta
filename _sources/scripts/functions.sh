@@ -34,16 +34,41 @@ calculate_php_error_reporting() {
   php -r "error_reporting($1); echo error_reporting();"
 }
 
+get_pending_jobs_raw_db() {
+    local JOB_TYPE=$1
+    local JOB_COUNT=0
+    # WARNING: this only works if the database is configured to be the queue backend (default)
+    # see https://www.mediawiki.org/wiki/Manual:$wgJobTypeConf
+    # see JobQueueDB:getSize() the job is considered pending if the `job_token` is an empty string
+    local DEFAULT_MAX_ATTEMPTS=3
+    local JOB_QUERY="SELECT COUNT(job_id) FROM job WHERE job_token = '' AND job_attempts < $DEFAULT_MAX_ATTEMPTS"
+    if [ -n "$JOB_TYPE" ]; then
+        JOB_QUERY="$JOB_QUERY AND job_cmd='$JOB_TYPE'"
+    fi
+    echo_log "Executing '$JOB_QUERY' .."
+    JOB_COUNT=$(mysql \
+      -h"$MW_DB_SERVER" \
+      -u"$MW_DB_USER" \
+      -p"$MW_DB_PASS" \
+      "$MW_DB_NAME" \
+      -N \
+      -B \
+      -e "$JOB_QUERY;"
+    )
+    echo_log "Result $JOB_COUNT"
+    echo "$JOB_COUNT"
+}
+
 run_jobs_on_demand() {
     local JOB_TYPE=$1
     local MAX_JOBS=${2:-10}
     local JOB_COUNT=0
     if [ -z "$JOB_TYPE" ]; then
         echo_log "Looking if there are any pending jobs.."
-        JOB_COUNT=$(php $MW_HOME/maintenance/run.php showJobs)
+        JOB_COUNT=$(get_pending_jobs_raw_db "$JOB_TYPE")
     else
         echo_log "Looking if there are any pending jobs of type $JOB_TYPE.."
-        JOB_COUNT=$(php $MW_HOME/maintenance/run.php showJobs --type="$JOB_TYPE")
+        JOB_COUNT=$(get_pending_jobs_raw_db "$JOB_TYPE")
     fi
     if [ "$JOB_COUNT" -gt "0" ]; then
         echo_log "Found $JOB_COUNT jobs of type $JOB_TYPE pending, starting the runner.."
