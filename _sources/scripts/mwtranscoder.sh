@@ -22,6 +22,7 @@ while true; do
     fi
 
     run_jobs_on_demand "webVideoTranscodePrioritized" 10
+    sleep 1
     run_jobs_on_demand "webVideoTranscode" 1
 
     # Wait some seconds to let the CPU do other things, like handling web requests, etc
