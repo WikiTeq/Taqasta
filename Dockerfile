@@ -1011,7 +1011,10 @@ ENV MW_AUTOUPDATE=true \
 	MW_MAINTENANCE_CIRRUSSEARCH_UPDATECONFIG=2 \
 	MW_MAINTENANCE_CIRRUSSEARCH_FORCEINDEX=2 \
 	MW_ENABLE_JOB_RUNNER=true \
-	MW_JOB_RUNNER_PAUSE=2 \
+	# In the case of database-managed queues (default) and when a general cache is enabled, the numbers of jobs are
+	# cached with a time-to-live of 30 seconds. With WIK-1992 having this interval value less than 31 seconds
+	# makes the job runner much less efficient
+	MW_JOB_RUNNER_PAUSE=31 \
 	MW_JOB_RUNNER_MEMORY_LIMIT=512M \
 	MW_ENABLE_TRANSCODER=true \
 	MW_JOB_TRANSCODER_PAUSE=60 \
