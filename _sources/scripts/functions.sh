@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # read variables from LocalSettings.php
 get_mediawiki_variable () {
     php /getMediawikiSettings.php --variable="$1" --format="${2:-string}"
@@ -30,4 +32,26 @@ make_dir_writable() {
 
 calculate_php_error_reporting() {
   php -r "error_reporting($1); echo error_reporting();"
+}
+
+run_jobs_on_demand() {
+    local JOB_TYPE=$1
+    local MAX_JOBS=${2:-10}
+    local JOB_COUNT=0
+    if [ -z "$JOB_TYPE" ]; then
+        echo_log "Looking if there are any pending jobs.."
+        JOB_COUNT=$(php $MW_HOME/maintenance/run.php showJobs)
+    else
+        echo_log "Looking if there are any pending jobs of type $JOB_TYPE.."
+        JOB_COUNT=$(php $MW_HOME/maintenance/run.php showJobs --type="$JOB_TYPE")
+    fi
+    if [ "$JOB_COUNT" -gt "0" ]; then
+        echo_log "Found $JOB_COUNT jobs of type $JOB_TYPE pending, starting the runner.."
+        php $MW_HOME/maintenance/run.php runJobs \
+          --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" \
+          --type="$JOB_TYPE" \
+          --maxjobs="$MAX_JOBS" >> "$logfileNow" 2>&1
+    else
+        echo_log "No jobs found, nothing to do"
+    fi
 }

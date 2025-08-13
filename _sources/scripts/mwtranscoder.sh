@@ -1,7 +1,14 @@
 #!/bin/bash
 
-RJ=$MW_HOME/maintenance/runJobs.php
+. /functions.sh
+
 logfileName=mwtranscoder_log
+
+echo_log() {
+    local log_ts
+    log_ts="$(date '+%Y-%m-%d %H:%M:%S')"
+    echo "[$log_ts] $*" >> "$logfileNow" 2>&1
+}
 
 echo "Starting transcoder (in 180 seconds)..."
 # Wait three minutes after the server starts up to give other processes time to get started
@@ -14,12 +21,10 @@ while true; do
         /rotatelogs-compress.sh "$logfileNow" "$logFilePrev" &
     fi
 
-    date >> "$logfileNow"
-    php "$RJ" --type webVideoTranscodePrioritized --maxjobs=10 >> "$logfileNow" 2>&1
-    sleep 1
-    php "$RJ" --type webVideoTranscode --maxjobs=1 >> "$logfileNow" 2>&1
+    run_jobs_on_demand "webVideoTranscodePrioritized" 10
+    run_jobs_on_demand "webVideoTranscode" 1
 
     # Wait some seconds to let the CPU do other things, like handling web requests, etc
-    echo mwtranscoder waits for "$MW_JOB_TRANSCODER_PAUSE" seconds... >> "$logfileNow"
+    echo_log "mwtranscoder waits for $MW_JOB_TRANSCODER_PAUSE seconds.."
     sleep "$MW_JOB_TRANSCODER_PAUSE"
 done
