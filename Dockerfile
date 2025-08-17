@@ -836,10 +836,6 @@ RUN set -x; \
 	&& git clone --single-branch -b master https://github.com/vedmaka/mediawiki-extension-SimpleTippy.git $MW_HOME/extensions/SimpleTippy \
 	&& cd $MW_HOME/extensions/SimpleTippy \
 	&& git checkout -q 6b4ddff802db21a4c3443d7ce9dcab5ac39d625a \
-	# Skinny
-	&& git clone --single-branch -b master https://github.com/tinymighty/skinny.git $MW_HOME/extensions/Skinny \
-	&& cd $MW_HOME/extensions/Skinny \
-	&& git checkout -q fd17e6102ce12b97c70a4448e8732d3be129ff4d \
 	# SkinPerNamespace
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SkinPerNamespace $MW_HOME/extensions/SkinPerNamespace \
 	&& cd $MW_HOME/extensions/SkinPerNamespace \

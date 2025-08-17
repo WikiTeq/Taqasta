@@ -185,7 +185,6 @@ const DOCKER_EXTENSIONS = [
 	'SimpleTippy',
 	'SkinPerNamespace',
 	'SkinPerPage',
-	'Skinny',
 	'SmiteSpam',
 	'SpamBlacklist', # bundled
 	'SubPageList',
