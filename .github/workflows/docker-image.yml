@@ -128,6 +128,7 @@ jobs:
     timeout-minutes: 60
     outputs:
       pages_url: ${{ steps.deployment_pages.outputs.page_url }}
+      report-uploaded: ${{ steps.report-playwright-tests.outputs.was-uploaded }}
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
@@ -179,7 +180,7 @@ jobs:
 
       - name: Wait for init
         shell: bash
-        run: while !  docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
+        run: while ! docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
 
       - name: Wait for container to be healthy
         shell: bash
@@ -199,16 +200,38 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run Playwright tests
+        id: run-playwright-tests
         working-directory: ./e2e
         run: npx playwright test
 
       - name: Upload screenshots as a github-pages artifact
         uses: actions/upload-pages-artifact@v3
-        if: failure()
+        # Only if the actual tests failed, if something else earlier in the
+        # job failed then the tests wouldn't have been run and the report
+        # would not exist to upload
+        if: failure() && steps.run-playwright-tests.outcome == 'failure'
         with:
           name: playwright-report
           path: e2e/playwright-report/
           retention-days: 7
+
+      # Need a way to communicate to the report-pages job whether or not we
+      # uploaded a report; only way that seems to be possible is to use an
+      # output from a step (here) and output that from the overall job (above)
+      # and then check that in the report-pages job (below). Since the overall
+      # output gets extracted from a single step, and steps need to have unique
+      # ids, cannot have two different steps that run under the two possible
+      # conditions, need to have a single step that checks the conditions
+      - name: Output if a report was uploaded
+        id: report-playwright-tests
+        if: always()
+        shell: bash
+        run: |
+          if ${{ steps.run-playwright-tests.outcome == 'failure' }}; then
+            echo "was-uploaded=yes" >> $GITHUB_OUTPUT
+          else
+            echo "was-uploaded=no" >> $GITHUB_OUTPUT
+          fi
 
       - name: Stop containers
         if: always()
