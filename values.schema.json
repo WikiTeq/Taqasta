@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://wikiteq.com/taqasta/values.schema.json",
+  "title": "Taqasta Values Configuration Schema",
+  "description": "Schema for validating values.yml configuration file for MediaWiki extensions, skins, and packages for the Taqasta image",
+  "type": "object",
+  "properties": {
+    "extensions": {
+      "type": "array",
+      "description": "List of MediaWiki extensions bundled or installed",
+      "items": {
+        "type": "object",
+        "patternProperties": {
+          "^[A-Za-z0-9_\\s]+$": {
+            "type": "object",
+            "properties": {
+              "bundled": {
+                "type": "boolean",
+                "description": "Whether the extension is bundled with MediaWiki"
+              },
+              "gerrit_ref": {
+                "type": "string",
+                "pattern": "^refs/changes/[0-9]+/[0-9]+/[0-9]+$",
+                "description": "Gerrit patch ref name. Nullifies commit property. Only applies when repository is null."
+              },
+              "commit": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{7,40}$",
+                "description": "Git commit hash"
+              },
+              "branch": {
+                "type": "string",
+                "description": "Git branch name"
+              },
+              "repository": {
+                "type": "string",
+                "format": "uri",
+                "description": "Git repository URL"
+              },
+              "full_history": {
+                "type": "boolean",
+                "description": "Whether to clone full git history"
+              },
+              "additional steps": {
+                "type": "array",
+                "description": "Additional build steps to execute",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "composer update"
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "skins": {
+      "type": "array",
+      "description": "List of MediaWiki skins installed",
+      "items": {
+        "type": "object",
+        "patternProperties": {
+          "^[A-Za-z0-9_\\s]+$": {
+            "type": "object",
+            "properties": {
+              "commit": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{7,40}$",
+                "description": "Git commit hash"
+              },
+              "branch": {
+                "type": "string",
+                "description": "Git branch name"
+              },
+              "repository": {
+                "type": "string",
+                "format": "uri",
+                "description": "Git repository URL"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "packages": {
+      "type": "array",
+      "description": "List of Composer packages to install",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*$",
+            "description": "Composer package name in vendor/package format"
+          },
+          "version": {
+            "type": "string",
+            "description": "Package version constraint"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "version"
+        ]
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "description": "Custom Composer repositories",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "vcs",
+              "composer",
+              "package",
+              "path"
+            ],
+            "description": "Repository type"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Repository URL"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "url"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": []
+}
