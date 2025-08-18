@@ -395,6 +395,7 @@ extensions:
   - JWTAuth:
       repository: https://github.com/jeffw16/JWTAuth.git
       branch: main
+      # Upgrade carefully, we had a problem with version 2.0, see MITE-50
       commit: c7c0730160a84d6b60e3e1b6b108d790972f0f15
       additional steps:
         - composer update
