@@ -356,10 +356,9 @@ jobs:
   notify:
     needs: [tags,merge]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request'
     steps:
       - name: Notify about image tag
-        if: github.event_name == 'pull_request' && needs.push.outputs.digest != ''
         uses: hasura/comment-progress@v2.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
