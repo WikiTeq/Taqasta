@@ -353,10 +353,6 @@ extensions:
       repository: https://github.com/vedmaka/mediawiki-extension-SimpleTippy.git
       branch: master
       commit: 6b4ddff802db21a4c3443d7ce9dcab5ac39d625a
-  - Skinny:
-      repository: https://github.com/tinymighty/skinny.git
-      branch: master
-      commit: fd17e6102ce12b97c70a4448e8732d3be129ff4d
   - SkinPerNamespace:
       commit: 33590b2659bf87274bb954f0d01377f5d679d94c
   - Survey:
