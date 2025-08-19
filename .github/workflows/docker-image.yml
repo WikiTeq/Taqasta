@@ -354,7 +354,7 @@ jobs:
 
   # Send a message to the PR thread
   notify:
-    needs: [tags,merge]
+    needs: [tags,push,merge]
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
