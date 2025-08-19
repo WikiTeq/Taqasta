@@ -113,3 +113,19 @@ git push origin canasta
 
 https://github.com/WikiTeq/Taqasta/pulls , ensure that you have `CanastaWiki/Canastas:master` choosen as base,
 and `WikiTeq/Taqasta:fork/name-of-my-change` as compare.
+
+# Profiling
+
+The image is bundled with [xhprof](https://www.php.net/manual/en/book.xhprof.php). To enable profiling
+ensure that you have `MW_PROFILE_SECRET` environment variable set. Once the variable is set you can
+access any page supplying the `forceprofile` GET parameter with the value equal to the `MW_PROFILE_SECRET` to
+enable profiling. Doing this enables the following code-block on the settings file:
+
+```php
+	$wgProfiler['class'] = 'ProfilerXhprof';
+	$wgProfiler['output'] = [ 'ProfilerOutputText' ];
+	$wgProfiler['visible'] = false;
+	$wgUseCdn = false; // make sure profile is not cached
+```
+
+See https://www.mediawiki.org/wiki/Manual:$wgProfiler for details
