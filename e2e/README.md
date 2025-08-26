@@ -37,19 +37,24 @@ The e2e tests are designed to validate the complete MediaWiki installation and c
 
 - **`fixtures/`**: Test assets like sample images for upload testing
 
-## Prerequisites
-
-- Docker and Docker Compose
-- Node.js 22+ (for local development)
-- Access to the main Taqasta application
-
 ## Running Tests
 
 ### Option 1: Using Docker Compose (Recommended)
 
-The easiest way to run e2e tests is through Docker Compose, which handles all dependencies automatically:
+The easiest way to run e2e tests is through Docker Compose, which handles all dependencies automatically.
+
+#### Prerequisites
+- Docker and Docker Compose
+- BuildKit enabled (`export DOCKER_BUILDKIT=1`)
+- Git (for cloning extensions during build)
 
 ```bash
+# Enable BuildKit for advanced Docker features (required)
+export DOCKER_BUILDKIT=1
+
+# Compile the Dockerfile template
+./compile.sh
+
 # Start the full stack including the e2e test container
 docker-compose --profile e2elocal up -d
 
@@ -62,9 +67,15 @@ docker-compose exec e2e npx playwright show-report --host 0.0.0.0
 
 The test reports will be available at `http://localhost:9323` when using the Docker setup.
 
+**Note**: BuildKit must be enabled for the Docker build process. If you encounter build errors, ensure `DOCKER_BUILDKIT=1` is set.
+
 ### Option 2: Local Development
 
 For development and debugging:
+
+#### Prerequisites
+- Node.js 22+
+- A running MediaWiki instance on `localhost:8000`
 
 ```bash
 # Install dependencies
@@ -185,3 +196,38 @@ When running in CI/CD, the tests use:
 - **Timeout**: 5 minutes per test, 60 minutes total
 
 For detailed information about the CI/CD pipeline structure, quality assurance flow, and debugging CI/CD failures, see the main [`README.md`](../README.md#ci/cd-pipeline).
+
+## Troubleshooting
+
+### Docker Compose Build Issues
+
+#### BuildKit Not Enabled
+**Error**: `the --mount option requires BuildKit`
+**Solution**: Enable BuildKit before running Docker Compose:
+
+```bash
+export DOCKER_BUILDKIT=1
+docker-compose --profile e2elocal up -d
+```
+
+To make this permanent, add `DOCKER_BUILDKIT=1` to your shell profile (`.bashrc`, `.zshrc`, etc.).
+
+#### Missing Dockerfile
+**Error**: `unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/ike/git/Taqasta/Dockerfile: no such file or directory`
+**Solution**: Compile the Dockerfile template first:
+
+```bash
+./compile.sh
+docker-compose --profile e2elocal up -d
+```
+
+### Local Development Issues
+
+#### Connection Refused
+**Error**: `page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8000`
+**Solution**: Ensure MediaWiki is running on `localhost:8000` before running tests:
+
+```bash
+# Start MediaWiki locally, then run tests
+npx playwright test
+```
