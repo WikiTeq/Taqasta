@@ -40,6 +40,13 @@ To build the image, run the `compile.sh` script first to generate the final Dock
 their templates, then proceed with the normal Docker build process. You can use shortcut `build.sh` to build the image
 locally.
 
+**Note**: The build process requires BuildKit to be enabled due to advanced Docker features used in the image:
+
+```bash
+export DOCKER_BUILDKIT=1
+./build.sh
+```
+
 Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
 various extensions and other tweaks that the WikiTeq team uses.
