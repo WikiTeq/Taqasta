@@ -10,6 +10,6 @@ data:
   MW_DB_INSTALLDB_USER: "root"
   PHP_UPLOAD_MAX_FILESIZE: "10M"
   PHP_POST_MAX_SIZE: "10M"
-  # disable bundled job runners
-  MW_ENABLE_TRANSCODER: "false"
-  MW_ENABLE_JOB_RUNNER: "false"
+  # enable bundled job runners
+  MW_ENABLE_TRANSCODER: "true"
+  MW_ENABLE_JOB_RUNNER: "true"
