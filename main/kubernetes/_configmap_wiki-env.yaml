@@ -3,13 +3,13 @@ kind: ConfigMap
 metadata:
   name: wiki-env
 data:
-  MW_SITE_SERVER: "https://taqasta-dev.teq.wiki/"
-  MW_SITE_FQDN: "taqasta-dev.teq.wiki"
-  MW_SITE_NAME: "TaqastaDev"
+  MW_SITE_SERVER: "https://taqasta-dev-worker.teq.wiki/"
+  MW_SITE_FQDN: "taqasta-dev-worker.teq.wiki"
+  MW_SITE_NAME: "TaqastaDevWorker"
   MW_DB_SERVER: "mysql-service"
   MW_DB_INSTALLDB_USER: "root"
   PHP_UPLOAD_MAX_FILESIZE: "10M"
   PHP_POST_MAX_SIZE: "10M"
   # enable bundled job runners
-  MW_ENABLE_TRANSCODER: "true"
-  MW_ENABLE_JOB_RUNNER: "true"
+  MW_ENABLE_TRANSCODER: "false"
+  MW_ENABLE_JOB_RUNNER: "false"

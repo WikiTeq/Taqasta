@@ -42,7 +42,7 @@ spec:
                 --link=head \
                 --ssh-known-hosts=false \
                 -v=10 \
-                --ref=QLOUD-139
+                --ref=QLOUD-139-worker
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -119,7 +119,7 @@ spec:
                 --max-failures=1000000000 \
                 --ssh-known-hosts=false \
                 -v=10 \
-                --ref=QLOUD-139
+                --ref=QLOUD-139-worker
           securityContext:
             runAsUser: 0
             runAsGroup: 0
