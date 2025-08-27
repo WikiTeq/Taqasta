@@ -105,6 +105,14 @@ spec:
         # runJobs worker container
         - name: taqasta-worker
           image: ghcr.io/wikiteq/taqasta:latest
+          resources:
+            requests:
+              # just guessing for now
+              cpu: "300m"
+              memory: "128Mi"
+            limits:
+              # set to match php memory settings for now
+              memory: "512Mi"
           command:
             - sh
             - -c
@@ -139,6 +147,8 @@ spec:
                 secretKeyRef:
                   name: mysql-password
                   key: password
+            - name: PHP_MEMORY_LIMIT
+              value: 512M
           volumeMounts:
             - name: git
               mountPath: /git
