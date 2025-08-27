@@ -5,6 +5,7 @@ metadata:
 data:
   MW_SITE_SERVER: "https://taqasta-dev.teq.wiki/"
   MW_SITE_FQDN: "taqasta-dev.teq.wiki"
+  MW_SITE_NAME: "TaqastaDev"
   MW_DB_SERVER: "mysql-service"
   MW_DB_INSTALLDB_USER: "root"
   PHP_UPLOAD_MAX_FILESIZE: "10M"
