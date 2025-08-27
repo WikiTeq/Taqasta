@@ -81,6 +81,12 @@ spec:
                 configMapKeyRef:
                   name: mysql-env
                   key: MYSQL_DATABASE
+            # note: both install and user ops are as root for now
+            - name: MW_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
             - name: MW_DB_INSTALLDB_PASS
               valueFrom:
                 secretKeyRef:
