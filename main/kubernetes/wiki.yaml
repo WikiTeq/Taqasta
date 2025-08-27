@@ -59,7 +59,7 @@ spec:
             - -c
             - |
               # Symlinks pointed to git-sync resources instead of docker-compose mounts
-              ln -sf /git/head/main/LocalSettings.dev.php /var/www/mediawiki/w/config/settings/LocalSettings.dev.php
+              ln -sf /git/head/main/LocalSettings.dev.php /var/www/mediawiki/w/_settings/LocalSettings.php
 
               # Apache is following symlinks, but with each new commit git-sync is recreating the /git/head symlink, so we are forcing Apache to read them
               (
