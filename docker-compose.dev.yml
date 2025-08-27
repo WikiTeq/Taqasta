@@ -1,0 +1,81 @@
+# This is a dev/debug compose file
+services:
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=caching_sha2_password --log-bin --binlog-expire-logs-seconds=172800
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE, fix error mbind: Operation not permitted
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=${MW_DB_INSTALLDB_PASS:-mediawiki}
+      - MYSQL_DATABASE=${MW_DB_NAME:-mediawiki}
+    volumes:
+      - mysql:/var/lib/mysql
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${PORT:-127.0.0.1:8000}:80"
+    depends_on:
+      - db
+    environment: &x-web-environment
+      MW_ADMIN_USER: ${MW_ADMIN_USER:-admin}
+      MW_ADMIN_PASS: ${MW_ADMIN_PASS:-Passsw0rd!}
+      MW_DB_NAME: ${MW_DB_NAME:-mediawiki}
+      MW_DB_INSTALLDB_USER: root
+      MW_DB_INSTALLDB_PASS: ${MW_DB_INSTALLDB_PASS:-mediawiki}
+      MW_DB_USER: root
+      MW_DB_PASS: ${MW_DB_PASS:-mediawiki}
+      MW_SITE_SERVER:
+      MW_SITE_NAME:
+      MW_SITE_LANG:
+      MW_DB_TYPE: ${MW_DB_TYPE:-mysql}
+      MW_SHOW_EXCEPTION_DETAILS:
+      PHP_UPLOAD_MAX_FILESIZE: 500M
+      PHP_POST_MAX_SIZE: 500M
+      # disable bundled runners as we have a worker container now
+      MW_ENABLE_TRANSCODER: false
+      MW_ENABLE_JOB_RUNNER: false
+    volumes: &x-web-volumes
+      - mediawiki:/mediawiki
+      - ./LocalSettings.dev.php:/mediawiki/config/settings/LocalSettings.dev.php
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: no
+    # overrides the container healthcheck
+    healthcheck:
+      test: /bin/bash -c "ps -ax | grep '[r]unJobs' | wc -l"
+      interval: 5s
+      retries: 2
+      start_period: 5s
+      timeout: 5s
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      <<: *x-web-environment
+      # worker requires custom memory limit for PHP
+      # and --memory-limit max on the runner as by default the runner uses 150MiB as max value
+      PHP_MEMORY_LIMIT: 512M
+    volumes: *x-web-volumes
+    command:
+      - /bin/bash
+      - -c
+      - |
+        echo '=========================================' &&
+        echo 'Creating LocalSettings.php symlink...' &&
+        ln -sf "$$MW_VOLUME/LocalSettings.php" "$$MW_HOME/LocalSettings.php" || exit 1 &&
+        echo "Starting the runJobs script in --wait mode... (PHP_MEMORY_LIMIT->$$PHP_MEMORY_LIMIT)" &&
+        sleep 5 &&
+        php $$MW_HOME/maintenance/run.php runJobs --memory-limit max --wait
+
+volumes:
+  mediawiki:
+  mysql:
