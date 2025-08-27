@@ -102,6 +102,48 @@ spec:
             mountPath: /mediawiki
           - name: images
             mountPath: /mediawiki/images
+        # runJobs worker container
+        - name: taqasta-worker
+          image: ghcr.io/wikiteq/taqasta:latest
+          command:
+            - sh
+            - -c
+            - |
+              # Symlinks pointed to git-sync resources instead of docker-compose mounts
+              mkdir -p /var/www/mediawiki/w/_settings
+              ln -sf /git/head/main/LocalSettings.dev.php /var/www/mediawiki/w/_settings/LocalSettings.php
+              ln -sf "$MW_VOLUME/LocalSettings.php" "$MW_HOME/LocalSettings.php"
+              sleep 1
+              php $MW_HOME/maintenance/run.php runJobs --memory-limit max --wait
+          envFrom:
+            - configMapRef:
+                name: wiki-env
+            - secretRef:
+                name: wiki-secrets
+          env:
+            - name: MW_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-env
+                  key: MYSQL_DATABASE
+            # note: both install and user ops are as root for now
+            - name: MW_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+            - name: MW_DB_INSTALLDB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+          volumeMounts:
+            - name: git
+              mountPath: /git
+            - name: data
+              mountPath: /mediawiki
+            - name: images
+              mountPath: /mediawiki/images
         # see https://github.com/kubernetes/git-sync
         - name: git-sync
           image: registry.k8s.io/git-sync/git-sync:v4.4.0
