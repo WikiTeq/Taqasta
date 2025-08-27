@@ -114,6 +114,8 @@ spec:
               ln -sf /git/head/main/LocalSettings.dev.php /var/www/mediawiki/w/_settings/LocalSettings.php
               ln -sf "$MW_VOLUME/LocalSettings.php" "$MW_HOME/LocalSettings.php"
               sleep 1
+              # Poor mans dependency on the main container availability
+              /wait-for-it.sh -t 600 "127.0.0.1:80" || exit 1
               php $MW_HOME/maintenance/run.php runJobs --memory-limit max --wait
           envFrom:
             - configMapRef:
