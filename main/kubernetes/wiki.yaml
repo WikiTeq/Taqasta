@@ -190,10 +190,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-      - taqasta-dev.teq.wiki
+      - taqasta-dev-worker.teq.wiki
       secretName: cert-secret
   rules:
-  - host: taqasta-dev.teq.wiki
+  - host: taqasta-dev-worker.teq.wiki
     http:
       paths:
       - pathType: Prefix
