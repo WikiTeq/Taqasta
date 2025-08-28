@@ -216,6 +216,13 @@ spec:
                   key: password
             - name: PHP_MEMORY_LIMIT
               value: 512M
+          volumeMounts:
+            - name: git
+              mountPath: /git
+            - name: data
+              mountPath: /mediawiki
+            - name: images
+              mountPath: /mediawiki/images
         # runJobs worker container
         - name: taqasta-worker-video
           image: ghcr.io/wikiteq/taqasta:latest
@@ -260,13 +267,6 @@ spec:
                   key: password
             - name: PHP_MEMORY_LIMIT
               value: 512M
-          volumeMounts:
-            - name: git
-              mountPath: /git
-            - name: data
-              mountPath: /mediawiki
-            - name: images
-              mountPath: /mediawiki/images
           volumeMounts:
             - name: git
               mountPath: /git
