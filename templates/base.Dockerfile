@@ -53,24 +53,24 @@ RUN set x; \
 	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
 	aptitude update && \
 	aptitude install -y \
-	php8.1 \
-	php8.1-mysql \
-	php8.1-cli \
-	php8.1-gd \
-	php8.1-mbstring \
-	php8.1-xml \
-	php8.1-mysql \
-	php8.1-intl \
-	php8.1-opcache \
-	php8.1-apcu \
-	php8.1-redis \
-	php8.1-curl \
-	php8.1-tidy \
-	php8.1-zip \
-	php8.1-tideways \
+	php8.3 \
+	php8.3-mysql \
+	php8.3-cli \
+	php8.3-gd \
+	php8.3-mbstring \
+	php8.3-xml \
+	php8.3-mysql \
+	php8.3-intl \
+	php8.3-opcache \
+	php8.3-apcu \
+	php8.3-redis \
+	php8.3-curl \
+	php8.3-tidy \
+	php8.3-zip \
+	php8.3-xhprof \
 	# Lua sandbox
 	php-pear \
-	php8.1-dev \
+	php8.3-dev \
 	liblua5.1-0 \
 	liblua5.1-0-dev \
 	monit \
@@ -86,21 +86,21 @@ RUN set x; \
 	jq && \
 	#	xvfb \ + 14.9 MB
 	#	lilypond \ + 301 MB
-	pecl -d php_suffix=8.1 install luasandbox && \
-	pecl -d php_suffix=8.1 install excimer
+	pecl -d php_suffix=8.3 install luasandbox && \
+	pecl -d php_suffix=8.3 install excimer
 
 RUN set x; \
-	aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev && \
+	aptitude -y remove php-pear php8.3-dev liblua5.1-0-dev && \
 	aptitude clean && \
 	rm -rf /var/lib/apt/lists/*
 
-# FORCE USING PHP 8.1 (same for phar)
+# FORCE USING PHP 8.3 (same for phar)
 # For some reason sury provides other versions, see
 # https://github.com/oerdnj/deb.sury.org/wiki/Frequently-Asked-Questions
 RUN set -x; \
-	update-alternatives --set php /usr/bin/php8.1 && \
-	update-alternatives --set phar /usr/bin/phar8.1 && \
-	update-alternatives --set phar.phar /usr/bin/phar.phar8.1
+	update-alternatives --set php /usr/bin/php8.3 && \
+	update-alternatives --set phar /usr/bin/phar8.3 && \
+	update-alternatives --set phar.phar /usr/bin/phar.phar8.3
 
 # Post install configuration
 RUN set -x; \
