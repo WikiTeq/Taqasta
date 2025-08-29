@@ -150,7 +150,7 @@ spec:
           restartPolicy: Always
           command:
             - sh
-            - c
+            - -c
             - |
               echo "I am just a dummy native sidecar container that waits for 90 seconds"
               sleep 90
