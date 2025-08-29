@@ -153,7 +153,13 @@ spec:
             - -c
             - |
               echo "I am just a dummy native sidecar container that waits for 90 seconds"
+              sleep 30
+              touch /tmp/test.txt
               sleep 90
+          readinessProbe:
+            exec:
+              command:
+                - ls /tmp/test.txt
         - name: git-sync
           image: registry.k8s.io/git-sync/git-sync:v4.4.0
           restartPolicy: Always
