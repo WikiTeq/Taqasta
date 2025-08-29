@@ -145,21 +145,32 @@ spec:
         value: "shared"
         effect: "NoSchedule"
       initContainers:
-        - name: dummy-wait-init
-          image: busybox
-          restartPolicy: Always
+        # init container (runs once, delays both app and sidecar containers), see https://github.com/kubernetes/git-sync
+        - name: git-sync-once
+          image: registry.k8s.io/git-sync/git-sync:v4.4.0
           command:
             - sh
             - -c
             - |
-              echo "I am just a dummy native sidecar container that waits for 90 seconds"
-              sleep 30
-              touch /tmp/test.txt
-              sleep 90
-          readinessProbe:
-            exec:
-              command:
-                - ls /tmp/test.txt
+              mkdir -p /root/.ssh
+              /git-sync \
+                --one-time \
+                --ssh-key-file=/ssh/ssh_key \
+                --repo=git@github.com:WikiTeq/Taqasta.git \
+                --root=/git \
+                --link=head \
+                --ssh-known-hosts=false \
+                -v=10 \
+                --ref=QLOUD-139-worker
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          volumeMounts:
+            - name: git
+              mountPath: /git
+            - name: git-auth
+              mountPath: /ssh
+        # native sidecar container (runs in parallel with app containers but not init ones), see https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/
         - name: git-sync
           image: registry.k8s.io/git-sync/git-sync:v4.4.0
           restartPolicy: Always
