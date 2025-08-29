@@ -145,6 +145,15 @@ spec:
         value: "shared"
         effect: "NoSchedule"
       initContainers:
+        - name: dummy-wait-init
+          image: busybox
+          restartPolicy: Always
+          command:
+            - sh
+            - c
+            - |
+              echo "I am just a dummy native sidecar container that waits for 90 seconds"
+              sleep 90
         - name: git-sync
           image: registry.k8s.io/git-sync/git-sync:v4.4.0
           restartPolicy: Always
