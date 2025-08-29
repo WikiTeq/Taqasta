@@ -29,7 +29,7 @@ while true; do
     # Everything else, limit the number of jobs on each batch
     # The --wait parameter will pause the execution here until new jobs are added,
     # to avoid running the loop without anything to do
-    php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --maxjobs=10 >> "$logfileNow" 2>&1
+    php "$RJ" --memory-limit="$MW_JOB_RUNNER_MEMORY_LIMIT" --wait --maxjobs=10 >> "$logfileNow" 2>&1
 
     # Wait some seconds to let the CPU do other things, like handling web requests, etc
     echo mwjobrunner waits for "$MW_JOB_RUNNER_PAUSE" seconds... >> "$logfileNow"
