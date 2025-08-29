@@ -657,6 +657,10 @@ if ( !empty( getenv( 'AWS_IMAGES_BUCKET' ) ) ) {
 	$wgAWSRepoDeletedHashLevels = 3;
 }
 
+# Make sure TimedMediaHandler jobs are excluded from the default queue, see QLOUD-147
+$wgJobTypesExcludedFromDefaultQueue[] = 'webVideoTranscode';
+$wgJobTypesExcludedFromDefaultQueue[] = 'webVideoTranscodePrioritized';
+
 # Include all php files in config/settings directory
 foreach ( glob( getenv( 'MW_CONFIG_DIR' ) . '/settings/*.php' ) as $filename ) {
 	if ( is_readable( $filename ) ) {
