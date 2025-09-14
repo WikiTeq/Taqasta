@@ -307,8 +307,6 @@ extensions:
       repository: https://github.com/mudkipme/mediawiki-lazyload.git
       branch: master
       commit: 30a01cc149822353c9404ec178ec01848bae65c5
-  - LiquidThreads:
-      commit: f0d9a0de69623655ca57c40bcd10cb933d9ec99f
   - MassPasswordReset:
       repository: https://github.com/nischayn22/MassPasswordReset.git
       branch: master

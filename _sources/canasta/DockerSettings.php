@@ -117,7 +117,6 @@ const DOCKER_EXTENSIONS = [
 	'LinkSuggest',
 	'LinkTarget',
 	'Linter', # bundled
-	'LiquidThreads',
 	'LockAuthor',
 	'Lockdown',
 	'LoginNotify', # bundled
