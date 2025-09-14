@@ -1,0 +1,32 @@
+From 79123d762111b1297720f2c61af58f9057a2d288 Mon Sep 17 00:00:00 2001
+From: Daniel Scherzer <daniel@wikiteq.com>
+Date: Sat, 13 Sep 2025 18:55:14 -0700
+Subject: [PATCH] PageForms: fix bug with possible values
+
+In PFFormField::setPossibleValues() use the template field's possible values
+as a fallback only if there are no current values set.
+
+Copied from waldronlab/BugSigDB#192
+WLDR-338
+---
+ includes/PF_FormField.php | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/includes/PF_FormField.php b/includes/PF_FormField.php
+index 2ea770c6..99cc5cc0 100644
+--- a/includes/PF_FormField.php
++++ b/includes/PF_FormField.php
+@@ -548,7 +548,9 @@ class PFFormField {
+ 			return;
+ 		}
+ 
+-		$this->mPossibleValues = $this->template_field->getPossibleValues();
++		if ( $this->mPossibleValues === null ) {
++			$this->mPossibleValues = $this->template_field->getPossibleValues();
++		}
+ 	}
+ 
+ 	function cleanupTranslateTags( &$value ) {
+-- 
+2.49.0.windows.1
+
