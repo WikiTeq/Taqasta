@@ -152,12 +152,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: wiki
+      app: wiki-runjobs
   replicas: 1
   template:
     metadata:
       labels:
-        app: wiki
+        app: wiki-runjobs
     spec:
       affinity:
         nodeAffinity:
