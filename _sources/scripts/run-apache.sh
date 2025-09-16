@@ -58,10 +58,10 @@ mkdir -p "$MW_VOLUME"/l10n_cache
 echo "PHP_ERROR_REPORTING environment variable is set to: $PHP_ERROR_REPORTING"
 # Update PHP configuration files with error reporting settings
 # First remove any existing error_reporting line, then add the new one
-sed -i '/^error_reporting/d' /etc/php/8.1/cli/conf.d/php_cli_error_reporting.ini
-sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.1/cli/conf.d/php_cli_error_reporting.ini
-sed -i '/^error_reporting/d' /etc/php/8.1/apache2/conf.d/php_apache2_error_reporting.ini
-sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.1/apache2/conf.d/php_apache2_error_reporting.ini
+sed -i '/^error_reporting/d' /etc/php/8.3/cli/conf.d/php_cli_error_reporting.ini
+sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.3/cli/conf.d/php_cli_error_reporting.ini
+sed -i '/^error_reporting/d' /etc/php/8.3/apache2/conf.d/php_apache2_error_reporting.ini
+sed -i '/; error_reporting will be added below by the run-apache.sh script/a error_reporting = '"$PHP_ERROR_REPORTING" /etc/php/8.3/apache2/conf.d/php_apache2_error_reporting.ini
 
 printf "\nCheck wiki settings for errors... "
 if ! php /getMediawikiSettings.php --version MediaWiki; then
