@@ -223,6 +223,7 @@ const DOCKER_EXTENSIONS = [
 	'WikiEditor', # bundled
 	'WikiForum',
 	'WikiSEO',
+	'WikiCategoryTagCloud',
 	'YouTube',
 ];
 
