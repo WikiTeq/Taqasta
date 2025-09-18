@@ -599,7 +599,8 @@ if ( $wgSentryDsn ) {
 	wfLoadExtension( 'Sentry' );
 }
 
-if ( isset( $_REQUEST['forceprofile'] ) ) {
+$profileSecret = getenv('MW_PROFILE_SECRET');
+if ( $profileSecret && isset( $_REQUEST['forceprofile'] ) && $_REQUEST['forceprofile'] === $profileSecret ) {
 	$wgProfiler['class'] = 'ProfilerXhprof';
 	$wgProfiler['output'] = [ 'ProfilerOutputText' ];
 	$wgProfiler['visible'] = false;
