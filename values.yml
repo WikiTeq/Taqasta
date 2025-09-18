@@ -492,6 +492,10 @@ extensions:
       commit: c7c0730160a84d6b60e3e1b6b108d790972f0f15
       additional steps:
         - composer update
+  - WikiCategoryTagCloud:
+      repository: https://github.com/wikimedia/mediawiki-extensions-WikiCategoryTagCloud.git
+      branch: REL1_43
+      commit: c895cae34e8e13116a0921e2babf4b72ae53874f
 # Skins to install
 skins:
   - CologneBlue:
