@@ -496,6 +496,10 @@ extensions:
       repository: https://github.com/wikimedia/mediawiki-extensions-WikiCategoryTagCloud.git
       branch: REL1_43
       commit: c895cae34e8e13116a0921e2babf4b72ae53874f
+  - Share:
+      repository: https://github.com/wikimedia/mediawiki-extensions-Share.git
+      branch: REL1_43
+      commit: ffec5e3c4fad940320f3abeb7ea9104025f71612
 # Skins to install
 skins:
   - CologneBlue:

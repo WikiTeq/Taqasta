@@ -189,6 +189,7 @@ const DOCKER_EXTENSIONS = [
 	'SubPageList',
 	'Survey',
 	'SyntaxHighlight_GeSHi', # bundled
+	'Share',
 	'Tabber',
 	'TabberNeue',
 	'Tabs',
