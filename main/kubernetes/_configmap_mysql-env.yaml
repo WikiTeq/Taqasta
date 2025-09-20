@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-env
+data:
+  MYSQL_DATABASE: "mediawiki"
+  MYSQL_ROOT_HOST: "%"
