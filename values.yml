@@ -499,6 +499,10 @@ extensions:
       commit: b36cdf6963cbe8e2304ec3bdc63d476db008591b
       additional steps:
         - composer update
+  - SemanticReports:
+      repository: https://github.com/WikiTeq/mediawiki-extension-SemanticReports.git
+      branch: master
+      commit: 0fe75702f592c85c3b99d9e7d9f1d549e116be74
 # Skins to install
 skins:
   - CologneBlue:
