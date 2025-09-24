@@ -875,9 +875,9 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/Survey \
 	&& git checkout -q a723508305d618623615f324f90755c4a8b74bbf \
 	# SemanticReports
-	&& git clone --single-branch -b $MW_VERSION https://github.com/WikiTeq/mediawiki-extension-SemanticReports.git $MW_HOME/extensions/SemanticReports \
+	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extension-SemanticReports.git $MW_HOME/extensions/SemanticReports \
 	&& cd $MW_HOME/extensions/SemanticReports \
-	&& git checkout -q 0fe75702f592c85c3b99d9e7d9f1d549e116be74
+	&& git checkout -q 47713970be70fce76925f415e3f4e5469026c85d
 
 # T
 RUN set -x; \
