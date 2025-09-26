@@ -873,7 +873,11 @@ RUN set -x; \
 	# Survey
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Survey $MW_HOME/extensions/Survey \
 	&& cd $MW_HOME/extensions/Survey \
-	&& git checkout -q a723508305d618623615f324f90755c4a8b74bbf
+	&& git checkout -q a723508305d618623615f324f90755c4a8b74bbf \
+	# SemanticReports
+	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extension-SemanticReports.git $MW_HOME/extensions/SemanticReports \
+	&& cd $MW_HOME/extensions/SemanticReports \
+	&& git checkout -q 47713970be70fce76925f415e3f4e5469026c85d
 
 # T
 RUN set -x; \
