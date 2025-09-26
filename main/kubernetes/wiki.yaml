@@ -42,7 +42,7 @@ spec:
                 --link=head \
                 --ssh-known-hosts=false \
                 -v=10 \
-                --ref=QLOUD-139-worker
+                --ref=master
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -71,7 +71,7 @@ spec:
                 --max-failures=1000000000 \
                 --ssh-known-hosts=false \
                 -v=10 \
-                --ref=QLOUD-139-worker
+                --ref=master
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -189,7 +189,7 @@ spec:
                 --link=head \
                 --ssh-known-hosts=false \
                 -v=10 \
-                --ref=QLOUD-139-worker
+                --ref=master
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -218,7 +218,7 @@ spec:
                 --max-failures=1000000000 \
                 --ssh-known-hosts=false \
                 -v=10 \
-                --ref=QLOUD-139-worker
+                --ref=master
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -443,10 +443,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-      - taqasta-dev-worker.teq.wiki
+      - taqasta.teq.wiki
       secretName: cert-secret
   rules:
-  - host: taqasta-dev-worker.teq.wiki
+  - host: taqasta.teq.wiki
     http:
       paths:
       - pathType: Prefix
