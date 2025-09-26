@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - wiki
+              topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: pool
+                operator: In
+                values:
+                - shared
+      tolerations:
+      - key: "pool"
+        value: "shared"
+        effect: "NoSchedule"
+# destroyer initContainer destroys the content of mysql datadir and is used to trigger database recreation during pod restart. DO NOT UNCOMMENT IF YOU DON'T WANT TO LOSE THE DATA!
+#      initContainers:
+#      - name: destroyer
+#        image: busybox
+#        command:
+#          - sh
+#          - -c
+#          - |
+#            echo "removing files"
+#            rm -rf /var/lib/mysql/*
+#            echo "listing the directory to verify it is empty"
+#            ls /var/lib/mysql
+#        volumeMounts:
+#          - name: dbdata
+#            mountPath: /var/lib/mysql
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        args:
+          - --default-authentication-plugin=caching_sha2_password
+          - --log-bin=binlog
+          - --binlog-expire-logs-seconds=3600
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-password
+                key: password
+        envFrom:
+          - configMapRef:
+              name: mysql-env
+        ports:
+          - containerPort: 3306
+        securityContext:
+          capabilities:
+            add:
+            - SYS_NICE
+        volumeMounts:
+          - name: dbdata
+            mountPath: /var/lib/mysql
+      volumes:
+      - name: dbdata
+        persistentVolumeClaim:
+          claimName: mysql-0
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-0
+spec:
+  storageClassName: csi-cinder-high-speed
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: mysql
