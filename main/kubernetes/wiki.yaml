@@ -26,7 +26,7 @@ spec:
         value: "shared"
         effect: "NoSchedule"
       initContainers:
-        # see https://github.com/kubernetes/git-sync
+        # init container (runs once, delays both app and sidecar containers), see https://github.com/kubernetes/git-sync
         - name: git-sync-once
           image: registry.k8s.io/git-sync/git-sync:v4.4.0
           command:
@@ -42,7 +42,36 @@ spec:
                 --link=head \
                 --ssh-known-hosts=false \
                 -v=10 \
-                --ref=QLOUD-139
+                --ref=QLOUD-139-worker
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          volumeMounts:
+            - name: git
+              mountPath: /git
+            - name: git-auth
+              mountPath: /ssh
+        # native sidecar container (runs in parallel with app containers but not init ones)
+        - name: git-sync
+          image: registry.k8s.io/git-sync/git-sync:v4.4.0
+          # this makes it a native sidecar container
+          # see https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/
+          restartPolicy: Always
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /root/.ssh
+              /git-sync \
+                --period=60s \
+                --ssh-key-file=/ssh/ssh_key \
+                --repo=git@github.com:WikiTeq/Taqasta.git \
+                --root=/git \
+                --link=head \
+                --max-failures=1000000000 \
+                --ssh-known-hosts=false \
+                -v=10 \
+                --ref=QLOUD-139-worker
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -102,9 +131,79 @@ spec:
             mountPath: /mediawiki
           - name: images
             mountPath: /mediawiki/images
-        # see https://github.com/kubernetes/git-sync
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: wiki-0
+      - name: images
+        persistentVolumeClaim:
+          claimName: wiki-images
+      - name: git
+        emptyDir: {}
+      - name: git-auth
+        secret:
+          secretName: git-auth
+          defaultMode: 0400
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wiki-runjobs
+spec:
+  selector:
+    matchLabels:
+      app: wiki-runjobs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wiki-runjobs
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: pool
+                operator: In
+                values:
+                - shared
+      tolerations:
+      - key: "pool"
+        value: "shared"
+        effect: "NoSchedule"
+      initContainers:
+        # init container (runs once, delays both app and sidecar containers), see https://github.com/kubernetes/git-sync
+        - name: git-sync-once
+          image: registry.k8s.io/git-sync/git-sync:v4.4.0
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /root/.ssh
+              /git-sync \
+                --one-time \
+                --ssh-key-file=/ssh/ssh_key \
+                --repo=git@github.com:WikiTeq/Taqasta.git \
+                --root=/git \
+                --link=head \
+                --ssh-known-hosts=false \
+                -v=10 \
+                --ref=QLOUD-139-worker
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          volumeMounts:
+            - name: git
+              mountPath: /git
+            - name: git-auth
+              mountPath: /ssh
+        # native sidecar container (runs in parallel with app containers but not init ones)
         - name: git-sync
           image: registry.k8s.io/git-sync/git-sync:v4.4.0
+          # this makes it a native sidecar container
+          # see https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/
+          restartPolicy: Always
           command:
             - sh
             - -c
@@ -119,7 +218,7 @@ spec:
                 --max-failures=1000000000 \
                 --ssh-known-hosts=false \
                 -v=10 \
-                --ref=QLOUD-139
+                --ref=QLOUD-139-worker
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -128,6 +227,160 @@ spec:
               mountPath: /git
             - name: git-auth
               mountPath: /ssh
+      containers:
+        # runJobs worker container (default)
+        - name: taqasta-worker
+          image: ghcr.io/wikiteq/taqasta:latest
+          resources:
+            requests:
+              # just guessing for now
+              cpu: "300m"
+              memory: "128Mi"
+            limits:
+              # set to match php memory settings for now
+              memory: "512Mi"
+          command:
+            - sh
+            - -c
+            - |
+              # Symlinks pointed to git-sync resources instead of docker-compose mounts
+              mkdir -p /var/www/mediawiki/w/_settings
+              ln -sf /git/head/main/LocalSettings.dev.php /var/www/mediawiki/w/_settings/LocalSettings.php
+              ln -sf "$MW_VOLUME/LocalSettings.php" "$MW_HOME/LocalSettings.php"
+              php $MW_HOME/maintenance/run.php runJobs --memory-limit max --wait
+          envFrom:
+            - configMapRef:
+                name: wiki-env
+            - secretRef:
+                name: wiki-secrets
+          env:
+            - name: MW_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-env
+                  key: MYSQL_DATABASE
+            # note: both install and user ops are as root for now
+            - name: MW_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+            - name: MW_DB_INSTALLDB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+            - name: PHP_MEMORY_LIMIT
+              value: 512M
+          volumeMounts:
+            - name: git
+              mountPath: /git
+            - name: data
+              mountPath: /mediawiki
+            - name: images
+              mountPath: /mediawiki/images
+        # runJobs worker container  (webVideoTranscode)
+        - name: taqasta-worker-video
+          image: ghcr.io/wikiteq/taqasta:latest
+          resources:
+            requests:
+              # just guessing for now
+              cpu: "300m"
+              memory: "128Mi"
+            limits:
+              # set to match php memory settings for now
+              memory: "512Mi"
+          command:
+            - sh
+            - -c
+            - |
+              # Symlinks pointed to git-sync resources instead of docker-compose mounts
+              mkdir -p /var/www/mediawiki/w/_settings
+              ln -sf /git/head/main/LocalSettings.dev.php /var/www/mediawiki/w/_settings/LocalSettings.php
+              ln -sf "$MW_VOLUME/LocalSettings.php" "$MW_HOME/LocalSettings.php"
+              php $MW_HOME/maintenance/run.php runJobs --memory-limit max --wait --type webVideoTranscode
+          envFrom:
+            - configMapRef:
+                name: wiki-env
+            - secretRef:
+                name: wiki-secrets
+          env:
+            - name: MW_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-env
+                  key: MYSQL_DATABASE
+            # note: both install and user ops are as root for now
+            - name: MW_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+            - name: MW_DB_INSTALLDB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+            - name: PHP_MEMORY_LIMIT
+              value: 512M
+          volumeMounts:
+            - name: git
+              mountPath: /git
+            - name: data
+              mountPath: /mediawiki
+            - name: images
+              mountPath: /mediawiki/images
+        # runJobs worker container  (webVideoTranscodePrioritized)
+        - name: taqasta-worker-video-priority
+          image: ghcr.io/wikiteq/taqasta:latest
+          resources:
+            requests:
+              # just guessing for now
+              cpu: "300m"
+              memory: "128Mi"
+            limits:
+              # set to match php memory settings for now
+              memory: "512Mi"
+          command:
+            - sh
+            - -c
+            - |
+              # Symlinks pointed to git-sync resources instead of docker-compose mounts
+              mkdir -p /var/www/mediawiki/w/_settings
+              ln -sf /git/head/main/LocalSettings.dev.php /var/www/mediawiki/w/_settings/LocalSettings.php
+              ln -sf "$MW_VOLUME/LocalSettings.php" "$MW_HOME/LocalSettings.php"
+              php $MW_HOME/maintenance/run.php runJobs --memory-limit max --wait --type webVideoTranscodePrioritized
+          envFrom:
+            - configMapRef:
+                name: wiki-env
+            - secretRef:
+                name: wiki-secrets
+          env:
+            - name: MW_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-env
+                  key: MYSQL_DATABASE
+            # note: both install and user ops are as root for now
+            - name: MW_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+            - name: MW_DB_INSTALLDB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+            - name: PHP_MEMORY_LIMIT
+              value: 512M
+          volumeMounts:
+            - name: git
+              mountPath: /git
+            - name: data
+              mountPath: /mediawiki
+            - name: images
+              mountPath: /mediawiki/images
       volumes:
       - name: data
         persistentVolumeClaim:
@@ -150,7 +403,7 @@ spec:
   # https://help.ovhcloud.com/csm/en-public-cloud-kubernetes-persistent-volumes?id=kb_article_view&sysparm_article=KB0049928
   storageClassName: csi-cinder-high-speed
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
@@ -163,7 +416,7 @@ spec:
   # https://help.ovhcloud.com/csm/en-public-cloud-kubernetes-persistent-volumes?id=kb_article_view&sysparm_article=KB0049928
   storageClassName: csi-cinder-high-speed
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
@@ -190,10 +443,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-      - taqasta-dev.teq.wiki
+      - taqasta-dev-worker.teq.wiki
       secretName: cert-secret
   rules:
-  - host: taqasta-dev.teq.wiki
+  - host: taqasta-dev-worker.teq.wiki
     http:
       paths:
       - pathType: Prefix
