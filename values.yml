@@ -272,7 +272,7 @@ extensions:
       commit: 3567c401b261076c68cb4872ec32a8eac47ff681
   - PagePort:
       branch: master
-      commit: 0a72ffe3674f1a229f1cd1bfb00aee332ac3481e
+      commit: bc7d6fc5e8e5c1ae7d29e24d309f89b202831c59
   - RegularTooltips:
       Wikidata ID: Q124312629
       commit: e52d009f1a01575de2abebf802c6e97b24587d9a
