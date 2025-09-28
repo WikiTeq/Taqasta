@@ -220,9 +220,9 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/ApprovedRevs \
 	&& git checkout -q 53b67bf7e1e8ac3d20c2fd41ad2ab1c708c045a6 \
 	# Arrays
-	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Arrays $MW_HOME/extensions/Arrays \
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/Arrays $MW_HOME/extensions/Arrays \
 	&& cd $MW_HOME/extensions/Arrays \
-	&& git checkout -q f42c28848f494f5f5843fa03da73f25437d2d36b \
+	&& git checkout -q a3322b8fa6c7bdf8e95a625aca31b5c4e837c31d \
     # AWS
 	&& git clone --single-branch -b master https://github.com/edwardspec/mediawiki-aws-s3.git $MW_HOME/extensions/AWS \
 	&& cd $MW_HOME/extensions/AWS \
