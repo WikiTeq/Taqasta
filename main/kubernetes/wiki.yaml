@@ -238,7 +238,7 @@ spec:
               memory: "128Mi"
             limits:
               # set to match php memory settings for now
-              memory: "512Mi"
+              memory: "256Mi"
           command:
             - sh
             - -c
@@ -271,7 +271,7 @@ spec:
                   name: mysql-password
                   key: password
             - name: PHP_MEMORY_LIMIT
-              value: 512M
+              value: 256M
           volumeMounts:
             - name: git
               mountPath: /git
@@ -289,7 +289,7 @@ spec:
               memory: "128Mi"
             limits:
               # set to match php memory settings for now
-              memory: "512Mi"
+              memory: "256Mi"
           command:
             - sh
             - -c
@@ -322,7 +322,7 @@ spec:
                   name: mysql-password
                   key: password
             - name: PHP_MEMORY_LIMIT
-              value: 512M
+              value: 256M
           volumeMounts:
             - name: git
               mountPath: /git
@@ -340,7 +340,7 @@ spec:
               memory: "128Mi"
             limits:
               # set to match php memory settings for now
-              memory: "512Mi"
+              memory: "256Mi"
           command:
             - sh
             - -c
@@ -373,7 +373,7 @@ spec:
                   name: mysql-password
                   key: password
             - name: PHP_MEMORY_LIMIT
-              value: 512M
+              value: 256M
           volumeMounts:
             - name: git
               mountPath: /git
