@@ -552,9 +552,9 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/Popups \
 	&& git checkout -q ff4d2156e1f7f4c11f7396cb0cd70d387abd8187 \
 	# PagePort
-	&& git clone --single-branch -b master https://github.com/WikiTeq/PagePort.git $MW_HOME/extensions/PagePort \
+	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/PagePort $MW_HOME/extensions/PagePort \
 	&& cd $MW_HOME/extensions/PagePort \
-	&& git checkout -q b43642914f72a997439608710f010644c25d7ee7
+	&& git checkout -q bc7d6fc5e8e5c1ae7d29e24d309f89b202831c59
 
 # R
 RUN set -x; \
