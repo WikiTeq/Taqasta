@@ -15,11 +15,6 @@ extensions:
       bundled: true
       additional steps:
         - composer update
-  - TemplateStyles:
-      Wikidata ID: Q25916623
-      bundled: true
-      additional steps:
-        - composer update
   - AdminLinks:
       Wikidata ID: Q21676187
       branch: master
@@ -314,6 +309,8 @@ extensions:
   - TemplateStyles:
       Wikidata ID: Q25916623
       commit: 31a4bd259a921e19b4857befa700e7fc0998b6d2
+      additional steps:
+        - composer update
   - TemplateWizard:
       Wikidata ID: Q50368282
       commit: 4c3057f1bf55f686f044dce40b9e70e14ea8d8ec
