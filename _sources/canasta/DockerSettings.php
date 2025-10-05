@@ -91,7 +91,6 @@ const DOCKER_EXTENSIONS = [
 	'EventStreamConfig',
 	'ExternalData',
 	'FlexDiagrams',
-	'Flow',
 	'GTag',
 	'Gadgets', # bundled
 	'GlobalNotice',
@@ -551,17 +550,6 @@ if ( $emulateLocalSettingsDoesNotExists ) {
 	die();
 }
 
-# Flow https://www.mediawiki.org/wiki/Extension:Flow
-if ( isset( $dockerLoadExtensions['Flow'] ) ) {
-	$flowNamespaces = getenv( 'MW_FLOW_NAMESPACES' );
-	if ( $flowNamespaces ) {
-		$wgFlowContentFormat = 'html';
-		foreach ( explode( ',', $flowNamespaces ) as $ns ) {
-			$wgNamespaceContentModels[ constant( $ns ) ] = 'flow-board';
-		}
-	}
-}
-
 ########################### Search Type ############################
 switch( getenv( 'MW_SEARCH_TYPE' ) ) {
 	case 'CirrusSearch':
@@ -569,9 +557,6 @@ switch( getenv( 'MW_SEARCH_TYPE' ) ) {
 		wfLoadExtension( 'Elastica' );
 		wfLoadExtension( 'CirrusSearch' );
 		$wgCirrusSearchServers =  explode( ',', getenv( 'MW_CIRRUS_SEARCH_SERVERS' ) );
-		if ( isset( $flowNamespaces ) ) {
-			$wgFlowSearchServers = $wgCirrusSearchServers;
-		}
 		$wgSearchType = 'CirrusSearch';
 		break;
 }
