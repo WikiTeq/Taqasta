@@ -384,10 +384,6 @@ extensions:
       commit: ee1f920556ff245fd4366d8ceed15afb6aa1b0f8
   - EditAccount:
       commit: e59561c56836a98bc5f5f3068bc81fd67a5d1c41
-  - Flow:
-      commit: fc462613fcdcefd03d03981d0660610cba21c6f6
-      additional steps:
-        - composer update
   - GoogleDocTag:
       commit: 50dfe68e36742b9c6ab24b734ab4401cf1d65178
   - GTag:
