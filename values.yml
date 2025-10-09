@@ -194,7 +194,8 @@ extensions:
       commit: 145247abb87a61b4c19523ce62de37161780bd14
   - LinkTarget:
       Wikidata ID: Q21677320
-      commit: 83007f7c813204e769aecdfe15abf61cccb0c43b
+      branch: master
+      commit: 8ef5df73988aa591cc5b73bbcfabd7fab9604fe7
   - LockAuthor:
       Wikidata ID: Q123144339
       commit: 29fc3cad3e6b9c47c04161a03d758ff355ca5723
