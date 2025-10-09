@@ -531,7 +531,7 @@ packages:
   - name: mediawiki/simple-batch-upload
     version: 2.0.1
   - name: mediawiki/sub-page-list
-    version: 2.0.2
+    version: 3.0.1
   - name: mediawiki/maps
     version: 11.0.1
   - name: mediawiki/semantic-watchlist
