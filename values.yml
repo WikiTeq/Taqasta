@@ -535,7 +535,7 @@ packages:
   - name: mediawiki/maps
     version: 11.0.1
   - name: mediawiki/semantic-watchlist
-    version: dev-master#8080e3e8d6f4689beeca6ab57ed9255502e175b2
+    version: dev-master#cfd14a68f9cb073afc3f7a26f1c3baa071efbbd0
 # custom repositories for Composer to use
 repositories:
   - type: vcs
