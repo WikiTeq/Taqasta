@@ -280,7 +280,7 @@ RUN set -x; \
 	# ConfirmAccount
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ConfirmAccount $MW_HOME/extensions/ConfirmAccount \
 	&& cd $MW_HOME/extensions/ConfirmAccount \
-	&& git checkout -q c06d5dfb43811a2dee99099476c57af2b6d762c4 \
+	&& git checkout -q c78c03dca122dd8b9e0280e77b3c30dae06542e5 \
 	# ContactPage
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/ContactPage $MW_HOME/extensions/ContactPage \
 	&& cd $MW_HOME/extensions/ContactPage \
