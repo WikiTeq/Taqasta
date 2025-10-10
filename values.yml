@@ -516,7 +516,7 @@ packages:
   - name: mediawiki/chameleon-skin
     version: 5.0.0
   - name: mediawiki/bootstrap-components
-    version: 5.2.1
+    version: dev-master#476693d7a0f0de11bb67b775486950bff5cd1415 # >5.2.1
   - name: mediawiki/mermaid
     version: 3.1.0
   - name: mediawiki/remote-wiki
