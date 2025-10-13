@@ -493,6 +493,12 @@ extensions:
       repository: https://github.com/wikimedia/mediawiki-extensions-Share.git
       branch: REL1_43
       commit: ffec5e3c4fad940320f3abeb7ea9104025f71612
+  - OAuth:
+      repository: https://github.com/wikimedia/mediawiki-extensions-OAuth.git
+      branch: REL1_43
+      commit: b36cdf6963cbe8e2304ec3bdc63d476db008591b
+      additional steps:
+        - composer update
 # Skins to install
 skins:
   - CologneBlue:
