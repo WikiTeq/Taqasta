@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitsync-env
+data:
+  GHAPP_INSTALLID: "89775214"
+  GHAPP_APPID: "2105745"

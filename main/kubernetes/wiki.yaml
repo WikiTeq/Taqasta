@@ -35,51 +35,36 @@ spec:
             - |
               mkdir -p /root/.ssh
               /git-sync \
-                --one-time \
-                --ssh-key-file=/ssh/ssh_key \
-                --repo=git@github.com:WikiTeq/Taqasta.git \
-                --root=/git \
-                --link=head \
-                --ssh-known-hosts=false \
-                -v=10 \
-                --ref=master
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-          volumeMounts:
-            - name: git
-              mountPath: /git
-            - name: git-auth
-              mountPath: /ssh
-        # native sidecar container (runs in parallel with app containers but not init ones)
-        - name: git-sync
-          image: registry.k8s.io/git-sync/git-sync:v4.4.0
-          # this makes it a native sidecar container
-          # see https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/
-          restartPolicy: Always
-          command:
-            - sh
-            - -c
-            - |
-              mkdir -p /root/.ssh
-              /git-sync \
+                --http-bind=:8080 \
                 --period=60s \
-                --ssh-key-file=/ssh/ssh_key \
-                --repo=git@github.com:WikiTeq/Taqasta.git \
+                --github-app-private-key-file=/ssh/key \
+                --github-app-installation-id=${GHAPP_INSTALLID} \
+                --github-app-application-id=${GHAPP_APPID} \
+                --repo=https://github.com/WikiTeq/Taqasta.git \
                 --root=/git \
                 --link=head \
-                --max-failures=1000000000 \
                 --ssh-known-hosts=false \
                 -v=10 \
                 --ref=master
+          restartPolicy: Always
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 1
+            failureThreshold: 180
           securityContext:
             runAsUser: 0
             runAsGroup: 0
           volumeMounts:
             - name: git
               mountPath: /git
-            - name: git-auth
+            - name: gitsync-ghappprivatekey
               mountPath: /ssh
+          envFrom:
+            - configMapRef:
+                name: gitsync-env
       containers:
         - name: taqasta
           image: ghcr.io/wikiteq/taqasta:latest
@@ -140,9 +125,9 @@ spec:
           claimName: wiki-images
       - name: git
         emptyDir: {}
-      - name: git-auth
+      - name: gitsync-ghappprivatekey
         secret:
-          secretName: git-auth
+          secretName: gitsync-ghappprivatekey
           defaultMode: 0400
 ---
 apiVersion: apps/v1
