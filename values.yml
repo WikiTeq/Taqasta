@@ -147,7 +147,8 @@ extensions:
   - ExternalData:
       Wikidata ID: Q21676576
       branch: master
-      commit: 564932ba8606390f339291a626b67340af536c68
+      # v3.4
+      commit: 76e95bbe462beab6218a8d6289e17c5da75aea67
   - FlexDiagrams:
       Wikidata ID: Q125545336
       branch: master
