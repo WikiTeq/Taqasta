@@ -195,7 +195,8 @@ extensions:
       commit: 145247abb87a61b4c19523ce62de37161780bd14
   - LinkTarget:
       Wikidata ID: Q21677320
-      commit: 83007f7c813204e769aecdfe15abf61cccb0c43b
+      branch: master
+      commit: 8ef5df73988aa591cc5b73bbcfabd7fab9604fe7
   - LockAuthor:
       Wikidata ID: Q123144339
       commit: 29fc3cad3e6b9c47c04161a03d758ff355ca5723
@@ -420,7 +421,7 @@ extensions:
   - PubmedParser:
       repository: https://github.com/bovender/PubmedParser.git
       branch: main
-      commit: 509c9a26b5c07fbc476448bd34b38cd8f5ec01b5
+      commit: e8847b72f4e35b250e0aa80e1729e5f062c4ff91 # v6.0.0
   - Scopus:
       repository: https://github.com/nischayn22/Scopus.git
       branch: master
@@ -520,7 +521,7 @@ packages:
   - name: mediawiki/chameleon-skin
     version: 5.0.0
   - name: mediawiki/bootstrap-components
-    version: 5.2.1
+    version: dev-master#476693d7a0f0de11bb67b775486950bff5cd1415 # >5.2.1
   - name: mediawiki/mermaid
     version: 3.1.0
   - name: mediawiki/remote-wiki
@@ -536,11 +537,11 @@ packages:
   - name: mediawiki/simple-batch-upload
     version: 2.0.1
   - name: mediawiki/sub-page-list
-    version: 2.0.2
+    version: 3.0.1
   - name: mediawiki/maps
     version: 11.0.1
   - name: mediawiki/semantic-watchlist
-    version: dev-master#8080e3e8d6f4689beeca6ab57ed9255502e175b2
+    version: dev-master#cfd14a68f9cb073afc3f7a26f1c3baa071efbbd0
 # custom repositories for Composer to use
 repositories:
   - type: vcs
