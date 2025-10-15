@@ -363,10 +363,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/EventStreamConfig $MW_HOME/extensions/EventStreamConfig \
 	&& cd $MW_HOME/extensions/EventStreamConfig \
 	&& git checkout -q 1aae8cb6c312e49f0126091a59a453cb224657f9 \
-	# ExternalData (v. 3.2)
+	# ExternalData (v. 3.4)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/ExternalData $MW_HOME/extensions/ExternalData \
 	&& cd $MW_HOME/extensions/ExternalData \
-	&& git checkout -q 5d30e60a65ca53a3fb5b39826deb2e6917892e22
+	&& git checkout -q 76e95bbe462beab6218a8d6289e17c5da75aea67
 
 # F
 RUN set -x; \
