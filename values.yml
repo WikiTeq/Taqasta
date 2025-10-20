@@ -428,12 +428,6 @@ extensions:
       commit: 4fe8048459d9189626d82d9d93a0d5f906c43746
   - SelectCategory:
       commit: 1f351647af2e235e11139aa8f1b70c19a3556c61
-  - Sentry:
-      repository: https://github.com/WikiTeq/mediawiki-extensions-Sentry.git
-      branch: master
-      commit: 9d9162d83f921b66f6c14ed354d20607ecafa030
-      additional steps:
-        - composer update
   - ShowMe:
       commit: 44e3569219e804829e1ff770bb9bd02b7dd7ec2b
   - SimpleTooltip:
