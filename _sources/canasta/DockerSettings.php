@@ -73,6 +73,7 @@ const DOCKER_EXTENSIONS = [
 	'ContributionScores',
 	'CookieWarning',
 	'Cloudflare',
+	'CrawlerProtection',
 	'DataTransfer',
 	'DeleteBatch',
 	'Description2',
