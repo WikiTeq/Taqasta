@@ -824,7 +824,7 @@ RUN set -x; \
 	# PubmedParser
 	# Patched version with better multi-byte character handling
 	&& cd $MW_HOME/extensions \
-	&& git clone https://github.com/WikiTeq/PubmedParser_patched.git \
+	&& git clone https://github.com/WikiTeq/PubmedParser_patched.git PubmedParser \
 	&& cd PubmedParser \
 	&& git checkout -q a7c1542011e1eb694ae7f141d8dee71eaca7cfe4
 
