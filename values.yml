@@ -503,6 +503,11 @@ extensions:
       repository: https://github.com/WikiTeq/mediawiki-extension-SemanticReports.git
       branch: master
       commit: 0fe75702f592c85c3b99d9e7d9f1d549e116be74
+  - CrawlerProtection:
+      Wikidata ID: Q135293666
+      repository: https://github.com/mywikis/CrawlerProtection.git
+      branch: main
+      commit: 1b757313dafcb476bfeb0c0148c2a21326672c41
 # Skins to install
 skins:
   - CologneBlue:
