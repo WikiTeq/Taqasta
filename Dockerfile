@@ -731,7 +731,11 @@ RUN set -x; \
 	# Citoid
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/Citoid $MW_HOME/extensions/Citoid \
 	&& cd $MW_HOME/extensions/Citoid \
-	&& git checkout -q 1e605c7d89368c334cbe83b4da8e1b6d72ae9c33
+	&& git checkout -q 1e605c7d89368c334cbe83b4da8e1b6d72ae9c33 \
+	# CrawlerProtection
+	&& git clone --single-branch -b main https://github.com/mywikis/CrawlerProtection.git $MW_HOME/extensions/CrawlerProtection \
+	&& cd $MW_HOME/extensions/CrawlerProtection \
+	&& git checkout -q 333596c6ac34e4351976ccce16613cccce4bab3a
 
 # D
 RUN set -x; \
