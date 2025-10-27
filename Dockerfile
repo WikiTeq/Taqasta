@@ -826,7 +826,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions \
 	&& git clone https://github.com/WikiTeq/PubmedParser_patched.git PubmedParser \
 	&& cd PubmedParser \
-	&& git checkout -q a7c1542011e1eb694ae7f141d8dee71eaca7cfe4
+	&& git checkout -q 2482b40ab306a02b45d9b1f5110986999d0d68f8
 
 # S
 RUN set -x; \
