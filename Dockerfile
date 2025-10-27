@@ -822,10 +822,11 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/PDFEmbed \
 	&& git checkout -q 2b07a1c18cef4794f4cb2429baa2d55fdb2beed3 \
 	# PubmedParser
+	# Patched version with better multi-byte character handling
 	&& cd $MW_HOME/extensions \
-	&& git clone https://github.com/bovender/PubmedParser.git \
+	&& git clone https://github.com/WikiTeq/PubmedParser_patched.git PubmedParser \
 	&& cd PubmedParser \
-	&& git checkout -b $MW_VERSION b77635651cc8ef2d39fd0f04fe73285c4ea3cd19
+	&& git checkout -q 2482b40ab306a02b45d9b1f5110986999d0d68f8
 
 # S
 RUN set -x; \
