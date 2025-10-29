@@ -502,7 +502,7 @@ extensions:
   - SemanticReports:
       repository: https://github.com/WikiTeq/mediawiki-extension-SemanticReports.git
       branch: master
-      commit: 0fe75702f592c85c3b99d9e7d9f1d549e116be74
+      commit: 7548555e0c997a8b4feda38695c6f60977a81349
   - CrawlerProtection:
       Wikidata ID: Q135293666
       repository: https://github.com/mywikis/CrawlerProtection.git
