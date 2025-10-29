@@ -882,7 +882,7 @@ RUN set -x; \
 	# SemanticReports
 	&& git clone --single-branch -b master https://github.com/WikiTeq/mediawiki-extension-SemanticReports.git $MW_HOME/extensions/SemanticReports \
 	&& cd $MW_HOME/extensions/SemanticReports \
-	&& git checkout -q 47713970be70fce76925f415e3f4e5469026c85d
+	&& git checkout -q 7548555e0c997a8b4feda38695c6f60977a81349
 
 # T
 RUN set -x; \
