@@ -536,13 +536,13 @@ packages:
   - name: mediawiki/remote-wiki
     version: dev-master#da859c2c5081d96a6492f178686251136d35ec23
   - name: mediawiki/semantic-compound-queries
-    version: dev-master#6853f0758c3ba64415573bbc29507397ea1248ca
+    version: 3.0.0
   - name: mediawiki/semantic-extra-special-properties
     version: 4.0.0
   - name: mediawiki/semantic-result-formats
-    version: dev-master#02c08ce0098a185277c817e950c8074695f6cd45
+    version: 5.1.0
   - name: mediawiki/semantic-scribunto
-    version: dev-master#c83e55dcb56b9608fccf845b6441772086be84bf
+    version: 2.3.3
   - name: mediawiki/simple-batch-upload
     version: 2.0.1
   - name: mediawiki/sub-page-list
