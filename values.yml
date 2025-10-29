@@ -508,6 +508,9 @@ extensions:
       repository: https://github.com/mywikis/CrawlerProtection.git
       branch: main
       commit: 1b757313dafcb476bfeb0c0148c2a21326672c41
+  - HoneyPot:
+      Wikidata ID: Q124827766
+      commit: 1215c046042e589a7887f7456b65cf2fb168817e
 # Skins to install
 skins:
   - CologneBlue:
