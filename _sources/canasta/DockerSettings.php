@@ -148,7 +148,7 @@ const DOCKER_EXTENSIONS = [
 	'OpenIDConnect',
 	'PDFEmbed',
 	'PageExchange',
-//	'PageForms',   must be enabled manually after enableSemantics()
+	'PageForms',
 	'PageImages', # bundled
 	'PagePort',
 	'PageSchemas',
@@ -369,9 +369,11 @@ if ( $dockerLoadExtensions ) {
 	$dockerLoadExtensions = array_intersect( DOCKER_EXTENSIONS, $dockerLoadExtensions );
 	if ( $dockerLoadExtensions ) {
 		$dockerLoadExtensions = array_combine( $dockerLoadExtensions, $dockerLoadExtensions );
-		// Enable SemanticMediaWiki first, because some Semantic extension don't work in other case
+		// Enable SemanticMediaWiki first, because some Semantic extension doesn't work otherwise
+		// Plus it was noticed that PageForms refuse to function if loaded BEFORE the SMW is loaded
 		if ( isset( $dockerLoadExtensions['SemanticMediaWiki'] ) ) {
 			wfLoadExtension( 'SemanticMediaWiki' );
+			enableSemantics( $wgServer, true );
 		}
 		foreach ( $dockerLoadExtensions as $extension ) {
 			if ( $extension === 'SemanticMediaWiki' ) {
