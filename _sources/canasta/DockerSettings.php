@@ -176,7 +176,6 @@ const DOCKER_EXTENSIONS = [
 	'SemanticResultFormats',
 	'SemanticScribunto',
 	'SemanticWatchlist',
-	'Sentry',
 	'ShowMe',
 	'SimpleBatchUpload',
 	'SimpleChanges',
@@ -580,12 +579,6 @@ if ( isEnvTrue('MW_ENABLE_SITEMAP_GENERATOR') ) {
 			'href' => "$wgScriptPath/sitemap$subdir/sitemap-index-$identifier.xml",
 		] );
 	};
-}
-
-# Sentry
-$wgSentryDsn = getenv('MW_SENTRY_DSN');
-if ( $wgSentryDsn ) {
-	wfLoadExtension( 'Sentry' );
 }
 
 $profileSecret = getenv('MW_PROFILE_SECRET');
