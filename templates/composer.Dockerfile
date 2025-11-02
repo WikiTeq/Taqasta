@@ -70,11 +70,11 @@ RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME && \
 	composer config -g --unset github-oauth.github.com
 
 # Patch for extension installed via composer, has to be after the composer
-# dependencies are pulled. Applying https://github.com/SemanticMediaWiki/SemanticWatchlist/pull/123
-COPY _sources/patches/SemanticWatchlist-remove-dep.patch /tmp/SemanticWatchlist-remove-dep.patch
+# dependencies are pulled. Applying https://github.com/SemanticMediaWiki/SemanticWatchlist/pull/124
+COPY _sources/patches/SemanticWatchlist-fixes.patch /tmp/SemanticWatchlist-fixes.patch
 RUN set -x; \
 	cd $MW_HOME/extensions/SemanticWatchlist && \
-	git apply /tmp/SemanticWatchlist-remove-dep.patch
+	git apply /tmp/SemanticWatchlist-fixes.patch
 
 # Move files around
 RUN set -x; \
