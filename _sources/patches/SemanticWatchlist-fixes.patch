@@ -1,4 +1,4 @@
-From 013b35fd44208464b673436f09ed7a07d10296bb Mon Sep 17 00:00:00 2001
+From d718e76b37c440477c24be47d3dbf77e92ffcd4c Mon Sep 17 00:00:00 2001
 From: Daniel Scherzer <daniel@wikiteq.com>
 Date: Sat, 1 Nov 2025 21:57:07 -0700
 Subject: [PATCH] Fixes of newer MediaWiki and SMW versions
@@ -8,7 +8,7 @@ missing `__METHOD__` to database calls, avoid writing directly to `$wgHooks`,
 and other cleanup
 ---
  src/ChangeSet.php                             | 139 ++++++++++--------
- src/CustomTexts.php                           |   6 +-
+ src/CustomTexts.php                           |  11 +-
  src/Edit.php                                  |  27 ++--
  src/Emailer.php                               |   6 +-
  src/Group.php                                 |  39 +++--
@@ -19,7 +19,7 @@ and other cleanup
  src/PropertyChanges.php                       |  34 +++--
  src/SemanticWatchlist.php                     |   2 +-
  src/Special/Watchlist.php                     |  13 +-
- 12 files changed, 235 insertions(+), 182 deletions(-)
+ 12 files changed, 239 insertions(+), 183 deletions(-)
 
 diff --git a/src/ChangeSet.php b/src/ChangeSet.php
 index 24f424f..850c647 100644
@@ -447,19 +447,31 @@ index 24f424f..850c647 100644
  
  		foreach ( $this->changes->getPropertyChanges( $property ) as /* PropertyChange */ $propChange ) {
 diff --git a/src/CustomTexts.php b/src/CustomTexts.php
-index fb7e007..f97095e 100644
+index fb7e007..a930164 100644
 --- a/src/CustomTexts.php
 +++ b/src/CustomTexts.php
-@@ -12,7 +12,7 @@
+@@ -12,7 +12,8 @@
   */
  namespace SWL;
  
 -use SMWDIProperty;
++use MediaWiki\MediaWikiServices;
 +use SMW\DIProperty;
  
  class CustomTexts {
  
-@@ -79,12 +79,12 @@ private function initCustomTexts() {
+@@ -49,7 +50,9 @@ private function initCustomTexts() {
+ 			return;
+ 		}
+ 		$this->customTexts = array();
+-		$dbr = wfGetDB( DB_REPLICA );
++		$dbr = MediaWikiServices::getInstance()
++			->getDBLoadBalancer()
++			->getConnection( DB_REPLICA );
+ 		$row = $dbr->selectRow(
+ 			'swl_groups',
+ 			'group_custom_texts',
+@@ -79,12 +82,12 @@ private function initCustomTexts() {
  	 *
  	 * @since 0.2
  	 *
