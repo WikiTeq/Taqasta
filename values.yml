@@ -290,9 +290,9 @@ extensions:
   - SemanticDependencyUpdater:
       Wikidata ID: Q25652137
       repository: https://github.com/WikiTeq/SemanticDependencyUpdater.git
-      branch: old-master
+      branch: deletion-hook-support
       # (WikiTeq fork)
-      commit: 8f927a9b0f1eb49359d30a76099fa1252905f64d
+      commit: 74af54e557d661defd5ce86fb943d39a5af6464d
   - SimpleChanges:
       Wikidata ID: Q21678599
       # Patched version, see https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618
