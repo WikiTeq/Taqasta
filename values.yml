@@ -502,6 +502,11 @@ extensions:
       repository: https://github.com/mywikis/CrawlerProtection.git
       branch: main
       commit: 1b757313dafcb476bfeb0c0148c2a21326672c41
+  - GoogleGeocode:
+      branch: REL1_43
+      commit: 2a8048c0f1fc6cb9d2ed52dbab6d3830bec9fd2a
+      additional steps:
+        - composer update
 # Skins to install
 skins:
   - CologneBlue:
