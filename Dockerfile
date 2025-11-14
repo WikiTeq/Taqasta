@@ -387,6 +387,10 @@ RUN set -x; \
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleAnalyticsMetrics $MW_HOME/extensions/GoogleAnalyticsMetrics \
 	&& cd $MW_HOME/extensions/GoogleAnalyticsMetrics \
 	&& git checkout -q e1a2ebeec21e67fdafed7730a53cfaf2eccd5852 \
+	# GoogleGeocode
+	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleGeocode $MW_HOME/extensions/GoogleGeocode \
+	&& cd $MW_HOME/extensions/GoogleGeocode \
+	&& git checkout -q b19863bea16683fe3e1b234749a063ba0b56fbfb \
 	# GoogleDocCreator
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleDocCreator $MW_HOME/extensions/GoogleDocCreator \
 	&& cd $MW_HOME/extensions/GoogleDocCreator \

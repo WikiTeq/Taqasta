@@ -37,7 +37,8 @@
 				"extensions/JWTAuth/composer.json",
 				"extensions/FHIR/composer.json",
 				"extensions/CLEAR/composer.json",
-				"extensions/AWS/composer.json"
+				"extensions/AWS/composer.json",
+				"extensions/GoogleGeocode/composer.json"
 			]
 		}
 	},
