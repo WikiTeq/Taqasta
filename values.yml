@@ -290,9 +290,9 @@ extensions:
   - SemanticDependencyUpdater:
       Wikidata ID: Q25652137
       repository: https://github.com/WikiTeq/SemanticDependencyUpdater.git
-      branch: old-master
+      branch: deletion-hook-support
       # (WikiTeq fork)
-      commit: 8f927a9b0f1eb49359d30a76099fa1252905f64d
+      commit: cd0f50a31a21609636961ea2592ca12bbca9b651
   - SimpleChanges:
       Wikidata ID: Q21678599
       # Patched version, see https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618
@@ -502,6 +502,11 @@ extensions:
       repository: https://github.com/mywikis/CrawlerProtection.git
       branch: main
       commit: 1b757313dafcb476bfeb0c0148c2a21326672c41
+  - GoogleGeocode:
+      branch: REL1_43
+      commit: 2a8048c0f1fc6cb9d2ed52dbab6d3830bec9fd2a
+      additional steps:
+        - composer update
 # Skins to install
 skins:
   - CologneBlue:
@@ -520,7 +525,7 @@ skins:
 # Composer packages (extensions) to install
 packages:
   - name: mediawiki/semantic-media-wiki
-    version: 5.0.2
+    version: 6.0.1
   - name: mediawiki/chameleon-skin
     version: 5.0.0
   - name: mediawiki/bootstrap-components
@@ -530,21 +535,21 @@ packages:
   - name: mediawiki/remote-wiki
     version: dev-master#da859c2c5081d96a6492f178686251136d35ec23
   - name: mediawiki/semantic-compound-queries
-    version: dev-master#6853f0758c3ba64415573bbc29507397ea1248ca
+    version: 3.0.0
   - name: mediawiki/semantic-extra-special-properties
     version: 4.0.0
   - name: mediawiki/semantic-result-formats
-    version: dev-master#02c08ce0098a185277c817e950c8074695f6cd45
+    version: 5.1.0
   - name: mediawiki/semantic-scribunto
-    version: dev-master#c83e55dcb56b9608fccf845b6441772086be84bf
+    version: 2.3.3
   - name: mediawiki/simple-batch-upload
     version: 2.0.1
   - name: mediawiki/sub-page-list
     version: 3.0.1
   - name: mediawiki/maps
-    version: 11.0.1
+    version: 12.0.0
   - name: mediawiki/semantic-watchlist
-    version: dev-master#cfd14a68f9cb073afc3f7a26f1c3baa071efbbd0
+    version: dev-master#3b55e9b40acfc0b69f161558f9a3f910f82cbd97
 # custom repositories for Composer to use
 repositories:
   - type: vcs
