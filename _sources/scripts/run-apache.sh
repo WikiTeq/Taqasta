@@ -1,11 +1,12 @@
 #!/bin/bash
 
-date=$(date -u +%Y%m%d_%H%M%S)
-BOOTSTRAP_LOGFILE="$MW_LOG/_bootstrap_$date.log"
-export BOOTSTRAP_LOGFILE
-
-echo "==== STARTING $date ===="
-echo "See Bash XTrace in the $BOOTSTRAP_LOGFILE file"
+if [ "$ENABLE_BASH_XTRACE" = "true" ]; then
+    date=$(date -u +%Y%m%d_%H%M%S)
+    BOOTSTRAP_LOGFILE="$MW_LOG/_bootstrap_$date.log"
+    export BOOTSTRAP_LOGFILE
+    echo "==== STARTING $date ===="
+    echo "See Bash XTrace in the $BOOTSTRAP_LOGFILE file"
+fi
 
 echo "Checking permissions of Mediawiki log dir $MW_LOG..."
 if ! mountpoint -q -- "$MW_LOG"; then
@@ -19,16 +20,16 @@ else
     chmod -R go=rwX "$MW_LOG"
 fi
 
-# Open file descriptor 3 for logging xtrace output
-exec 3> >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE" >/dev/null)
-
-# Redirect stdout and stderr to the log file using tee,
-# with stdbuf to handle buffering issues
-exec > >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE") 2>&1
-
-# Enable xtrace and Redirect the xtrace output to log file only
-BASH_XTRACEFD=3
-set -x
+if [ "$ENABLE_BASH_XTRACE" = "true" ]; then
+    # Open file descriptor 3 for logging xtrace output
+    exec 3> >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE" >/dev/null)
+    # Redirect stdout and stderr to the log file using tee,
+    # with stdbuf to handle buffering issues
+    exec > >(stdbuf -oL tee -a "$BOOTSTRAP_LOGFILE") 2>&1
+    # Enable xtrace and Redirect the xtrace output to log file only
+    BASH_XTRACEFD=3
+    set -x
+fi
 
 . /functions.sh
 
