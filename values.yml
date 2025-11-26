@@ -120,8 +120,8 @@ extensions:
       commit: 920768a8efb9f316aed1f134fc07aa153d612eb7
   - DynamicPageList3:
       repository: https://github.com/Universal-Omega/DynamicPageList3.git
-      branch: REL1_39
-      commit: e4faf608b0f5a77c4a4c3576a2a28216c7d2bbbf
+      branch: main
+      commit: b7a55c364da9561eb9d95b8fa80faa6a5ebdeda9
   - Editcount:
       Wikidata ID: Q21676209
       commit: a81f6e9e404da0e82801fc12d91567d1cc143181
