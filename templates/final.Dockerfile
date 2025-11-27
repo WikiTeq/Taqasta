@@ -59,7 +59,7 @@ COPY _sources/scripts/*.sh /
 COPY _sources/scripts/*.php $MW_HOME/maintenance/
 COPY _sources/configs/robots.php $WWW_ROOT/
 COPY _sources/configs/robots.txt $WWW_ROOT/
-COPY _sources/configs/.htaccess $WWW_ROOT/
+COPY _sources/configs/.htaccess_mediawiki $WWW_ROOT/
 COPY _sources/images/favicon.ico $WWW_ROOT/
 COPY _sources/canasta/DockerSettings.php $MW_HOME/
 COPY _sources/canasta/getMediawikiSettings.php /
