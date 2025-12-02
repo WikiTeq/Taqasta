@@ -222,6 +222,8 @@ extensions:
   - MassMessageEmail:
       Wikidata ID: Q35256649
       commit: b2d7a0441ce18e7d63532f4e46ac99a99c27718e
+      additional steps:
+        - composer update
   - MediaUploader:
       Wikidata ID: Q123011801
       commit: 77d2936cb635478c667d216fec3dcf8e0880e0c7
