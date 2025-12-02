@@ -8,8 +8,8 @@ if [ -n "$BOOTSTRAP_LOGFILE" ]; then
     # Open file descriptor 3 for logging xtrace output
     exec 3>>"$BOOTSTRAP_LOGFILE"
     BASH_XTRACEFD=3
+    set -x
 fi
-set -x
 
 printf "\n\n===== update-images-permissions.sh =====\n\n\n"
 

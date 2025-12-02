@@ -6,8 +6,8 @@ if [ -n "$BOOTSTRAP_LOGFILE" ]; then
     # Open file descriptor 3 for logging xtrace output
     exec 3>>"$BOOTSTRAP_LOGFILE"
     BASH_XTRACEFD=3
+    set -x
 fi
-set -x
 
 # read variables from LocalSettings.php
 get_mediawiki_variable () {
