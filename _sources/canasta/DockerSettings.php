@@ -96,7 +96,6 @@ const DOCKER_EXTENSIONS = [
 	'Gadgets', # bundled
 	'GlobalNotice',
 	'GoogleAnalyticsMetrics',
-	'GoogleDocCreator',
 	'GoogleDocTag',
 	'GoogleLogin',
 	'HTMLTags',
@@ -131,10 +130,8 @@ const DOCKER_EXTENSIONS = [
 	'Math',
 	'MediaUploader',
 	'Mermaid',
-	'MintyDocs',
 	'MobileDetect',
 	'MobileFrontend',
-	'Mpdf',
 	'MsUpload',
 	'MultimediaViewer', # bundled
 	'MyVariables',
