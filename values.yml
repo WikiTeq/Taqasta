@@ -161,9 +161,6 @@ extensions:
       commit: 441511d7c848f8b59a08dc160fb1062f67778032
       additional steps:
         - composer update
-  - GoogleDocCreator:
-      Wikidata ID: Q56031068
-      commit: 9db568cb4113ab99919fcb2e107e3428212f6ee1
   - HeaderFooter:
       Wikidata ID: Q21676879
       commit: a0d0f4e39f3069925815ca37320f72995aeb80c3
@@ -227,10 +224,6 @@ extensions:
   - MediaUploader:
       Wikidata ID: Q123011801
       commit: 77d2936cb635478c667d216fec3dcf8e0880e0c7
-  - MintyDocs:
-      Wikidata ID: Q55501601
-      branch: master
-      commit: 760e10ddf4b1dd70caae76286e6afd6342f8f67b
   - MobileFrontend:
       Wikidata ID: Q21677641
       commit: a44f2808aa9e051f6a56215ce1320018db723808
@@ -410,10 +403,6 @@ extensions:
         - composer update
   - MobileDetect:
       commit: 1c783c4abc9849e1409f386583404762463f263f
-  - Mpdf:
-      commit: dcd9c9b4587d2caefe6a952ca49be7b72eff1da0
-      additional steps:
-        - composer update
   - PageSchemas:
       commit: 25a55c1aa9c6600e9fd9b03f5d50ccad2a9e83fe
   - PDFEmbed:
