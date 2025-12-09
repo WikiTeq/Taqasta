@@ -507,6 +507,12 @@ $wgAdvancedSearchDeepcatEnabled = false;
 # Enable the "Did You Mean" feature, see WIK-1275
 $wgCirrusSearchPhraseSuggestUseOpeningText = true;
 
+// API endpoint seems to require edit permissions, for users without the
+// permissions the indicator is just an endless loop, disable it entirely per
+// WIK-1208
+$wgDefaultUserOptions['smw-prefs-general-options-show-entity-issue-panel'] = 0;
+$wgHiddenPrefs[] = 'smw-prefs-general-options-show-entity-issue-panel';
+
 ######################### Custom Settings ##########################
 $canastaLocalSettingsFilePath = getenv( 'MW_CONFIG_DIR' ) . '/LocalSettings.php';
 $emulateLocalSettingsDoesNotExists = false;
