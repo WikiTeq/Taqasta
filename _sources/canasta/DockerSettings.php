@@ -201,7 +201,6 @@ const DOCKER_EXTENSIONS = [
 	'TwitterTag',
 	'UniversalLanguageSelector',
 	'UploadWizard',
-	'UploadWizardExtraButtons',
 	'UrlGetParameters',
 	'UserFunctions',
 	'UserMerge',

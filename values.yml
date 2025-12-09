@@ -445,10 +445,6 @@ extensions:
       commit: 505eac44a119ec3d804b8fd16d4c6b1f6abf7258
   - TwitterTag:
       commit: 0ce9a66d1818eb7b77b91fb051957f99fc17351f
-  - UploadWizardExtraButtons:
-      repository: https://github.com/vedmaka/mediawiki-extension-UploadWizardExtraButtons.git
-      branch: master
-      commit: accba1b9b6f50e67d709bd727c9f4ad6de78c0c0
   - YouTube:
       commit: 01673ce5f560fabe09b0feb1e65b57cbf58aae39
   - GoogleLogin:
