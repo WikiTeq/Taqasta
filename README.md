@@ -29,7 +29,7 @@ the configuration of an existing wiki.
 
 ## Build System
 
-Taqasta uses a template-based build system powered by [gomplate](https://gomplate.ca/) (Go templates) to generate the 
+Taqasta uses a template-based build system powered by [gomplate](https://gomplate.ca/) (Go templates) to generate the
 Dockerfile and configuration files:
 
 * The `Dockerfile` and `_sources/configs/composer.wikiteq.json` are compiled from `Dockerfile.tmpl` and `_sources/configs/composer.wikiteq.json.tmpl` using the `compile.sh` script
@@ -43,6 +43,34 @@ locally.
 Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
 various extensions and other tweaks that the WikiTeq team uses.
+
+## Configuration
+
+### Extending or Overriding .htaccess
+
+The Taqasta image includes a default `.htaccess` file at `/var/www/mediawiki/.htaccess` with MediaWiki-specific rewrite rules and caching directives. If you need to customize Apache configuration, you can mount your own `.htaccess` file at different directory levels depending on your needs:
+
+**To extend the base configuration** (add additional rules without replacing the default):
+- Mount your `.htaccess` file to `/var/www/.htaccess` (parent directory)
+- Apache will process both the base `.htaccess` at `/var/www/mediawiki/.htaccess` and your custom file
+
+**To override specific settings** (replace rules in the base file):
+- Mount your `.htaccess` file to `/var/www/mediawiki/w/.htaccess` (subdirectory)
+- This file will take precedence over the base `.htaccess` for requests to the wiki directory
+
+**Important Notes:**
+- Mounting a file directly to `/var/www/mediawiki/.htaccess` will completely replace the default file, which may break functionality during image updates
+- The recommended approach is to use the parent or subdirectory mounting options above to preserve the base configuration
+- Always test your custom `.htaccess` rules after updating the Taqasta image to ensure compatibility
+
+Example docker-compose configuration:
+```yaml
+volumes:
+  # To extend: mount to parent directory
+  - ./my-custom-htaccess:/var/www/.htaccess
+  # OR to override: mount to subdirectory
+  - ./my-custom-htaccess:/var/www/mediawiki/w/.htaccess
+```
 
 ## Notes on Dockerfile structure
 
