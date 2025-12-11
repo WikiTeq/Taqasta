@@ -495,6 +495,12 @@ extensions:
       repository: https://github.com/AlPha5130/mediawiki-extensions-EditCountNeue.git
       branch: master
       commit: f4111b24a06e231c5a84a41755a8005378a50080
+  - MarkdownPages:
+      repository: https://github.com/WikiTeq/mediawiki-extension-MarkdownPages.git
+      branch: master
+      commit: 104d673e032a32aba60cfb564c222cedb445db14
+      additional steps:
+        - composer update
 # Skins to install
 skins:
   - CologneBlue:
