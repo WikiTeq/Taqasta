@@ -494,6 +494,12 @@ extensions:
       commit: 2a8048c0f1fc6cb9d2ed52dbab6d3830bec9fd2a
       additional steps:
         - composer update
+  - MarkdownPages:
+      repository: https://github.com/WikiTeq/mediawiki-extension-MarkdownPages.git
+      branch: master
+      commit: 104d673e032a32aba60cfb564c222cedb445db14
+      additional steps:
+        - composer update
 # Skins to install
 skins:
   - CologneBlue:
