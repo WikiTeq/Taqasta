@@ -50,9 +50,9 @@ various extensions and other tweaks that the WikiTeq team uses.
 
 The Taqasta image includes a default `.htaccess` file at `/var/www/mediawiki/.htaccess` with MediaWiki-specific rewrite rules and caching directives. If you need to customize Apache configuration, you can mount your own `.htaccess` file at different directory levels depending on your needs:
 
-**To extend the base configuration** (add additional rules without replacing the default):
-- Mount your `.htaccess` file to `/var/www/.htaccess` (parent directory)
-- Apache will process both the base `.htaccess` at `/var/www/mediawiki/.htaccess` and your custom file
+**To completely replace the base configuration** (replace all rules in the default file):
+- Mount your `.htaccess` file to `/var/www/mediawiki/.htaccess` (DocumentRoot)
+- This will completely replace the default `.htaccess` file
 
 **To override specific settings** (replace rules in the base file):
 - Mount your `.htaccess` file to `/var/www/mediawiki/w/.htaccess` (subdirectory)
@@ -60,15 +60,15 @@ The Taqasta image includes a default `.htaccess` file at `/var/www/mediawiki/.ht
 
 **Important Notes:**
 - Mounting a file directly to `/var/www/mediawiki/.htaccess` will completely replace the default file, which may break functionality during image updates
-- The recommended approach is to use the parent or subdirectory mounting options above to preserve the base configuration
+- For subdirectory-specific overrides, use the `/var/www/mediawiki/w/.htaccess` approach to preserve the base configuration
 - Always test your custom `.htaccess` rules after updating the Taqasta image to ensure compatibility
 
 Example docker-compose configuration:
 ```yaml
 volumes:
-  # To extend: mount to parent directory
-  - ./my-custom-htaccess:/var/www/.htaccess
-  # OR to override: mount to subdirectory
+  # To replace: mount to DocumentRoot (replaces entire file)
+  - ./my-custom-htaccess:/var/www/mediawiki/.htaccess
+  # OR to override: mount to subdirectory (preserves base config)
   - ./my-custom-htaccess:/var/www/mediawiki/w/.htaccess
 ```
 
