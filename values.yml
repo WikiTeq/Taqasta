@@ -494,7 +494,7 @@ extensions:
       Wikidata ID: Q124314679
       repository: https://github.com/AlPha5130/mediawiki-extensions-EditCountNeue.git
       branch: master
-      commit: 5c155131e3b361fbc66c82bf880201f10cac7f66
+      commit: f4111b24a06e231c5a84a41755a8005378a50080
 # Skins to install
 skins:
   - CologneBlue:
