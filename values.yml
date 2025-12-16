@@ -490,6 +490,11 @@ extensions:
       commit: 2a8048c0f1fc6cb9d2ed52dbab6d3830bec9fd2a
       additional steps:
         - composer update
+  - EditCountNeue:
+      Wikidata ID: Q124314679
+      repository: https://github.com/AlPha5130/mediawiki-extensions-EditCountNeue.git
+      branch: master
+      commit: 5c155131e3b361fbc66c82bf880201f10cac7f66
 # Skins to install
 skins:
   - CologneBlue:
