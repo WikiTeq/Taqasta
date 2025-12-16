@@ -162,7 +162,6 @@ const DOCKER_EXTENSIONS = [
 	'RottenLinks',
 	'SandboxLink',
 	'SaveSpinner',
-	'Scopus',
 	'Scribunto', # bundled
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
