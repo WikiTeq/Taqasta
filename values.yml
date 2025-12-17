@@ -498,7 +498,7 @@ extensions:
   - MarkdownPages:
       repository: https://github.com/WikiTeq/mediawiki-extension-MarkdownPages.git
       branch: master
-      commit: 104d673e032a32aba60cfb564c222cedb445db14
+      commit: e7b4c1a320943797fcacfa94f2eef1d428419cea
       additional steps:
         - composer update
 # Skins to install
