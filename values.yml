@@ -83,7 +83,7 @@ extensions:
       commit: 133fd7511eff158456e194315e5f477166ef3206
   - ConfirmAccount:
       Wikidata ID: Q21676649
-      commit: de9733a4bd8a3b26a2aed6b56eab56197026d116
+      commit: 852687aea8281b731d6193bab6477def06d9b31d
   - ContactPage:
       Wikidata ID: Q21676642
       commit: ad2cdd6a5bb1676dd42215f7585125a78140b121
