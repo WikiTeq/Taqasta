@@ -39,12 +39,6 @@ RUN set -x; \
 	cd $MW_HOME/extensions/GoogleLogin && \
 	git apply /tmp/GoogleLogin-fixes.patch
 
-# GoogleAnalyticsMetrics pins google/apiclient to 2.12.6, relax it
-COPY _sources/patches/GoogleAnalyticsMetrics-relax-pin.patch /tmp/GoogleAnalyticsMetrics-relax-pin.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/GoogleAnalyticsMetrics && \
-	git apply /tmp/GoogleAnalyticsMetrics-relax-pin.patch
-
 # Cleanup all .git leftovers
 RUN set -x; \
 	cd $MW_HOME/extensions && \
