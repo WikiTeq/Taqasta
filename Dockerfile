@@ -383,10 +383,6 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GlobalNotice $MW_HOME/extensions/GlobalNotice \
 	&& cd $MW_HOME/extensions/GlobalNotice \
 	&& git checkout -q 15a40bff4641f00a5a8dda3d36795b1c659c19a7 \
-	# GoogleAnalyticsMetrics
-	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleAnalyticsMetrics $MW_HOME/extensions/GoogleAnalyticsMetrics \
-	&& cd $MW_HOME/extensions/GoogleAnalyticsMetrics \
-	&& git checkout -q e1a2ebeec21e67fdafed7730a53cfaf2eccd5852 \
 	# GoogleGeocode
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleGeocode $MW_HOME/extensions/GoogleGeocode \
 	&& cd $MW_HOME/extensions/GoogleGeocode \
@@ -839,10 +835,6 @@ RUN set -x; \
 # S
 RUN set -x; \
 	cd $MW_HOME/extensions \
-  	# Scopus
-	&& git clone https://github.com/nischayn22/Scopus.git $MW_HOME/extensions/Scopus \
-	&& cd $MW_HOME/extensions/Scopus \
-	&& git checkout -b $MW_VERSION 4fe8048459d9189626d82d9d93a0d5f906c43746 \
 	# SelectCategory
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory $MW_HOME/extensions/SelectCategory \
 	&& cd $MW_HOME/extensions/SelectCategory \
