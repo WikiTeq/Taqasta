@@ -21,9 +21,6 @@ spec:
                 secretKeyRef:
                   name: mysql-password
                   key: password
-          volumeMounts:
-            - name: mariadb-credentials
-              mountPath: /opt/bitnami/mariadb/secrets/
 ---
 apiVersion: k8up.io/v1
 kind: Schedule
