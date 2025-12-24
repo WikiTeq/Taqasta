@@ -76,9 +76,9 @@ spec:
     failedJobsHistoryLimit: 2
     successfulJobsHistoryLimit: 2
   check:
-    schedule: '*/15 * * * *'
+    schedule: '@daily-random'
   prune:
-    schedule: '*/55 * * * *'
+    schedule: '@daily-random'
     retention:
       keepLast: 10
       keepDaily: 7
