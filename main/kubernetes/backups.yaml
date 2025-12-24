@@ -75,13 +75,13 @@ spec:
     schedule: '*/10 * * * *'
     failedJobsHistoryLimit: 2
     successfulJobsHistoryLimit: 2
-#  check:
-#    schedule: '@hourly'
-#  prune:
-#    schedule: '@hourly'
-#    retention:
-#      keepLast: 10
-#      keepDaily: 7
-#      keepWeekly: 6
-#      keepMonthly: 12
-#      keepYearly: 1
+  check:
+    schedule: '*/15 * * * *'
+  prune:
+    schedule: '*/55 * * * *'
+    retention:
+      keepLast: 10
+      keepDaily: 7
+      keepWeekly: 6
+      keepMonthly: 12
+      keepYearly: 1
