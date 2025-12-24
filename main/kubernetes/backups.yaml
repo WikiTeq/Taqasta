@@ -8,6 +8,30 @@ spec:
   fileExtension: .sql
   pod:
     spec:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - mysql
+                topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: pool
+                    operator: In
+                    values:
+                      - shared
+      tolerations:
+        - key: "pool"
+          value: "shared"
+          effect: "NoSchedule"
       containers:
         - image: mysql:8.0
           command:
