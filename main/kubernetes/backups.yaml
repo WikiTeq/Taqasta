@@ -78,7 +78,7 @@ spec:
   check:
     schedule: '@daily-random'
   prune:
-    schedule: '@daily-random'
+    schedule: '@weekly-random'
     retention:
       keepLast: 10
       keepDaily: 7
