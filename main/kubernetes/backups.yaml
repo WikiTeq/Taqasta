@@ -9,7 +9,7 @@ spec:
   pod:
     spec:
       containers:
-        - image: mariadb:10.4
+        - image: mysql:8.0
           command:
             - 'sleep'
             - 'infinity'
@@ -48,16 +48,16 @@ spec:
   backup:
     # randomized around midnight US central time, see https://docs.k8up.io/k8up/2.12/how-tos/optimize-schedules.html
     # https://github.com/WikiTeq/QloudIAC/blob/2aa0ed4dce6546a1115c36236cedde0d662815a1/terraform/helm-values/k8up.yaml#L5
-    schedule: '@hourly'
+    schedule: '*/10 * * * *'
     failedJobsHistoryLimit: 2
     successfulJobsHistoryLimit: 2
-  check:
-    schedule: '@hourly'
-  prune:
-    schedule: '@hourly'
-    retention:
-      keepLast: 10
-      keepDaily: 7
-      keepWeekly: 6
-      keepMonthly: 12
-      keepYearly: 1
+#  check:
+#    schedule: '@hourly'
+#  prune:
+#    schedule: '@hourly'
+#    retention:
+#      keepLast: 10
+#      keepDaily: 7
+#      keepWeekly: 6
+#      keepMonthly: 12
+#      keepYearly: 1
