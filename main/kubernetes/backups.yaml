@@ -13,7 +13,7 @@ spec:
           command:
             - 'sleep'
             - 'infinity'
-          imagePullPolicy: Always
+          imagePullPolicy: ifNotPresent
           name: mysqldump
           env:
             - name: MYSQL_ROOT_PASSWORD
