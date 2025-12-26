@@ -18,7 +18,6 @@
 		"merge-plugin": {
 			"include": [
 				"extensions/Flow/composer.json",
-				"extensions/GoogleAnalyticsMetrics/composer.json",
 				"extensions/MassPasswordReset/composer.json",
 				"extensions/Mpdf/composer.json",
 				"extensions/Sentry/composer.json",

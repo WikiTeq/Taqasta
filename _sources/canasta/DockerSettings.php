@@ -94,7 +94,6 @@ const DOCKER_EXTENSIONS = [
 	'GTag',
 	'Gadgets', # bundled
 	'GlobalNotice',
-	'GoogleAnalyticsMetrics',
 	'GoogleDocCreator',
 	'GoogleDocTag',
 	'GoogleLogin',
@@ -165,7 +164,6 @@ const DOCKER_EXTENSIONS = [
 	'RottenLinks',
 	'SandboxLink',
 	'SaveSpinner',
-	'Scopus',
 	'Scribunto', # bundled
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
