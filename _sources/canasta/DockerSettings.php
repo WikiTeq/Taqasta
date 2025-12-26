@@ -95,7 +95,6 @@ const DOCKER_EXTENSIONS = [
 	'GTag',
 	'Gadgets', # bundled
 	'GlobalNotice',
-	'GoogleAnalyticsMetrics',
 	'GoogleDocTag',
 	'GoogleLogin',
 	'HTMLTags',
