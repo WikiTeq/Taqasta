@@ -27,11 +27,15 @@ COPY --from=extensions{{ add $start 1 }}-{{ $end }} $MW_HOME/extensions/ $MW_HOM
 
 ################# Patches #################
 
-# WikiTeq AL-12
-COPY _sources/patches/FlexDiagrams.0.4.fix.diff /tmp/FlexDiagrams.0.4.fix.diff
+{{ $allPatches := (ds "values").patches -}}
+{{- range $patch := $allPatches -}}
+  {{- $name := index $patch "name" -}}
+  {{- $path := index $patch "path" -}}
+COPY _sources/patches/{{ $name }} /tmp/{{ $name }}
 RUN set -x; \
-	cd $MW_HOME/extensions/FlexDiagrams && \
-	git apply /tmp/FlexDiagrams.0.4.fix.diff
+	cd $MW_HOME/{{ $path }} && \
+	git apply /tmp/{{ $name }}
+{{ end }}
 
 # Cleanup all .git leftovers
 RUN set -x; \
