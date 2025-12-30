@@ -24,7 +24,13 @@ if ( !empty( $enableSitemapEnv ) && in_array( $enableSitemapEnv, [ 'true', 'True
 
 	$siteMapUrl = "$server$script/sitemap$subdir/sitemap-index-$identifier.xml";
 
-	echo "Sitemap: $siteMapUrl\n";
+	// If there was an exception thrown by getMediawikiSettings.php, it just
+	// gets added to the output and included in $script, but trying to use
+	// $script would be broken because instead of a script path it contains a
+	// stack trace. MW-424
+	if ( !str_contains( $server, "\n" ) ) {
+		echo "Sitemap: $siteMapUrl\n";
+	}
 }
 
 readfile( 'robots.txt' );

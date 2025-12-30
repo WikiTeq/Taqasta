@@ -8,8 +8,8 @@ if [ -n "$BOOTSTRAP_LOGFILE" ]; then
     # Open file descriptor 3 for logging xtrace output
     exec 3>>"$BOOTSTRAP_LOGFILE"
     BASH_XTRACEFD=3
+    set -x
 fi
-set -x
 
 printf "\n\n===== run-maintenance-script.sh =====\n\n\n"
 
@@ -416,7 +416,6 @@ fi
 
 # Run extra post-init scripts if any
 if [ -f "/post-init.sh" ]; then
-    chmod +x /post-init.sh
     echo >&2 Running post-init.sh script..
     /bin/bash /post-init.sh
 fi

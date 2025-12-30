@@ -20,34 +20,48 @@ env:
   IMAGE_NAME: taqasta
 
 jobs:
-  # Test the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
-  test:
+  # Lint the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
+  lint:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v3
-      -
-        name: Run linter (hadolint)
+      - uses: actions/checkout@v4
+
+      - name: Validate YAML
+        run: bash validate.sh
+
+      - name: Compile
+        run: bash compile.sh
+
+      - name: Run linter (hadolint)
         uses: vedmaka/hadolint-action@master
         with:
           dockerfile: "Dockerfile"
           config: "hadolint.yaml"
 
-  # Push image to GitHub Packages.
+  # Generate image tags
   # The image tag pattern is:
   # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
   # for tags: <TAG>
   # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
   # <MW_CORE_VERSION> being parsed from the Dockerfile
-  push:
-    needs: [test]
+  tags:
+    needs: [lint]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
+    outputs:
+      REGISTRY_TAGS: ${{ steps.generate.outputs.REGISTRY_TAGS }}
+      REGISTRY_TAGS_VERSION: ${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}
+      REGISTRY_TAGS_PR_NUMBER: ${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}
+      SHA_SHORT: ${{ steps.generate.outputs.SHA_SHORT }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Generate tags
+        uses: actions/checkout@v4
+
+      - name: Compile
+        run: bash compile.sh
+
+      - name: Generate tags
         id: generate
         run: |
 
@@ -67,7 +81,7 @@ jobs:
 
           # Strip git ref prefix from version and use it as suffix for version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          
+
           # Get the Taqasta version from the "VERSION" file
           TAQASTA_VERSION=$(cat VERSION)
 
@@ -93,13 +107,13 @@ jobs:
 
           SHA_SHORT=${{ github.sha }}
           [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
-          
+
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           echo REGISTRY_TAGS=$REGISTRY_TAGS
           echo SHA_SHORT=$SHA_SHORT
           echo EventName=${{ github.event_name }}
-          
+
           echo headref=${{ github.head_ref }}
           echo "Final image tag to be pushed:"
           echo $REGISTRY_TAGS
@@ -107,51 +121,268 @@ jobs:
           echo "REGISTRY_TAGS_VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "REGISTRY_TAGS_PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
           echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_OUTPUT
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          install: true
-          platforms: linux/amd64, linux/arm64
-      -
-        name: Login to GitHub Container Registry
+
+  # Pre-build amd64 image and run e2e
+  deploy-e2e:
+    needs: [tags]
+    timeout-minutes: 60
+    outputs:
+      pages_url: ${{ steps.deployment_pages.outputs.page_url }}
+      report-uploaded: ${{ steps.report-playwright-tests.outputs.was-uploaded }}
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Build and push
+
+      - name: Compile
+        run: bash compile.sh
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          platforms: linux/amd64
+
+      - name: Build and load
         id: docker_build
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          push: true
-          tags: ${{ steps.generate.outputs.REGISTRY_TAGS }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      -
-        name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
-      -
-        name: Image tags debug
-        run: echo ${{ steps.generate.outputs.REGISTRY_TAGS }}
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          # should be fine, but may need to add branch specific cache plus a fallback to master
+          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64
+          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64,mode=max
+          push: false
+          load: true
 
-      -
-        name: Notify about image tag
-        if: github.event_name == 'pull_request' && steps.docker_build.outputs.digest != ''
-        uses: hasura/comment-progress@v2.2.0
+      - name: Set up environment
+        shell: bash
+        run: mv .env.ci .env
+
+      - name: Setup Docker Compose
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_BUILDKIT: 1
+        shell: bash
+        run: |
+          DOCKER_BUILDKIT=1 docker compose up -d
+
+      - name: Wait for init
+        shell: bash
+        run: while ! docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
+
+      - name: Wait for container to be healthy
+        shell: bash
+        run: while ! docker inspect --format='{{json .State.Health.Status}}' $(echo $(basename $(pwd)) | tr '[:upper:]' '[:lower:]')-web-1 | grep -q 'healthy'; do sleep 1; done
+
+      # todo, migrate to docker image? https://playwright.dev/docs/docker
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: ./e2e
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: ./e2e
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Playwright tests
+        id: run-playwright-tests
+        working-directory: ./e2e
+        run: npx playwright test
+
+      - name: Upload screenshots as a github-pages artifact
+        uses: actions/upload-pages-artifact@v3
+        # Only if the actual tests failed, if something else earlier in the
+        # job failed then the tests wouldn't have been run and the report
+        # would not exist to upload
+        if: failure() && steps.run-playwright-tests.outcome == 'failure'
+        with:
+          name: playwright-report
+          path: e2e/playwright-report/
+          retention-days: 7
+
+      # Need a way to communicate to the report-pages job whether or not we
+      # uploaded a report; only way that seems to be possible is to use an
+      # output from a step (here) and output that from the overall job (above)
+      # and then check that in the report-pages job (below). Since the overall
+      # output gets extracted from a single step, and steps need to have unique
+      # ids, cannot have two different steps that run under the two possible
+      # conditions, need to have a single step that checks the conditions
+      - name: Output if a report was uploaded
+        id: report-playwright-tests
+        if: always()
+        shell: bash
+        run: |
+          if ${{ steps.run-playwright-tests.outcome == 'failure' }}; then
+            echo "was-uploaded=yes" >> $GITHUB_OUTPUT
+          else
+            echo "was-uploaded=no" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Stop containers
+        if: always()
+        shell: bash
+        run: docker compose down --volumes --timeout 60
+
+  # Builds from cache & push the images to GitHub registry this time
+  # see https://github.com/orgs/community/discussions/148648#discussioncomment-12144381 merge?
+  push:
+    strategy:
+      max-parallel: 2
+      matrix:
+        platform: [linux/amd64,linux/arm64]
+    needs: [tags,deploy-e2e]
+    # see https://github.blog/changelog/2025-01-16-linux-arm64-hosted-runners-now-available-for-free-in-public-repositories-public-preview/
+    runs-on: ${{ matrix.platform == 'linux/arm64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    outputs:
+      digest: ${{ steps.docker_build.outputs.digest }}
+      imageid: ${{ steps.docker_build.outputs.imageid }}
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compile
+        run: bash compile.sh
+
+      - name: Prepare
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          platforms: ${{ matrix.platform }}
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          # we expect the cache for amd64 to be used here so no actual amd64 build should happen
+          platforms: ${{ matrix.platform }}
+          secrets: |
+            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          # should be fine, but may need to add branch specific cache plus a fallback to master
+          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }}
+          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }},mode=max
+          push: true
+
+      - name: Save digest
+        run: |
+          echo "${{ steps.docker_build.outputs.digest }}" > ${{ runner.temp }}/digest-${{ env.PLATFORM_PAIR }}.txt
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ env.PLATFORM_PAIR }}
+          path: ${{ runner.temp }}/digest-${{ env.PLATFORM_PAIR }}.txt
+
+  merge:
+    runs-on: ubuntu-latest
+    needs: [tags, push]
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}
+          pattern: digest-*
+          merge-multiple: true
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create multi-arch manifest
+        run: |
+          # Read digests from files
+          DIGEST_AMD64=$(cat ${{ runner.temp }}/digest-linux-amd64.txt)
+          DIGEST_ARM64=$(cat ${{ runner.temp }}/digest-linux-arm64.txt)
+          
+          # Convert comma-separated tags to array for iteration
+          IFS=',' read -ra TAGS <<< "${{ needs.tags.outputs.REGISTRY_TAGS }}"
+          
+          for tag in "${TAGS[@]}"; do
+            # Trim whitespace
+            tag=$(echo "$tag" | xargs)
+            echo "Creating manifest for tag: $tag"
+            docker buildx imagetools create \
+              --tag "$tag" \
+              "$tag@$DIGEST_AMD64" \
+              "$tag@$DIGEST_ARM64"
+          done
+
+      - name: Verify manifests
+        run: |
+          IFS=',' read -ra TAGS <<< "${{ needs.tags.outputs.REGISTRY_TAGS }}"
+          
+          for tag in "${TAGS[@]}"; do
+            tag=$(echo "$tag" | xargs)
+            echo "Verifying manifest for: $tag"
+            docker buildx imagetools inspect "$tag"
+          done
+
+  # Send a message to the PR thread
+  notify:
+    needs: [tags,push,merge]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && needs.push.outputs.digest != ''
+    steps:
+      - name: Notify about image tag
+        uses: hasura/comment-progress@v2.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: comment
-          message: ":whale: The image based on [${{ steps.generate.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ steps.generate.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }})"
+          message: ":whale: The image based on [${{ needs.tags.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ needs.tags.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ needs.tags.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ needs.push.outputs.imageid }}?tag=${{ needs.tags.outputs.REGISTRY_TAGS_VERSION }})"
           recreate: true
           fail: false
+
+  report-pages:
+    needs: [deploy-e2e]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment_pages.outputs.page_url }}
+    if: failure() && (needs.deploy-e2e.outputs.report-uploaded == 'yes') && ( github.event_name == 'push' || github.event_name == 'pull_request' )
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment_pages
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: playwright-report
+          token: ${{ secrets.GITHUB_TOKEN }}

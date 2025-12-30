@@ -32,7 +32,7 @@ const DOCKER_SKINS = [
 	'Timeless', # bundled
 	'Vector', # bundled
 	'chameleon',
-	'pivot',
+	'Pivot',
 ];
 
 const DOCKER_EXTENSIONS = [
@@ -73,6 +73,7 @@ const DOCKER_EXTENSIONS = [
 	'ContributionScores',
 	'CookieWarning',
 	'Cloudflare',
+	'CrawlerProtection',
 	'DataTransfer',
 	'DeleteBatch',
 	'Description2',
@@ -91,12 +92,9 @@ const DOCKER_EXTENSIONS = [
 	'EventStreamConfig',
 	'ExternalData',
 	'FlexDiagrams',
-	'Flow',
 	'GTag',
 	'Gadgets', # bundled
 	'GlobalNotice',
-	'GoogleAnalyticsMetrics',
-	'GoogleDocCreator',
 	'GoogleDocTag',
 	'GoogleLogin',
 	'HTMLTags',
@@ -117,7 +115,6 @@ const DOCKER_EXTENSIONS = [
 	'LinkSuggest',
 	'LinkTarget',
 	'Linter', # bundled
-	'LiquidThreads',
 	'LockAuthor',
 	'Lockdown',
 	'LoginNotify', # bundled
@@ -132,10 +129,8 @@ const DOCKER_EXTENSIONS = [
 	'Math',
 	'MediaUploader',
 	'Mermaid',
-	'MintyDocs',
 	'MobileDetect',
 	'MobileFrontend',
-	'Mpdf',
 	'MsUpload',
 	'MultimediaViewer', # bundled
 	'MyVariables',
@@ -144,6 +139,7 @@ const DOCKER_EXTENSIONS = [
 	'Nuke', # bundled
 	'NumerAlpha',
 	'OATHAuth', # bundled
+	'OAuth',
 	'OpenGraphMeta',
 	'OpenIDConnect',
 	'PDFEmbed',
@@ -165,7 +161,6 @@ const DOCKER_EXTENSIONS = [
 	'RottenLinks',
 	'SandboxLink',
 	'SaveSpinner',
-	'Scopus',
 	'Scribunto', # bundled
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
@@ -176,7 +171,6 @@ const DOCKER_EXTENSIONS = [
 	'SemanticResultFormats',
 	'SemanticScribunto',
 	'SemanticWatchlist',
-	'Sentry',
 	'ShowMe',
 	'SimpleBatchUpload',
 	'SimpleChanges',
@@ -185,12 +179,12 @@ const DOCKER_EXTENSIONS = [
 	'SimpleTippy',
 	'SkinPerNamespace',
 	'SkinPerPage',
-	'Skinny',
 	'SmiteSpam',
 	'SpamBlacklist', # bundled
 	'SubPageList',
 	'Survey',
 	'SyntaxHighlight_GeSHi', # bundled
+	'Share',
 	'Tabber',
 	'TabberNeue',
 	'Tabs',
@@ -205,7 +199,6 @@ const DOCKER_EXTENSIONS = [
 	'TwitterTag',
 	'UniversalLanguageSelector',
 	'UploadWizard',
-	'UploadWizardExtraButtons',
 	'UrlGetParameters',
 	'UserFunctions',
 	'UserMerge',
@@ -224,6 +217,7 @@ const DOCKER_EXTENSIONS = [
 	'WikiEditor', # bundled
 	'WikiForum',
 	'WikiSEO',
+	'WikiCategoryTagCloud',
 	'YouTube',
 ];
 
@@ -511,6 +505,12 @@ $wgAdvancedSearchDeepcatEnabled = false;
 # Enable the "Did You Mean" feature, see WIK-1275
 $wgCirrusSearchPhraseSuggestUseOpeningText = true;
 
+// API endpoint seems to require edit permissions, for users without the
+// permissions the indicator is just an endless loop, disable it entirely per
+// WIK-1208
+$wgDefaultUserOptions['smw-prefs-general-options-show-entity-issue-panel'] = 0;
+$wgHiddenPrefs[] = 'smw-prefs-general-options-show-entity-issue-panel';
+
 ######################### Custom Settings ##########################
 $canastaLocalSettingsFilePath = getenv( 'MW_CONFIG_DIR' ) . '/LocalSettings.php';
 $emulateLocalSettingsDoesNotExists = false;
@@ -551,17 +551,6 @@ if ( $emulateLocalSettingsDoesNotExists ) {
 	die();
 }
 
-# Flow https://www.mediawiki.org/wiki/Extension:Flow
-if ( isset( $dockerLoadExtensions['Flow'] ) ) {
-	$flowNamespaces = getenv( 'MW_FLOW_NAMESPACES' );
-	if ( $flowNamespaces ) {
-		$wgFlowContentFormat = 'html';
-		foreach ( explode( ',', $flowNamespaces ) as $ns ) {
-			$wgNamespaceContentModels[ constant( $ns ) ] = 'flow-board';
-		}
-	}
-}
-
 ########################### Search Type ############################
 switch( getenv( 'MW_SEARCH_TYPE' ) ) {
 	case 'CirrusSearch':
@@ -569,9 +558,6 @@ switch( getenv( 'MW_SEARCH_TYPE' ) ) {
 		wfLoadExtension( 'Elastica' );
 		wfLoadExtension( 'CirrusSearch' );
 		$wgCirrusSearchServers =  explode( ',', getenv( 'MW_CIRRUS_SEARCH_SERVERS' ) );
-		if ( isset( $flowNamespaces ) ) {
-			$wgFlowSearchServers = $wgCirrusSearchServers;
-		}
 		$wgSearchType = 'CirrusSearch';
 		break;
 }
@@ -595,13 +581,8 @@ if ( isEnvTrue('MW_ENABLE_SITEMAP_GENERATOR') ) {
 	};
 }
 
-# Sentry
-$wgSentryDsn = getenv('MW_SENTRY_DSN');
-if ( $wgSentryDsn ) {
-	wfLoadExtension( 'Sentry' );
-}
-
-if ( isset( $_REQUEST['forceprofile'] ) ) {
+$profileSecret = getenv('MW_PROFILE_SECRET');
+if ( $profileSecret && isset( $_REQUEST['forceprofile'] ) && $_REQUEST['forceprofile'] === $profileSecret ) {
 	$wgProfiler['class'] = 'ProfilerXhprof';
 	$wgProfiler['output'] = [ 'ProfilerOutputText' ];
 	$wgProfiler['visible'] = false;
@@ -611,6 +592,56 @@ if ( isset( $_REQUEST['forceprofile'] ) ) {
 if ( getenv( 'MW_AUTO_IMPORT' ) ) {
 	wfLoadExtension( 'PagePort' );
 }
+
+if ( !empty( getenv( 'AWS_IMAGES_BUCKET' ) ) ) {
+	// see https://github.com/edwardspec/mediawiki-aws-s3
+	wfLoadExtension( 'AWS' );
+	$wgAWSCredentials = [
+		'key' => getenv( 'AWS_IMAGES_ACCESS' ),
+		'secret' => getenv( 'AWS_IMAGES_SECRET' ),
+		'token' => false
+	];
+	$wgAWSRegion = getenv( 'AWS_IMAGES_REGION' ); #eu-west-2
+	$wgAWSBucketName = getenv( 'AWS_IMAGES_BUCKET' );
+	if ( !empty( getenv( 'AWS_IMAGES_BUCKET_DOMAIN' ) ) ) {
+		// $1.s3.eu-west-2.amazonaws.com, $1 is replaced with bucket name
+		$wgAWSBucketDomain = getenv( 'AWS_IMAGES_BUCKET_DOMAIN' );
+	}
+	$wgFileBackends['s3']['privateWiki'] = false;
+	// see https://github.com/edwardspec/mediawiki-aws-s3/blob/97c210475f82ed5bc86ea3cbf2726162ccbedbfe/s3/AmazonS3FileBackend.php#L97
+	// if true, then all S3 objects are private and uploaded with appropriate ACLs.
+	// for images to work in private mode, $wgUploadPath should point to img_auth.php
+	if ( !empty( getenv( 'AWS_IMAGES_PRIVATE' ) ) ) {
+		$wgFileBackends['s3']['privateWiki'] = true;
+		// When private mode is enabled we MUST revoke read right from anonymous users
+		// and MUST configure img_auth.php setting, see QLOUD-124
+		// NOTE: any possible overrides of these settings in any of the subsequently
+		// loaded configs (settings/*.php) must be REMOVED
+		$wgGroupPermissions['*']['read'] = false;
+		$wgUploadPath = "$wgScriptPath/img_auth.php";
+	}
+	if ( !empty( getenv( 'AWS_IMAGES_ENDPOINT' ) ) ) {
+		$wgFileBackends['s3']['endpoint'] = getenv( 'AWS_IMAGES_ENDPOINT' );
+	}
+	if ( !empty( getenv( 'AWS_IMAGES_SUBDIR' ) ) ) {
+		// i.e. '/subdir'
+		$wgAWSBucketTopSubdirectory = getenv( 'AWS_IMAGES_SUBDIR' );
+	}
+
+	// some software (such as MinIO) doesn't use subdomains for buckets
+	if ( !empty( getenv( 'AWS_IMAGES_USEPATH') ) ) {
+		$wgFileBackends['s3']['use_path_style_endpoint'] = true;
+	}
+	// see https://github.com/edwardspec/mediawiki-aws-s3?tab=readme-ov-file#migrating-images
+	// this configuration resembles native images storage structure to allow
+	// for seamless migration of existing images to object storage
+	$wgAWSRepoHashLevels = 2;
+	$wgAWSRepoDeletedHashLevels = 3;
+}
+
+# Make sure TimedMediaHandler jobs are excluded from the default queue, see QLOUD-147
+$wgJobTypesExcludedFromDefaultQueue[] = 'webVideoTranscode';
+$wgJobTypesExcludedFromDefaultQueue[] = 'webVideoTranscodePrioritized';
 
 # Include all php files in config/settings directory
 foreach ( glob( getenv( 'MW_CONFIG_DIR' ) . '/settings/*.php' ) as $filename ) {

@@ -1,0 +1,66 @@
+# # Note: this is a dummy Compose file for CI, do not modify or use it until you know what you're doing
+services:
+    db:
+        image: mysql:8.0
+        command: --default-authentication-plugin=caching_sha2_password --log-bin --binlog-expire-logs-seconds=172800
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE, fix error mbind: Operation not permitted
+        restart: unless-stopped
+        environment:
+            - MYSQL_ROOT_HOST=%
+            - MYSQL_ROOT_PASSWORD=${MW_DB_INSTALLDB_PASS:-mediawiki}
+            - MYSQL_DATABASE=${MW_DB_NAME:-mediawiki}
+        volumes:
+            - initdb:/docker-entrypoint-initdb.d
+            - mysql:/var/lib/mysql
+
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        ports:
+            - "${PORT:-127.0.0.1:8000}:80"
+        depends_on:
+            - db
+        environment:
+            - MW_ADMIN_USER=${MW_ADMIN_USER:-admin}
+            - MW_ADMIN_PASS=${MW_ADMIN_PASS:-Passsw0rd!}
+            - MW_DB_NAME=${MW_DB_NAME:-mediawiki}
+            - MW_DB_INSTALLDB_USER=root
+            - MW_DB_INSTALLDB_PASS=${MW_DB_INSTALLDB_PASS:-mediawiki}
+            - MW_DB_USER=root
+            - MW_DB_PASS=${MW_DB_PASS:-mediawiki}
+            - MW_SITE_SERVER
+            - MW_SITE_NAME
+            - MW_SITE_LANG
+            - MW_DB_TYPE=${MW_DB_TYPE:-mysql}
+            - MW_SHOW_EXCEPTION_DETAILS
+            - PHP_UPLOAD_MAX_FILESIZE=500M
+            - PHP_POST_MAX_SIZE=500M
+        volumes:
+            - mediawiki:/mediawiki
+            - ./e2e/LocalSettings.php:/var/www/mediawiki/w/_settings/LocalSettings.php
+
+    e2e:
+        build:
+            context: ./e2e
+            dockerfile: Dockerfile
+        depends_on:
+            - web
+        # Load `npx playwright show-report --host 0.0.0.0` to access reports
+        # on localhost:9323
+        ports:
+            - "9323:9323"
+        volumes:
+            - ./e2e/playwright.config.ts:/e2e/playwright.config.ts
+            - ./e2e/tests/:/e2e/tests
+            - ./e2e/fixtures/:/e2e/fixtures
+            - ./e2e/playwright-report/:/e2e/playwright-report
+        profiles:
+            - e2elocal
+
+volumes:
+    mediawiki:
+    mysql:
+    initdb:

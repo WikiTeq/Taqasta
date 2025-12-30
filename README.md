@@ -27,9 +27,73 @@ need to manually go through the MediaWiki installation process, while Taqasta
 will perform it automatically. This is especially helpful if you want to copy
 the configuration of an existing wiki.
 
+## Build System
+
+Taqasta uses a template-based build system powered by [gomplate](https://gomplate.ca/) (Go templates) to generate the
+Dockerfile and configuration files:
+
+* The `Dockerfile` and `_sources/configs/composer.wikiteq.json` are compiled from `Dockerfile.tmpl` and `_sources/configs/composer.wikiteq.json.tmpl` using the `compile.sh` script
+* Dockerfile partials are organized in the `templates/` directory
+* The list of extensions and skins bundled into the image is controlled by the `values.yml` file
+
+To build the image, run the `compile.sh` script first to generate the final Dockerfile and configuration files from
+their templates, then proceed with the normal Docker build process. You can use shortcut `build.sh` to build the image
+locally.
+
 Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
 various extensions and other tweaks that the WikiTeq team uses.
+
+## Configuration
+
+### Extending or Overriding .htaccess
+
+The Taqasta image includes a default `.htaccess` file at `/var/www/mediawiki/.htaccess` with MediaWiki-specific rewrite rules and caching directives. If you need to customize Apache configuration, you can mount your own `.htaccess` file at different directory levels depending on your needs:
+
+**To completely replace the base configuration** (replace all rules in the default file):
+- Mount your `.htaccess` file to `/var/www/mediawiki/.htaccess` (DocumentRoot)
+- This will completely replace the default `.htaccess` file
+
+**To override specific settings** (replace rules in the base file):
+- Mount your `.htaccess` file to `/var/www/mediawiki/w/.htaccess` (subdirectory)
+- This file will take precedence over the base `.htaccess` for requests to the wiki directory
+
+**Important Notes:**
+- Mounting a file directly to `/var/www/mediawiki/.htaccess` will completely replace the default file, which may break functionality during image updates
+- For subdirectory-specific overrides, use the `/var/www/mediawiki/w/.htaccess` approach to preserve the base configuration
+- Always test your custom `.htaccess` rules after updating the Taqasta image to ensure compatibility
+
+Example docker-compose configuration:
+```yaml
+volumes:
+  # To replace: mount to DocumentRoot (replaces entire file)
+  - ./my-custom-htaccess:/var/www/mediawiki/.htaccess
+  # OR to override: mount to subdirectory (preserves base config)
+  - ./my-custom-htaccess:/var/www/mediawiki/w/.htaccess
+```
+
+## Notes on Dockerfile structure
+
+The extensions sources from the values.yml are grouped into individual stages (30 per stage)
+to allow for better cache use and allowing parallel build. Later under the `composer` stage
+the extensions stages results are combined into one extensions directory and extensions patches
+(if any) are applied.
+
+While this allows for faster builds and better cache use this also may lead to accidental stages
+caches invalidations if the order of the extensions in the values.yml is changed as the stages
+are created by groups of thirty extensions, following the natural order as they appear in the `values.yml`.
+
+# Adding Extensions
+
+To add a new extension to the Taqasta image:
+
+1. Open `values.yml` in the root directory
+2. Add a new entry under the `extensions` section following YAML schema format (`values.schema.json`)
+3. Run `./validate.sh` to verify that the YAML file is valid against the schema
+4. Run `./compile.sh` to verify that your addition has a valid syntax
+5. Either run `./build.sh` to build the updated image locally or push your change to remote branch to build using CI
+
+See `values.schema.json` for fields definitions.
 
 # Submitting changes back to Canasta
 
@@ -77,3 +141,19 @@ git push origin canasta
 
 https://github.com/WikiTeq/Taqasta/pulls , ensure that you have `CanastaWiki/Canastas:master` choosen as base,
 and `WikiTeq/Taqasta:fork/name-of-my-change` as compare.
+
+# Profiling
+
+The image is bundled with [xhprof](https://www.php.net/manual/en/book.xhprof.php). To enable profiling
+ensure that you have `MW_PROFILE_SECRET` environment variable set. Once the variable is set you can
+access any page supplying the `forceprofile` GET parameter with the value equal to the `MW_PROFILE_SECRET` to
+enable profiling. Doing this enables the following code-block on the settings file:
+
+```php
+	$wgProfiler['class'] = 'ProfilerXhprof';
+	$wgProfiler['output'] = [ 'ProfilerOutputText' ];
+	$wgProfiler['visible'] = false;
+	$wgUseCdn = false; // make sure profile is not cached
+```
+
+See https://www.mediawiki.org/wiki/Manual:$wgProfiler for details
