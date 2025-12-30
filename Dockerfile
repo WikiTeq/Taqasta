@@ -923,7 +923,7 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin $MW_HOME/extensions/GoogleLogin \
 	&& cd $MW_HOME/extensions/GoogleLogin \
 	# TODO Switch to the REL1_XX branch when the patches are merged, WIK-1434
-	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin refs/changes/30/1074530/2  \
+	&& git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleLogin refs/changes/30/1074530/4  \
 	&& git checkout FETCH_HEAD
 
 # V
