@@ -496,6 +496,10 @@ extensions:
       commit: e7b4c1a320943797fcacfa94f2eef1d428419cea
       additional steps:
         - composer update
+  - TemplateSandbox:
+      Wikidata ID: Q21678839
+      branch: REL1_43
+      commit: 2ba690210fe89175589156062f108f1f357f326f
 # Skins to install
 skins:
   - CologneBlue:
