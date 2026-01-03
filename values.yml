@@ -439,7 +439,7 @@ extensions:
   - YouTube:
       commit: 01673ce5f560fabe09b0feb1e65b57cbf58aae39
   - GoogleLogin:
-      commit: 0c653d036198d5fd52f8588776b95415ccc0eef4
+      gerrit_ref: refs/changes/54/1134354/1
       additional steps:
         - composer update
   - VariablesLua:

@@ -33,12 +33,6 @@ RUN set -x; \
 	cd $MW_HOME/extensions/FlexDiagrams && \
 	git apply /tmp/FlexDiagrams.0.4.fix.diff
 
-# GoogleLogin gerrit patches 1070987 and 1074530 applied to REL1_43
-COPY _sources/patches/GoogleLogin-fixes.patch /tmp/GoogleLogin-fixes.patch
-RUN set -x; \
-	cd $MW_HOME/extensions/GoogleLogin && \
-	git apply /tmp/GoogleLogin-fixes.patch
-
 # Cleanup all .git leftovers
 RUN set -x; \
 	cd $MW_HOME/extensions && \
