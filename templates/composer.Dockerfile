@@ -40,6 +40,17 @@ RUN set -x; \
 
 # Composer dependencies
 COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
+
+# Temporary workaround to unblock upgrading composer in WIK-2245 - ignore
+# the current security warnings from phpoffice/phpspreadsheet 1.29.*. Needs to
+# be done directly in composer.json rather than composer.local.json since
+# configuration isn't merged yet, see
+# https://github.com/wikimedia/composer-merge-plugin/issues/229
+RUN cd $MW_HOME && \
+	cp composer.json composer.json.bak && \
+	cat composer.json.bak | jq '. + {"config": ( .config + { "audit": { "ignore": ["PKSA-64jn-3d9t-gncx", "PKSA-8b16-mcgz-h4cz", "PKSA-s99r-9yxm-hjvt", "PKSA-7jd6-nb49-bz4v", "PKSA-nm34-xhtz-ww9p", "PKSA-4ckb-wpj6-c29d", "PKSA-ybqb-vyrq-8pdt", "PKSA-285y-y5bt-kvd9", "PKSA-jw5c-q9nd-tzj9", "PKSA-bcnb-9tc9-bjb8", "PKSA-gst3-cdk3-bpqt", "PKSA-dbrb-pvhs-h3st", "PKSA-mkg2-1wyw-57y7", "PKSA-p1pj-q951-6f1x", "PKSA-7f9v-sb8k-krfb", "PKSA-xk3k-rd1m-pxmg", "PKSA-dvbq-8ft2-ngrw", "PKSA-xp7t-fbrb-qjv4", "PKSA-m4hk-rk8p-4t5p"] } } ) }' > composer.json && \
+	rm composer.json.bak
+
 # Run with secret mounted to /run/secrets/COMPOSER_TOKEN
 # This is needed to bypass rate limits
 RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME && \
