@@ -168,7 +168,9 @@ spec:
               mkdir -p /root/.ssh
               /git-sync \
                 --one-time \
-                --ssh-key-file=/ssh/ssh_key \
+                --github-app-private-key-file=/ssh/key \
+                --github-app-installation-id=${GHAPP_INSTALLID} \
+                --github-app-application-id=${GHAPP_APPID} \
                 --repo=git@github.com:WikiTeq/Taqasta.git \
                 --root=/git \
                 --link=head \
@@ -181,7 +183,7 @@ spec:
           volumeMounts:
             - name: git
               mountPath: /git
-            - name: git-auth
+            - name: gitsync-ghappprivatekey
               mountPath: /ssh
         # native sidecar container (runs in parallel with app containers but not init ones)
         - name: git-sync
@@ -196,7 +198,9 @@ spec:
               mkdir -p /root/.ssh
               /git-sync \
                 --period=60s \
-                --ssh-key-file=/ssh/ssh_key \
+                --github-app-private-key-file=/ssh/key \
+                --github-app-installation-id=${GHAPP_INSTALLID} \
+                --github-app-application-id=${GHAPP_APPID} \
                 --repo=git@github.com:WikiTeq/Taqasta.git \
                 --root=/git \
                 --link=head \
@@ -210,8 +214,10 @@ spec:
           volumeMounts:
             - name: git
               mountPath: /git
-            - name: git-auth
-              mountPath: /ssh
+            - name: gitsync-ghappprivatekey
+              secret:
+                secretName: gitsync-ghappprivatekey
+                defaultMode: 0400
       containers:
         # runJobs worker container (default)
         - name: taqasta-worker
@@ -375,9 +381,9 @@ spec:
           claimName: wiki-images
       - name: git
         emptyDir: {}
-      - name: git-auth
+      - name: gitsync-ghappprivatekey
         secret:
-          secretName: git-auth
+          secretName: gitsync-ghappprivatekey
           defaultMode: 0400
 ---
 apiVersion: v1
