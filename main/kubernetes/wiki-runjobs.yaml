@@ -39,7 +39,7 @@ spec:
                 --github-app-private-key-file=/ssh/key \
                 --github-app-installation-id=${GHAPP_INSTALLID} \
                 --github-app-application-id=${GHAPP_APPID} \
-                --repo=git@github.com:WikiTeq/Taqasta.git \
+                --repo=https://github.com/WikiTeq/Taqasta.git \
                 --root=/git \
                 --link=head \
                 --ssh-known-hosts=false \
@@ -72,7 +72,7 @@ spec:
                 --github-app-private-key-file=/ssh/key \
                 --github-app-installation-id=${GHAPP_INSTALLID} \
                 --github-app-application-id=${GHAPP_APPID} \
-                --repo=git@github.com:WikiTeq/Taqasta.git \
+                --repo=https://github.com/WikiTeq/Taqasta.git \
                 --root=/git \
                 --link=head \
                 --max-failures=1000000000 \
