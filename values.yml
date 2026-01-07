@@ -552,3 +552,9 @@ repositories:
     url: https://github.com/WikiTeq/mediawiki-api-base.git
   - type: vcs
     url: https://github.com/WikiTeq/mediawiki-extension-RemoteWiki
+# patches to apply; name is the file name in _sources/patches and path is
+# the git directory to apply it to in the built image, relative to $MW_HOME
+patches:
+  # WikiTeq AL-12
+  - name: FlexDiagrams.0.4.fix.diff
+    path: extensions/FlexDiagrams
