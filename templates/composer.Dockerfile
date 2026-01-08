@@ -44,6 +44,7 @@ RUN set -x; \
 
 # Composer dependencies
 COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
+
 # Run with secret mounted to /run/secrets/COMPOSER_TOKEN
 # This is needed to bypass rate limits
 RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME && \
