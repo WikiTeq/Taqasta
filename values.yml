@@ -500,6 +500,10 @@ extensions:
       Wikidata ID: Q124827766
       branch: REL1_43
       commit: 1215c046042e589a7887f7456b65cf2fb168817e
+  - TemplateSandbox:
+      Wikidata ID: Q21678839
+      branch: REL1_43
+      commit: 2ba690210fe89175589156062f108f1f357f326f
 # Skins to install
 skins:
   - CologneBlue:
