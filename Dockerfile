@@ -788,10 +788,6 @@ RUN set -x; \
 # L
 RUN set -x; \
 	cd $MW_HOME/extensions \
-  	# Lazyload
-	&& git clone https://github.com/mudkipme/mediawiki-lazyload.git $MW_HOME/extensions/Lazyload \
-	&& cd $MW_HOME/extensions/Lazyload \
-	&& git checkout -b $MW_VERSION 30a01cc149822353c9404ec178ec01848bae65c5 \
 	# LiquidThreads
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/LiquidThreads $MW_HOME/extensions/LiquidThreads \
 	&& cd $MW_HOME/extensions/LiquidThreads \

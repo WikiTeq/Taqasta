@@ -111,7 +111,6 @@ const DOCKER_EXTENSIONS = [
 	'LDAPAuthorization',
 	'LDAPProvider',
 	'LabeledSectionTransclusion',
-	'Lazyload',
 	'Lingo',
 	'LinkSuggest',
 	'LinkTarget',
