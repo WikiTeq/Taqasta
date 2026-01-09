@@ -354,7 +354,7 @@ extensions:
         - composer update
   - WikiForum:
       branch: master
-      gerrit_ref: refs/changes/75/1224175/5
+      gerrit_ref: refs/changes/86/1224986/2
   - WikiSEO:
       Wikidata ID: Q21679286
       commit: 5d27adb6ec53e7b1076a485e93f0b0c272d08937
