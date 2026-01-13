@@ -735,7 +735,7 @@ RUN set -x; \
 	# CrawlerProtection
 	&& git clone --single-branch -b main https://github.com/mywikis/CrawlerProtection.git $MW_HOME/extensions/CrawlerProtection \
 	&& cd $MW_HOME/extensions/CrawlerProtection \
-	&& git checkout -q 333596c6ac34e4351976ccce16613cccce4bab3a
+	&& git checkout -q 890492d17b4beb68042c88dce8d010c1a14225e7
 
 # D
 RUN set -x; \
