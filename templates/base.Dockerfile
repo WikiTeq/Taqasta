@@ -15,7 +15,7 @@ RUN set x; \
   rm -rf /var/lib/apt/lists/* && \
 	apt-get clean && \
   apt-get update && \
-  apt-get install -y --no-install-recommends wget lsb_release
+  apt-get install -y --no-install-recommends wget
 
 RUN set x; \
   wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
