@@ -14,6 +14,7 @@ ENV MW_VERSION=REL1_43 \
 RUN set x; \
   rm -rf /var/lib/apt/lists/* && \
 	apt-get clean && \
+  apt-get update && \
   apt-get install -y --no-install-recommends wget lsb_release
 
 RUN set x; \
@@ -28,7 +29,6 @@ RUN set x; \
 	gpg \
 	apt-transport-https \
 	ca-certificates \
-	wget \
 	imagemagick \
 	librsvg2-bin \
 	python3-pygments \
