@@ -111,8 +111,7 @@ touch "$WWW_ROOT/.maintenance"
 /run-maintenance-scripts.sh &
 
 # Allow for envs in the prefork config file
-envsubst < /etc/apache2/mods-available/mpm_prefork.conf > /etc/apache2/mods-available/mpm_prefork.conf.tmp || exit 1
-mv /etc/apache2/mods-available/mpm_prefork.conf.tmp /etc/apache2/mods-available/mpm_prefork.conf || exit 1
+envsubst < /etc/apache2/mods-available/mpm_prefork.conf.template > /etc/apache2/mods-available/mpm_prefork.conf || exit 1
 
 ############### Run Apache ###############
 # Make sure we're not confused by old, incompletely-shutdown Apache

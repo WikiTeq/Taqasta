@@ -69,7 +69,7 @@ COPY _sources/configs/.htaccess $WWW_ROOT/
 COPY _sources/images/favicon.ico $WWW_ROOT/
 COPY _sources/canasta/DockerSettings.php $MW_HOME/
 COPY _sources/canasta/getMediawikiSettings.php /
-COPY _sources/configs/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY _sources/configs/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf.template
 
 RUN set -x; \
 	chmod -v +x /*.sh && \
