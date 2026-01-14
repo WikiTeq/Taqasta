@@ -20,7 +20,6 @@ RUN set x; \
 	apt-get clean \
 	&& apt-get update \
 	&& apt-get --no-install-recommends install -y aptitude \
-	&& aptitude -y upgrade \
 	&& aptitude --without-recommends install -y \
 	git \
 	inotify-tools \
