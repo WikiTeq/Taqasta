@@ -10,25 +10,26 @@ ENV MW_VERSION=REL1_43 \
 	WWW_GROUP=www-data \
 	APACHE_LOG_DIR=/var/log/apache2
 
-# Apt and Aptitude setup
-RUN set x; \
-	apt-get clean && \
-	apt-get update && \
-	apt-get --no-install-recommends install -y aptitude && \
-	aptitude -y upgrade
-
 # System setup
 RUN set x; \
-	aptitude --without-recommends install -y \
+  rm -rf /var/lib/apt/lists/* && \
+  apt-get clean && \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    wget \
+    lsb-release \
+    software-properties-common \
+    apt-transport-https \
+    ca-certificates && \
+  wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
+  echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
 	git \
 	inotify-tools \
 	apache2 \
-	software-properties-common \
 	gpg \
-	apt-transport-https \
-	ca-certificates \
-	wget \
-	imagemagick  \
+	imagemagick \
 	librsvg2-bin \
 	python3-pygments \
 	msmtp \
@@ -46,13 +47,7 @@ RUN set x; \
 	rsync \
 	lynx \
 	poppler-utils \
-	lsb-release
-
-RUN set x; \
-	wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
-	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
-	aptitude update && \
-	aptitude install -y \
+	gettext-base \
 	php8.3 \
 	php8.3-mysql \
 	php8.3-cli \
@@ -68,7 +63,6 @@ RUN set x; \
 	php8.3-tidy \
 	php8.3-zip \
 	php8.3-xhprof \
-	# Lua sandbox
 	php-pear \
 	php8.3-dev \
 	liblua5.1-0 \
@@ -83,15 +77,15 @@ RUN set x; \
 	ploticus \
 	djvulibre-bin \
 	fonts-hosny-amiri \
-	jq && \
-	#	xvfb \ + 14.9 MB
-	#	lilypond \ + 301 MB
+	jq \
+  build-essential \
+  pkg-config && \
 	pecl -d php_suffix=8.3 install luasandbox && \
 	pecl -d php_suffix=8.3 install excimer
 
 RUN set x; \
-	aptitude -y remove php-pear php8.3-dev liblua5.1-0-dev && \
-	aptitude clean && \
+	apt-get -y remove php-pear php8.3-dev liblua5.1-0-dev && \
+  apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
 # FORCE USING PHP 8.3 (same for phar)
