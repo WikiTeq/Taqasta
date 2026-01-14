@@ -15,7 +15,12 @@ RUN set x; \
   rm -rf /var/lib/apt/lists/* && \
   apt-get clean && \
   apt-get update && \
-  apt-get install -y --no-install-recommends wget lsb-release software-properties-common apt-transport-https ca-certificates && \
+  apt-get install -y --no-install-recommends \
+    wget \
+    lsb-release \
+    software-properties-common \
+    apt-transport-https \
+    ca-certificates && \
   wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
   echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
   apt-get update && \
@@ -72,7 +77,9 @@ RUN set x; \
 	ploticus \
 	djvulibre-bin \
 	fonts-hosny-amiri \
-	jq && \
+	jq \
+  build-essential \
+  pkg-config && \
 	pecl -d php_suffix=8.3 install luasandbox && \
 	pecl -d php_suffix=8.3 install excimer
 
