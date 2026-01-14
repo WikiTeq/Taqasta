@@ -84,6 +84,7 @@ RUN set x; \
 	djvulibre-bin \
 	fonts-hosny-amiri \
 	jq \
+	gettext-base \
 #    xvfb \ + 14.9 MB
 #    lilypond \ + 301 MB
 	&& pecl -d php_suffix=8.1 install luasandbox \
@@ -1079,10 +1080,10 @@ ENV MW_AUTOUPDATE=true \
 	APACHE_REMOTE_IP_HEADER=X-Forwarded-For \
 	MW_AUTO_IMPORT=1 \
 	MPM_PREFORK_START_SERVERS=5 \
-  MPM_PREFORK_MIN_SPARE_SERVERS=5 \
-  MPM_PREFORK_MAX_SPARE_SERVERS=10 \
-  MPM_PREFORK_MAX_REQUEST_WORKERS=150 \
-  MPM_PREFORK_MAX_REQUESTS_PER_CHILD=3000
+	MPM_PREFORK_MIN_SPARE_SERVERS=5 \
+	MPM_PREFORK_MAX_SPARE_SERVERS=10 \
+	MPM_PREFORK_MAX_REQUEST_WORKERS=150 \
+	MPM_PREFORK_MAX_REQUESTS_PER_CHILD=3000
 
 COPY _sources/configs/msmtprc /etc/
 COPY _sources/configs/mediawiki.conf /etc/apache2/sites-enabled/
