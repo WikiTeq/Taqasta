@@ -13,11 +13,9 @@ ENV MW_VERSION=REL1_43 \
 # System setup
 RUN set x; \
   rm -rf /var/lib/apt/lists/* && \
-	apt-get clean && \
+  apt-get clean && \
   apt-get update && \
-  apt-get install -y --no-install-recommends wget lsb-release
-
-RUN set x; \
+  apt-get install -y --no-install-recommends wget lsb-release software-properties-common apt-transport-https ca-certificates && \
   wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
   echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
   apt-get update && \
@@ -25,10 +23,7 @@ RUN set x; \
 	git \
 	inotify-tools \
 	apache2 \
-	software-properties-common \
 	gpg \
-	apt-transport-https \
-	ca-certificates \
 	imagemagick \
 	librsvg2-bin \
 	python3-pygments \
