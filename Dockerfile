@@ -1077,7 +1077,12 @@ ENV MW_AUTOUPDATE=true \
 	MW_SENTRY_DSN="" \
 	MW_USE_CACHE_DIRECTORY=1 \
 	APACHE_REMOTE_IP_HEADER=X-Forwarded-For \
-	MW_AUTO_IMPORT=1
+	MW_AUTO_IMPORT=1 \
+	MPM_PREFORK_START_SERVERS=5 \
+  MPM_PREFORK_MIN_SPARE_SERVERS=5 \
+  MPM_PREFORK_MAX_SPARE_SERVERS=10 \
+  MPM_PREFORK_MAX_REQUEST_WORKERS=150 \
+  MPM_PREFORK_MAX_REQUESTS_PER_CHILD=3000
 
 COPY _sources/configs/msmtprc /etc/
 COPY _sources/configs/mediawiki.conf /etc/apache2/sites-enabled/
@@ -1093,7 +1098,7 @@ COPY _sources/configs/.htaccess $WWW_ROOT/
 COPY _sources/images/favicon.ico $WWW_ROOT/
 COPY _sources/canasta/DockerSettings.php $MW_HOME/
 COPY _sources/canasta/getMediawikiSettings.php /
-COPY _sources/configs/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY _sources/configs/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf.template
 
 RUN set -x; \
 	chmod -v +x /*.sh \
