@@ -90,6 +90,7 @@ RUN set x; \
 	&& pecl -d php_suffix=8.1 install excimer \
 	&& aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev \
 	&& aptitude clean \
+	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
 # FORCE USING PHP 8.1 (same for phar)
