@@ -45,6 +45,19 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
+
+      # https://github.com/actions/runner-images/issues/2840#issuecomment-3641541098
+      - name: Claim disk space
+        run: |
+          sudo df -TBG /
+          sudo rm -rf /opt/microsoft
+          sudo rm -rf /usr/lib/llvm-*
+          sudo rm -rf /usr/local/julia*
+          sudo rm -rf /usr/local/share/chromium
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/share/swift
+          sudo df -TBG /
+
       - name: Checkout
         uses: actions/checkout@v3
       -

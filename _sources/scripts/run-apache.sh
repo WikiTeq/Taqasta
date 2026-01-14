@@ -101,6 +101,8 @@ make_dir_writable "$MW_VOLUME" -not '(' -path "$MW_VOLUME/images" -prune ')'
 touch "$WWW_ROOT/.maintenance"
 /run-maintenance-scripts.sh &
 
+envsubst < /etc/apache2/mods-available/mpm_prefork.conf.template > /etc/apache2/mods-available/mpm_prefork.conf || exit 1
+
 ############### Run Apache ###############
 # Make sure we're not confused by old, incompletely-shutdown Apache
 # context after restarting the container.  Apache won't start correctly
