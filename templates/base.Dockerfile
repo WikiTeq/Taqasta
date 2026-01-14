@@ -14,6 +14,9 @@ ENV MW_VERSION=REL1_43 \
 RUN set x; \
   rm -rf /var/lib/apt/lists/* && \
 	apt-get clean && \
+  apt-get install -y --no-install-recommends wget lsb_release
+
+RUN set x; \
   wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
   echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
   apt-get update && \
