@@ -1,0 +1,87 @@
+apiVersion: k8up.io/v1
+kind: PreBackupPod
+metadata:
+  name: backup-pre-mysql
+spec:
+  backupCommand: >-
+    sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysqldump -h mysql-service -u root --all-databases --single-transaction --quick'
+  fileExtension: .sql
+  pod:
+    spec:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - mysql
+                topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: pool
+                    operator: In
+                    values:
+                      - shared
+      tolerations:
+        - key: "pool"
+          value: "shared"
+          effect: "NoSchedule"
+      containers:
+        - image: mysql:8.0
+          command:
+            - 'sleep'
+            - 'infinity'
+          imagePullPolicy: IfNotPresent
+          name: mysqldump
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: password
+---
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: backup-schedule-mysql
+spec:
+  backend:
+    s3:
+      # sourcing from secret or configmap is not supported
+      endpoint: https://s3.us-east-va.perf.cloud.ovh.us
+      # sourcing from secret or configmap is not supported
+      # for s3 backend the bucket can also contain a path
+      bucket: dev-test-aws-extension-1/mysql
+      # object storage credentials from s3 secret
+      accessKeyIDSecretRef:
+        name: s3
+        key: AWS_IMAGES_ACCESS
+      secretAccessKeySecretRef:
+        name: s3
+        key: AWS_IMAGES_SECRET
+    # repository password
+    repoPasswordSecretRef:
+      name: backup-mysql-password
+      key: password
+  backup:
+    # randomized around midnight US central time, see https://docs.k8up.io/k8up/2.12/how-tos/optimize-schedules.html
+    # https://github.com/WikiTeq/QloudIAC/blob/2aa0ed4dce6546a1115c36236cedde0d662815a1/terraform/helm-values/k8up.yaml#L5
+    schedule: '*/10 * * * *'
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 2
+  check:
+    schedule: '@daily-random'
+  prune:
+    schedule: '@weekly-random'
+    retention:
+      keepLast: 10
+      keepDaily: 7
+      keepWeekly: 6
+      keepMonthly: 12
+      keepYearly: 1

@@ -13,3 +13,4 @@ data:
   # enable bundled job runners
   MW_ENABLE_TRANSCODER: "false"
   MW_ENABLE_JOB_RUNNER: "false"
+  TEST_DUMMY_ENV: "test123"
