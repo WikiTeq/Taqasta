@@ -40,6 +40,13 @@ To build the image, run the `compile.sh` script first to generate the final Dock
 their templates, then proceed with the normal Docker build process. You can use shortcut `build.sh` to build the image
 locally.
 
+**Note**: The build process requires BuildKit to be enabled due to advanced Docker features used in the image:
+
+```bash
+export DOCKER_BUILDKIT=1
+./build.sh
+```
+
 Note that the WikiTeq team, which maintains Taqasta, also maintains a dedicated
 branch of Canasta that is much more closely aligned with Canasta but includes
 various extensions and other tweaks that the WikiTeq team uses.
@@ -94,6 +101,45 @@ To add a new extension to the Taqasta image:
 5. Either run `./build.sh` to build the updated image locally or push your change to remote branch to build using CI
 
 See `values.schema.json` for fields definitions.
+
+# Quality Assurance and CI/CD
+
+Taqasta uses GitHub Actions for automated quality assurance and deployment. The CI/CD pipeline validates code quality, runs comprehensive tests, and delivers production-ready Docker images.
+
+## Pipeline Jobs
+
+**Lint & Validate** → **Generate Tags** → **Build & Test** → **Push Images** → **Merge Manifests** → **Notify**
+
+## Testing Strategy
+
+Automated e2e tests with Playwright validate:
+- MediaWiki installation and setup
+- User interface and authentication
+- Editor functionality
+- API endpoints and file uploads
+
+See [`e2e/README.md`](e2e/README.md) for detailed testing information.
+
+## Validation Gates
+
+- **Syntax Check**: YAML validation and Dockerfile linting
+- **Build Success**: Multi-platform Docker compilation
+- **Functional Tests**: Full e2e test suite
+- **Deployment**: Images only pushed after all validations pass
+
+## Automation
+
+Pipeline runs automatically on:
+- Push to master branch
+- Pull requests
+- Tag creation
+
+## Benefits
+
+- Zero broken deploys
+- Cross-platform validation (AMD64/ARM64)
+- Automated feedback with diagnostics
+- Consistent testing environment
 
 # Submitting changes back to Canasta
 
