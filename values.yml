@@ -504,6 +504,11 @@ extensions:
       Wikidata ID: Q21678839
       branch: REL1_43
       commit: 2ba690210fe89175589156062f108f1f357f326f
+  - Jiki:
+      Wikidata ID: Q25662094
+      repository: https://github.com/gvoss/php-mediawiki-jiki.git
+      branch: main
+      commit: 058cc9a2469fb6c1e25e7d7ed94fad3ef6a10c87
 # Skins to install
 skins:
   - CologneBlue:
