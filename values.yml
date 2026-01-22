@@ -517,6 +517,10 @@ extensions:
       repository: https://github.com/WikiTeq/mediawiki-extensions-SummaryToJiraComment.git
       branch: main
       commit: 01515972ab6ce325c27b0ee33ff857b39f5b9c9e
+  - ZoteroConnector:
+      repository: https://github.com/WikiTeq/mediawiki-extension-ZoteroConnector.git
+      branch: main
+      commit: b8e036ee76da4dab86886a32e092cab7c97d033c
 # Skins to install
 skins:
   - CologneBlue:
