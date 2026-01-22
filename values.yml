@@ -509,6 +509,14 @@ extensions:
       repository: https://github.com/gvoss/php-mediawiki-jiki.git
       branch: main
       commit: 058cc9a2469fb6c1e25e7d7ed94fad3ef6a10c87
+  - StatusCheck:
+      repository: https://github.com/WikiTeq/mediawiki-extension-StatusCheck.git
+      branch: master
+      commit: 0d6cc4d3a759d81887491530d890a533eb7feed7
+  - SummaryToJiraComment:
+      repository: https://github.com/WikiTeq/mediawiki-extensions-SummaryToJiraComment.git
+      branch: main
+      commit: 01515972ab6ce325c27b0ee33ff857b39f5b9c9e
 # Skins to install
 skins:
   - CologneBlue:
