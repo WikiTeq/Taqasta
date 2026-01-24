@@ -517,6 +517,15 @@ extensions:
       repository: https://github.com/WikiTeq/mediawiki-extensions-SummaryToJiraComment.git
       branch: main
       commit: 01515972ab6ce325c27b0ee33ff857b39f5b9c9e
+  - Moderation:
+      Wikidata ID: Q21677672
+      repository: https://github.com/edwardspec/mediawiki-moderation.git
+      branch: master
+      commit: 26c242887572d337c9db27711d154563639b9981
+  - SpamRegex:
+      Wikidata ID: Q21678654
+      branch: REL1_43
+      commit: 4303b01af935ef3edc6611f5038fb8052d1d61f9
 # Skins to install
 skins:
   - CologneBlue:
