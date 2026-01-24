@@ -521,6 +521,15 @@ extensions:
       Wikidata ID: Q122888068
       branch: REL1_43
       commit: 26e15ce086e419d5837bd47ca986a605d52af0bf
+  - Moderation:
+      Wikidata ID: Q21677672
+      repository: https://github.com/edwardspec/mediawiki-moderation.git
+      branch: master
+      commit: 26c242887572d337c9db27711d154563639b9981
+  - SpamRegex:
+      Wikidata ID: Q21678654
+      branch: REL1_43
+      commit: 4303b01af935ef3edc6611f5038fb8052d1d61f9
 # Skins to install
 skins:
   - CologneBlue:
