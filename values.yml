@@ -575,7 +575,8 @@ packages:
     version: dev-master#63039778bf686dc1ef38eb4e9aa41ace139fdd87
   # Not an extension, loaded so that we can use shell.php in the containers
   - name: psy/psysh
-    version: ~0.12.16
+    # Match core constraint, DEMO-137
+    version: ^0.12.3
 # custom repositories for Composer to use
 repositories:
   - type: vcs
