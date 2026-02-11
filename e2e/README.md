@@ -20,11 +20,13 @@ The e2e tests are designed to validate the complete MediaWiki installation and c
 
 ### Test Files
 
-- **`001-base.spec.ts`**: Basic functionality tests (installation, login/signup links, skin, editors)
-- **`002-edit.spec.ts`**: Page editing and visual editor functionality
-- **`003-upload.spec.ts`**: File upload capabilities
-- **`004-admin.spec.ts`**: Administrative features and user management
-- **`005-createaccount.spec.ts`**: User account creation process
+Test specs live in the **`tests/`** subdirectory. When running Playwright (e.g. from the e2e container), use paths like `tests/001-base.spec.ts`.
+
+- **`tests/001-base.spec.ts`**: Basic functionality tests (installation, login/signup links, skin, editors)
+- **`tests/002-edit.spec.ts`**: Page editing and visual editor functionality
+- **`tests/003-upload.spec.ts`**: File upload capabilities
+- **`tests/004-admin.spec.ts`**: Administrative features and user management
+- **`tests/005-createaccount.spec.ts`**: User account creation process
 
 ### Configuration Files
 
@@ -58,45 +60,32 @@ export DOCKER_BUILDKIT=1
 # Start the full stack including the e2e test container
 docker compose --profile e2elocal up -d
 
-# Run the tests
+# Wait for the web (Taqasta) container to be healthy, then run the tests
 docker compose exec e2e npx playwright test
 
-# View test results (if configured)
+# View test results (run report server, then open http://localhost:9323)
 docker compose exec e2e npx playwright show-report --host 0.0.0.0
 ```
 
-The test reports will be available at `http://localhost:9323` when using the Docker setup.
-
 **Note**: BuildKit must be enabled for the Docker build process. If you encounter build errors, ensure `DOCKER_BUILDKIT=1` is set.
 
-### Option 2: Local Development
+### Option 2: Development and debugging
 
-For development and debugging:
-
-#### Prerequisites
-- Node.js 22+
-- A running MediaWiki instance on `localhost:8000`
+For developing or debugging tests, use the same Docker setup: run Taqasta with the `e2elocal` profile (which starts the web stack plus a Node container with Playwright). Then run tests inside the e2e container:
 
 ```bash
-# Install dependencies
-npm install
+# From repo root: ensure stack is up and web is healthy, then:
+docker compose exec e2e npx playwright test
 
-# Install Playwright browsers
-npx playwright install chromium --with-deps
+# Run a single test file
+docker compose exec e2e npx playwright test tests/001-base.spec.ts
 
-# Start a local MediaWiki instance (ensure it's running on localhost:8000)
+# Run with browser visible (headed) or step-through debug
+docker compose exec e2e npx playwright test --headed
+docker compose exec e2e npx playwright test tests/001-base.spec.ts --debug
 
-# Run tests
-npx playwright test
-
-# Run tests in headed mode (visible browser)
-npx playwright test --headed
-
-# Run specific test file
-npx playwright test 001-base.spec.ts
-
-# View test results
-npx playwright show-report
+# Open a shell in the e2e container to run ad-hoc commands
+docker compose exec e2e sh
 ```
 
 ## Configuration
@@ -105,8 +94,7 @@ npx playwright show-report
 
 The tests adapt their configuration based on the environment:
 
-- **`TAQASTA_E2E_IN_DOCKER=true`**: When running in Docker, uses internal networking (`http://web:80/`)
-- Default: Uses `http://localhost:8000` for local development
+- **`TAQASTA_E2E_IN_DOCKER=true`**: When running in the e2e container (Docker), uses internal networking (`http://web:80/`)
 
 ### Browser Configuration
 
@@ -131,23 +119,22 @@ The `LocalSettings.php` file contains MediaWiki-specific settings for testing:
 
 ### Viewing Test Results
 
-After running tests, you can view detailed results:
+After running tests, view the report from inside the e2e container:
 
 ```bash
-npx playwright show-report
+docker compose exec e2e npx playwright show-report --host 0.0.0.0
 ```
+
+Then open http://localhost:9323 in your browser.
 
 ### Running Tests in Debug Mode
 
 ```bash
 # Run with browser visible
-npx playwright test --headed
+docker compose exec e2e npx playwright test --headed
 
-# Run with debugging enabled
-npx playwright test --debug
-
-# Run a specific test with step-by-step debugging
-npx playwright test 001-base.spec.ts --debug
+# Run with step-through debugging
+docker compose exec e2e npx playwright test tests/001-base.spec.ts --debug
 ```
 
 ## Test Coverage
@@ -182,9 +169,8 @@ These e2e tests are **fully integrated** into Taqasta's GitHub Actions CI/CD pip
 
 - **Automatic Execution**: Tests run on every push, pull request, and tag
 - **Quality Gate**: Build pipeline stops if e2e tests fail
-- **Multi-Platform Testing**: Validates both AMD64 and ARM64 architectures
-- **Failure Reporting**: Detailed screenshots and reports uploaded to GitHub Pages
-- **Environment Consistency**: Same Docker setup used locally and in CI/CD
+- **E2E runs on AMD64 (x86_64)**: Tests execute against the x86_64 image build
+- **Failure Reporting**: Playwright test reports (and screenshots) uploaded to GitHub Pages
 
 ### CI/CD Test Environment
 
@@ -195,7 +181,7 @@ When running in CI/CD, the tests use:
 - **Browser**: Chromium in headless mode
 - **Timeout**: 5 minutes per test, 60 minutes total
 
-For detailed information about the CI/CD pipeline structure, quality assurance flow, and debugging CI/CD failures, see the main [`README.md`](../README.md#ci/cd-pipeline).
+For detailed information about the CI/CD pipeline structure, quality assurance flow, and debugging CI/CD failures, see the main [`README.md`](../README.md#quality-assurance-and-cicd).
 
 ## Troubleshooting
 
@@ -213,7 +199,7 @@ docker compose --profile e2elocal up -d
 To make this permanent, add `DOCKER_BUILDKIT=1` to your shell profile (`.bashrc`, `.zshrc`, etc.).
 
 #### Missing Dockerfile
-**Error**: `unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/ike/git/Taqasta/Dockerfile: no such file or directory`
+**Error**: `unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat .../Dockerfile: no such file or directory` (or similar, with your repo path)
 **Solution**: Compile the Dockerfile template first:
 
 ```bash
@@ -221,13 +207,9 @@ To make this permanent, add `DOCKER_BUILDKIT=1` to your shell profile (`.bashrc`
 docker compose --profile e2elocal up -d
 ```
 
-### Local Development Issues
+### Tests fail or connection errors
 
-#### Connection Refused
-**Error**: `page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8000`
-**Solution**: Ensure MediaWiki is running on `localhost:8000` before running tests:
+#### Connection refused / page not loading
+**Error**: `page.goto: net::ERR_CONNECTION_REFUSED` or similar when running tests in the e2e container.
 
-```bash
-# Start MediaWiki locally, then run tests
-npx playwright test
-```
+**Solution**: The web (Taqasta) container may not be ready yet. Wait for it to be healthy after `docker compose --profile e2elocal up -d` (e.g. 30–60 seconds), or check with `docker compose ps` and ensure the web service is healthy before running `docker compose exec e2e npx playwright test`.
