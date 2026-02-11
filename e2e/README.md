@@ -8,13 +8,13 @@ This directory contains end-to-end (e2e) tests for the Taqasta MediaWiki Docker 
 
 The e2e tests are designed to validate the complete MediaWiki installation and configuration by simulating real user interactions in a browser environment. The tests cover:
 
-- **Installation verification**: Confirms MediaWiki is properly installed
-- **User interface elements**: Verifies login, signup, and navigation links
-- **Skin and editor functionality**: Tests default skin and visual editor availability
-- **API endpoints**: Validates API accessibility
-- **Special pages**: Checks version information and software components
-- **File uploads**: Tests upload functionality
-- **User management**: Validates account creation and admin features
+- Confirms MediaWiki is properly installed
+- Verifies login, signup, and navigation links
+- Tests default skin and visual editor availability
+- Validates API accessibility
+- Checks version information and software components
+- Tests file upload functionality
+- Validates account creation and admin features
 
 ## Test Structure
 
@@ -22,22 +22,22 @@ The e2e tests are designed to validate the complete MediaWiki installation and c
 
 Test specs live in the **`tests/`** subdirectory. When running Playwright (e.g. from the e2e container), use paths like `tests/001-base.spec.ts`.
 
-- **`tests/001-base.spec.ts`**: Basic functionality tests (installation, login/signup links, skin, editors)
-- **`tests/002-edit.spec.ts`**: Page editing and visual editor functionality
-- **`tests/003-upload.spec.ts`**: File upload capabilities
-- **`tests/004-admin.spec.ts`**: Administrative features and user management
-- **`tests/005-createaccount.spec.ts`**: User account creation process
+- `tests/001-base.spec.ts` — basic functionality (installation, login/signup links, skin, editors)
+- `tests/002-edit.spec.ts` — page editing and visual editor
+- `tests/003-upload.spec.ts` — file upload capabilities
+- `tests/004-admin.spec.ts` — admin features and user management
+- `tests/005-createaccount.spec.ts` — user account creation
 
 ### Configuration Files
 
-- **`playwright.config.ts`**: Playwright test configuration with browser settings, timeouts, and reporting
-- **`LocalSettings.php`**: MediaWiki configuration specifically for e2e testing
-- **`package.json`**: Node.js dependencies and scripts
-- **`Dockerfile`**: Docker container setup for running tests
+- `playwright.config.ts` — browser settings, timeouts, and reporting
+- `LocalSettings.php` — MediaWiki config for e2e testing
+- `package.json` — Node dependencies and scripts
+- `Dockerfile` — container setup for running tests
 
 ### Test Fixtures
 
-- **`fixtures/`**: Test assets like sample images for upload testing
+- `fixtures/` — sample images and other test assets
 
 ## Running Tests
 
@@ -94,16 +94,16 @@ docker compose exec e2e sh
 
 The tests adapt their configuration based on the environment:
 
-- **`TAQASTA_E2E_IN_DOCKER=true`**: When running in the e2e container (Docker), uses internal networking (`http://web:80/`)
+- `TAQASTA_E2E_IN_DOCKER=true` — in the e2e container, base URL is `http://web:80/`
 
 ### Browser Configuration
 
 Tests run on Chromium by default with the following settings:
-- **Navigation timeout**: 60 seconds
-- **Test timeout**: 5 minutes
-- **Global timeout**: 60 minutes
-- **Screenshots**: Captured only on failure
-- **Traces**: Retained on failure for debugging
+- Navigation timeout: 60 seconds
+- Test timeout: 5 minutes
+- Global timeout: 60 minutes
+- Screenshots captured only on failure
+- Traces retained on failure for debugging
 
 ## MediaWiki Test Configuration
 
@@ -167,19 +167,19 @@ These e2e tests are **fully integrated** into Taqasta's GitHub Actions CI/CD pip
 
 ### Key Integration Points
 
-- **Automatic Execution**: Tests run on every push, pull request, and tag
-- **Quality Gate**: Build pipeline stops if e2e tests fail
-- **E2E runs on AMD64 (x86_64)**: Tests execute against the x86_64 image build
-- **Failure Reporting**: Playwright test reports (and screenshots) uploaded to GitHub Pages
+- Tests run on every push, pull request, and tag
+- Build pipeline stops if e2e tests fail
+- E2E runs against the AMD64 (x86_64) image build
+- Playwright test reports (and screenshots) uploaded to GitHub Pages when tests fail
 
 ### CI/CD Test Environment
 
 When running in CI/CD, the tests use:
-- **Base URL**: `http://web:80/` (internal Docker networking)
-- **Database**: MySQL 8.0 container
-- **MediaWiki**: Pre-configured with test-specific LocalSettings.php
-- **Browser**: Chromium in headless mode
-- **Timeout**: 5 minutes per test, 60 minutes total
+- Base URL `http://web:80/` (internal Docker networking)
+- MySQL 8.0 database container
+- MediaWiki with test-specific LocalSettings.php
+- Chromium in headless mode
+- 5 minutes per test, 60 minutes total
 
 For detailed information about the CI/CD pipeline structure, quality assurance flow, and debugging CI/CD failures, see the main [`README.md`](../README.md#quality-assurance-and-cicd).
 
@@ -188,8 +188,8 @@ For detailed information about the CI/CD pipeline structure, quality assurance f
 ### Docker Compose Build Issues
 
 #### BuildKit Not Enabled
-**Error**: `the --mount option requires BuildKit`
-**Solution**: Enable BuildKit before running Docker Compose:
+Error: `the --mount option requires BuildKit`
+Solution: Enable BuildKit before running Docker Compose:
 
 ```bash
 export DOCKER_BUILDKIT=1
@@ -199,8 +199,8 @@ docker compose --profile e2elocal up -d
 To make this permanent, add `DOCKER_BUILDKIT=1` to your shell profile (`.bashrc`, `.zshrc`, etc.).
 
 #### Missing Dockerfile
-**Error**: `unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat .../Dockerfile: no such file or directory` (or similar, with your repo path)
-**Solution**: Compile the Dockerfile template first:
+Error: `unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat .../Dockerfile: no such file or directory` (or similar, with your repo path)
+Solution: Compile the Dockerfile template first:
 
 ```bash
 ./compile.sh
@@ -210,6 +210,6 @@ docker compose --profile e2elocal up -d
 ### Tests fail or connection errors
 
 #### Connection refused / page not loading
-**Error**: `page.goto: net::ERR_CONNECTION_REFUSED` or similar when running tests in the e2e container.
+Error: `page.goto: net::ERR_CONNECTION_REFUSED` or similar when running tests in the e2e container.
 
-**Solution**: The web (Taqasta) container may not be ready yet. Wait for it to be healthy after `docker compose --profile e2elocal up -d` (e.g. 30–60 seconds), or check with `docker compose ps` and ensure the web service is healthy before running `docker compose exec e2e npx playwright test`.
+Solution: The web (Taqasta) container may not be ready yet. Wait for it to be healthy after `docker compose --profile e2elocal up -d` (e.g. 30–60 seconds), or check with `docker compose ps` and ensure the web service is healthy before running `docker compose exec e2e npx playwright test`.
