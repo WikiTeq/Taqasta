@@ -56,13 +56,13 @@ export DOCKER_BUILDKIT=1
 ./compile.sh
 
 # Start the full stack including the e2e test container
-docker-compose --profile e2elocal up -d
+docker compose --profile e2elocal up -d
 
 # Run the tests
-docker-compose exec e2e npx playwright test
+docker compose exec e2e npx playwright test
 
 # View test results (if configured)
-docker-compose exec e2e npx playwright show-report --host 0.0.0.0
+docker compose exec e2e npx playwright show-report --host 0.0.0.0
 ```
 
 The test reports will be available at `http://localhost:9323` when using the Docker setup.
@@ -207,7 +207,7 @@ For detailed information about the CI/CD pipeline structure, quality assurance f
 
 ```bash
 export DOCKER_BUILDKIT=1
-docker-compose --profile e2elocal up -d
+docker compose --profile e2elocal up -d
 ```
 
 To make this permanent, add `DOCKER_BUILDKIT=1` to your shell profile (`.bashrc`, `.zshrc`, etc.).
@@ -218,7 +218,7 @@ To make this permanent, add `DOCKER_BUILDKIT=1` to your shell profile (`.bashrc`
 
 ```bash
 ./compile.sh
-docker-compose --profile e2elocal up -d
+docker compose --profile e2elocal up -d
 ```
 
 ### Local Development Issues
