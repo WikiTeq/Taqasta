@@ -526,6 +526,10 @@ extensions:
       Wikidata ID: Q21678654
       branch: REL1_43
       commit: 4303b01af935ef3edc6611f5038fb8052d1d61f9
+  - RelatedArticles:
+      Wikidata ID: Q21678282
+      branch: REL1_43
+      commit: d344ed9ce38f354bc568a3020c291ea63fe5283e
 # Skins to install
 skins:
   - CologneBlue:
