@@ -65,8 +65,6 @@ spec:
                 key: authkey
           - name: TS_HOSTNAME
             value: mysql-taqasta
-          - name: TS_USERSPACE
-            value: "true"
           - name: TS_DEST_IP
             value: "127.0.0.1"
           - name: TS_STATE_DIR
