@@ -6,13 +6,13 @@ spec:
   entryPoints:
     - mysql
   routes:
-    #- match: HostSNI(`*`)
-    - match: HostSNI(`8e4a795832c41ea2e77f24253d8a385a-taqasta.mysql.teq.wiki`)
+    - match: HostSNI(`*`)
+    #- match: HostSNI(`8e4a795832c41ea2e77f24253d8a385a-taqasta.mysql.teq.wiki`)
       services:
         - name: mysql-service
           port: 3306
-  tls:
-    secretName: mysql-proxy-ingress-cert-secret
+#  tls:
+#    secretName: mysql-proxy-ingress-cert-secret
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
