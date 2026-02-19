@@ -52,31 +52,6 @@ spec:
 #          - name: dbdata
 #            mountPath: /var/lib/mysql
       containers:
-      - name: tailscale
-        image: ghcr.io/tailscale/tailscale:latest
-        env:
-          - name: TS_AUTHKEY
-            valueFrom:
-              secretKeyRef:
-                name: tailscale-auth
-                key: authkey
-          - name: TS_HOSTNAME
-            value: mysql-taqasta
-          - name: TS_USERSPACE
-            value: "true"
-          - name: TS_STATE_DIR
-            value: "/var/lib/tailscale"
-          - name: TS_KUBE_SECRET
-            value: ""
-          - name: TS_SERVE_CONFIG
-            value: /config/serve.json
-          - name: TS_EXTRA_ARGS
-            value: "--advertise-tags=tag:k8s"
-        volumeMounts:
-          - name: tailscale-state
-            mountPath: /var/lib/tailscale
-          - name: serve-config
-            mountPath: /config
       - name: mysql
         image: mysql:8.0
         args:
@@ -105,11 +80,6 @@ spec:
       - name: dbdata
         persistentVolumeClaim:
           claimName: mysql-0
-      - name: tailscale-state
-        emptyDir: { }
-      - name: serve-config
-        configMap:
-          name: tailscale-serve-mysql
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
