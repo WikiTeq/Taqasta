@@ -70,6 +70,8 @@ spec:
             value: ""
           - name: TS_SERVE_CONFIG
             value: /config/serve.json
+          - name: TS_EXTRA_ARGS
+            value: "--advertise-tags=tag:k8s"
         volumeMounts:
           - name: tailscale-state
             mountPath: /var/lib/tailscale
