@@ -52,6 +52,18 @@ spec:
 #          - name: dbdata
 #            mountPath: /var/lib/mysql
       containers:
+      - name: tailscale
+        image: ghcr.io/tailscale/tailscale:latest
+        env:
+          - name: TS_AUTHKEY
+            valueFrom:
+              secretKeyRef:
+                name: tailscale-auth
+                key: authkey
+          - name: TS_HOSTNAME
+            value: mysql-taqasta
+          - name: TS_USERSPACE
+            value: "true"
       - name: mysql
         image: mysql:8.0
         args:
