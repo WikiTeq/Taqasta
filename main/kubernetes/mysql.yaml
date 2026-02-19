@@ -54,9 +54,6 @@ spec:
       containers:
       - name: tailscale
         image: ghcr.io/tailscale/tailscale:latest
-        securityContext:
-          capabilities:
-            add: [ "NET_ADMIN" ]
         env:
           - name: TS_AUTHKEY
             valueFrom:
@@ -66,16 +63,18 @@ spec:
           - name: TS_HOSTNAME
             value: mysql-taqasta
           - name: TS_USERSPACE
-            value: "false"
-          - name: TS_DEST_IP
-            value: "127.0.0.1"
+            value: "true"
           - name: TS_STATE_DIR
             value: "/var/lib/tailscale"
           - name: TS_KUBE_SECRET
             value: ""
+          - name: TS_SERVE_CONFIG
+            value: /config/serve.json
         volumeMounts:
           - name: tailscale-state
             mountPath: /var/lib/tailscale
+          - name: serve-config
+            mountPath: /config
       - name: mysql
         image: mysql:8.0
         args:
@@ -106,6 +105,9 @@ spec:
           claimName: mysql-0
       - name: tailscale-state
         emptyDir: { }
+      - name: serve-config
+        configMap:
+          name: tailscale-serve-mysql
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

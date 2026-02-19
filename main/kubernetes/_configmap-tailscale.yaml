@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tailscale-serve-mysql
+data:
+  serve.json: |
+    {
+      "TCP": {
+        "3306": {
+          "TCPForward": "127.0.0.1:3306"
+        }
+      }
+    }
