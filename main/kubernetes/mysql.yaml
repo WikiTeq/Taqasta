@@ -65,12 +65,17 @@ spec:
                 key: authkey
           - name: TS_HOSTNAME
             value: mysql-taqasta
+          - name: TS_USERSPACE
+            value: "false"
           - name: TS_DEST_IP
             value: "127.0.0.1"
           - name: TS_STATE_DIR
             value: "/var/lib/tailscale"
           - name: TS_KUBE_SECRET
             value: ""
+        volumeMounts:
+          - name: tailscale-state
+            mountPath: /var/lib/tailscale
       - name: mysql
         image: mysql:8.0
         args:
@@ -95,8 +100,6 @@ spec:
         volumeMounts:
           - name: dbdata
             mountPath: /var/lib/mysql
-          - name: tailscale-state
-            mountPath: /var/lib/tailscale
       volumes:
       - name: dbdata
         persistentVolumeClaim:
