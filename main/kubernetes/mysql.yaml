@@ -54,6 +54,9 @@ spec:
       containers:
       - name: tailscale
         image: ghcr.io/tailscale/tailscale:latest
+        securityContext:
+          capabilities:
+            add: [ "NET_ADMIN" ]
         env:
           - name: TS_AUTHKEY
             valueFrom:
