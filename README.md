@@ -8,7 +8,7 @@ A full-featured MediaWiki stack for easy deployment of enterprise-ready MediaWik
 
 The hardware requirements for running Taqasta containers and Taqast stacks.
 The requirements include **minimal** and **recommended** specifications.
-The requirements may vary based on the load your wiki expiriences and your
+The requirements may vary based on the load your wiki experiences and your
 specific server setup.
 
 ### Taqasta container
