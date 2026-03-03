@@ -4,7 +4,44 @@
 
 A full-featured MediaWiki stack for easy deployment of enterprise-ready MediaWiki on production environments.
 
-Note: This repo is a fork of the MediaWiki application Docker image included in the Canasta stack.
+# Hardware requirements
+
+The hardware requirements for running Taqasta containers and Taqast stacks.
+The requirements include **minimal** and **recommended** specifications.
+The requirements may vary based on the load your wiki expiriences and your
+specific server setup.
+
+### Taqasta container
+
+**Minimal** requirements to run a single Taqasta container instance:
+
+* 0.25 vCPU
+* 256MB of RAM
+* 1GB of HDD space (to pull the image, not counting for wiki images storage)
+
+**Recommended** requirements:
+
+* 1 vCPU
+* 512MB of RAM
+* 1GB of HDD space (to pull the image, not counting for wiki images storage)
+
+### Sample Compose stack with Taqasta and MySQL database
+
+**Minimal** requirements to run a Taqasta container and MySQL database stack:
+
+* 0.5 vCPU
+* 512MB of RAM
+* 1.2GB of HDD space (to pull the images, not counting for DB and wiki images storage)
+
+**Recommended** requirements:
+
+* 1 vCPU
+* 1GB of RAM
+* 1.2GB of HDD space (to pull the images, not counting for DB and wiki images storage)
+
+# Note
+
+This repo is a fork of the MediaWiki application Docker image included in the Canasta stack.
 For complete documentation on the overall Canasta tech stack, including installation instructions,
 please visit https://github.com/CanastaWiki/Canasta-Documentation. Note,
 however, that parts of that documentation do not apply to using Taqasta.
