@@ -236,6 +236,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CookieWarning $MW_HOME/extensions/CookieWarning \
 	&& cd $MW_HOME/extensions/CookieWarning \
 	&& git checkout -q cca62129085d50da90d503823848560ebc8058b4 \
+	# CrawlerProtection
+	&& git clone --single-branch -b main https://github.com/mywikis/CrawlerProtection.git $MW_HOME/extensions/CrawlerProtection \
+	&& cd $MW_HOME/extensions/CrawlerProtection \
+	&& git checkout -q 890492d17b4beb68042c88dce8d010c1a14225e7 \
 	# DataTransfer (v. 1.4)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/DataTransfer $MW_HOME/extensions/DataTransfer \
 	&& cd $MW_HOME/extensions/DataTransfer \
@@ -537,7 +541,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/RevisionSlider \
 	&& git checkout -q d1a6af207e26e220d93d16381a58055259575d3b \
 	# RottenLinks
-	&& git clone --single-branch -b master https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
+	&& git clone --single-branch -b main https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
 	&& cd $MW_HOME/extensions/RottenLinks \
 	&& git checkout -q 4e7e675bb26fc39b85dd62c9ad37e29d8f705a41 \
 	# SandboxLink
