@@ -236,6 +236,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://gerrit.wikimedia.org/r/mediawiki/extensions/CookieWarning $MW_HOME/extensions/CookieWarning \
 	&& cd $MW_HOME/extensions/CookieWarning \
 	&& git checkout -q cca62129085d50da90d503823848560ebc8058b4 \
+	# CrawlerProtection
+	&& git clone --single-branch -b main https://github.com/mywikis/CrawlerProtection.git $MW_HOME/extensions/CrawlerProtection \
+	&& cd $MW_HOME/extensions/CrawlerProtection \
+	&& git checkout -q 890492d17b4beb68042c88dce8d010c1a14225e7 \
 	# DataTransfer (v. 1.4)
 	&& git clone --single-branch -b master https://gerrit.wikimedia.org/r/mediawiki/extensions/DataTransfer $MW_HOME/extensions/DataTransfer \
 	&& cd $MW_HOME/extensions/DataTransfer \
