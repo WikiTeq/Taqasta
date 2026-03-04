@@ -541,7 +541,7 @@ RUN set -x; \
 	&& cd $MW_HOME/extensions/RevisionSlider \
 	&& git checkout -q d1a6af207e26e220d93d16381a58055259575d3b \
 	# RottenLinks
-	&& git clone --single-branch -b master https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
+	&& git clone --single-branch -b main https://github.com/miraheze/RottenLinks.git $MW_HOME/extensions/RottenLinks \
 	&& cd $MW_HOME/extensions/RottenLinks \
 	&& git checkout -q 4e7e675bb26fc39b85dd62c9ad37e29d8f705a41 \
 	# SandboxLink
