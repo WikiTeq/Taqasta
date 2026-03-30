@@ -166,7 +166,7 @@ See https://www.mediawiki.org/wiki/Manual:$wgProfiler for details
 
 Click the button above to deploy a fully configured Taqasta (MediaWiki) instance on [Railway](https://railway.com/)
 
-The template provisions a Taqasta and required service automatically. During setup you will be prompted to configure the following environment variables. You can go ahead with the defaults and update later or change `MW_ADMIN_USER` and `MW_ADMIN_PASS` before first deploy
+The template provisions Taqasta and required services automatically. During setup, you will be prompted to configure environment variables. You can use the defaults and update them later, or change `MW_ADMIN_USER` and `MW_ADMIN_PASS` before the first deployment.
 
 ### Post-deploy steps
 
