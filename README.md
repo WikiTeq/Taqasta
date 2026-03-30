@@ -168,7 +168,7 @@ Click the button above to deploy a fully configured Taqasta (MediaWiki) instance
 
 The template provisions Taqasta and required services automatically. During setup, you will be prompted to configure environment variables. You can use the defaults and update them later, or change `MW_ADMIN_USER` and `MW_ADMIN_PASS` before the first deployment.
 
-### Post-deploy steps
+## Post-deploy steps
 
 1. Once the deployment is live, Railway will assign a public URL that you can use to access your wiki
 2. Optionally attach a custom domain in the Railway dashboard under **Settings → Networking → Custom Domain** and update `MW_SITE_SERVER` ENV variable in the **Environment Variables** section
