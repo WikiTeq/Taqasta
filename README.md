@@ -4,6 +4,8 @@
 
 A full-featured MediaWiki stack for easy deployment of enterprise-ready MediaWiki on production environments.
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/mediawiki?referralCode=hNtFFf&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
 Note: This repo is a fork of the MediaWiki application Docker image included in the Canasta stack.
 For complete documentation on the overall Canasta tech stack, including installation instructions,
 please visit https://github.com/CanastaWiki/Canasta-Documentation. Note,
