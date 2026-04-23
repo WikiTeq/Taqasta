@@ -1,6 +1,6 @@
 # MediaWiki core
 RUN set -x; \
-	git clone --depth 1 -b $MW_CORE_VERSION https://gerrit.wikimedia.org/r/mediawiki/core.git $MW_HOME && \
+	git clone --depth 1 -b $MW_CORE_VERSION https://github.com/wikimedia/mediawiki.git $MW_HOME && \
 	cd $MW_HOME && \
 	git submodule update --init --recursive
 
