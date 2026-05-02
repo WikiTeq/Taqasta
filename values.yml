@@ -83,7 +83,8 @@ extensions:
       commit: 133fd7511eff158456e194315e5f477166ef3206
   - ConfirmAccount:
       Wikidata ID: Q21676649
-      commit: 852687aea8281b731d6193bab6477def06d9b31d
+      branch: REL1_43
+      commit: f22330174a5fb401bd02c95477f30bdf36460e68
   - ContactPage:
       Wikidata ID: Q21676642
       commit: ad2cdd6a5bb1676dd42215f7585125a78140b121
