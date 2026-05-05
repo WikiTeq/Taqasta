@@ -573,7 +573,7 @@ packages:
   # Not an extension, loaded so that we can use shell.php in the containers
   - name: psy/psysh
     # Match core constraint, DEMO-137
-    version: ^0.12.3
+    version: ^0.12.19
 # custom repositories for Composer to use
 repositories:
   - type: vcs
