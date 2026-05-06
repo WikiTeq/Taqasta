@@ -266,7 +266,7 @@ extensions:
       commit: e52d009f1a01575de2abebf802c6e97b24587d9a
   - RevisionSlider:
       Wikidata ID: Q24036451
-      commit: b10b2150133e77099a37b089003170c0111eb681
+      commit: 57429801b90a3ac98daa6d6c72db7b526a95c1bf
   - RottenLinks:
       Wikidata ID: Q59088472
       repository: https://github.com/miraheze/RottenLinks.git
@@ -537,6 +537,12 @@ extensions:
       branch: master
       repository: https://github.com/octfx/mediawiki-extensions-TemplateStylesExtender.git
       commit: 28d54a808fd921bbdab203831ddfc5dffc9a9163
+  - AccountInfo:
+      commit: c50cd99c0bd0fb7411e3e36b07785161a8664900
+  - CleanChanges:
+      commit: dd6693e0ede4ff297818857ba5604534575e4a23
+  - RelatedArticles:
+      commit: 4f5c9283dce21e859c4ddbc5a5055adf620af234
 # Skins to install
 skins:
   - CologneBlue:
