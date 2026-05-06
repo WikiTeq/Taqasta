@@ -533,6 +533,10 @@ extensions:
       commit: 04b017977588cb21dfcc32b05b589882fe1f867f
   - MediaSearch:
       commit: e164d4d9e83dfccdd24fd1181988882bde2c7f43
+  - TemplateStylesExtender:
+      branch: master
+      repository: https://github.com/octfx/mediawiki-extensions-TemplateStylesExtender.git
+      commit: 28d54a808fd921bbdab203831ddfc5dffc9a9163
 # Skins to install
 skins:
   - CologneBlue:
