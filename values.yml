@@ -561,6 +561,7 @@ skins:
       commit: 0d0c6d6f49b7103347ce61ad977e0db644f5d1a8
   - Citizen:
       repository: https://github.com/StarCitizenTools/mediawiki-skins-Citizen.git
+      branch: main
       commit: fc983f4601d43a6a2695c89f615178a2a0c1d62c
 # Composer packages (extensions) to install
 packages:
