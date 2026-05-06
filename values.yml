@@ -544,6 +544,12 @@ extensions:
       repository: https://github.com/WikiTeq/mediawiki-extension-ZoteroConnector.git
       branch: main
       commit: 133bc03092cc35f10b3c915f904f5d90c8a952fd
+  - ShortDescription:
+      branch: main
+      repository: https://github.com/StarCitizenTools/mediawiki-extensions-ShortDescription.git
+      commit: 04b017977588cb21dfcc32b05b589882fe1f867f
+  - MediaSearch:
+      commit: e164d4d9e83dfccdd24fd1181988882bde2c7f43
 # Skins to install
 skins:
   - CologneBlue:
