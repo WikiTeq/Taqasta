@@ -527,6 +527,12 @@ extensions:
       Wikidata ID: Q21678654
       branch: REL1_43
       commit: 4303b01af935ef3edc6611f5038fb8052d1d61f9
+  - ShortDescription:
+      branch: main
+      repository: https://github.com/StarCitizenTools/mediawiki-extensions-ShortDescription.git
+      commit: 04b017977588cb21dfcc32b05b589882fe1f867f
+  - MediaSearch:
+      commit: e164d4d9e83dfccdd24fd1181988882bde2c7f43
 # Skins to install
 skins:
   - CologneBlue:
