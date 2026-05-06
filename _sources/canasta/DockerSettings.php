@@ -33,6 +33,7 @@ const DOCKER_SKINS = [
 	'Vector', # bundled
 	'chameleon',
 	'Pivot',
+	'Citizen'
 ];
 
 const DOCKER_EXTENSIONS = [
