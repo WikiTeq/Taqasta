@@ -80,7 +80,7 @@ extensions:
       commit: 5cde1682153e972f73a9ab04b5b3b8416e5bb47e
   - CommentStreams:
       Wikidata ID: Q25662100
-      commit: 25340d9d06a7547ba31d9dc4ef0ac100a48f70ed
+      commit: 47826129a20826c10f691f32a47a96cc6998d543
   - CommonsMetadata:
       Wikidata ID: Q21676600
       commit: e0f6d3dae608e011201f5585d8daa1c6b62d50ab
