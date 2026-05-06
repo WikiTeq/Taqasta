@@ -81,6 +81,8 @@ extensions:
   - CommentStreams:
       Wikidata ID: Q25662100
       commit: 47826129a20826c10f691f32a47a96cc6998d543
+      additional steps:
+        - composer update
   - CommonsMetadata:
       Wikidata ID: Q21676600
       commit: e0f6d3dae608e011201f5585d8daa1c6b62d50ab
