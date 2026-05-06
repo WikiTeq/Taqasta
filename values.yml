@@ -534,6 +534,12 @@ extensions:
       branch: master
       # Pin matches former CKN submodule (2.1.0-alpha); 3.0.0 requires SMW >= 7.0.
       commit: bc69880ff2c33688138d1db1e3cc61acc6617221
+  - ShortDescription:
+      branch: main
+      repository: https://github.com/StarCitizenTools/mediawiki-extensions-ShortDescription.git
+      commit: 04b017977588cb21dfcc32b05b589882fe1f867f
+  - MediaSearch:
+      commit: e164d4d9e83dfccdd24fd1181988882bde2c7f43
 # Skins to install
 skins:
   - CologneBlue:
