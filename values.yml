@@ -34,7 +34,8 @@ extensions:
   - ApprovedRevs:
       Wikidata ID: Q21676333
       branch: master
-      commit: 15b2cc3a381eb3bed59e36641de9de729c699a83
+      # 2.4
+      commit: fad31826c0722700dfb7cc6c17c80d28b56a5a17
   - Arrays:
       Wikidata ID: Q21676367
       commit: 96357a3708ec36ae4b6deebb63991c86268d0e2a
@@ -54,8 +55,8 @@ extensions:
   - Cargo:
       Wikidata ID: Q21676223
       branch: master
-      # 3.5.1
-      commit: a2865938165c1389d852df762f8c85073859e5dd
+      # 3.9.1
+      commit: 7d92aee4a12e4eaefeff973eec6cafc838f845f0
   - CharInsert:
       Wikidata ID: Q21676306
       commit: ee7b17910ece1ebaf6ad53857926d797b0ff374d
@@ -317,7 +318,7 @@ extensions:
       commit: d74ff7c4b98d72dda6bfccc597d496ef93953bfb
   - UploadWizard:
       Wikidata ID: Q11083660
-      commit: 16b2d111e4f5a1f30249d78965c536a592305caf
+      commit: 858aa6c42ac1224c634c12123ed727734d41edad
   - UrlGetParameters:
       Wikidata ID: Q21678958
       commit: 013427509ca51a710879c8811b6f4ef04d7b2e12
