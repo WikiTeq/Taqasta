@@ -542,6 +542,9 @@ skins:
   - Refreshed:
       Wikidata ID: Q22713061
       commit: 2570c3ee3996cd8ca3f766131b301c33695f68e6
+  - Citizen:
+      repository: https://github.com/StarCitizenTools/mediawiki-skins-Citizen.git
+      commit: fc983f4601d43a6a2695c89f615178a2a0c1d62c
 # Composer packages (extensions) to install
 packages:
   - name: mediawiki/semantic-media-wiki
