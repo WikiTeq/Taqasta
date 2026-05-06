@@ -77,7 +77,7 @@ extensions:
       gerrit_ref: refs/changes/00/1131800/1
   - CommentStreams:
       Wikidata ID: Q25662100
-      commit: 25340d9d06a7547ba31d9dc4ef0ac100a48f70ed
+      commit: 47826129a20826c10f691f32a47a96cc6998d543
   - CommonsMetadata:
       Wikidata ID: Q21676600
       commit: 133fd7511eff158456e194315e5f477166ef3206
