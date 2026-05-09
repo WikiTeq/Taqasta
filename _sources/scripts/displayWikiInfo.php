@@ -1,5 +1,7 @@
 <?php
 
+// NO_AUTOLOAD -- avoid breaking core's AutoLoaderStructureTest
+
 /**
  * This script is part of the Canasta software bundle; it displays information
  * about this wiki instance.

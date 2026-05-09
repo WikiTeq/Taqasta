@@ -39,7 +39,93 @@ jobs:
           dockerfile: "Dockerfile"
           config: "hadolint.yaml"
 
-  # Generate image tags
+  test:
+    needs: [lint,tags]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Claim disk space
+        uses: ./.github/actions/reduce-disk-space
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compile
+        run: bash compile.sh
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          platforms: linux/amd64
+
+      - name: Build and load
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          secrets: |
+            COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+          # should be fine, but may need to add branch specific cache plus a fallback to master
+          cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64
+          cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64,mode=max
+          push: false
+          load: true
+
+      - name: Set up environment
+        shell: bash
+        run: mv .env.ci .env
+
+      - name: Setup Docker Compose
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_BUILDKIT: 1
+        shell: bash
+        run: |
+          DOCKER_BUILDKIT=1 docker compose up -d
+
+      - name: Wait for init
+        shell: bash
+        run: while ! docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
+
+      - name: Wait for container to be healthy
+        shell: bash
+        run: while ! docker inspect --format='{{json .State.Health.Status}}' $(echo $(basename $(pwd)) | tr '[:upper:]' '[:lower:]')-web-1 | grep -q 'healthy'; do sleep 1; done
+
+      - name: Composer dev dependencies
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: docker compose exec -e COMPOSER_TOKEN=$GITHUB_TOKEN web composer update          
+
+      - name: PHPUNIT - unit tests
+        shell: bash
+        run: docker compose exec web composer phpunit:unit -- --exclude-group Broken,ParserFuzz,Stub
+
+      - name: PHPUNIT - default suite
+        shell: bash
+        run: docker compose exec web composer run --timeout=0 phpunit:entrypoint -- --exclude-group Broken,ParserFuzz,Stub,Database,Standalone
+
+      - name: PHPUNIT - database tests
+        shell: bash
+        run: docker compose exec -e PHPUNIT_USE_NORMAL_TABLES=1 web composer run --timeout=0 phpunit:entrypoint -- --group Database --exclude-group Broken,ParserFuzz,Stub,Standalone
+
+      - name: Stop containers
+        if: always()
+        shell: bash
+        run: docker compose down --volumes --timeout 60
+
+  # Push image to GitHub Packages.
   # The image tag pattern is:
   # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
   # for tags: <TAG>
@@ -133,20 +219,11 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
 
-      # https://github.com/actions/runner-images/issues/2840#issuecomment-3641541098
-      - name: Claim disk space
-        run: |
-          sudo df -TBG /
-          sudo rm -rf /opt/microsoft
-          sudo rm -rf /usr/lib/llvm-*
-          sudo rm -rf /usr/local/julia*
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /usr/local/share/powershell
-          sudo rm -rf /usr/share/swift
-          sudo df -TBG /
-
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Claim disk space
+        uses: ./.github/actions/reduce-disk-space
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -267,20 +344,11 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
 
-      # https://github.com/actions/runner-images/issues/2840#issuecomment-3641541098
-      - name: Claim disk space
-        run: |
-          sudo df -TBG /
-          sudo rm -rf /opt/microsoft
-          sudo rm -rf /usr/lib/llvm-*
-          sudo rm -rf /usr/local/julia*
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /usr/local/share/powershell
-          sudo rm -rf /usr/share/swift
-          sudo df -TBG /
-
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Claim disk space
+        uses: ./.github/actions/reduce-disk-space
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
