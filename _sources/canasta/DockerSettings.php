@@ -81,7 +81,7 @@ const DOCKER_EXTENSIONS = [
 	'DiscussionTools', # bundled
 	'DismissableSiteNotice',
 	'DisplayTitle',
-	'DynamicPageList3',
+	'DynamicPageList4',
 	'Echo', # bundled
 	'EditAccount',
 	'Editcount',
