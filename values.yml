@@ -556,7 +556,8 @@ packages:
   - name: mediawiki/remote-wiki
     version: dev-master#da859c2c5081d96a6492f178686251136d35ec23
   - name: mediawiki/semantic-breadcrumb-links
-    version: 3.0.0
+    # Pin matches former CKN submodule (2.1.0-alpha); 3.0.0 requires SMW >= 7.0.
+    version: dev-master#bc69880ff2c33688138d1db1e3cc61acc6617221
   - name: mediawiki/semantic-compound-queries
     version: 3.0.0
   - name: mediawiki/semantic-extra-special-properties
