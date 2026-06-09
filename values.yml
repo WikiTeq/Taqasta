@@ -555,6 +555,8 @@ packages:
     version: 3.1.0
   - name: mediawiki/remote-wiki
     version: dev-master#da859c2c5081d96a6492f178686251136d35ec23
+  - name: mediawiki/semantic-breadcrumb-links
+    version: 3.0.0
   - name: mediawiki/semantic-compound-queries
     version: 3.0.0
   - name: mediawiki/semantic-extra-special-properties
