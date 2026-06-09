@@ -113,4 +113,4 @@ RUN set -x; \
 # Composer
 RUN set -x; \
 	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-	composer self-update 2.8.12
+	composer self-update 2.10.1
