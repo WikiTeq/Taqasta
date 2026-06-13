@@ -163,6 +163,7 @@ const DOCKER_EXTENSIONS = [
 	'Scribunto', # bundled
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
+	'SemanticBreadcrumbLinks',
 	'SemanticCompoundQueries',
 	'SemanticDependencyUpdater', //  must be enabled after SemanticMediaWiki
 	'SemanticExtraSpecialProperties',
