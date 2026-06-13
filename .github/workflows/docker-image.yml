@@ -88,11 +88,11 @@ jobs:
 
       - name: Setup Docker Compose
         env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_BUILDKIT: 1
+          TAQASTA_IMAGE: ${{ needs.tags.outputs.REGISTRY_TAGS }}
         shell: bash
         run: |
-          DOCKER_BUILDKIT=1 docker compose up -d
+          export TAQASTA_IMAGE="${TAQASTA_IMAGE%%,*}"
+          docker compose up -d --no-build
 
       - name: Wait for init
         shell: bash
@@ -262,11 +262,11 @@ jobs:
 
       - name: Setup Docker Compose
         env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_BUILDKIT: 1
+          TAQASTA_IMAGE: ${{ needs.tags.outputs.REGISTRY_TAGS }}
         shell: bash
         run: |
-          DOCKER_BUILDKIT=1 docker compose up -d
+          export TAQASTA_IMAGE="${TAQASTA_IMAGE%%,*}"
+          docker compose up -d --no-build
 
       - name: Wait for init
         shell: bash
