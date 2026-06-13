@@ -96,7 +96,7 @@ jobs:
 
       - name: Wait for init
         shell: bash
-        run: while ! docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
+        run: bash .github/scripts/wait-for-wiki-init.sh
 
       - name: Wait for container to be healthy
         shell: bash
@@ -270,7 +270,7 @@ jobs:
 
       - name: Wait for init
         shell: bash
-        run: while ! docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
+        run: bash .github/scripts/wait-for-wiki-init.sh
 
       - name: Wait for container to be healthy
         shell: bash
