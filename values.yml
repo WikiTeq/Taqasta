@@ -550,7 +550,8 @@ packages:
   - name: mediawiki/chameleon-skin
     version: 5.0.0
   - name: mediawiki/bootstrap-components
-    version: dev-master#476693d7a0f0de11bb67b775486950bff5cd1415 # >5.2.1
+    # 476693d on rel-522; avoid dev-master (Packagist alias requires bootstrap ^6, breaks chameleon 5.0.0)
+    version: dev-rel-522#476693d7a0f0de11bb67b775486950bff5cd1415
   - name: mediawiki/mermaid
     version: 3.1.0
   - name: mediawiki/remote-wiki
@@ -584,6 +585,9 @@ repositories:
     url: https://github.com/WikiTeq/mediawiki-api-base.git
   - type: vcs
     url: https://github.com/WikiTeq/mediawiki-extension-RemoteWiki
+  - type: vcs
+    url: https://github.com/oetterer/BootstrapComponents.git
+    canonical: true
 # patches to apply; name is the file name in _sources/patches and path is
 # the git directory to apply it to in the built image, relative to $MW_HOME
 patches:
