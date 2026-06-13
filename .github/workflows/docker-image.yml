@@ -106,7 +106,15 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: docker compose exec -e COMPOSER_TOKEN=$GITHUB_TOKEN web composer update          
+        run: |
+          docker compose exec -T \
+            -e COMPOSER_ALLOW_SUPERUSER=1 \
+            -e COMPOSER_TOKEN="$GITHUB_TOKEN" \
+            web sh -c '
+              composer config -g github-oauth.github.com "$COMPOSER_TOKEN" &&
+              composer update &&
+              composer config -g --unset github-oauth.github.com
+            '
 
       - name: PHPUNIT - unit tests
         shell: bash
