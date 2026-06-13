@@ -30,7 +30,8 @@
 		{{- range $index, $ext := (ds "values").repositories }}
 		{
 			"type": "{{ $ext.type }}",
-			"url": "{{ $ext.url }}"
+			"url": "{{ $ext.url }}"{{ if has $ext "canonical" }},
+			"canonical": {{ index $ext "canonical" }}{{ end }}
 		}{{ if lt $index (sub (len (ds "values").repositories) 1) }},{{ end }}
 		{{- end }}
 	]
