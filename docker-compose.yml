@@ -5,7 +5,7 @@ services:
         command: --default-authentication-plugin=caching_sha2_password --log-bin --binlog-expire-logs-seconds=172800
         cap_add:
             - SYS_NICE  # CAP_SYS_NICE, fix error mbind: Operation not permitted
-        restart: unless-stopped
+        restart: "no"
         environment:
             - MYSQL_ROOT_HOST=%
             - MYSQL_ROOT_PASSWORD=${MW_DB_INSTALLDB_PASS:-mediawiki}
@@ -15,10 +15,11 @@ services:
             - mysql:/var/lib/mysql
 
     web:
+        image: ${TAQASTA_IMAGE:-taqasta-web}
         build:
             context: .
             dockerfile: Dockerfile
-        restart: unless-stopped
+        restart: "no"
         ports:
             - "${PORT:-127.0.0.1:8000}:80"
         depends_on:
