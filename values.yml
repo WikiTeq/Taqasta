@@ -530,6 +530,7 @@ extensions:
       commit: 4303b01af935ef3edc6611f5038fb8052d1d61f9
   - SemanticBreadcrumbLinks:
       repository: https://github.com/SemanticMediaWiki/SemanticBreadcrumbLinks.git
+      branch: master
       # Pin matches former CKN submodule (2.1.0-alpha); 3.0.0 requires SMW >= 7.0.
       commit: bc69880ff2c33688138d1db1e3cc61acc6617221
 # Skins to install
