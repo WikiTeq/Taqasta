@@ -29,7 +29,23 @@ fail_fast() {
 	return 1
 }
 
+MAX_WAIT_SECONDS="${MAX_WAIT_SECONDS:-600}"
+start_ts="$(date +%s)"
+
 while ! grep -Fq "$MARKER" "$LOG_FILE"; do
+	now_ts="$(date +%s)"
+	if [ $((now_ts - start_ts)) -ge "$MAX_WAIT_SECONDS" ]; then
+		echo "Timeout: marker not found within ${MAX_WAIT_SECONDS}s" >&2
+		tail -40 "$LOG_FILE" >&2 || true
+		exit 1
+	fi
+
+	if ! kill -0 "$logs_pid" 2>/dev/null; then
+		echo "Log follower exited before init marker was detected" >&2
+		tail -40 "$LOG_FILE" >&2 || true
+		exit 1
+	fi
+
 	if fail_fast; then
 		tail -40 "$LOG_FILE" >&2
 		exit 1

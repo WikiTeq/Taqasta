@@ -46,11 +46,10 @@ RUN set -x; \
 COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
 
 # merge-plugin and composer/installers must run as root during docker build
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
 # Run with secret mounted to /run/secrets/COMPOSER_TOKEN
 # This is needed to bypass rate limits
 RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME && \
+	export COMPOSER_ALLOW_SUPERUSER=1 && \
 	cp composer.json composer.json.bak && \
 	cat composer.json.bak | jq '. + {"minimum-stability": "dev"}' > composer.json && \
 	rm composer.json.bak && \
