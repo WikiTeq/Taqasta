@@ -141,6 +141,10 @@
             "type": "string",
             "format": "uri",
             "description": "Repository URL"
+          },
+          "canonical": {
+            "type": "boolean",
+            "description": "When true, this repository overrides Packagist for the same package name"
           }
         },
         "additionalProperties": false,
