@@ -88,15 +88,15 @@ jobs:
 
       - name: Setup Docker Compose
         env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_BUILDKIT: 1
+          TAQASTA_IMAGE: ${{ needs.tags.outputs.REGISTRY_TAGS }}
         shell: bash
         run: |
-          DOCKER_BUILDKIT=1 docker compose up -d
+          export TAQASTA_IMAGE="${TAQASTA_IMAGE%%,*}"
+          docker compose up -d --no-build
 
       - name: Wait for init
         shell: bash
-        run: while ! docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
+        run: bash .github/scripts/wait-for-wiki-init.sh
 
       - name: Wait for container to be healthy
         shell: bash
@@ -106,7 +106,15 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: docker compose exec -e COMPOSER_TOKEN=$GITHUB_TOKEN web composer update          
+        run: |
+          docker compose exec -T \
+            -e COMPOSER_ALLOW_SUPERUSER=1 \
+            -e COMPOSER_TOKEN="$GITHUB_TOKEN" \
+            web sh -c '
+              composer config -g github-oauth.github.com "$COMPOSER_TOKEN" &&
+              composer update &&
+              composer config -g --unset github-oauth.github.com
+            '
 
       - name: PHPUNIT - unit tests
         shell: bash
@@ -262,15 +270,15 @@ jobs:
 
       - name: Setup Docker Compose
         env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_BUILDKIT: 1
+          TAQASTA_IMAGE: ${{ needs.tags.outputs.REGISTRY_TAGS }}
         shell: bash
         run: |
-          DOCKER_BUILDKIT=1 docker compose up -d
+          export TAQASTA_IMAGE="${TAQASTA_IMAGE%%,*}"
+          docker compose up -d --no-build
 
       - name: Wait for init
         shell: bash
-        run: while ! docker compose logs web --tail 10 | grep -q '>>>>> run-maintenance-script.sh <<<<<'; do sleep 1; done
+        run: bash .github/scripts/wait-for-wiki-init.sh
 
       - name: Wait for container to be healthy
         shell: bash
