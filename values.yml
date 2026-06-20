@@ -139,7 +139,7 @@ extensions:
       Wikidata ID: Q123153544
       repository: https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo.git
       branch: master
-      commit: 86bbf18eece780ecd178af5211f4605a8f13e4f4
+      commit: 86bbf18eece780ecd178af5211f4605a8f13e4f8
   - EventLogging:
       Wikidata ID: Q21676443
       commit: 411fc0d6c8538b0064e0d75b5302534c7f28ac50
