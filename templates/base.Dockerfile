@@ -60,6 +60,7 @@ RUN set x; \
 	php8.3-apcu \
 	php8.3-redis \
 	php8.3-curl \
+	php8.3-ldap \
 	php8.3-tidy \
 	php8.3-zip \
 	php8.3-xhprof \
