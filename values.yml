@@ -437,7 +437,8 @@ extensions:
   - YouTube:
       commit: 01673ce5f560fabe09b0feb1e65b57cbf58aae39
   - GoogleLogin:
-      gerrit_ref: refs/changes/54/1134354/1
+      branch: REL1_43
+      commit: 8d19a2b6b4aae21a241eedc9257213da199aa8c6
       additional steps:
         - composer update
   - VariablesLua:
