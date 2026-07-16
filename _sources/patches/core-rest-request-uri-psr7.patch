@@ -1,0 +1,19 @@
+diff --git a/includes/Rest/RequestFromGlobals.php b/includes/Rest/RequestFromGlobals.php
+index f415142..4efbd53 100644
+--- a/includes/Rest/RequestFromGlobals.php
++++ b/includes/Rest/RequestFromGlobals.php
+@@ -52,8 +52,13 @@ class RequestFromGlobals extends RequestBase {
+ 				// Since $requestUrl here is absolute-path references
+ 				// so all titles that contain colon followed by a
+ 				// number would be inaccessible if the exception occurs.
++				//
++				// Use a bare placeholder host without a port: guzzlehttp/psr7
++				// >= 2.12.3 (GHSA-c2w2-prh8-qm98) validates the URI authority
++				// and rejects the resulting "host:80" once the request URL
++				// adds a second colon (e.g. "//HOST:80" . ":8434/...").
+ 				$uriInstance = (
+-					new Uri( '//HOST:80' . $requestUrl )
++					new Uri( '//HOST' . $requestUrl )
+ 				)->withScheme( '' )->withHost( '' )->withPort( null );
+ 			}
+ 			$this->uri = $uriInstance;
