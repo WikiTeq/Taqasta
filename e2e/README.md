@@ -1,10 +1,19 @@
 # End-to-End Tests for Taqasta
 
-![Taqasta E2E Banner](taqasta-e2e-banner.png)
+<p align="center"><img src="taqasta-e2e-banner.png" alt="Taqasta E2E" width="600"></p>
 
-This directory contains end-to-end (e2e) tests for the Taqasta MediaWiki Docker stack, built using [Playwright](https://playwright.dev/). These tests verify that a MediaWiki installation is working correctly after deployment.
+Taqasta has basic end-to-end integration tests set up using [Playwright](https://playwright.dev/). These tests verify that a MediaWiki installation is working correctly after deployment.
+
+Tests run inside Docker rather than on the host to reduce npm supply-chain risk — see [Protect yourself from npm](https://timotijhof.net/posts/2019/protect-yourself-from-npm/).
 
 ## Overview
+
+Other than the `/e2e` folder in Taqasta, the following files are only for use by end-to-end tests:
+
+- [.env.ci](../.env.ci)
+- [docker-compose.yml](../docker-compose.yml)
+
+Within the `/e2e` folder, the actual tests live in the `tests/` directory. The `fixtures/` directory holds static files used by tests (for example, `Example.jpg` for upload tests). The [LocalSettings.php](LocalSettings.php) file is used for configuring the wiki that the tests run on.
 
 The e2e tests are designed to validate the complete MediaWiki installation and configuration by simulating real user interactions in a browser environment. The tests cover:
 
@@ -15,6 +24,16 @@ The e2e tests are designed to validate the complete MediaWiki installation and c
 - Checks version information and software components
 - Tests file upload functionality
 - Validates account creation and admin features
+
+In GitHub Actions, the tests are run in the `deploy-e2e` job of the `docker-image.yml` workflow. In short:
+
+- build the image
+- copy `.env.ci` to `.env`
+- start containers
+- run the tests (`npx playwright test`)
+- stop the containers
+
+Failures will be uploaded to [wikiteq.github.io/Taqasta](https://wikiteq.github.io/Taqasta/).
 
 ## Test Structure
 
@@ -31,13 +50,9 @@ Test specs live in the **`tests/`** subdirectory. When running Playwright (e.g. 
 ### Configuration Files
 
 - `playwright.config.ts` — browser settings, timeouts, and reporting
-- `LocalSettings.php` — MediaWiki config for e2e testing
+- [LocalSettings.php](LocalSettings.php) — MediaWiki config for e2e testing
 - `package.json` — Node dependencies and scripts
 - `Dockerfile` — container setup for running tests
-
-### Test Fixtures
-
-- `fixtures/` — sample images and other test assets
 
 ## Running Tests
 
@@ -46,9 +61,12 @@ Test specs live in the **`tests/`** subdirectory. When running Playwright (e.g. 
 The easiest way to run e2e tests is through Docker Compose, which handles all dependencies automatically.
 
 #### Prerequisites
+
 - Docker and Docker Compose
 - BuildKit enabled (`export DOCKER_BUILDKIT=1`)
 - Git (for cloning extensions during build)
+
+The end-to-end tests can also be run locally. To avoid running npm scripts directly on our machines, another docker container is used. After copying [.env.ci](../.env.ci) to `.env`, add `COMPOSE_PROFILES=e2elocal` to the environment before starting the containers (or use `docker compose --profile e2elocal`).
 
 ```bash
 # Enable BuildKit for advanced Docker features (required)
@@ -56,6 +74,9 @@ export DOCKER_BUILDKIT=1
 
 # Compile the Dockerfile template
 ./compile.sh
+
+# Copy CI env defaults for local compose
+cp .env.ci .env
 
 # Start the full stack including the e2e test container
 docker compose --profile e2elocal up -d
@@ -94,11 +115,13 @@ docker compose exec e2e sh
 
 The tests adapt their configuration based on the environment:
 
-- `TAQASTA_E2E_IN_DOCKER=true` — in the e2e container, base URL is `http://web:80/`
+- Default (CI and host runs): base URL is `http://localhost:8000` (from [.env.ci](../.env.ci))
+- `TAQASTA_E2E_IN_DOCKER=true` (local e2e container only): base URL is `http://web:80/`
 
 ### Browser Configuration
 
 Tests run on Chromium by default with the following settings:
+
 - Navigation timeout: 60 seconds
 - Test timeout: 5 minutes
 - Global timeout: 60 minutes
@@ -107,7 +130,7 @@ Tests run on Chromium by default with the following settings:
 
 ## MediaWiki Test Configuration
 
-The `LocalSettings.php` file contains MediaWiki-specific settings for testing:
+The [LocalSettings.php](LocalSettings.php) file contains MediaWiki-specific settings for testing:
 
 - Enables uploads for anonymous users
 - Loads essential extensions (ParserFunctions, Scribunto, VisualEditor)
@@ -151,7 +174,9 @@ The current test suite covers:
 * ✅ User account creation
 * ✅ Administrative features
 
-## Adding New Tests
+## Adding tests
+
+More tests are helpful — tests should go under `tests/` and work both locally and in GitHub CI. Refer to the [Playwright documentation](https://playwright.dev/docs/writing-tests) for details on creating tests.
 
 When adding new test files:
 
@@ -163,31 +188,34 @@ When adding new test files:
 
 ## CI/CD Integration
 
-These e2e tests are **fully integrated** into Taqasta's GitHub Actions CI/CD pipeline as a **mandatory quality gate**. The tests automatically run against every code change and **must pass** before Docker images are built and deployed.
+These e2e tests are **fully integrated** into Taqasta's GitHub Actions CI/CD pipeline as a **mandatory quality gate**. The tests automatically run against every code change and **must pass** before multi-platform images are pushed to the registry.
 
 ### Key Integration Points
 
 - Tests run on every push, pull request, and tag
 - Build pipeline stops if e2e tests fail
 - E2E runs against the AMD64 (x86_64) image build
-- Playwright test reports (and screenshots) uploaded to GitHub Pages when tests fail
+- Playwright test reports (and screenshots) uploaded to GitHub Pages when tests fail — browse at [wikiteq.github.io/Taqasta](https://wikiteq.github.io/Taqasta/)
 
 ### CI/CD Test Environment
 
-When running in CI/CD, the tests use:
-- Base URL `http://web:80/` (internal Docker networking)
+In CI, Playwright runs on the GitHub Actions runner (not inside the e2e container). The web stack still runs in Docker Compose; the runner reaches it at `http://localhost:8000` (port published from `.env.ci`). Locally, when you use `docker compose exec e2e`, the e2e container sets `TAQASTA_E2E_IN_DOCKER=true` and uses `http://web:80/` instead.
+
+Both environments use:
+
 - MySQL 8.0 database container
 - MediaWiki with test-specific LocalSettings.php
 - Chromium in headless mode
 - 5 minutes per test, 60 minutes total
 
-For detailed information about the CI/CD pipeline structure, quality assurance flow, and debugging CI/CD failures, see the main [`README.md`](../README.md#quality-assurance-and-cicd).
+For detailed information about the CI/CD pipeline structure, quality assurance flow, and debugging CI/CD failures, see the main [README.md](../README.md#quality-assurance-and-cicd).
 
 ## Troubleshooting
 
 ### Docker Compose Build Issues
 
 #### BuildKit Not Enabled
+
 Error: `the --mount option requires BuildKit`
 Solution: Enable BuildKit before running Docker Compose:
 
@@ -199,6 +227,7 @@ docker compose --profile e2elocal up -d
 To make this permanent, add `DOCKER_BUILDKIT=1` to your shell profile (`.bashrc`, `.zshrc`, etc.).
 
 #### Missing Dockerfile
+
 Error: `unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat .../Dockerfile: no such file or directory` (or similar, with your repo path)
 Solution: Compile the Dockerfile template first:
 
@@ -210,6 +239,7 @@ docker compose --profile e2elocal up -d
 ### Tests fail or connection errors
 
 #### Connection refused / page not loading
+
 Error: `page.goto: net::ERR_CONNECTION_REFUSED` or similar when running tests in the e2e container.
 
 Solution: The web (Taqasta) container may not be ready yet. Wait for it to be healthy after `docker compose --profile e2elocal up -d` (e.g. 30–60 seconds), or check with `docker compose ps` and ensure the web service is healthy before running `docker compose exec e2e npx playwright test`.
