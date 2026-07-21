@@ -27,7 +27,7 @@ You may also need to have the docker file include `update-alternatives` commands
 <details>
 <summary>Example</summary>
 
-```
+```console
 root@965cb0e16c87:/var/www/mediawiki/w# php --version
 PHP 8.3.28 (cli) (built: Nov 20 2025 11:50:57) (NTS)
 Copyright (c) The PHP Group

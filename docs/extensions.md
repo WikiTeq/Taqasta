@@ -14,6 +14,7 @@ After an extension is in the image, enable it on a specific wiki via that wiki's
 
 Update [values.yml](../values.yml) to include the desired extension under the `extensions` section. Be sure to include a commit reference — we pin extensions to specific commits so that rebuilding the docker image does not accidentally change the version of the extension.
 
+- A `commit` is required unless `gerrit_ref` is set (Gerrit clones use the ref instead of a commit hash)
 - If the repo is not specified, the extension is cloned from GitHub (`https://github.com/wikimedia/mediawiki-extensions-<Name>`) unless `gerrit_ref` is set, in which case it is cloned from Gerrit
 - If the branch is not specified, the branch corresponding to the release of MediaWiki is assumed (e.g. REL1_43), but there is no harm in explicitly recording that branch
 - If possible, add the Wikidata ID for the extension
@@ -65,7 +66,7 @@ After pushing your changes to a PR:
 
 Use this new image tag to test that the extension works properly, and then get your PR merged. At this point, the extension is now available in the base image, but it will **NOT** be automatically enabled for any wikis. To enable it for a specific wiki, add `wfLoadExtension()` (and any required config) to that wiki's `LocalSettings.php`. Make sure that the wiki uses a version of the image that includes the extension.
 
-You can use the image tag from the PR for testing; only images built from merged PRs on `master` should be used in production.
+You can use the image tag from the PR for testing; only images built from merged PRs on `master` or the applicable LTS maintenance branch should be used in production.
 
 ## Updating
 
