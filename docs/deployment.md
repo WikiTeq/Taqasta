@@ -16,7 +16,7 @@ The `DOCKER_EXTENSIONS` constant in [_sources/canasta/DockerSettings.php](../_so
 
 Taqasta reads many settings from environment variables (admin account, database, site URL, uploads, email, etc.). See [docker-compose.sample.yml](../docker-compose.sample.yml) for examples.
 
-CI and local e2e stacks use [.env.ci](../.env.ci) (copied to `.env` by `docker compose`) with minimal settings for automated tests.
+CI and local e2e stacks use [.env.ci](../.env.ci). Copy it to `.env` before running `docker compose` (see [e2e/README.md](../e2e/README.md)).
 
 ## Compose and Kubernetes templates
 
@@ -58,7 +58,7 @@ GitHub Actions assigns tags when building images:
 | **master** (production) | `MW_CORE_VERSION-latest` | `1.43.8-latest` |
 | **master** (production) | `MW_CORE_VERSION-YYYYMMDD-<short-sha>` | `1.43.8-20260717-d562a4b` |
 
-Use PR tags for testing; use master tags for production deployments.
+Use PR tags for testing; use tags from `master` or the applicable LTS maintenance branch for production deployments.
 
 ## Profiling
 

@@ -8,7 +8,7 @@ Note that patches should be used sparingly, and removed once the upstream repo h
 
 ## Creating a patch file
 
-The first step to adding a patch to Taqasta is to generate the patch locally. Based on the version of the applicable repository currently loaded by Taqasta, make the changes needed, and create a git commit. Then, use the command `git format-patch HEAD^ --stdout > patch-file-name.patch`, replacing `patch-file-name` with the desired name.
+The first step to adding a patch to Taqasta is to generate the patch locally. Based on the version of the applicable repository currently loaded by Taqasta, make the changes needed, and create a git commit. Then, use the command `git diff --binary HEAD^ HEAD > patch-file-name.patch`, replacing `patch-file-name` with the desired name.
 
 ## Extension patches (preferred)
 
