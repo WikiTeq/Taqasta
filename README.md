@@ -4,6 +4,8 @@
 
 A full-featured MediaWiki stack for easy deployment of enterprise-ready MediaWiki on production environments.
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/mediawiki?referralCode=hNtFFf&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
 Note: This repo is a fork of the MediaWiki application Docker image included in the Canasta stack.
 For complete documentation on the overall Canasta tech stack, including installation instructions,
 please visit https://github.com/CanastaWiki/Canasta-Documentation. Note,
@@ -198,3 +200,17 @@ enable profiling. Doing this enables the following code-block on the settings fi
 ```
 
 See https://www.mediawiki.org/wiki/Manual:$wgProfiler for details
+
+# Deploy on Railway
+
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/mediawiki?referralCode=hNtFFf&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
+Click the button above to deploy a fully configured Taqasta (MediaWiki) instance on [Railway](https://railway.com/)
+
+The template provisions Taqasta and required services automatically. During setup, you will be prompted to configure environment variables. You can use the defaults and update them later, or change `MW_ADMIN_USER` and `MW_ADMIN_PASS` before the first deployment.
+
+## Post-deploy steps
+
+1. Once the deployment is live, Railway will assign a public URL that you can use to access your wiki
+2. Optionally attach a custom domain in the Railway dashboard under **Settings → Networking → Custom Domain** and update `MW_SITE_SERVER` ENV variable in the **Environment Variables** section
+3. The wiki installer runs automatically on first boot; after a short initialization you can log in with the admin credentials you configured in `MW_ADMIN_USER` and `MW_ADMIN_PASS`

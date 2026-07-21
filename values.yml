@@ -34,7 +34,8 @@ extensions:
   - ApprovedRevs:
       Wikidata ID: Q21676333
       branch: master
-      commit: 15b2cc3a381eb3bed59e36641de9de729c699a83
+      # 2.4
+      commit: fad31826c0722700dfb7cc6c17c80d28b56a5a17
   - Arrays:
       Wikidata ID: Q21676367
       commit: 96357a3708ec36ae4b6deebb63991c86268d0e2a
@@ -54,8 +55,8 @@ extensions:
   - Cargo:
       Wikidata ID: Q21676223
       branch: master
-      # 3.5.1
-      commit: a2865938165c1389d852df762f8c85073859e5dd
+      # 3.9.1
+      commit: 7d92aee4a12e4eaefeff973eec6cafc838f845f0
   - CharInsert:
       Wikidata ID: Q21676306
       commit: ee7b17910ece1ebaf6ad53857926d797b0ff374d
@@ -89,7 +90,8 @@ extensions:
       commit: ad2cdd6a5bb1676dd42215f7585125a78140b121
   - ContributionScores:
       Wikidata ID: Q21676708
-      commit: a00a21775ea3486720bb104e3fafa710fff18c61
+      branch: master
+      commit: 7934f5da8f642ddd75f17cd1d4041401106e8012
   - CookieWarning:
       Wikidata ID: Q26719043
       commit: f697459d94ac1aa8c9d3e417a9b0e04f92640447
@@ -118,10 +120,10 @@ extensions:
   - DisplayTitle:
       Wikidata ID: Q27948979
       commit: 920768a8efb9f316aed1f134fc07aa153d612eb7
-  - DynamicPageList3:
-      repository: https://github.com/Universal-Omega/DynamicPageList3.git
-      branch: main
-      commit: b7a55c364da9561eb9d95b8fa80faa6a5ebdeda9
+  - DynamicPageList4:
+      repository: https://github.com/Universal-Omega/DynamicPageList4.git
+      branch: REL1_43
+      commit: ed0a71d544c768e02b44556b1caf7008dd50a279
   - Editcount:
       Wikidata ID: Q21676209
       commit: a81f6e9e404da0e82801fc12d91567d1cc143181
@@ -137,7 +139,7 @@ extensions:
       Wikidata ID: Q123153544
       repository: https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo.git
       branch: master
-      commit: 3d8124738d3f1696b42b6eba1d11e9aeae660551
+      commit: 86bbf18eece780ecd178af5211f4605a8f13e4f8
   - EventLogging:
       Wikidata ID: Q21676443
       commit: 411fc0d6c8538b0064e0d75b5302534c7f28ac50
@@ -187,8 +189,8 @@ extensions:
       commit: 145247abb87a61b4c19523ce62de37161780bd14
   - LinkTarget:
       Wikidata ID: Q21677320
-      branch: master
-      commit: 8ef5df73988aa591cc5b73bbcfabd7fab9604fe7
+      branch: REL1_43
+      commit: 79aa06ceeb1191e9ac67e35dc0d3b7c855238334
   - LockAuthor:
       Wikidata ID: Q123144339
       commit: 29fc3cad3e6b9c47c04161a03d758ff355ca5723
@@ -316,7 +318,7 @@ extensions:
       commit: d74ff7c4b98d72dda6bfccc597d496ef93953bfb
   - UploadWizard:
       Wikidata ID: Q11083660
-      commit: 16b2d111e4f5a1f30249d78965c536a592305caf
+      commit: 858aa6c42ac1224c634c12123ed727734d41edad
   - UrlGetParameters:
       Wikidata ID: Q21678958
       commit: 013427509ca51a710879c8811b6f4ef04d7b2e12
@@ -435,7 +437,8 @@ extensions:
   - YouTube:
       commit: 01673ce5f560fabe09b0feb1e65b57cbf58aae39
   - GoogleLogin:
-      gerrit_ref: refs/changes/54/1134354/1
+      branch: REL1_43
+      commit: 8d19a2b6b4aae21a241eedc9257213da199aa8c6
       additional steps:
         - composer update
   - VariablesLua:
@@ -526,6 +529,11 @@ extensions:
       Wikidata ID: Q21678654
       branch: REL1_43
       commit: 4303b01af935ef3edc6611f5038fb8052d1d61f9
+  - SemanticBreadcrumbLinks:
+      repository: https://github.com/SemanticMediaWiki/SemanticBreadcrumbLinks.git
+      branch: master
+      # Pin matches former CKN submodule (2.1.0-alpha); 3.0.0 requires SMW >= 7.0.
+      commit: bc69880ff2c33688138d1db1e3cc61acc6617221
 # Skins to install
 skins:
   - CologneBlue:
@@ -548,7 +556,8 @@ packages:
   - name: mediawiki/chameleon-skin
     version: 5.0.0
   - name: mediawiki/bootstrap-components
-    version: dev-master#476693d7a0f0de11bb67b775486950bff5cd1415 # >5.2.1
+    # 476693d on rel-522; avoid dev-master (Packagist alias requires bootstrap ^6, breaks chameleon 5.0.0)
+    version: dev-rel-522#476693d7a0f0de11bb67b775486950bff5cd1415
   - name: mediawiki/mermaid
     version: 3.1.0
   - name: mediawiki/remote-wiki
@@ -572,13 +581,16 @@ packages:
   # Not an extension, loaded so that we can use shell.php in the containers
   - name: psy/psysh
     # Match core constraint, DEMO-137
-    version: ^0.12.3
+    version: ^0.12.19
 # custom repositories for Composer to use
 repositories:
   - type: vcs
     url: https://github.com/WikiTeq/mediawiki-api-base.git
   - type: vcs
     url: https://github.com/WikiTeq/mediawiki-extension-RemoteWiki
+  - type: vcs
+    url: https://github.com/oetterer/BootstrapComponents.git
+    canonical: true
 # patches to apply; name is the file name in _sources/patches and path is
 # the git directory to apply it to in the built image, relative to $MW_HOME
 patches:

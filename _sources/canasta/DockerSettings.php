@@ -81,7 +81,7 @@ const DOCKER_EXTENSIONS = [
 	'DiscussionTools', # bundled
 	'DismissableSiteNotice',
 	'DisplayTitle',
-	'DynamicPageList3',
+	'DynamicPageList4',
 	'Echo', # bundled
 	'EditAccount',
 	'Editcount',
@@ -163,6 +163,7 @@ const DOCKER_EXTENSIONS = [
 	'Scribunto', # bundled
 	'SecureLinkFixer', # bundled
 	'SelectCategory',
+	'SemanticBreadcrumbLinks',
 	'SemanticCompoundQueries',
 	'SemanticDependencyUpdater', //  must be enabled after SemanticMediaWiki
 	'SemanticExtraSpecialProperties',
@@ -422,7 +423,8 @@ $wgSVGConverter = 'rsvg';
 
 ##### Improve performance
 # https://www.mediawiki.org/wiki/Manual:$wgMainCacheType
-switch ( getenv( 'MW_MAIN_CACHE_TYPE' ) ) {
+$tmpCacheType = getenv( 'MW_MAIN_CACHE_TYPE' );
+switch ( $tmpCacheType ) {
 	case 'CACHE_ACCEL':
 		# APC has several problems in latest versions of WediaWiki and extensions, for example:
 		# https://www.mediawiki.org/wiki/Extension:Flow#.22Exception_Caught:_CAS_is_not_implemented_in_Xyz.22
@@ -452,9 +454,20 @@ switch ( getenv( 'MW_MAIN_CACHE_TYPE' ) ) {
 		$wgMainCacheType = 'redis';
 		$wgSessionCacheType = CACHE_DB;
 		break;
+	case 'CACHE_NONE':
+		$wgMainCacheType = CACHE_NONE;
+		break;
 	default:
+		// STDERR constant is only available when running PHP from the CLI, we
+		// want this to also be logged to the system logs on normal requests
+		file_put_contents(
+			'php://stderr',
+			"[Taqasta] Unknown cache type! MW_MAIN_CACHE_TYPE=$tmpCacheType\n"
+		);
 		$wgMainCacheType = CACHE_NONE;
 }
+// Avoid pollution
+unset( $tmpCacheType );
 
 # Use Varnish accelerator
 $tmpProxy = getenv( 'MW_PROXY_SERVERS' );

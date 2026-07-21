@@ -18,7 +18,7 @@ RUN set -x; \
 	{{- if (index $details "repository") }}
 	{{ index $details "repository" }}
 	{{- else }}
-	https://gerrit.wikimedia.org/r/mediawiki/skins/{{- $name }}
+	https://github.com/wikimedia/mediawiki-skins-{{- $name }}
 	{{- end }} $MW_HOME/skins/{{- $name }} && \
 	cd $MW_HOME/skins/{{- $name }} && \
 	git checkout -q {{ $details.commit}}{{ if not (eq $index (sub $total 1) ) }} && \{{ end }}

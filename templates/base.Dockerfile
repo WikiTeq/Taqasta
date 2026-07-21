@@ -1,5 +1,5 @@
 ENV MW_VERSION=REL1_43 \
-	MW_CORE_VERSION=1.43.5 \
+	MW_CORE_VERSION=1.43.8 \
 	WWW_ROOT=/var/www/mediawiki \
 	MW_HOME=/var/www/mediawiki/w \
 	MW_LOG=/var/log/mediawiki \
@@ -60,6 +60,7 @@ RUN set x; \
 	php8.3-apcu \
 	php8.3-redis \
 	php8.3-curl \
+	php8.3-ldap \
 	php8.3-tidy \
 	php8.3-zip \
 	php8.3-xhprof \
@@ -113,4 +114,4 @@ RUN set -x; \
 # Composer
 RUN set -x; \
 	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-	composer self-update 2.8.12
+	composer self-update 2.10.1

@@ -30,6 +30,8 @@ RUN set -x; \
 	git clone --recurse-submodules{{ if not (index $details "full_history") }} --single-branch{{ end }} -b {{ default "$MW_VERSION" (index $details "branch") }} \
 	{{- if (index $details "repository") }}
 	{{ index $details "repository" }}
+	{{- else if (not (index $details "gerrit_ref")) }}
+	https://github.com/wikimedia/mediawiki-extensions-{{- $name }}
 	{{- else }}
 	https://gerrit.wikimedia.org/r/mediawiki/extensions/{{- $name }}
 	{{- end }} $MW_HOME/extensions/{{- $name }} && \
