@@ -4,7 +4,7 @@
 
 Taqasta has basic end-to-end integration tests set up using [Playwright](https://playwright.dev/). These tests verify that a MediaWiki installation is working correctly after deployment.
 
-Locally, tests run inside the e2e Docker container rather than on the host to reduce npm supply-chain risk — see [Protect yourself from npm](https://timotijhof.net/posts/2019/protect-yourself-from-npm/). In GitHub Actions CI, Playwright runs on the runner against `http://localhost:8000` while the web stack runs in Docker Compose.
+Locally, tests run inside the e2e Docker container rather than on the host to reduce npm supply-chain risk — see [Protect yourself from npm](https://timotijhof.net/posts/2019/protect-yourself-from-npm/).
 
 ## Overview
 
