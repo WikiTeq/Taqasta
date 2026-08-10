@@ -118,7 +118,7 @@ RUN set -x; \
 # Composer
 RUN set -x; \
 	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-	&& composer self-update 2.10.1
+	&& composer self-update 2.1.3
 
 FROM base AS core
 # MediaWiki core
@@ -1000,11 +1000,9 @@ COPY --from=extensions $MW_HOME/extensions $MW_HOME/extensions
 
 # Composer dependencies
 COPY _sources/configs/composer.wikiteq.json $MW_HOME/composer.local.json
-# merge-plugin and composer/installers must run as root during docker build
 # Run with secret mounted to /run/secrets/COMPOSER_TOKEN
 # This is needed to bypass rate limits
 RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME \
-	&& export COMPOSER_ALLOW_SUPERUSER=1 \
 	&& cp composer.json composer.json.bak \
 	&& cat composer.json.bak | jq '. + {"minimum-stability": "dev"}' > composer.json \
 	&& rm composer.json.bak \
@@ -1012,8 +1010,8 @@ RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME \
 	&& cat composer.json.bak | jq '. + {"prefer-stable": true}' > composer.json \
 	&& rm composer.json.bak \
 	&& composer clear-cache \
-	# configure auth
-	&& if [ -f "/run/secrets/COMPOSER_TOKEN" ]; then composer config -g github-oauth.github.com $(cat /run/secrets/COMPOSER_TOKEN); fi \
+	# configure auth (trim CR/LF — GITHUB_TOKEN via buildkit can include a trailing newline)
+	&& if [ -f "/run/secrets/COMPOSER_TOKEN" ]; then composer config -g github-oauth.github.com "$(tr -d '\r\n' </run/secrets/COMPOSER_TOKEN)"; fi \
 	&& composer update --no-dev --with-dependencies \
 	&& composer clear-cache \
 	# deauth
