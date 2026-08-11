@@ -1010,12 +1010,12 @@ RUN --mount=type=secret,id=COMPOSER_TOKEN cd $MW_HOME \
 	&& cat composer.json.bak | jq '. + {"prefer-stable": true}' > composer.json \
 	&& rm composer.json.bak \
 	&& composer clear-cache \
-	# configure auth
-	&& if [ -f "/run/secrets/COMPOSER_TOKEN" ]; then composer config -g github-oauth.github.com $(cat /run/secrets/COMPOSER_TOKEN); fi \
+	# configure auth (trim CR/LF — GITHUB_TOKEN via buildkit can include a trailing newline)
+	&& if [ -f "/run/secrets/COMPOSER_TOKEN" ]; then composer config -g github-oauth.github.com "$(tr -d '\r\n' </run/secrets/COMPOSER_TOKEN)"; fi \
 	&& composer update --no-dev --with-dependencies \
 	&& composer clear-cache \
-    # deauth
-    && composer config -g --unset github-oauth.github.com
+	# deauth
+	&& composer config -g --unset github-oauth.github.com
 
 # Move files around
 RUN set -x; \
