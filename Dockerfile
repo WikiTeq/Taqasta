@@ -144,9 +144,10 @@ RUN set -x; \
 	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-AdvancedSearch $MW_HOME/extensions/AdvancedSearch \
 	&& cd $MW_HOME/extensions/AdvancedSearch \
 	&& git checkout -q 1a44eafc93a17938333b74a37cb4deff2192e50a \
-	# AJAXPoll
-	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-AJAXPoll $MW_HOME/extensions/AJAXPoll \
+	# AJAXPoll (REL1_39 branch removed upstream; fetch pin by SHA)
+	&& git clone https://github.com/wikimedia/mediawiki-extensions-AJAXPoll $MW_HOME/extensions/AJAXPoll \
 	&& cd $MW_HOME/extensions/AJAXPoll \
+	&& git fetch origin 8429d8d4cba5be6df04e3fec17b0daabbf10cfa7 \
 	&& git checkout -q 8429d8d4cba5be6df04e3fec17b0daabbf10cfa7 \
 	# AntiSpoof
 	&& git clone --single-branch -b $MW_VERSION https://github.com/wikimedia/mediawiki-extensions-AntiSpoof $MW_HOME/extensions/AntiSpoof \
