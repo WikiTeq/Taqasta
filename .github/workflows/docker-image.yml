@@ -2,19 +2,20 @@ name: Docker build and push
 
 # limit concurrency
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#examples-using-concurrency-and-the-default-behavior
-concurrency: docker_canasta_wikiteq_main
+concurrency: docker_wikiteq_canasta
 
 on:
   push:
-    # Only activate for `master` branch
     branches:
-      - wikiteq
+      - canasta
 
-  # Plus for any pull-requests
+  # PRs targeting the canasta branch
   pull_request:
+    branches:
+      - canasta
 
 env:
-  IMAGE_NAME: canasta
+  IMAGE_NAME: wikiteq-canasta
 
 jobs:
   # Test the image Dockerfile syntax using https://github.com/replicatedhq/dockerfilelint
@@ -32,9 +33,8 @@ jobs:
 
   # Push image to GitHub Packages.
   # The image tag pattern is:
-  # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.35.2-20210125-25
-  # for tags: <TAG>
-  # for `master` branch: latest + <MW_VERSION>-latest + <MW_CORE_VERSION>-<DATE>-<SHA>
+  # for pull-requests: <MW_CORE_VERSION>-<DATE>-<PR_NUMBER>, eg: 1.39.17-20260811-25
+  # for canasta branch: <MW_CORE_VERSION>-<DATE>-<SHA>, eg: 1.39.17-20260811-cbb4ba7
   # <MW_CORE_VERSION> being parsed from the Dockerfile
   push:
     needs: [test]
@@ -49,51 +49,35 @@ jobs:
         run: |
 
           # Image ID
-          IMAGE_ID=ghcr.io/canastawiki/$IMAGE_NAME
+          IMAGE_ID=ghcr.io/wikiteq/$IMAGE_NAME
 
           # Date
           BDATE=$(date +%Y%m%d)
 
           # Extract MW version from Dockerfile
           MEDIAWIKI_VERSION=$(sed -nr 's/MW_CORE_VERSION\=([0-9\.]+)/\1/p' Dockerfile | sed "s/ \\\//" | sed "s/\t//")
-          # Extract MW major version (like 1.35)
-          MEDIAWIKI_MAJOR_VERSION=${MEDIAWIKI_VERSION%.*}
 
           # Change all uppercase to lowercase, just in case
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
-          # Strip git ref prefix from version and use it as suffix for version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          
-          # Get the Canasta version from the "VERSION" file
-          CANASTA_VERSION=$(cat VERSION)
+          SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)
+          [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-7)
 
-          # For pull requests just extract the PR number
           PR_NUMBER=""
-          [ "${{ github.event_name }}" == "pull_request" ] && VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\)/merge,\1,')
-          [ "${{ github.event_name }}" == "pull_request" ] && PR_NUMBER=$VERSION
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            PR_NUMBER=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\)/merge,\1,')
+            VERSION=$MEDIAWIKI_VERSION-$BDATE-$PR_NUMBER
+          else
+            VERSION=$MEDIAWIKI_VERSION-$BDATE-$SHA_SHORT
+          fi
 
-          # Append version
-          [ "${{ github.event_name }}" == "pull_request" ] && VERSION=$MEDIAWIKI_VERSION-$BDATE-$VERSION
+          REGISTRY_TAGS=$IMAGE_ID:$VERSION
 
-          # Strip "v" prefix from tag name if it's a tag
-          # [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention if it's a `wikiteq` branch build
-          [ "$VERSION" == "wikiteq" ] && VERSION=stable
-          
-          SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-8)
-          [ "${{ github.event_name }}" == "pull_request" ] && SHA_SHORT=$(echo ${{ github.event.pull_request.head.sha }} | cut -c1-8)
-          
-          # Compose REGISTRY_TAGS variable
-          REGISTRY_TAGS=$IMAGE_ID:wikiteq-$SHA_SHORT
-
-          # Special case for wikiteq branch
-          [ "$VERSION" == "stable" ] && REGISTRY_TAGS=$REGISTRY_TAGS,$IMAGE_ID:wikiteq-stable
-          
           echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
           echo REGISTRY_TAGS=$REGISTRY_TAGS
-        
+          echo SHA_SHORT=$SHA_SHORT
+
           echo "Final image tag to be pushed:"
           echo $REGISTRY_TAGS
           echo "REGISTRY_TAGS=$REGISTRY_TAGS" >> $GITHUB_OUTPUT
@@ -129,7 +113,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64,linux/arm64
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
@@ -157,6 +141,6 @@ jobs:
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: comment
-          message: ":whale: The image based on [${{ steps.generate.outputs.SHA_SHORT }}](https://github.com/CanastaWiki/Canasta/pull/${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ steps.generate.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }})"
+          message: ":whale: The image based on [${{ steps.generate.outputs.SHA_SHORT }}](https://github.com/WikiTeq/Taqasta/pull/${{ steps.generate.outputs.REGISTRY_TAGS_PR_NUMBER }}/commits/${{ github.event.pull_request.head.sha }}) commit has been built with `${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}` tag as [${{ steps.generate.outputs.REGISTRY_TAGS }}](https://github.com/${{ github.repository }}/pkgs/container/${{ env.IMAGE_NAME }}/${{ steps.docker_build.outputs.imageid }}?tag=${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }})"
           recreate: true
           fail: false
