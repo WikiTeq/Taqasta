@@ -570,7 +570,7 @@ skins:
   - Citizen:
       repository: https://github.com/StarCitizenTools/mediawiki-skins-Citizen.git
       branch: main
-      commit: fc983f4601d43a6a2695c89f615178a2a0c1d62c
+      commit: 646f80ed5e8f0578d7d941a157b20b3bd78f9b93
 # Composer packages (extensions) to install
 packages:
   - name: mediawiki/semantic-media-wiki
