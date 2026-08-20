@@ -23,6 +23,10 @@ wfLoadExtension( 'SyntaxHighlight_GeSHi' );
 wfLoadExtension( 'CommentStreams' );
 $wgCommentStreamsEnableVoting = true;
 $wgCommentStreamsNotifier = 'echo';
+# <no-comment-streams /> - add to disable comments on the page
+# <comment-streams /> - add to enable comments on the page
+# outside of the namespaces list below
+$wgCommentStreamsAllowedNamespaces = [0];
 wfLoadExtension( 'Echo' );
 wfLoadExtension( 'VEForAll' );
 wfLoadExtension( 'Linter' );
@@ -30,12 +34,6 @@ wfLoadExtension( 'DiscussionTools' );
 wfLoadExtension( 'RelatedArticles' );
 wfLoadExtension( 'RevisionSlider' );
 wfLoadExtension( 'TemplateData' );
-$wgCommentStreamsEnableVoting = true;
-$wgCommentStreamsNotifier = 'echo';
-# <no-comment-streams /> - add to disable comments on the page
-# <comment-streams /> - add to enable comments on the page
-# outside of the namespaces list below
-$wgCommentStreamsAllowedNamespaces = [0];
 
 wfLoadSkin( 'Citizen' );
 $wgRelatedArticlesFooterAllowedSkins[] = 'citizen';
