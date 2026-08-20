@@ -16,6 +16,7 @@ Extensions, skins, and patches are defined in [values.yml](../values.yml).
 | LTS MediaWiki upgrades | [upgrades/mediawiki-major.md](upgrades/mediawiki-major.md) |
 | PHP version upgrades | [upgrades/php.md](upgrades/php.md) |
 | End-to-end tests (Playwright) | [../e2e/README.md](../e2e/README.md) |
+| Citizen skin recommended extensions configuration | [citizen.md](citizen.md) |
 
 ## LTS policy
 
