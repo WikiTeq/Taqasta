@@ -19,7 +19,7 @@ wfLoadExtension( 'AccountInfo' );
 wfLoadExtension( 'AdvancedSearch' );
 wfLoadExtension( 'CleanChanges' );
 wfLoadExtension( 'CodeMirror' );
-wfLoadExtension( 'SyntaxHighlight' );
+wfLoadExtension( 'SyntaxHighlight_GeSHi' );
 wfLoadExtension( 'CommentStreams' );
 $wgCommentStreamsEnableVoting = true;
 $wgCommentStreamsNotifier = 'echo';
