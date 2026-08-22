@@ -158,6 +158,14 @@ jobs:
         run: echo ${{ steps.generate.outputs.REGISTRY_TAGS }}
 
       -
+        # Assert the built image contains the patched MassMessage hook backported via
+        # refs/changes/60/1198560 (WIK-2267); fails the job if the string is absent.
+        name: Smoke check patched MassMessage hook
+        run: |
+          docker run --rm --platform linux/amd64 --entrypoint /bin/sh "ghcr.io/wikiteq/${IMAGE_NAME}:${{ steps.generate.outputs.REGISTRY_TAGS_VERSION }}" \
+            -c 'grep "MassMessageJobBeforeMessageSent" /var/www/mediawiki/w/extensions/MassMessage/includes/Job/MassMessageJob.php'
+
+      -
         name: Notify about image tag
         if: github.event_name == 'pull_request' && steps.docker_build.outputs.digest != ''
         uses: hasura/comment-progress@v2.2.0
