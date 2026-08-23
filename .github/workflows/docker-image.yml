@@ -48,6 +48,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read Taqasta version
+        run: echo "TAQASTA_VERSION=$(cat VERSION)" >> "$GITHUB_ENV"
+
       - name: Claim disk space
         uses: ./.github/actions/reduce-disk-space
 
@@ -75,6 +78,8 @@ jobs:
           platforms: linux/amd64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          build-args: |
+            TAQASTA_VERSION=${{ env.TAQASTA_VERSION }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           # should be fine, but may need to add branch specific cache plus a fallback to master
           cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64
@@ -230,6 +235,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read Taqasta version
+        run: echo "TAQASTA_VERSION=$(cat VERSION)" >> "$GITHUB_ENV"
+
       - name: Claim disk space
         uses: ./.github/actions/reduce-disk-space
 
@@ -257,6 +265,8 @@ jobs:
           platforms: linux/amd64
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          build-args: |
+            TAQASTA_VERSION=${{ env.TAQASTA_VERSION }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           # should be fine, but may need to add branch specific cache plus a fallback to master
           cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64
@@ -355,6 +365,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read Taqasta version
+        run: echo "TAQASTA_VERSION=$(cat VERSION)" >> "$GITHUB_ENV"
+
       - name: Claim disk space
         uses: ./.github/actions/reduce-disk-space
 
@@ -388,6 +401,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           secrets: |
             COMPOSER_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          build-args: |
+            TAQASTA_VERSION=${{ env.TAQASTA_VERSION }}
           tags: ${{ needs.tags.outputs.REGISTRY_TAGS }}
           # should be fine, but may need to add branch specific cache plus a fallback to master
           cache-from: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-${{ env.PLATFORM_PAIR }}
