@@ -1,0 +1,25 @@
+# Rollback / fallback stack: run the previously bundled Apache inside the
+# web container instead of the external nginx + php-fpm pair (WIK-2139).
+#
+# Usage (from the directory of the base compose file):
+#   docker compose -f docker-compose.sample.yml -f docker-compose.apache.yml up -d
+#
+# Requires Docker Compose v2.24+ for the !override YAML tags.
+services:
+  web:
+    # Switch the entrypoint back to the bundled Apache
+    command: /run-apache.sh
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--method=HEAD", "http://127.0.0.1/w/api.php"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Take over publication of the external HTTP port from the nginx service
+    ports: !override
+      - "${PORT:-127.0.0.1:8000}:80"
+
+  nginx:
+    # Exclude nginx from this stack variant
+    deploy:
+      replicas: 0

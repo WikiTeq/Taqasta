@@ -32,7 +32,43 @@ Click the label to hide the frame and the label for 20 seconds on the current pa
 |------|---------|
 | [docker-compose.yml](../docker-compose.yml) | CI / E2E stack (not for production use as-is) |
 | [docker-compose.sample.yml](../docker-compose.sample.yml) | Local development reference |
+| [docker-compose.apache.yml](../docker-compose.apache.yml) | Rollback override: run the bundled Apache instead of nginx + php-fpm |
 | [main/kubernetes/](../main/kubernetes/) | Example Kubernetes manifests (wiki, runjobs, mysql, …) |
+
+## Web server: external Nginx vs bundled Apache
+
+Since WIK-2139 the default stack serves HTTP with a dedicated `nginx` container
+(`nginx:alpine`) instead of the Apache instance bundled in the web image:
+
+- The `web` container runs php-fpm on port 9000 (`/run-apache-fpm.sh`). Its
+  entrypoint performs the same bootstrap as before (volume sync, permissions,
+  settings check, maintenance scripts); only the server start differs.
+- The entrypoint mirrors the document root into `$MW_VOLUME/docroot`
+  (`/mediawiki/docroot` inside the volume), so nginx can serve static files
+  from the same content. Wiki code updates are re-synced into the mirror.
+- The nginx configuration lives in `_sources/configs/nginx/` and replicates
+  the previous Apache behavior: short URLs through `/w/index.php`, artificial
+  `robots.txt`, `.git` 404s, `/server-status` from localhost, maintenance-mode
+  503 while `.maintenance` exists, one-year expiry headers for static assets,
+  and `client_max_body_size` matching the PHP upload limits. Only MediaWiki
+  entry points (`index`, `load`, `api`, `rest`, `img_auth`, …) are passed to
+  php-fpm; any other `.php` request is answered with 404.
+- In Compose the upstream is configured via `NGINX_UPSTREAM` (default
+  `web:9000`) and the body size limit via `NGINX_CLIENT_MAX_BODY_SIZE`.
+
+### Rolling back to the bundled Apache
+
+The image still contains Apache; restore the previous stack behavior by
+adding the override file:
+
+```bash
+docker compose -f docker-compose.sample.yml -f docker-compose.apache.yml up -d
+```
+
+This runs `/run-apache.sh` in the `web` container again and drops the nginx
+service. It requires Docker Compose v2.24+ (for the `!override` YAML tags);
+with older versions remove the `nginx` service and set
+`command: /run-apache.sh` plus the port mapping manually.
 
 ## `.htaccess` overrides
 

@@ -1,4 +1,24 @@
-# # Note: this is a dummy Compose file for CI, do not modify or use it until you know what you're doing
+# Note: this is a dummy Compose file for CI, do not modify or use it until you know what you're doing
+x-web-environment: &x-web-environment
+    MW_ADMIN_USER: ${MW_ADMIN_USER:-admin}
+    MW_ADMIN_PASS: ${MW_ADMIN_PASS:-Passsw0rd!}
+    MW_DB_NAME: ${MW_DB_NAME:-mediawiki}
+    MW_DB_INSTALLDB_USER: root
+    MW_DB_INSTALLDB_PASS: ${MW_DB_INSTALLDB_PASS:-mediawiki}
+    MW_DB_USER: root
+    MW_DB_PASS: ${MW_DB_PASS:-mediawiki}
+    MW_SITE_SERVER:
+    MW_SITE_NAME:
+    MW_SITE_LANG:
+    MW_DB_TYPE: ${MW_DB_TYPE:-mysql}
+    MW_SHOW_EXCEPTION_DETAILS:
+    PHP_UPLOAD_MAX_FILESIZE: 500M
+    PHP_POST_MAX_SIZE: 500M
+
+x-web-volumes: &x-web-volumes
+    - mediawiki:/mediawiki
+    - ./e2e/LocalSettings.php:/var/www/mediawiki/w/_settings/LocalSettings.php
+
 services:
     db:
         image: mysql:8.0
@@ -20,35 +40,47 @@ services:
             context: .
             dockerfile: Dockerfile
         restart: "no"
-        ports:
-            - "${PORT:-127.0.0.1:8000}:80"
         depends_on:
             - db
+        environment: *x-web-environment
+        volumes: *x-web-volumes
+        healthcheck:
+            # php-fpm mode (WIK-2139): HTTP is served by the nginx service,
+            # so probe the local php-fpm listener instead of an HTTP endpoint
+            test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/9000"]
+            interval: 10s
+            timeout: 5s
+            retries: 12
+            start_period: 60s
+
+    nginx:
+        image: nginx:alpine
+        restart: "no"
+        # External HTTP entrypoint replacing the previously published Apache
+        # port on the web service (WIK-2139)
+        ports:
+            - "${PORT:-127.0.0.1:8000}:80"
         environment:
-            - MW_ADMIN_USER=${MW_ADMIN_USER:-admin}
-            - MW_ADMIN_PASS=${MW_ADMIN_PASS:-Passsw0rd!}
-            - MW_DB_NAME=${MW_DB_NAME:-mediawiki}
-            - MW_DB_INSTALLDB_USER=root
-            - MW_DB_INSTALLDB_PASS=${MW_DB_INSTALLDB_PASS:-mediawiki}
-            - MW_DB_USER=root
-            - MW_DB_PASS=${MW_DB_PASS:-mediawiki}
-            - MW_SITE_SERVER
-            - MW_SITE_NAME
-            - MW_SITE_LANG
-            - MW_DB_TYPE=${MW_DB_TYPE:-mysql}
-            - MW_SHOW_EXCEPTION_DETAILS
-            - PHP_UPLOAD_MAX_FILESIZE=500M
-            - PHP_POST_MAX_SIZE=500M
+            NGINX_UPSTREAM: web:9000
+            NGINX_CLIENT_MAX_BODY_SIZE: ${NGINX_CLIENT_MAX_BODY_SIZE:-500M}
         volumes:
-            - mediawiki:/mediawiki
-            - ./e2e/LocalSettings.php:/var/www/mediawiki/w/_settings/LocalSettings.php
+            - mediawiki:/mediawiki:ro
+            - ./_sources/configs/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            # Rendered by the official image's envsubst-on-templates mechanism
+            # (NGINX_UPSTREAM / NGINX_CLIENT_MAX_BODY_SIZE placeholders)
+            - ./_sources/configs/nginx/vhost.conf.template:/etc/nginx/templates/default.conf.template:ro
+            - ./_sources/configs/nginx/fastcgi_params.conf:/etc/nginx/fastcgi_params.conf:ro
+        depends_on:
+            web:
+                condition: service_healthy
 
     e2e:
         build:
             context: ./e2e
             dockerfile: Dockerfile
         depends_on:
-            - web
+            web:
+                condition: service_healthy
         # Load `npx playwright show-report --host 0.0.0.0` to access reports
         # on localhost:9323
         ports:

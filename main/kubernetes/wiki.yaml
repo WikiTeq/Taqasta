@@ -76,15 +76,21 @@ spec:
               mkdir -p /var/www/mediawiki/w/_settings
               ln -sf /git/head/main/LocalSettings.dev.php /var/www/mediawiki/w/_settings/LocalSettings.php
 
-              # Apache is following symlinks, but with each new commit git-sync is recreating the /git/head symlink, so we are forcing Apache to read them
+              # WIK-2139: this container runs php-fpm; HTTP and static files
+              # are served by the nginx sidecar from the docroot mirror in
+              # $MW_VOLUME/docroot. The bootstrap inside run-apache-fpm.sh
+              # already synced the mirror once; this background loop refreshes
+              # it periodically so nginx picks up git-sync deployments.
               (
                 while true; do
-                inotifywait -e MOVE_SELF,DELETE_SELF /git/head && apache2ctl graceful
-                sleep 1
+                  rsync -a --delete \
+                    --exclude '/images/' --exclude '/log/' \
+                    /var/www/mediawiki/ "$MW_VOLUME/docroot/" || true
+                  sleep 60
                 done
               ) &
-              # Start Apache in foreground
-              /run-apache.sh
+              # Start php-fpm in foreground
+              /run-apache-fpm.sh
           envFrom:
             - configMapRef:
                 name: wiki-env
@@ -108,7 +114,9 @@ spec:
                   name: mysql-password
                   key: password
           ports:
-          - containerPort: 80
+          # WIK-2139: php-fpm listener; HTTP is served by the nginx sidecar
+          - containerPort: 9000
+            name: fpm
           volumeMounts:
           - name: git
             mountPath: /git
@@ -116,6 +124,47 @@ spec:
             mountPath: /mediawiki
           - name: images
             mountPath: /mediawiki/images
+        # WIK-2139: external nginx sidecar replaces the bundled Apache. It
+        # serves static files from the docroot mirrored into the shared
+        # "data" volume and forwards PHP to php-fpm on the taqasta container.
+        - name: nginx
+          image: nginx:alpine
+          ports:
+          - containerPort: 80
+            name: http
+          env:
+          - name: NGINX_UPSTREAM
+            value: localhost:9000
+          - name: NGINX_CLIENT_MAX_BODY_SIZE
+            value: 500M
+          volumeMounts:
+          - name: data
+            mountPath: /mediawiki
+            readOnly: true
+          - name: nginx-config
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+            readOnly: true
+          - name: nginx-config
+            mountPath: /etc/nginx/templates/default.conf.template
+            subPath: default.conf.template
+            readOnly: true
+          - name: nginx-config
+            mountPath: /etc/nginx/fastcgi_params.conf
+            subPath: fastcgi_params.conf
+            readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
       volumes:
       - name: data
         persistentVolumeClaim:
@@ -129,6 +178,10 @@ spec:
         secret:
           secretName: gitsync-ghappprivatekey
           defaultMode: 0400
+      # WIK-2139: nginx sidecar configuration
+      - name: nginx-config
+        configMap:
+          name: wiki-nginx-config
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -162,8 +215,9 @@ metadata:
   name: wiki-service
 spec:
   ports:
+    # WIK-2139: served by the nginx sidecar container (was: bundled Apache)
   - port: 80
-    targetPort: 80
+    targetPort: http
   selector:
     app: wiki
 ---
@@ -191,3 +245,117 @@ spec:
             name: wiki-service
             port:
               number: 80
+---
+# WIK-2139: configuration for the nginx sidecar container
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wiki-nginx-config
+data:
+  nginx.conf: |
+    user  nginx;
+    worker_processes  auto;
+    error_log  /var/log/nginx/error.log notice;
+    pid        /var/run/nginx.pid;
+    events {
+        worker_connections  1024;
+    }
+    http {
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+        sendfile           on;
+        tcp_nopush         on;
+        keepalive_timeout  65;
+        server_tokens      off;
+        include /etc/nginx/conf.d/*.conf;
+    }
+  default.conf.template: |
+    # Placeholders are rendered at start by the official image's
+    # envsubst-on-templates mechanism (NGINX_UPSTREAM / NGINX_CLIENT_MAX_BODY_SIZE).
+    upstream taqasta_fpm {
+        server ${NGINX_UPSTREAM};
+    }
+    server {
+        listen 80 default_server;
+        server_name _;
+        root /mediawiki/docroot;
+        index index.php;
+        client_max_body_size ${NGINX_CLIENT_MAX_BODY_SIZE};
+        merge_slashes off;
+        autoindex off;
+
+        if (-f $document_root/.maintenance) {
+            return 503;
+        }
+        error_page 503 @maintenance_503;
+        location @maintenance_503 {
+            internal;
+            default_type text/html;
+            add_header Retry-After "300" always;
+            return 503 "<!DOCTYPE html>\n<html><head><title>503 Service Temporarily Unavailable</title></head><body><center><h1>503 Service Temporarily Unavailable</h1><hr/>nginx</center></body></html>\n";
+        }
+
+        location = /server-status {
+            allow 127.0.0.1;
+            deny all;
+            stub_status;
+        }
+
+        location ~ /\.git {
+            return 404;
+        }
+
+        location ~* ^/(?:robots\.php|w/(?:index|load|api|rest|img_auth|thumb|opensearch_desc)\.php|w/mw-config/index\.php)(?:$|/) {
+            fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+            include fastcgi_params.conf;
+            fastcgi_param PATH_INFO $fastcgi_path_info;
+            fastcgi_pass taqasta_fpm;
+        }
+
+        location ~* \.php$ {
+            return 404;
+        }
+
+        location = /robots.txt {
+            include fastcgi_params.conf;
+            fastcgi_param SCRIPT_NAME /robots.php;
+            fastcgi_param SCRIPT_FILENAME $realpath_root/robots.php;
+            fastcgi_param PATH_INFO "";
+            fastcgi_pass taqasta_fpm;
+        }
+
+        location ~* \.(?:jpg|jpeg|gif|png|webp|svg|ico|mp4|mpeg|mpg|m4v|mov|wmv|avi|webm|ogv|eot|ttf|otf|woff|woff2)$ {
+            expires 1y;
+            add_header Cache-Control "public";
+            log_not_found off;
+            try_files $uri =404;
+        }
+
+        location / {
+            try_files $uri $uri/ @indexrouter;
+        }
+        location @indexrouter {
+            rewrite ^ /w/index.php last;
+        }
+    }
+  fastcgi_params.conf: |
+    fastcgi_param  SCRIPT_FILENAME    $realpath_root$fastcgi_script_name;
+    fastcgi_param  QUERY_STRING       $query_string;
+    fastcgi_param  REQUEST_METHOD     $request_method;
+    fastcgi_param  CONTENT_TYPE       $content_type;
+    fastcgi_param  CONTENT_LENGTH     $content_length;
+    fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+    fastcgi_param  REQUEST_URI        $request_uri;
+    fastcgi_param  DOCUMENT_URI       $document_uri;
+    fastcgi_param  DOCUMENT_ROOT      $document_root;
+    fastcgi_param  SERVER_PROTOCOL    $server_protocol;
+    fastcgi_param  REQUEST_SCHEME     $scheme;
+    fastcgi_param  HTTPS              $https if_not_empty;
+    fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+    fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;
+    fastcgi_param  REMOTE_ADDR        $remote_addr;
+    fastcgi_param  REMOTE_PORT        $remote_port;
+    fastcgi_param  SERVER_ADDR        $server_addr;
+    fastcgi_param  SERVER_PORT        $server_port;
+    fastcgi_param  SERVER_NAME        $server_name;
+    fastcgi_param  REDIRECT_STATUS    200;

@@ -270,7 +270,9 @@ if [ -e "$MW_VOLUME/LocalSettings.php" ] && [ ! -e "$MW_HOME/LocalSettings.php" 
     ln -s "$MW_VOLUME/LocalSettings.php" "$MW_HOME/LocalSettings.php"
 fi
 
-rm "$WWW_ROOT/.maintenance"
+rm -f "$WWW_ROOT/.maintenance"
+# Keep the external nginx mirror in sync (WIK-2139); see run-apache-pre.sh.
+rm -f "$MW_VOLUME/docroot/.maintenance"
 
 # Reload the settings
 WG_DB_TYPE=$(get_mediawiki_variable wgDBtype)
