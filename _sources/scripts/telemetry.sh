@@ -13,6 +13,7 @@
 # swallowed, so telemetry can never affect wiki operation.
 
 TELEMETRY_INTERVAL="${TELEMETRY_INTERVAL:-86400}"
+case "$TELEMETRY_INTERVAL" in ''|*[!0-9]*|0) TELEMETRY_INTERVAL=86400;; esac
 
 if [ -n "$NO_TELEMETRY" ]; then
 	exit 0
