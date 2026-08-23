@@ -79,6 +79,15 @@ services:
       - db
     environment: *x-web-environment
     volumes: *x-web-volumes
+    # WIK-2139: php-fpm mode — HTTP is served by the nginx service, so probe
+    # the local php-fpm listener instead of an HTTP endpoint (same probe as
+    # docker-compose.yml; the image's baked-in Apache HTTP check never passes)
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/9000"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
 
   nginx:
     image: nginx:alpine
@@ -103,7 +112,10 @@ services:
       web:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/server-status"]
+      # Self-contained probe: nginx answers with the maintenance page even
+      # while the web/fpm service is down, so don't probe /server-status
+      # (it proxies to fpm and churns health whenever web restarts)
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
       interval: 30s
       timeout: 5s
       retries: 3

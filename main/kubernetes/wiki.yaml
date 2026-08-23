@@ -86,7 +86,7 @@ spec:
                   rsync -a --delete \
                     --exclude '/images/' --exclude '/log/' \
                     /var/www/mediawiki/ "$MW_VOLUME/docroot/" || true
-                  sleep 60
+                  sleep 15
                 done
               ) &
               # Start php-fpm in foreground
@@ -129,6 +129,26 @@ spec:
         # "data" volume and forwards PHP to php-fpm on the taqasta container.
         - name: nginx
           image: nginx:alpine
+          # WIK-2139: don't start the nginx daemon until the docroot mirror
+          # exists ($MW_VOLUME/docroot/w/index.php is synced by the taqasta
+          # entrypoint); otherwise this sidecar crash-loops on config/render
+          # failures while docroot is still missing. Give up after ~10 min.
+          command:
+            - sh
+            - -c
+            - |
+              i=0
+              until [ -f /mediawiki/docroot/w/index.php ]; do
+                if [ "$i" -ge 120 ]; then
+                  echo "nginx sidecar: timed out waiting for /mediawiki/docroot/w/index.php" >&2
+                  exit 1
+                fi
+                echo "nginx sidecar: waiting for docroot mirror..."
+                i=$((i + 1))
+                sleep 5
+              done
+              echo "nginx sidecar: docroot mirror ready, starting nginx"
+              exec nginx-daemon
           ports:
           - containerPort: 80
             name: http
@@ -194,7 +214,9 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
+      # WIK-2139: the docroot mirror duplicates the full wiki tree including
+      # vendor/ (~1-2 GB) on top of the volume's other contents; keep headroom.
+      storage: 5Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -309,6 +331,9 @@ data:
             fastcgi_split_path_info ^(.+?\.php)(/.*)$;
             include fastcgi_params.conf;
             fastcgi_param PATH_INFO $fastcgi_path_info;
+            # Long-running PHP entry points (e.g. uploads, jobs) — matches the
+            # PHP max_execution_time headroom the Apache setup relied on.
+            fastcgi_read_timeout 300s;
             fastcgi_pass taqasta_fpm;
         }
 
@@ -332,7 +357,7 @@ data:
         }
 
         location / {
-            try_files $uri $uri/ @indexrouter;
+            try_files $uri @indexrouter;
         }
         location @indexrouter {
             rewrite ^ /w/index.php last;

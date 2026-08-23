@@ -30,8 +30,11 @@ server {
     # Mirrors PHP_POST_MAX_SIZE / PHP_UPLOAD_MAX_FILESIZE.
     client_max_body_size ${NGINX_CLIENT_MAX_BODY_SIZE};
 
-    # Apache "AllowEncodedSlashes NoDecode" parity for VisualEditor
-    # (T262392); requires nginx >= 1.29.0 (nginx:alpine satisfies this).
+    # Documented deviation from Apache "AllowEncodedSlashes NoDecode"
+    # (VisualEditor, T262392): nginx decodes %2F before location matching
+    # (merge_slashes off only preserves duplicate "//"), so PATH_INFO can
+    # differ from Apache for encoded slashes. No upstream equivalent exists
+    # as of nginx 1.29 (tracked in nginx/nginx#501).
     merge_slashes off;
     autoindex off;
 
@@ -75,6 +78,9 @@ server {
         fastcgi_split_path_info ^(.+?\.php)(/.*)$;
         include fastcgi_params.conf;
         fastcgi_param PATH_INFO $fastcgi_path_info;
+        # Long-running PHP entry points (e.g. uploads, jobs) — matches the
+        # PHP max_execution_time headroom the Apache setup relied on.
+        fastcgi_read_timeout 300s;
         fastcgi_pass taqasta_fpm;
     }
 
@@ -102,11 +108,14 @@ server {
         try_files $uri =404;
     }
 
-    # Short URLs: everything that is not an existing file or directory is
-    # routed to /w/index.php (the .htaccess catch-all RewriteRule); "/"
-    # reaches Main Page through the index directive the same way.
+    # Short URLs: everything that is not an existing file is routed to
+    # /w/index.php (the .htaccess catch-all RewriteRule); "/" reaches Main
+    # Page through the index directive the same way. Unlike Apache's
+    # !-f/!-d catch-all, existing directories are NOT served as listings
+    # (autoindex off) — they must route to PHP, otherwise a page title that
+    # matches a docroot directory name would 404.
     location / {
-        try_files $uri $uri/ @indexrouter;
+        try_files $uri @indexrouter;
     }
     location @indexrouter {
         rewrite ^ /w/index.php last;
