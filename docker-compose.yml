@@ -63,8 +63,7 @@ services:
             - ./e2e/tests/:/e2e/tests:ro
             - ./e2e/fixtures/:/e2e/fixtures:ro
             # WIK-2057: report output moved to a named volume; copy it back with:
-            #   docker compose run --rm --no-deps e2e true && \
-            #   docker cp "$(docker compose ps -q e2e):/e2e/playwright-report" .
+            #   docker compose --profile e2elocal cp e2e:/e2e/playwright-report ./playwright-report
         profiles:
             - e2elocal
 

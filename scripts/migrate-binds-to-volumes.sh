@@ -126,6 +126,17 @@ done
 
 command -v docker >/dev/null 2>&1 || die "required command not found: docker"
 
+# Concurrency guard: only one migration may touch the volumes at a time.
+# Enforced in apply mode only; a dry run takes no lock and needs no flock.
+if [ "$APPLY" -eq 1 ]; then
+    if ! command -v flock >/dev/null 2>&1; then
+        die "flock required for apply mode"
+    fi
+    LOCK_DIR="${TMPDIR:-/tmp}/taqasta-migrate.lock"
+    exec 9>"$LOCK_DIR" || die "cannot open lock file $LOCK_DIR"
+    flock -n 9 || die "another migration appears to be in progress (lock: $LOCK_DIR)"
+fi
+
 compose() {
     # shellcheck disable=SC2086
     docker compose $COMPOSE_FILES -p "$PROJECT" "$@"

@@ -37,7 +37,7 @@ The repository ships an idempotent migration tool: [`scripts/migrate-binds-to-vo
    sh scripts/migrate-binds-to-volumes.sh --apply
    ```
 
-   The script stops the stack (`docker compose stop`; containers are kept), seeds the `taqasta_db_data` / `taqasta_mw_volume` volumes from the legacy directories using a temporary helper container, verifies file counts and byte totals against the source, and renames each migrated directory to `<name>.migrated-<timestamp>`. Nothing is ever deleted.
+   The script stops the stack (`docker compose stop`; containers are kept), seeds the `taqasta_db_data` / `taqasta_mw_volume` volumes from the legacy directories using a temporary helper container, verifies file counts and byte totals against the source, and renames each migrated directory to `<name>.migrated-<timestamp>`; nothing is ever deleted (apply mode only; a dry run neither stops services nor touches disk).
 4. Start the stack on the new compose files:
 
    ```bash
@@ -57,3 +57,4 @@ Stop the stack, point compose back at the previous file (the one using bind moun
 - The migration runs entirely on the client server by the client/operator; WikiTeq does not run anything remotely as part of this change.
 - The helper container uses `rsync` when available and falls back to `cp -a`. Re-runs never overwrite existing files in a volume, so interrupted migrations can simply be re-run.
 - Fresh installs have nothing to migrate: new stacks create empty named volumes on first start.
+- The volume names are pinned literals in the compose files (`taqasta_db_data`, `taqasta_mw_volume`), not `${VAR:-default}` interpolations, so operators running multiple stacks on one host must edit the YAML to rename them per deployment.
