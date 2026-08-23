@@ -14,3 +14,7 @@ data:
   MW_ENABLE_TRANSCODER: "false"
   MW_ENABLE_JOB_RUNNER: "false"
   TEST_DUMMY_ENV: "test123"
+  # Opt-out telemetry (WIK-2541): set NO_TELEMETRY=1 to disable, and
+  # TELEMETRY_ENDPOINT to the collector URL to enable phoning home.
+  NO_TELEMETRY: ""
+  TELEMETRY_ENDPOINT: ""

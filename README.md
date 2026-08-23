@@ -52,6 +52,10 @@ Extension changes go in [values.yml](values.yml) — see [docs/extensions.md](do
 
 ## Configuration
 
+### Telemetry
+
+The image phones home the wiki domain and version (nothing else) unless disabled with `NO_TELEMETRY=1`. The endpoint is empty by default, so nothing is sent until `TELEMETRY_ENDPOINT` is configured. See [docs/deployment.md](docs/deployment.md#telemetry).
+
 ### `.htaccess` overrides
 
 See [docs/deployment.md](docs/deployment.md#htaccess-overrides).

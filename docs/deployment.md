@@ -26,6 +26,28 @@ You can also set `$wgWikiTeqNonProdIndicator` to `true` in the site `LocalSettin
 
 Click the label to hide the frame and the label for 20 seconds on the current page. A new page load shows the overlay again.
 
+### Telemetry
+
+The image includes opt-out phone-home telemetry ([_sources/scripts/telemetry.sh](../_sources/scripts/telemetry.sh)). It runs in the background inside the container, sends one ping on start and then every `TELEMETRY_INTERVAL` seconds (default `86400`, i.e. daily).
+
+Privacy: only three fields are transmitted and nothing else is ever collected:
+
+- `domain` — the wiki domain (`$wgCanonicalServer`, falling back to `$wgServer` or `MW_SITE_SERVER`)
+- `image_version` — the Taqasta image version
+- `mediawiki_version` — the MediaWiki version
+
+No page content, user data, database contents, credentials, or settings values are sent. Every request is short-timeout and failures are silently discarded, so telemetry can never affect wiki operation.
+
+Environment variables:
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `NO_TELEMETRY` | *(empty)* | Set to `1` (or any non-empty value) to disable telemetry entirely |
+| `TELEMETRY_ENDPOINT` | *(empty)* | Collector URL that receives the ping; telemetry stays off until this is set |
+| `TELEMETRY_INTERVAL` | `86400` | Seconds between pings |
+
+To opt out, set `NO_TELEMETRY=1` in your environment (compose, Kubernetes ConfigMap, etc.). To opt in, set `TELEMETRY_ENDPOINT` to an HTTPS collector URL that accepts JSON POST requests, for example `https://telemetry.example.com/taqasta`.
+
 ## Compose and Kubernetes templates
 
 | Path | Purpose |
