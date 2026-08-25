@@ -46,6 +46,7 @@ const DOCKER_EXTENSIONS = [
 	'ApprovedRevs',
 	'Arrays',
 	'Auth_remoteuser',
+	'AWS',
 	'BetaFeatures',
 	'Bootstrap',
 	'BootstrapComponents',
@@ -85,6 +86,7 @@ const DOCKER_EXTENSIONS = [
 	'Echo', # bundled
 	'EditAccount',
 	'Editcount',
+	'EditCountNeue',
 	'Elastica',
 	'EmailAuthorization',
 	'EmbedVideo',
@@ -96,7 +98,9 @@ const DOCKER_EXTENSIONS = [
 	'Gadgets', # bundled
 	'GlobalNotice',
 	'GoogleDocTag',
+	'GoogleGeocode',
 	'GoogleLogin',
+	'HoneyPot',
 	'HTMLTags',
 	'HeadScript',
 	'HeaderFooter',
@@ -105,6 +109,7 @@ const DOCKER_EXTENSIONS = [
 	'ImageMap', # bundled
 	'InputBox', # bundled
 	'Interwiki', # bundled
+	'Jiki',
 	'JWTAuth',
 	'LDAPAuthentication2',
 	'LDAPAuthorization',
@@ -122,6 +127,7 @@ const DOCKER_EXTENSIONS = [
 	'LuaCache',
 	'MagicNoCache',
 	'Maps',
+	'MarkdownPages',
 	'MassMessage',
 	'MassMessageEmail',
 	'MassPasswordReset',
@@ -130,6 +136,7 @@ const DOCKER_EXTENSIONS = [
 	'Mermaid',
 	'MobileDetect',
 	'MobileFrontend',
+	'Moderation',
 	'MsUpload',
 	'MultimediaViewer', # bundled
 	'MyVariables',
@@ -142,6 +149,7 @@ const DOCKER_EXTENSIONS = [
 	'OpenGraphMeta',
 	'OpenIDConnect',
 	'PDFEmbed',
+	'PageAuthors',
 	'PageExchange',
 //	'PageForms',   must be enabled manually after enableSemantics()
 	'PageImages', # bundled
@@ -168,6 +176,7 @@ const DOCKER_EXTENSIONS = [
 	'SemanticDependencyUpdater', //  must be enabled after SemanticMediaWiki
 	'SemanticExtraSpecialProperties',
 //	'SemanticMediaWiki', moved the top to be enabled first, because some Semantic extension don't work in other case.
+	'SemanticReports',
 	'SemanticResultFormats',
 	'SemanticScribunto',
 	'SemanticWatchlist',
@@ -181,7 +190,10 @@ const DOCKER_EXTENSIONS = [
 	'SkinPerPage',
 	'SmiteSpam',
 	'SpamBlacklist', # bundled
+	'SpamRegex',
+	'StatusCheck',
 	'SubPageList',
+	'SummaryToJiraComment',
 	'Survey',
 	'SyntaxHighlight_GeSHi', # bundled
 	'Share',
@@ -189,6 +201,7 @@ const DOCKER_EXTENSIONS = [
 	'TabberNeue',
 	'Tabs',
 	'TemplateData', # bundled
+	'TemplateSandbox',
 	'TemplateStyles',
 	'TemplateWizard',
 	'TextExtracts', # bundled
