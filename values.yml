@@ -282,10 +282,9 @@ extensions:
       commit: 438ea79d4ba11cfe8a8c3599fba5c473b9760b91
   - SemanticDependencyUpdater:
       Wikidata ID: Q25652137
-      repository: https://github.com/WikiTeq/SemanticDependencyUpdater.git
-      branch: deletion-hook-support
-      # (WikiTeq fork)
-      commit: cd0f50a31a21609636961ea2592ca12bbca9b651
+      repository: https://github.com/gesinn-it-pub/SemanticDependencyUpdater.git
+      branch: master
+      commit: c283039095dc755defe223e09a71500199e4a539
   - SimpleChanges:
       Wikidata ID: Q21678599
       # Patched version, see https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618
@@ -474,7 +473,7 @@ extensions:
   - SemanticReports:
       repository: https://github.com/WikiTeq/mediawiki-extension-SemanticReports.git
       branch: master
-      commit: 7548555e0c997a8b4feda38695c6f60977a81349
+      commit: b9168e564f13bb0b7cce87d918c7467c71a38b40
   - CrawlerProtection:
       Wikidata ID: Q135293666
       repository: https://github.com/mywikis/CrawlerProtection.git
@@ -533,8 +532,10 @@ extensions:
   - SemanticBreadcrumbLinks:
       repository: https://github.com/SemanticMediaWiki/SemanticBreadcrumbLinks.git
       branch: master
-      # Pin matches former CKN submodule (2.1.0-alpha); 3.0.0 requires SMW >= 7.0.
-      commit: bc69880ff2c33688138d1db1e3cc61acc6617221
+      # 3.0.0 + post-release SMW 7 fixes; requires SMW >= 7.0 and onoi/shared-resources
+      commit: b9581f8d856b1c4237c323af9fdcb81033346079
+      additional steps:
+        - composer update
 # Skins to install
 skins:
   - CologneBlue:
@@ -553,7 +554,7 @@ skins:
 # Composer packages (extensions) to install
 packages:
   - name: mediawiki/semantic-media-wiki
-    version: 6.0.1
+    version: 7.2.1
   - name: mediawiki/chameleon-skin
     version: 5.0.0
   - name: mediawiki/bootstrap-components
@@ -564,13 +565,13 @@ packages:
   - name: mediawiki/remote-wiki
     version: dev-master#da859c2c5081d96a6492f178686251136d35ec23
   - name: mediawiki/semantic-compound-queries
-    version: 3.0.0
+    version: 4.0.1
   - name: mediawiki/semantic-extra-special-properties
-    version: 4.0.0
+    version: 5.0.1
   - name: mediawiki/semantic-result-formats
-    version: 5.1.0
+    version: 5.2.0
   - name: mediawiki/semantic-scribunto
-    version: 2.3.3
+    version: 3.0.0
   - name: mediawiki/simple-batch-upload
     version: 2.0.1
   - name: mediawiki/sub-page-list
@@ -578,7 +579,7 @@ packages:
   - name: mediawiki/maps
     version: 12.0.0
   - name: mediawiki/semantic-watchlist
-    version: dev-master#63039778bf686dc1ef38eb4e9aa41ace139fdd87
+    version: dev-master#3986e404d0bd9465f94c8878cac2055de6aab3a4
   # Not an extension, loaded so that we can use shell.php in the containers
   - name: psy/psysh
     # Match core constraint, DEMO-137
