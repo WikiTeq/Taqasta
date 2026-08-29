@@ -50,8 +50,6 @@ export DOCKER_BUILDKIT=1   # required for Composer secret mounts
 
 Extension changes go in [values.yml](values.yml) — see [docs/extensions.md](docs/extensions.md).
 
-The image includes [CookieConsent](https://www.mediawiki.org/wiki/Extension:CookieConsent). Enable it per wiki with `wfLoadExtension( 'CookieConsent' )`.
-
 ## Configuration
 
 ### `.htaccess` overrides
