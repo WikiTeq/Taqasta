@@ -37,6 +37,8 @@ services:
             - MW_SITE_LANG
             - MW_DB_TYPE=${MW_DB_TYPE:-mysql}
             - MW_SHOW_EXCEPTION_DETAILS
+            # CI must not send telemetry anywhere; see docs/deployment.md
+            - NO_TELEMETRY=1
             - PHP_UPLOAD_MAX_FILESIZE=500M
             - PHP_POST_MAX_SIZE=500M
         volumes:

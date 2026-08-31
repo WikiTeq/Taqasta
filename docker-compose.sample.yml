@@ -19,6 +19,11 @@ x-web-environment: &x-web-environment
     # disable bundled runners as we have a worker container now
     MW_ENABLE_TRANSCODER: false
     MW_ENABLE_JOB_RUNNER: false
+    # Opt-out telemetry (WIK-2541): set NO_TELEMETRY=1 to disable, and
+    # TELEMETRY_ENDPOINT to the collector URL to enable phoning home.
+    NO_TELEMETRY: ${NO_TELEMETRY:-}
+    TELEMETRY_ENDPOINT: ${TELEMETRY_ENDPOINT:-}
+    TELEMETRY_INTERVAL: ${TELEMETRY_INTERVAL:-86400}
 
 x-web-volumes: &x-web-volumes
   - mediawiki:/mediawiki

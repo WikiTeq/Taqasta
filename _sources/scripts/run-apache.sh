@@ -106,6 +106,11 @@ make_dir_writable "$MW_VOLUME" -not '(' -path "$MW_VOLUME/images" -prune ')'
 # It can take a long time and should not block Apache from starting.
 /update-images-permissions.sh &
 
+# Phone-home telemetry in the background (domain + version only).
+# Opt out with NO_TELEMETRY=1; see _sources/scripts/telemetry.sh and
+# docs/deployment.md. Failures never affect the wiki.
+/telemetry.sh &
+
 # Run maintenance scripts in background.
 touch "$WWW_ROOT/.maintenance"
 /run-maintenance-scripts.sh &
