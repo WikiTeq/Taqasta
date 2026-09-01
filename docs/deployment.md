@@ -26,6 +26,17 @@ You can also set `$wgWikiTeqNonProdIndicator` to `true` in the site `LocalSettin
 
 Click the label to hide the frame and the label for 20 seconds on the current page. A new page load shows the overlay again.
 
+### WikiTeq hosted-wiki policy footer
+
+Set `ENABLE_WIKITEQ_POLICY_FOOTER_LINK` to `true` (or `1`) to add a footer link to WikiTeq's hosted-wiki legal page. The native MediaWiki Privacy policy link is not changed.
+
+Defaults:
+
+- Label: `WikiTeq Terms & Privacy`
+- URL: `https://wikiteq.com/hosted-wiki-legal`
+
+Optional overrides: `WIKITEQ_POLICY_FOOTER_LINK_LABEL`, `WIKITEQ_POLICY_FOOTER_LINK_URL`.
+
 ## Compose and Kubernetes templates
 
 | Path | Purpose |

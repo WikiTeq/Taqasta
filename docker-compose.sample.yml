@@ -14,6 +14,10 @@ x-web-environment: &x-web-environment
     MW_SHOW_EXCEPTION_DETAILS:
     # Red frame + "NOT PRODUCTION" label. Keep false on production wikis.
     MW_SHOW_NON_PROD_INDICATOR: "false"
+    # Footer link to WikiTeq hosted-wiki legal. Native Privacy policy stays.
+    ENABLE_WIKITEQ_POLICY_FOOTER_LINK: "false"
+    # WIKITEQ_POLICY_FOOTER_LINK_LABEL: "WikiTeq Terms & Privacy"
+    # WIKITEQ_POLICY_FOOTER_LINK_URL: "https://wikiteq.com/hosted-wiki-legal"
     PHP_UPLOAD_MAX_FILESIZE: 500M
     PHP_POST_MAX_SIZE: 500M
     # disable bundled runners as we have a worker container now
