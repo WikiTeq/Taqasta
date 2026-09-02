@@ -277,6 +277,8 @@ jobs:
           docker compose up -d --no-build
 
       - name: Wait for init
+        env:
+          MAX_WAIT_SECONDS: '600'
         shell: bash
         run: bash .github/scripts/wait-for-wiki-init.sh
 
