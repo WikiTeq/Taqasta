@@ -7,7 +7,7 @@ test('non-prod indicator is off by default', async ({page}) => {
 
 test('WikiTeq policy footer link is off by default', async ({page}) => {
     await page.goto('/wiki/Main_Page');
-    await expect(page.getByRole('link', { name: 'WikiTeq Terms & Privacy' })).toHaveCount(0);
+    await expect(page.getByTestId('wikiteq-policy-footer')).toHaveCount(0);
     await expect(page.locator('#footer-places-privacy')).toBeVisible();
 });
 

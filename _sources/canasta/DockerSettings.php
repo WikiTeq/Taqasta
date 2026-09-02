@@ -618,6 +618,7 @@ if ( isEnvTrue( 'ENABLE_WIKITEQ_POLICY_FOOTER_LINK' ) ) {
 					'href' => $wikiTeqPolicyFooterUrl,
 					'target' => '_blank',
 					'rel' => 'noopener noreferrer',
+					'data-testid' => 'wikiteq-policy-footer',
 				],
 				$wikiTeqPolicyFooterLabel
 			);
