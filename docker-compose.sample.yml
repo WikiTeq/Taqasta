@@ -1,4 +1,9 @@
 # This is a dev/debug compose file
+#
+# WIK-2057: all writable state lives in Docker named volumes (taqasta_*).
+# Only read-only config/log-viewing mounts remain as bind mounts.
+# Existing deployments using bind-mount directories can migrate their data
+# with scripts/migrate-binds-to-volumes.sh (see docs/bind-mounts-to-volumes.md).
 x-web-environment: &x-web-environment
     MW_ADMIN_USER: ${MW_ADMIN_USER:-admin}
     MW_ADMIN_PASS: ${MW_ADMIN_PASS:-Passsw0rd!}
@@ -25,9 +30,10 @@ x-web-environment: &x-web-environment
     MW_ENABLE_JOB_RUNNER: false
 
 x-web-volumes: &x-web-volumes
-  - mediawiki:/mediawiki
-  - ./logstest:/var/log/app
-  - ./LocalSettings.dev.php:/mediawiki/config/settings/LocalSettings.dev.php
+  - taqasta_mw_volume:/mediawiki
+  # WIK-2057: read-only host mounts for config and log inspection
+  - ./logstest:/var/log/app:ro
+  - ./LocalSettings.dev.php:/mediawiki/config/settings/LocalSettings.dev.php:ro
 
 x-service-worker: &x-service-worker
   build:
@@ -63,7 +69,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MW_DB_INSTALLDB_PASS:-mediawiki}
       - MYSQL_DATABASE=${MW_DB_NAME:-mediawiki}
     volumes:
-      - mysql:/var/lib/mysql
+      - taqasta_db_data:/var/lib/mysql
 
   web:
     build:
@@ -123,8 +129,10 @@ services:
         php $$MW_HOME/maintenance/run.php runJobs --memory-limit max --wait --type webVideoTranscodePrioritized
 
 volumes:
-  mediawiki:
-  mysql:
+  taqasta_mw_volume:
+    name: taqasta_mw_volume
+  taqasta_db_data:
+    name: taqasta_db_data
 
 networks:
   traefik-public:
