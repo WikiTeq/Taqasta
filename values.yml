@@ -303,7 +303,7 @@ extensions:
       commit: 529ad28e2953506c7216c90abb7bd17f320fb0b5
   - TemplateStyles:
       Wikidata ID: Q25916623
-      commit: 31a4bd259a921e19b4857befa700e7fc0998b6d2
+      commit: c1d75583d8faeec6021f83c6820df92b37f24b32
       additional steps:
         - composer update
   - TemplateWizard:
