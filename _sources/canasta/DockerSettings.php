@@ -603,6 +603,29 @@ switch( getenv( 'MW_SEARCH_TYPE' ) ) {
 		break;
 }
 
+########################### WikiTeq policy footer [QLOUD-572] ############################
+# ENABLE_WIKITEQ_POLICY_FOOTER_LINK=true adds a hoster legal link next to core privacy.
+# Optional WIKITEQ_POLICY_FOOTER_LINK_LABEL / WIKITEQ_POLICY_FOOTER_LINK_URL override defaults.
+# Does not disable the native Privacy policy footer link.
+if ( isEnvTrue( 'ENABLE_WIKITEQ_POLICY_FOOTER_LINK' ) ) {
+	$wikiTeqPolicyFooterUrl = getenv( 'WIKITEQ_POLICY_FOOTER_LINK_URL' ) ?: 'https://wikiteq.com/hosted-wiki-legal';
+	$wikiTeqPolicyFooterLabel = getenv( 'WIKITEQ_POLICY_FOOTER_LINK_LABEL' ) ?: 'WikiTeq Terms & Privacy';
+	$wgHooks['SkinAddFooterLinks'][] = static function ( $skin, string $key, array &$footerlinks ) use ( $wikiTeqPolicyFooterUrl, $wikiTeqPolicyFooterLabel ) {
+		if ( $key === 'places' ) {
+			$footerlinks['wikiteq-legal'] = \MediaWiki\Html\Html::element(
+				'a',
+				[
+					'href' => $wikiTeqPolicyFooterUrl,
+					'target' => '_blank',
+					'rel' => 'noopener noreferrer',
+					'data-testid' => 'wikiteq-policy-footer',
+				],
+				$wikiTeqPolicyFooterLabel
+			);
+		}
+	};
+}
+
 ########################### Sitemap ############################
 if ( isEnvTrue('MW_ENABLE_SITEMAP_GENERATOR') ) {
 	$wgHooks['BeforePageDisplay'][] = function ( $out, $skin ) {
