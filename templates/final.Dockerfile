@@ -57,6 +57,9 @@ COPY _sources/configs/msmtprc /etc/
 COPY _sources/configs/mediawiki.conf /etc/apache2/sites-enabled/
 COPY _sources/configs/status.conf /etc/apache2/mods-available/
 COPY _sources/configs/scan.conf /etc/clamd.d/scan.conf
+# php-fpm pool template, rendered at container start by run-apache-fpm.sh
+# (external nginx service mode, WIK-2139)
+COPY _sources/configs/php-fpm-www.conf.template /etc/php/8.3/fpm/pool.d/www.conf.template
 
 # UPDATE code related to PHP_ERROR_REPORTING in run-apache.sh when the paths changed
 COPY _sources/configs/php_cli_*.ini _sources/configs/php_common_*.ini /etc/php/8.3/cli/conf.d/

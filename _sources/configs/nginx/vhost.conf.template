@@ -1,0 +1,123 @@
+# Taqasta vhost — nginx port of the bundled Apache configuration (WIK-2139):
+#   - _sources/configs/mediawiki.conf (maintenance 503, /server-status,
+#     AllowEncodedSlashes NoDecode, /.git 404)
+#   - _sources/configs/.htaccess (short URLs via /w/index.php, artificial
+#     robots.txt, static expiry headers)
+#
+# The ${NGINX_UPSTREAM} and ${NGINX_CLIENT_MAX_BODY_SIZE} placeholders are
+# substituted at container start by the official image's envsubst-on-
+# templates mechanism; nginx runtime variables ($uri, $remote_addr, ...)
+# are untouched.
+#
+# The app container keeps its own pristine copy of the docroot; nginx mounts
+# the mediawiki volume read-only and reads the wiki files through the
+# $MW_VOLUME/docroot mirror that the entrypoint creates inside the volume
+# (see run-apache-pre.sh). PHP is executed by php-fpm in the app container.
+
+upstream taqasta_fpm {
+    server ${NGINX_UPSTREAM};
+}
+
+server {
+    listen 80 default_server;
+    server_name _;
+
+    # Mirrors the WWW_ROOT layout baked into the app image via the
+    # $MW_VOLUME/docroot mirror (volume root -> wiki docroot).
+    root /mediawiki/docroot;
+    index index.php;
+
+    # Mirrors PHP_POST_MAX_SIZE / PHP_UPLOAD_MAX_FILESIZE.
+    client_max_body_size ${NGINX_CLIENT_MAX_BODY_SIZE};
+
+    # Documented deviation from Apache "AllowEncodedSlashes NoDecode"
+    # (VisualEditor, T262392): nginx decodes %2F before location matching
+    # (merge_slashes off only preserves duplicate "//"), so PATH_INFO can
+    # differ from Apache for encoded slashes. No upstream equivalent exists
+    # as of nginx 1.29 (tracked in nginx/nginx#501).
+    merge_slashes off;
+    autoindex off;
+
+    # Maintenance mode: run-apache-pre.sh touches $WWW_ROOT/.maintenance
+    # while maintenance scripts run, and Apache answered R=503 to every
+    # request during that window. The same blanket behavior is kept here
+    # ("if" + "return" is one of the two officially supported "if" uses).
+    if (-f $document_root/.maintenance) {
+        return 503;
+    }
+    error_page 503 @maintenance_503;
+    location @maintenance_503 {
+        internal;
+        default_type text/html;
+        add_header Retry-After "300" always;
+        return 503 "<!DOCTYPE html>\n<html><head><title>503 Service Temporarily Unavailable</title></head><body><center><h1>503 Service Temporarily Unavailable</h1><hr/>nginx</center></body></html>\n";
+    }
+
+    # Allow access to /server-status from localhost (mod_status parity;
+    # note that stub_status output format differs from Apache mod_status).
+    location = /server-status {
+        allow 127.0.0.1;
+        deny all;
+        stub_status;
+    }
+
+    # Close access to git repo (RedirectMatch 404 /\.git).
+    location ~ /\.git {
+        return 404;
+    }
+
+    # PHP execution allowlist: only MediaWiki entry points are passed to
+    # php-fpm. This is deliberately stricter than the Apache/mod_php setup,
+    # which executed any requested .php unless a directory rule denied it;
+    # anything else answers 404 (see the catch-all below). PATH_INFO
+    # splitting keeps path-style entry points such as /w/rest.php/...
+    # (VisualEditor, T262392) and /w/img_auth.php/... working.
+    #
+    # NOTE: robots.txt is handled separately further down.
+    location ~* ^/(?:robots\.php|w/(?:index|load|api|rest|img_auth|thumb|opensearch_desc)\.php|w/mw-config/index\.php)(?:$|/) {
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+        include fastcgi_params.conf;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        # Long-running PHP entry points (e.g. uploads, jobs) — matches the
+        # PHP max_execution_time headroom the Apache setup relied on.
+        fastcgi_read_timeout 300s;
+        fastcgi_pass taqasta_fpm;
+    }
+
+    # Any other .php file is neither executed nor served (404), mirroring
+    # the spirit of the .htaccess front-controller while staying strict.
+    location ~* \.php$ {
+        return 404;
+    }
+
+    # Artificial robots.txt file (WIK-1297): served by executing robots.php.
+    location = /robots.txt {
+        include fastcgi_params.conf;
+        fastcgi_param SCRIPT_NAME /robots.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root/robots.php;
+        fastcgi_param PATH_INFO "";
+        fastcgi_pass taqasta_fpm;
+    }
+
+    # Static assets with expiry headers (parity with the .htaccess
+    # mod_expires block: images, video and fonts expire after 1 year).
+    location ~* \.(?:jpg|jpeg|gif|png|webp|svg|ico|mp4|mpeg|mpg|m4v|mov|wmv|avi|webm|ogv|eot|ttf|otf|woff|woff2)$ {
+        expires 1y;
+        add_header Cache-Control "public";
+        log_not_found off;
+        try_files $uri =404;
+    }
+
+    # Short URLs: everything that is not an existing file is routed to
+    # /w/index.php (the .htaccess catch-all RewriteRule); "/" reaches Main
+    # Page through the index directive the same way. Unlike Apache's
+    # !-f/!-d catch-all, existing directories are NOT served as listings
+    # (autoindex off) — they must route to PHP, otherwise a page title that
+    # matches a docroot directory name would 404.
+    location / {
+        try_files $uri @indexrouter;
+    }
+    location @indexrouter {
+        rewrite ^ /w/index.php last;
+    }
+}
