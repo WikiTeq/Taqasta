@@ -47,6 +47,7 @@ RUN set x; \
 	rsync \
 	lynx \
 	poppler-utils \
+	ghostscript \
 	gettext-base \
 	php8.3 \
 	php8.3-mysql \
