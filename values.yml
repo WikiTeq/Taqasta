@@ -382,9 +382,9 @@ extensions:
   - GoogleDocTag:
       commit: 50dfe68e36742b9c6ab24b734ab4401cf1d65178
   - GTag:
-      repository: https://github.com/SkizNet/mediawiki-GTag.git
-      branch: master
-      commit: 570ceccdb7d6612ba37de0885c98a0b7fa95d341
+      repository: https://github.com/WikiTeq/mediawiki-extension-GTag.git
+      branch: wikiteq
+      commit: e57f41b04623fa5b55b44df0bbeb3c28b0391902
   - HeadScript:
       commit: cc0fb94acd25a20292b0a4d5bbe74bac307b55fe
   - IframePage:
