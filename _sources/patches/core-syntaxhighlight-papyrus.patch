@@ -1,0 +1,155 @@
+diff --git a/extensions/SyntaxHighlight_GeSHi/modules/papyrus_styles.less b/extensions/SyntaxHighlight_GeSHi/modules/papyrus_styles.less
+new file mode 100644
+index 0000000..7564672
+--- /dev/null
++++ b/extensions/SyntaxHighlight_GeSHi/modules/papyrus_styles.less
+@@ -0,0 +1,139 @@
++/* SyntaxHighlight_GeSHi always loads CSS from the "default" style profile,
++ * so to add custom CSS for the papyrus highlighting we need to be creative.
++ * Modify the `ext.pygments` ResourceLoader module's style file
++ * (pygments.wrapper.less) to include another file with styles specifically for
++ * papyrus code, i.e. this file. Taqasta copies this file into the same
++ * directory as pygments.wrapper.less and adds the @import at build time
++ * (see _sources/patches/core-syntaxhighlight-papyrus.patch and
++ * templates/core.Dockerfile). WikiTeq-specific customization for Bethesda
++ * wikis; see BET1-19.
++ *
++ * Note that editing the resource file of an extension is definitely not stable,
++ * so make sure to test that this still works when updating MediaWiki, even just
++ * to a new patch release of the same MW 1.XX version.
++ *
++ * Dark mode: SyntaxHighlight adds `.skin-theme-clientpref-night .mw-highlight .x`
++ * rules that override light-only selectors below; night/os blocks need higher
++ * specificity (`.mw-highlight.mw-highlight-lang-papyrus`). */
++.papyrus-syntax-dark-colors() {
++	/* Monokai-aligned palette (matches ext.pygments dark theme for Python). */
++	.x-KeywordA {
++		color: #66D9EF;
++		font-weight: bold;
++	}
++	.x-KeywordB, .x-KeywordC {
++		color: #A6E22E;
++		font-weight: bold;
++	}
++	.x-KeywordD, .x-KeywordE {
++		color: #AE81FF;
++		font-weight: bold;
++	}
++	.c1, .cm {
++		color: #75715E;
++		font-style: italic;
++	}
++	.x-Bracket {
++		color: #F8F8F2;
++	}
++	.s2 {
++		color: #E6DB74;
++	}
++	.m, .mf, .mh {
++		color: #AE81FF;
++		font-weight: bold;
++	}
++	.x-ObjSplitter + .x-Text {
++		color: #AE81FF;
++	}
++	.o, .x-ObjSplitter {
++		color: #F92672;
++		font-weight: bold;
++	}
++}
++
++.mw-highlight-lang-papyrus {
++	/* The `'STYLES' => array( ... )` settings */
++
++	/* 'KEYWORDS' => array( ... ) */
++	.x-KeywordA {
++		color: #0000FF;
++		font-weight: bold;
++	}
++	.x-KeywordB, .x-KeywordC {
++		color: #008040;
++		font-weight: bold;
++	}
++	.x-KeywordD, .x-KeywordE {
++		color: #6565C6;
++		font-weight: bold;
++	}
++
++	/* 'COMMENTS' => array( ... ) */
++	.c1, .cm {
++		color: #8E8E8E;
++		font-style: italic;
++	}
++
++	/* 'ESCAPE_CHAR' => array( 0 => 'color: #880000;' ) */
++	/* ^ no escape char is defined, no need for styles */
++
++	/* 'BRACKETS' => array( 0 => 'color: #000000;' ) */
++	.x-Bracket {
++		color: #000000;
++	}
++
++	/* 'STRINGS' => array( 0 => 'color: #A82800;' ) */
++	.s2 {
++		color: #A82800;
++	}
++
++	/* 'NUMBERS' => array( 0 => 'color: #FF0080; font-weight: bold;' ) */
++	.m, .mf, .mh {
++		/* Pygments has classes for number / float / hex */
++		color: #FF0080;
++		font-weight: bold;
++	}
++
++	/* 'METHODS' => array( 0 => 'color: #6565C6;' ) */
++	.x-ObjSplitter + .x-Text {
++		/* Matching the .x-Text for generic text, any keywords are styled
++			as keywords */
++		color: #6565C6;
++	}
++
++	/* 'SYMBOLS' => array( 0 => 'color: #0080FF; font-weight: bold;' ) */
++	.o, .x-ObjSplitter {
++		/* Using "operator" instead of "symbol" for these */
++		/* Also include the `.` symbol with x-ObjSplitter */
++		color: #0080FF;
++		font-weight: bold;
++	}
++
++	/* 'REGEXPS' => array() */
++	/* ^ nothing to do */
++
++	/* 'SCRIPT' => array() */
++	/* ^ nothing to do */
++
++	/* End Of 'STYLES' */
++
++	/* Other style-influencing settings */
++	/* 'TAB_WIDTH' => 4 */
++	.w {
++		/* This matches .mw-highlight pre but no harm in including it */
++		tab-size: 4;
++	}
++}
++
++@media screen {
++	.skin-theme-clientpref-night .mw-highlight.mw-highlight-lang-papyrus {
++		.papyrus-syntax-dark-colors();
++	}
++}
++
++@media screen and (prefers-color-scheme: dark) {
++	.skin-theme-clientpref-os .mw-highlight.mw-highlight-lang-papyrus {
++		.papyrus-syntax-dark-colors();
++	}
++}
+diff --git a/extensions/SyntaxHighlight_GeSHi/modules/pygments.wrapper.less b/extensions/SyntaxHighlight_GeSHi/modules/pygments.wrapper.less
+index 111c9e8..81bd578 100644
+--- a/extensions/SyntaxHighlight_GeSHi/modules/pygments.wrapper.less
++++ b/extensions/SyntaxHighlight_GeSHi/modules/pygments.wrapper.less
+@@ -119,3 +119,5 @@
+ 		color: @color-base--hover;
+ 	}
+ }
++
++@import 'papyrus_styles.less';
