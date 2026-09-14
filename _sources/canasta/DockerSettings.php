@@ -220,6 +220,7 @@ const DOCKER_EXTENSIONS = [
 	'WikiSEO',
 	'WikiCategoryTagCloud',
 	'YouTube',
+	'ZoteroConnector',
 ];
 
 $DOCKER_MW_VOLUME = getenv( 'MW_VOLUME' );
