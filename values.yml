@@ -98,7 +98,7 @@ extensions:
   - Cloudflare:
       repository: https://github.com/harugon/mediawiki-extensions-cloudflare.git
       branch: master
-      commit: 9df89f3f5e0ace26b07d146167bab72540082fc8
+      commit: 1ef100a782f17b7336723d853310cc6036b2aa85
   - DataTransfer:
       Wikidata ID: Q21677041
       branch: master
