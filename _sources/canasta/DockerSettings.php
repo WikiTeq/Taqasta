@@ -286,10 +286,9 @@ $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 # with MediaWiki developers to help guide future development efforts.
 $wgPingback = false;
 
-## If you use ImageMagick (or any other shell command) on a
-## Linux server, this will need to be set to the name of an
-## available UTF-8 locale
-$wgShellLocale = "en_US.utf8";
+## UTF-8 locale for shell commands. MediaWiki 1.43 sets LC_ALL to C.UTF-8
+## (Setup.php), which this image provides.
+$wgShellLocale = "C.UTF-8";
 
 ## Set $wgCacheDirectory to a writable directory on the web server
 ## to make your wiki go slightly faster. The directory should not
