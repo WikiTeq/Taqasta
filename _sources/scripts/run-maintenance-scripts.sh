@@ -150,14 +150,16 @@ run_maintenance_script_if_needed () {
         while [ -n "${!i}" ]
         do
             if [ ! -f "$(echo "${!i}" | awk '{print $1}')" ]; then
-                echo >&2 "Maintenance script does not exit: ${!i}"
-                return 0;
+                echo >&2 "Maintenance script does not exist: ${!i}"
+                return 1
             fi
             echo >&2 "Run maintenance script: ${!i}"
-            runuser -c "php ${!i}" -s /bin/bash "$WWW_USER" || {
-                echo >&2 "An error occurred when the maintenance script ${!i} was running"
-                return $?
-            }
+            runuser -c "php ${!i}" -s /bin/bash "$WWW_USER"
+            rc=$?
+            if [ "$rc" -ne 0 ]; then
+                echo >&2 "An error occurred when the maintenance script ${!i} was running (exit code: $rc)"
+                return "$rc"
+            fi
             i=$((i+1))
         done
 
@@ -185,10 +187,12 @@ run_script_if_needed () {
             }
         fi
         echo >&2 "Run script: $3"
-        eval "$3" || {
-            echo >&2 "An error occurred when the script $3 was running"
-            return $?
-        }
+        eval "$3"
+        rc=$?
+        if [ "$rc" -ne 0 ]; then
+            echo >&2 "An error occurred when the script $3 was running (exit code: $rc)"
+            return "$rc"
+        fi
 
         cd "$MW_HOME" || exit
 
@@ -328,10 +332,12 @@ run_autoupdate () {
 
     SMW_UPGRADE_KEY=$(php /getMediawikiSettings.php --SMWUpgradeKey)
     run_maintenance_script_if_needed 'maintenance_update' "$MW_VERSION-$MW_CORE_VERSION-$MW_MAINTENANCE_UPDATE-$VERSION_HASH-$SMW_UPGRADE_KEY" \
-        'maintenance/update.php --quick' || {
-            echo >&2 "An error occurred when auto-update script was running"
-            return $?
-        }
+        'maintenance/update.php --quick'
+    rc=$?
+    if [ "$rc" -ne 0 ]; then
+        echo >&2 "An error occurred when auto-update script was running (exit code: $rc)"
+        return "$rc"
+    fi
 
 #    run_maintenance_script_if_needed 'maintenance_update' "always"
 #        'maintenance/update.php --quick'
