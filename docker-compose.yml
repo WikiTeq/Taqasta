@@ -1,4 +1,7 @@
 # # Note: this is a dummy Compose file for CI, do not modify or use it until you know what you're doing
+#
+# WIK-2057: all writable state lives in Docker named volumes (taqasta_*).
+# Read-only config/test mounts stay as bind mounts.
 services:
     db:
         image: mysql:8.0
@@ -12,7 +15,7 @@ services:
             - MYSQL_DATABASE=${MW_DB_NAME:-mediawiki}
         volumes:
             - initdb:/docker-entrypoint-initdb.d
-            - mysql:/var/lib/mysql
+            - taqasta_db_data:/var/lib/mysql
 
     web:
         image: ${TAQASTA_IMAGE:-taqasta-web}
@@ -40,8 +43,9 @@ services:
             - PHP_UPLOAD_MAX_FILESIZE=500M
             - PHP_POST_MAX_SIZE=500M
         volumes:
-            - mediawiki:/mediawiki
-            - ./e2e/LocalSettings.php:/var/www/mediawiki/w/_settings/LocalSettings.php
+            - taqasta_mw_volume:/mediawiki
+            # Read-only config mount (WIK-2057): test settings stay a bind
+            - ./e2e/LocalSettings.php:/var/www/mediawiki/w/_settings/LocalSettings.php:ro
 
     e2e:
         build:
@@ -54,14 +58,18 @@ services:
         ports:
             - "9323:9323"
         volumes:
-            - ./e2e/playwright.config.ts:/e2e/playwright.config.ts
-            - ./e2e/tests/:/e2e/tests
-            - ./e2e/fixtures/:/e2e/fixtures
-            - ./e2e/playwright-report/:/e2e/playwright-report
+            # WIK-2057: read-only test inputs stay as bind mounts
+            - ./e2e/playwright.config.ts:/e2e/playwright.config.ts:ro
+            - ./e2e/tests/:/e2e/tests:ro
+            - ./e2e/fixtures/:/e2e/fixtures:ro
+            # WIK-2057: report output moved to a named volume; copy it back with:
+            #   docker compose --profile e2elocal cp e2e:/e2e/playwright-report ./playwright-report
         profiles:
             - e2elocal
 
 volumes:
-    mediawiki:
-    mysql:
+    taqasta_mw_volume:
+        name: taqasta_mw_volume
+    taqasta_db_data:
+        name: taqasta_db_data
     initdb:
