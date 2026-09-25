@@ -18,6 +18,10 @@ Taqasta reads many settings from environment variables (admin account, database,
 
 CI and local e2e stacks use [.env.ci](../.env.ci). Copy it to `.env` before running `docker compose` (see [e2e/README.md](../e2e/README.md)).
 
+### Apache access and error logs
+
+Set `APACHE_LOG_TO_STDOUT` to `true` to send Apache access logs to stdout and error logs to stderr. The default value is `false`.
+
 ### Non-prod visual indicator
 
 Set `MW_SHOW_NON_PROD_INDICATOR` to `true` to show a red frame and a NOT PRODUCTION label on every page. The default value is off.
