@@ -4,7 +4,8 @@ let htmlReporter = 'html';
 let baseURL = 'http://localhost:8000';
 if ( process.env.TAQASTA_E2E_IN_DOCKER ) {
   htmlReporter = [ [ 'html', { open: 'never'}] ];
-  baseURL = 'http://web:80/';
+  // WIK-2139: HTTP is served by the external nginx container, not by web
+  baseURL = 'http://nginx:80/';
 }
 
 /**

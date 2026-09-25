@@ -50,6 +50,7 @@ RUN set x; \
 	ghostscript \
 	gettext-base \
 	php8.3 \
+	php8.3-fpm \
 	php8.3-mysql \
 	php8.3-cli \
 	php8.3-gd \
