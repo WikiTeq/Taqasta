@@ -282,10 +282,11 @@ extensions:
       commit: 438ea79d4ba11cfe8a8c3599fba5c473b9760b91
   - SemanticDependencyUpdater:
       Wikidata ID: Q25652137
-      repository: https://github.com/WikiTeq/SemanticDependencyUpdater.git
-      branch: deletion-hook-support
-      # (WikiTeq fork)
-      commit: cd0f50a31a21609636961ea2592ca12bbca9b651
+      # Switched from WikiTeq fork to origin repo; deletion-hook support is
+      # included since 4.2.0 / 5.x (see WIK-2388). Pinned to tag 5.0.2.
+      repository: https://github.com/gesinn-it-pub/SemanticDependencyUpdater.git
+      branch: master
+      commit: 4ab14606764cc321a6028fd191f6f3e021a59c0c
   - SimpleChanges:
       Wikidata ID: Q21678599
       # Patched version, see https://gerrit.wikimedia.org/r/c/mediawiki/extensions/SimpleChanges/+/1117618
