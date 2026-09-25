@@ -18,6 +18,13 @@ RUN set -x; \
 	cd $MW_HOME && \
 	git apply /tmp/core-rest-request-uri-psr7.patch
 
+# Add Papyrus syntax-highlighting styles to SyntaxHighlight_GeSHi (WikiTeq-specific
+# customization for Bethesda wikis; see BET1-19)
+COPY _sources/patches/core-syntaxhighlight-papyrus.patch /tmp/core-syntaxhighlight-papyrus.patch
+RUN set -x; \
+	cd $MW_HOME && \
+	git apply /tmp/core-syntaxhighlight-papyrus.patch
+
 # Cleanup all .git leftovers
 RUN set -x; \
 	cd $MW_HOME && \
