@@ -560,7 +560,7 @@ skins:
 # Composer packages (extensions) to install
 packages:
   - name: mediawiki/semantic-media-wiki
-    version: 6.0.1
+    version: 7.3.1
   - name: mediawiki/chameleon-skin
     version: 5.0.0
   - name: mediawiki/bootstrap-components
@@ -575,7 +575,7 @@ packages:
   - name: mediawiki/semantic-extra-special-properties
     version: 4.0.0
   - name: mediawiki/semantic-result-formats
-    version: 5.1.0
+    version: 6.0.0
   - name: mediawiki/semantic-scribunto
     version: 2.3.3
   - name: mediawiki/simple-batch-upload
