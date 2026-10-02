@@ -65,7 +65,7 @@ extensions:
       commit: 53f7c98d3fd003aef8faf95dd08ee05139079fab
   - CirrusSearch:
       Wikidata ID: Q21676498
-      commit: 209efea8657680d855eb5495550af26ee60cea82
+      commit: 2a27e7505a06d84ca6efb094d86fc41ea2766e1b
       additional steps:
         - composer update
   - CodeMirror:
@@ -81,7 +81,7 @@ extensions:
       commit: 25340d9d06a7547ba31d9dc4ef0ac100a48f70ed
   - CommonsMetadata:
       Wikidata ID: Q21676600
-      commit: 133fd7511eff158456e194315e5f477166ef3206
+      commit: e0f6d3dae608e011201f5585d8daa1c6b62d50ab
   - ConfirmAccount:
       Wikidata ID: Q21676649
       commit: 852687aea8281b731d6193bab6477def06d9b31d
@@ -213,7 +213,7 @@ extensions:
       commit: 7315339c97c0eb7d528a8f6b14d055812a85fdb2
   - MassMessage:
       Wikidata ID: Q27887618
-      commit: 27ad797faa94d0d43294609eb00b836d7ab2a08e
+      commit: c782c57b199a68344f213185427d5e2ccabb1fad
   - MassMessageEmail:
       Wikidata ID: Q35256649
       commit: b2d7a0441ce18e7d63532f4e46ac99a99c27718e
@@ -319,7 +319,7 @@ extensions:
       commit: d74ff7c4b98d72dda6bfccc597d496ef93953bfb
   - UploadWizard:
       Wikidata ID: Q11083660
-      commit: 858aa6c42ac1224c634c12123ed727734d41edad
+      commit: 2bd234e5997ae0d455300911faa89fe611b21ef0
   - UrlGetParameters:
       Wikidata ID: Q21678958
       commit: 013427509ca51a710879c8811b6f4ef04d7b2e12
@@ -360,7 +360,7 @@ extensions:
       gerrit_ref: refs/changes/77/1235577/2
   - WikiSEO:
       Wikidata ID: Q21679286
-      commit: 5d27adb6ec53e7b1076a485e93f0b0c272d08937
+      commit: b66ac6f99666244402e025c757beeb38c195d631
   - WSOAuth:
       Wikidata ID: Q117027185
       commit: 9f25fade2bcd3fae44c3236072f5ea2eb068b75c
@@ -503,7 +503,7 @@ extensions:
   - TemplateSandbox:
       Wikidata ID: Q21678839
       branch: REL1_43
-      commit: 2ba690210fe89175589156062f108f1f357f326f
+      commit: 25b02c368e373333f87fc6a394076e103da63635
   - Jiki:
       Wikidata ID: Q25662094
       repository: https://github.com/gvoss/php-mediawiki-jiki.git
@@ -556,7 +556,7 @@ skins:
       commit: f6b35ca2b8b07ced0e467d8b99421a41b0af3fa3
   - Refreshed:
       Wikidata ID: Q22713061
-      commit: 2570c3ee3996cd8ca3f766131b301c33695f68e6
+      commit: 0d0c6d6f49b7103347ce61ad977e0db644f5d1a8
 # Composer packages (extensions) to install
 packages:
   - name: mediawiki/semantic-media-wiki
