@@ -55,8 +55,8 @@ extensions:
   - Cargo:
       Wikidata ID: Q21676223
       branch: master
-      # 3.9.1
-      commit: 7d92aee4a12e4eaefeff973eec6cafc838f845f0
+      # 3.9.4
+      commit: b3cc797aa8a1575f7ce4a7c5b0a1979698d582f5
   - CharInsert:
       Wikidata ID: Q21676306
       commit: ee7b17910ece1ebaf6ad53857926d797b0ff374d
@@ -102,7 +102,8 @@ extensions:
   - DataTransfer:
       Wikidata ID: Q21677041
       branch: master
-      commit: 2693332aeb146681e54bb1131a3330235f14f742
+      # 1.8.1
+      commit: a512e20daa4a2eb9b33b80a9cf76f0a8d91336b4
       additional steps:
         - composer update
   - DeleteBatch:
@@ -253,7 +254,8 @@ extensions:
   - PageForms:
       Wikidata ID: Q21678466
       branch: master
-      commit: ffcfb416a4f18e17df5ff02eed6004c6933c0d8f
+      # 6.0.11
+      commit: 88ad8f1805a11bb1c693ddd9e5311b059593344f
   - PluggableAuth:
       Wikidata ID: Q21678089
       commit: 4ef6f74c067f9ff81b78fd64b9780a82ccce97f3
@@ -331,8 +333,8 @@ extensions:
       commit: 658fd7ac017cee7cd1ccd68a7431ffad31cf056c
   - UserPageViewTracker:
       Wikidata ID: Q21679006
-      branch: master
-      commit: f375afc09cf381d662c75d405aa373cf6cb658cd
+      # REL1_43 (default branch)
+      commit: 8c5c525e5985ee3d851cca0ad7ad864e44d3a371
   - Variables:
       Wikidata ID: Q21679056
       commit: 81115fae09d0a219078d2a2511de83474fd2eb8f
@@ -357,7 +359,8 @@ extensions:
         - composer update
   - WikiForum:
       branch: master
-      gerrit_ref: refs/changes/77/1235577/2
+      # Security fix: refactor HTML escaping
+      commit: a4b3b9076d8013a262d40a77aa8110c2170bde78
   - WikiSEO:
       Wikidata ID: Q21679286
       commit: 5d27adb6ec53e7b1076a485e93f0b0c272d08937
