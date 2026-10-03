@@ -8,13 +8,15 @@ ENV MW_VERSION=REL1_43 \
 	MW_IMPORT_VOLUME=/import \
 	WWW_USER=www-data \
 	WWW_GROUP=www-data \
-	APACHE_LOG_DIR=/var/log/apache2
+	APACHE_LOG_DIR=/var/log/apache2 \
+	DEBIAN_FRONTEND=noninteractive
 
 # System setup
 RUN set x; \
   rm -rf /var/lib/apt/lists/* && \
   apt-get clean && \
   apt-get update && \
+  apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
     wget \
     lsb-release \
@@ -24,6 +26,7 @@ RUN set x; \
   wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
   echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
   apt-get update && \
+  apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
 	git \
 	inotify-tools \
