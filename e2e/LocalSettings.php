@@ -34,11 +34,13 @@ $wgGroupPermissions['*']['upload'] = true;
 // Needed so that the 'interwiki' right gets documented by the extension
 wfLoadExtension( 'Interwiki' );
 
+wfLoadExtension( 'AJAXPoll' );
+
 // MWDebugTest::testMessagesFromErrorChannel() depends on E_USER_DEPRECATED
 // not being filtered out
 error_reporting( E_ALL );
 // And also needs debug logs to be kept or they will all be discarded, set
-// $wgDebugLogFile to be non-empty 
+// $wgDebugLogFile to be non-empty
 $wgDebugLogFile = '/dev/null';
 
 // * Somehow, don't ask me how, the extension registration does not apply
