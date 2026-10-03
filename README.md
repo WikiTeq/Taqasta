@@ -36,6 +36,7 @@ This repository is a fork of the MediaWiki application image from the [Canasta](
 | Extensions (add / update / remove) | [docs/extensions.md](docs/extensions.md) |
 | Patching | [docs/patching.md](docs/patching.md) |
 | Deployment & runtime | [docs/deployment.md](docs/deployment.md) |
+| Bind mounts → named volumes (WIK-2057) | [docs/bind-mounts-to-volumes.md](docs/bind-mounts-to-volumes.md) |
 | Upgrades (MW minor, LTS, PHP) | [docs/upgrades/](docs/upgrades/) |
 | E2E tests | [e2e/README.md](e2e/README.md) |
 
