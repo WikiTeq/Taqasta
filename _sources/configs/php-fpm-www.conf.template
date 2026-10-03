@@ -1,0 +1,35 @@
+; php-fpm www pool for Taqasta. Processed by envsubst at container start
+; (only the ${MPM_PREFORK_*} placeholders are expanded; see run-apache-fpm.sh).
+;
+; The MPM_PREFORK_* environment variable names are reused from the Apache
+; prefork tuning so existing deployments keep their knob names:
+;   StartServers          -> pm.start_servers
+;   MinSpareServers       -> pm.min_spare_servers
+;   MaxSpareServers       -> pm.max_spare_servers
+;   MaxRequestWorkers     -> pm.max_children
+;   MaxRequestsPerChild   -> pm.max_requests
+
+[www]
+user = www-data
+group = www-data
+listen = 0.0.0.0:9000
+; php-fpm must keep the container environment (MW_*, PHP_*) for MediaWiki.
+clear_env = no
+catch_workers_output = yes
+decorate_workers_output = no
+
+pm = dynamic
+pm.start_servers = ${MPM_PREFORK_START_SERVERS}
+pm.min_spare_servers = ${MPM_PREFORK_MIN_SPARE_SERVERS}
+pm.max_spare_servers = ${MPM_PREFORK_MAX_SPARE_SERVERS}
+pm.max_children = ${MPM_PREFORK_MAX_REQUEST_WORKERS}
+pm.max_requests = ${MPM_PREFORK_MAX_REQUESTS_PER_CHILD}
+
+; Logs go to stderr/stdout and end up in the container logs.
+php_admin_value[error_log] = /proc/self/fd/2
+php_admin_flag[log_errors] = on
+
+; Status page for monitoring (localhost-only usage expected behind the
+; container network): /fpm-status via the nginx stub or direct probe.
+pm.status_path = /fpm-status
+ping.path = /fpm-ping

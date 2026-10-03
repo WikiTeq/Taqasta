@@ -24,10 +24,16 @@ FROM base AS final
 
 {{ template "templates/final.Dockerfile" -}}
 
+# Port 80 is kept for the bundled Apache path; when running behind the
+# external nginx service (default compose setup, WIK-2139) this container
+# additionally exposes php-fpm on port 9000.
 EXPOSE 80
+EXPOSE 9000
 WORKDIR $MW_HOME
 
 HEALTHCHECK --interval=1m --timeout=10s \
 	CMD wget -q --method=HEAD localhost/w/api.php
 
-CMD ["/run-apache.sh"]
+# Default entrypoint is the php-fpm variant (external nginx serves HTTP);
+# set CMD back to /run-apache.sh to restore the bundled Apache behavior.
+CMD ["/run-apache-fpm.sh"]

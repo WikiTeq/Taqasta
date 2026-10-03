@@ -1,4 +1,11 @@
 # This is a dev/debug compose file
+#
+# WIK-2139: HTTP is served by the dedicated `nginx` service, which serves
+# static files straight from the shared mediawiki volume and forwards PHP
+# requests to php-fpm listening inside the `web` container.
+# The previously bundled Apache stays available as a rollback path:
+#   docker compose -f docker-compose.sample.yml -f docker-compose.apache.yml up -d
+
 x-web-environment: &x-web-environment
     MW_ADMIN_USER: ${MW_ADMIN_USER:-admin}
     MW_ADMIN_PASS: ${MW_ADMIN_PASS:-Passsw0rd!}
@@ -70,12 +77,53 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    ports:
-      - "${PORT:-127.0.0.1:8000}:80"
+    # WIK-2139: image CMD now runs php-fpm (no HTTP listener). Roll back to
+    # the bundled Apache with docker-compose.apache.yml (see file header).
     depends_on:
       - db
     environment: *x-web-environment
     volumes: *x-web-volumes
+    # WIK-2139: php-fpm mode — HTTP is served by the nginx service, so probe
+    # the local php-fpm listener instead of an HTTP endpoint (same probe as
+    # docker-compose.yml; the image's baked-in Apache HTTP check never passes)
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/9000"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    # External HTTP entrypoint replacing the previously published Apache
+    # port on the web service (WIK-2139)
+    ports:
+      - "${PORT:-127.0.0.1:8000}:80"
+    environment:
+      NGINX_UPSTREAM: web:9000
+      NGINX_CLIENT_MAX_BODY_SIZE: ${NGINX_CLIENT_MAX_BODY_SIZE:-500M}
+    volumes:
+      # Read-only view of the wiki files mirrored into the volume by the
+      # web entrypoint (docroot lives at /mediawiki/docroot here)
+      - mediawiki:/mediawiki:ro
+      - ./_sources/configs/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # Rendered at start by the official image's envsubst-on-templates
+      # mechanism (NGINX_UPSTREAM / NGINX_CLIENT_MAX_BODY_SIZE placeholders)
+      - ./_sources/configs/nginx/vhost.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./_sources/configs/nginx/fastcgi_params.conf:/etc/nginx/fastcgi_params.conf:ro
+    depends_on:
+      web:
+        condition: service_healthy
+    healthcheck:
+      # Self-contained probe: nginx answers with the maintenance page even
+      # while the web/fpm service is down, so don't probe /server-status
+      # (it proxies to fpm and churns health whenever web restarts)
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   worker:
     <<: *x-service-worker
