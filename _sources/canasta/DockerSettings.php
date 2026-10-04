@@ -46,6 +46,7 @@ const DOCKER_EXTENSIONS = [
 	'ApprovedRevs',
 	'Arrays',
 	'Auth_remoteuser',
+	'AWS',
 	'BetaFeatures',
 	'Bootstrap',
 	'BootstrapComponents',
@@ -71,6 +72,7 @@ const DOCKER_EXTENSIONS = [
 	'ConfirmEdit/ReCaptchaNoCaptcha', # bundled
 	'ContactPage',
 	'ContributionScores',
+	'CookieConsent',
 	'CookieWarning',
 	'Cloudflare',
 	'CrawlerProtection',
@@ -85,6 +87,7 @@ const DOCKER_EXTENSIONS = [
 	'Echo', # bundled
 	'EditAccount',
 	'Editcount',
+	'EditCountNeue',
 	'Elastica',
 	'EmailAuthorization',
 	'EmbedVideo',
@@ -96,7 +99,9 @@ const DOCKER_EXTENSIONS = [
 	'Gadgets', # bundled
 	'GlobalNotice',
 	'GoogleDocTag',
+	'GoogleGeocode',
 	'GoogleLogin',
+	'HoneyPot',
 	'HTMLTags',
 	'HeadScript',
 	'HeaderFooter',
@@ -105,6 +110,7 @@ const DOCKER_EXTENSIONS = [
 	'ImageMap', # bundled
 	'InputBox', # bundled
 	'Interwiki', # bundled
+	'Jiki',
 	'JWTAuth',
 	'LDAPAuthentication2',
 	'LDAPAuthorization',
@@ -122,6 +128,7 @@ const DOCKER_EXTENSIONS = [
 	'LuaCache',
 	'MagicNoCache',
 	'Maps',
+	'MarkdownPages',
 	'MassMessage',
 	'MassMessageEmail',
 	'MassPasswordReset',
@@ -130,6 +137,7 @@ const DOCKER_EXTENSIONS = [
 	'Mermaid',
 	'MobileDetect',
 	'MobileFrontend',
+	'Moderation',
 	'MsUpload',
 	'MultimediaViewer', # bundled
 	'MyVariables',
@@ -142,6 +150,7 @@ const DOCKER_EXTENSIONS = [
 	'OpenGraphMeta',
 	'OpenIDConnect',
 	'PDFEmbed',
+	'PageAuthors',
 	'PageExchange',
 //	'PageForms',   must be enabled manually after enableSemantics()
 	'PageImages', # bundled
@@ -168,6 +177,7 @@ const DOCKER_EXTENSIONS = [
 	'SemanticDependencyUpdater', //  must be enabled after SemanticMediaWiki
 	'SemanticExtraSpecialProperties',
 //	'SemanticMediaWiki', moved the top to be enabled first, because some Semantic extension don't work in other case.
+	'SemanticReports',
 	'SemanticResultFormats',
 	'SemanticScribunto',
 	'SemanticWatchlist',
@@ -181,7 +191,10 @@ const DOCKER_EXTENSIONS = [
 	'SkinPerPage',
 	'SmiteSpam',
 	'SpamBlacklist', # bundled
+	'SpamRegex',
+	'StatusCheck',
 	'SubPageList',
+	'SummaryToJiraComment',
 	'Survey',
 	'SyntaxHighlight_GeSHi', # bundled
 	'Share',
@@ -189,6 +202,7 @@ const DOCKER_EXTENSIONS = [
 	'TabberNeue',
 	'Tabs',
 	'TemplateData', # bundled
+	'TemplateSandbox',
 	'TemplateStyles',
 	'TemplateWizard',
 	'TextExtracts', # bundled
@@ -219,6 +233,7 @@ const DOCKER_EXTENSIONS = [
 	'WikiSEO',
 	'WikiCategoryTagCloud',
 	'YouTube',
+	'ZoteroConnector',
 ];
 
 $DOCKER_MW_VOLUME = getenv( 'MW_VOLUME' );
@@ -600,6 +615,29 @@ switch( getenv( 'MW_SEARCH_TYPE' ) ) {
 		$wgCirrusSearchServers =  explode( ',', getenv( 'MW_CIRRUS_SEARCH_SERVERS' ) );
 		$wgSearchType = 'CirrusSearch';
 		break;
+}
+
+########################### WikiTeq policy footer [QLOUD-572] ############################
+# ENABLE_WIKITEQ_POLICY_FOOTER_LINK=true adds a hoster legal link next to core privacy.
+# Optional WIKITEQ_POLICY_FOOTER_LINK_LABEL / WIKITEQ_POLICY_FOOTER_LINK_URL override defaults.
+# Does not disable the native Privacy policy footer link.
+if ( isEnvTrue( 'ENABLE_WIKITEQ_POLICY_FOOTER_LINK' ) ) {
+	$wikiTeqPolicyFooterUrl = getenv( 'WIKITEQ_POLICY_FOOTER_LINK_URL' ) ?: 'https://wikiteq.com/hosted-wiki-legal';
+	$wikiTeqPolicyFooterLabel = getenv( 'WIKITEQ_POLICY_FOOTER_LINK_LABEL' ) ?: 'WikiTeq Terms & Privacy';
+	$wgHooks['SkinAddFooterLinks'][] = static function ( $skin, string $key, array &$footerlinks ) use ( $wikiTeqPolicyFooterUrl, $wikiTeqPolicyFooterLabel ) {
+		if ( $key === 'places' ) {
+			$footerlinks['wikiteq-legal'] = \MediaWiki\Html\Html::element(
+				'a',
+				[
+					'href' => $wikiTeqPolicyFooterUrl,
+					'target' => '_blank',
+					'rel' => 'noopener noreferrer',
+					'data-testid' => 'wikiteq-policy-footer',
+				],
+				$wikiTeqPolicyFooterLabel
+			);
+		}
+	};
 }
 
 ########################### Sitemap ############################

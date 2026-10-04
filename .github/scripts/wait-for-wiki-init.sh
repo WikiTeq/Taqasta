@@ -29,7 +29,7 @@ fail_fast() {
 	return 1
 }
 
-MAX_WAIT_SECONDS="${MAX_WAIT_SECONDS:-600}"
+MAX_WAIT_SECONDS="${MAX_WAIT_SECONDS:-300}"
 start_ts="$(date +%s)"
 
 while ! grep -Fq "$MARKER" "$LOG_FILE"; do

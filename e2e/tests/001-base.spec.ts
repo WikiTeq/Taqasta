@@ -5,6 +5,12 @@ test('non-prod indicator is off by default', async ({page}) => {
     await expect(page.locator('.wikiteq-nonprod-label')).toHaveCount(0);
 });
 
+test('WikiTeq policy footer link is off by default', async ({page}) => {
+    await page.goto('/wiki/Main_Page');
+    await expect(page.getByTestId('wikiteq-policy-footer')).toHaveCount(0);
+    await expect(page.locator('#footer-places-privacy')).toBeVisible();
+});
+
 test('has successful installation message', async ({page}) => {
     await page.goto('/wiki/Main_Page');
     await expect(page.locator('#content')).toContainText(/MediaWiki has been installed/);
