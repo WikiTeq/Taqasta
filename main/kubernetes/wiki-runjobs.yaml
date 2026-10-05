@@ -100,7 +100,7 @@ spec:
               cpu: "300m"
               memory: "64Mi"
             limits:
-              # set to match php memory settings for now
+              # cgroup cap for runJobs --memory-limit max; see QLOUD-610
               memory: "128Mi"
           command:
             - sh
@@ -133,8 +133,6 @@ spec:
                 secretKeyRef:
                   name: mysql-password
                   key: password
-            - name: PHP_MEMORY_LIMIT
-              value: 128M
           volumeMounts:
             - name: git
               mountPath: /git
@@ -151,7 +149,7 @@ spec:
               cpu: "300m"
               memory: "64Mi"
             limits:
-              # set to match php memory settings for now
+              # cgroup cap for runJobs --memory-limit max; see QLOUD-610
               memory: "128Mi"
           command:
             - sh
@@ -184,8 +182,6 @@ spec:
                 secretKeyRef:
                   name: mysql-password
                   key: password
-            - name: PHP_MEMORY_LIMIT
-              value: 128M
           volumeMounts:
             - name: git
               mountPath: /git
@@ -202,7 +198,7 @@ spec:
               cpu: "300m"
               memory: "64Mi"
             limits:
-              # set to match php memory settings for now
+              # cgroup cap for runJobs --memory-limit max; see QLOUD-610
               memory: "128Mi"
           command:
             - sh
@@ -235,8 +231,6 @@ spec:
                 secretKeyRef:
                   name: mysql-password
                   key: password
-            - name: PHP_MEMORY_LIMIT
-              value: 128M
           volumeMounts:
             - name: git
               mountPath: /git
