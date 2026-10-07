@@ -587,7 +587,8 @@ packages:
   - name: mediawiki/maps
     version: 12.1.9
   - name: mediawiki/semantic-watchlist
-    version: dev-master#3986e404d0bd9465f94c8878cac2055de6aab3a4
+    # WIK-2722: fork branch until the hook rename is in upstream master
+    version: dev-WIK-2722-smw7-before-data-update#8fa0d5fc0db810bf18b06ced4aa282b13d049c84
   # Not an extension, loaded so that we can use shell.php in the containers
   - name: psy/psysh
     # Match core constraint, DEMO-137
@@ -600,6 +601,9 @@ repositories:
     url: https://github.com/WikiTeq/mediawiki-extension-RemoteWiki
   - type: vcs
     url: https://github.com/oetterer/BootstrapComponents.git
+    canonical: true
+  - type: vcs
+    url: https://github.com/WikiTeq/SemanticWatchlistSMW.git
     canonical: true
 # patches to apply; name is the file name in _sources/patches and path is
 # the git directory to apply it to in the built image, relative to $MW_HOME
