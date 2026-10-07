@@ -10,7 +10,7 @@
 
 Adding an extension to [values.yml](../values.yml) puts files in the image. It does **not** enable the extension on any wiki. Prefer enabling it per wiki by adding `wfLoadExtension()` (and any required config) to that wiki's `LocalSettings.php` or equivalent deployment configuration.
 
-The `DOCKER_EXTENSIONS` constant in [_sources/canasta/DockerSettings.php](../_sources/canasta/DockerSettings.php) is a legacy allowlist for `MW_LOAD_EXTENSIONS` / `DOCKER_EXTENSIONS`. It is not updated by [values.yml](../values.yml) today. Prefer `LocalSettings.php` for new work. The env-based path is still in use and may be cleaned up later.
+The `DOCKER_EXTENSIONS` constant in [_sources/canasta/DockerSettings.php](../_sources/canasta/DockerSettings.php) is a legacy allowlist for `MW_LOAD_EXTENSIONS`. It is not updated by [values.yml](../values.yml) today. Prefer `LocalSettings.php` for new work. The env-based path is still in use and may be cleaned up later.
 
 ## Environment variables
 
