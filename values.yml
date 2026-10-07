@@ -404,9 +404,9 @@ extensions:
       branch: main
       commit: f38758156639b34317ffc6a9e8b5b2624aebae8b
   - PubmedParser:
-      repository: https://github.com/WikiTeq/PubmedParser_patched.git
-      branch: wikiteq
-      commit: f77989545de8b5fd3c45a2e862e2884064862b25 # MBSD-444
+      repository: https://github.com/bovender/PubmedParser.git
+      branch: main
+      commit: 1fe652de6db6021b6c2bebef9f67dfca8fd19c34 # MBSD-444
   - SelectCategory:
       commit: 1f351647af2e235e11139aa8f1b70c19a3556c61
   - ShowMe:
