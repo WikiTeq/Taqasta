@@ -588,7 +588,7 @@ packages:
     version: 12.1.9
   - name: mediawiki/semantic-watchlist
     # WIK-2722: fork branch until the hook rename is in upstream master
-    version: dev-WIK-2722-smw7-before-data-update#8fa0d5fc0db810bf18b06ced4aa282b13d049c84
+    version: dev-WIK-2722-smw7-before-data-update#83e387586bd263b496cb7b092fb651725a92a3d8
   # Not an extension, loaded so that we can use shell.php in the containers
   - name: psy/psysh
     # Match core constraint, DEMO-137
