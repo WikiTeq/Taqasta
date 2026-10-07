@@ -77,16 +77,20 @@ fi
 
 /update-docker-gateway.sh
 
-# Write log files to $MW_VOLUME/log directory if target folders are not mounted
-echo "Checking permissions of Apache log dir $APACHE_LOG_DIR..."
-if ! mountpoint -q -- "$APACHE_LOG_DIR/"; then
-    mkdir -p "$MW_VOLUME/log/httpd"
-    rsync -avh --ignore-existing "$APACHE_LOG_DIR/" "$MW_VOLUME/log/httpd/"
-    mv "$APACHE_LOG_DIR" "${APACHE_LOG_DIR}_old"
-    ln -s "$MW_VOLUME/log/httpd" "$APACHE_LOG_DIR"
+# Write Apache log files to $MW_VOLUME/log unless they go to stdout/stderr
+if isTrue "$APACHE_LOG_TO_STDOUT"; then
+    echo "APACHE_LOG_TO_STDOUT is true: Apache access/error logs go to stdout/stderr"
 else
-    chgrp -R "$WWW_GROUP" "$APACHE_LOG_DIR"
-    chmod -R g=rwX "$APACHE_LOG_DIR"
+    echo "Checking permissions of Apache log dir $APACHE_LOG_DIR..."
+    if ! mountpoint -q -- "$APACHE_LOG_DIR/"; then
+        mkdir -p "$MW_VOLUME/log/httpd"
+        rsync -avh --ignore-existing "$APACHE_LOG_DIR/" "$MW_VOLUME/log/httpd/"
+        mv "$APACHE_LOG_DIR" "${APACHE_LOG_DIR}_old"
+        ln -s "$MW_VOLUME/log/httpd" "$APACHE_LOG_DIR"
+    else
+        chgrp -R "$WWW_GROUP" "$APACHE_LOG_DIR"
+        chmod -R g=rwX "$APACHE_LOG_DIR"
+    fi
 fi
 
 # Check permissions for sqlite database file in case if sqlite is used
@@ -121,4 +125,8 @@ rm -rf /run/apache2/* /tmp/apache2*
 
 printf "\n\n==================================================================================\n\n\n"
 
-exec /usr/sbin/apachectl -DFOREGROUND
+apache_defines=(-DFOREGROUND)
+if isTrue "$APACHE_LOG_TO_STDOUT"; then
+    apache_defines+=(-DAPACHE_LOG_STDOUT)
+fi
+exec /usr/sbin/apachectl "${apache_defines[@]}"
