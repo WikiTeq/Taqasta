@@ -55,8 +55,8 @@ extensions:
   - Cargo:
       Wikidata ID: Q21676223
       branch: master
-      # 3.9.1
-      commit: 7d92aee4a12e4eaefeff973eec6cafc838f845f0
+      # 3.9.4
+      commit: b3cc797aa8a1575f7ce4a7c5b0a1979698d582f5
   - CharInsert:
       Wikidata ID: Q21676306
       commit: ee7b17910ece1ebaf6ad53857926d797b0ff374d
