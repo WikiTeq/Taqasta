@@ -8,10 +8,8 @@ ENV MW_VERSION=REL1_43 \
 	MW_IMPORT_VOLUME=/import \
 	WWW_USER=www-data \
 	WWW_GROUP=www-data \
-	APACHE_LOG_DIR=/var/log/apache2
-
-# Gerrit returns 403 for git's default User-Agent (QLOUD-706).
-ENV GIT_HTTP_USER_AGENT="WikiTeq-Taqasta/1.0 (https://wikiteq.com)"
+	APACHE_LOG_DIR=/var/log/apache2 \
+	GIT_HTTP_USER_AGENT="WikiTeq-Taqasta/1.0 (https://wikiteq.com)"
 
 # System setup
 RUN set x; \
