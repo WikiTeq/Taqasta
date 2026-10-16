@@ -73,9 +73,11 @@ extensions:
       commit: 5b6096aaed463519b8f99aa79fadb4498b474905
   - Collection:
       Wikidata ID: Q134413164
-      # (patched version, see SEB2-16)
-      # https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Collection/+/1131800
-      gerrit_ref: refs/changes/00/1131800/1
+      # REL1_43 head, includes the Collection security fixes.
+      # NOTE: drops the SEB2-16 PDF-rendering-progress patch
+      # (gerrit 1131800, abandoned); it applies cleanly onto this
+      # commit if the feature is still needed.
+      commit: 5cde1682153e972f73a9ab04b5b3b8416e5bb47e
   - CommentStreams:
       Wikidata ID: Q25662100
       commit: 25340d9d06a7547ba31d9dc4ef0ac100a48f70ed
