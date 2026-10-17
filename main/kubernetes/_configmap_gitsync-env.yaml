@@ -5,3 +5,4 @@ metadata:
 data:
   GHAPP_INSTALLID: "89775214"
   GHAPP_APPID: "2105745"
+  GIT_HTTP_USER_AGENT: "WikiTeq-git-sync/1.0 (https://wikiteq.com)"
