@@ -12,9 +12,25 @@ on:
     # Plus for all tags
     tags:
       - '*'
+    paths-ignore:
+      - 'docs/**'
+      - 'main/**'
+      - 'images/**'
+      - '.gitattributes'
+      - 'AGENTS.md'
+      - 'LICENSE'
+      - 'README.md'
 
   # Plus for any pull-requests
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'main/**'
+      - 'images/**'
+      - '.gitattributes'
+      - 'AGENTS.md'
+      - 'LICENSE'
+      - 'README.md'
 
 env:
   IMAGE_NAME: taqasta
