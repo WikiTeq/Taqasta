@@ -255,7 +255,8 @@ extensions:
   - PageForms:
       Wikidata ID: Q21678466
       branch: master
-      commit: ffcfb416a4f18e17df5ff02eed6004c6933c0d8f
+      # 6.0.11
+      commit: 88ad8f1805a11bb1c693ddd9e5311b059593344f
   - PluggableAuth:
       Wikidata ID: Q21678089
       commit: 4ef6f74c067f9ff81b78fd64b9780a82ccce97f3
