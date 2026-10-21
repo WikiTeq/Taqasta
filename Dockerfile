@@ -88,12 +88,14 @@ RUN set x; \
 	gettext-base \
 #    xvfb \ + 14.9 MB
 #    lilypond \ + 301 MB
-	&& pecl -d php_suffix=8.2 install luasandbox \
-	&& pecl -d php_suffix=8.2 install excimer \
+	&& wget -O /tmp/luasandbox.tgz https://pecl.php.net/get/LuaSandbox-4.1.3.tgz \
+	&& wget -O /tmp/excimer.tgz https://pecl.php.net/get/excimer-1.2.6.tgz \
+	&& pecl -d php_suffix=8.2 install -o /tmp/luasandbox.tgz \
+	&& pecl -d php_suffix=8.2 install -o /tmp/excimer.tgz \
 	&& aptitude -y remove php-pear php8.2-dev liblua5.1-0-dev \
 	&& aptitude clean \
 	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
+	&& rm -rf /var/lib/apt/lists/* /tmp/luasandbox.tgz /tmp/excimer.tgz
 
 # FORCE USING PHP 8.2 (same for phar)
 # For some reason sury provides other versions, see
