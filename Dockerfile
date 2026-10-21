@@ -15,6 +15,14 @@ ENV MW_VERSION=REL1_35 \
 	APACHE_LOG_DIR=/var/log/apache2 \
 	GIT_HTTP_USER_AGENT="WikiTeq-Taqasta/1.0 (https://wikiteq.com)"
 
+RUN printf '%s\n' \
+    'deb http://archive.debian.org/debian bullseye main' \
+    'deb http://archive.debian.org/debian bullseye-updates main' \
+    'deb http://archive.debian.org/debian-security bullseye-security main' \
+    > /etc/apt/sources.list \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get update
+
 # System setup
 RUN set x; \
 	apt-get clean \
