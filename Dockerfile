@@ -86,9 +86,14 @@ RUN set x; \
 	gettext-base \
 #    xvfb \ + 14.9 MB
 #    lilypond \ + 301 MB
-	&& pecl -d php_suffix=8.1 install luasandbox \
-	&& pecl -d php_suffix=8.1 install excimer \
-	&& aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev \
+  && wget -O /tmp/luasandbox.tgz \
+      https://pecl.php.net/get/LuaSandbox-4.1.3.tgz \
+  && pecl -d php_suffix=8.1 install /tmp/luasandbox.tgz \
+  && rm /tmp/luasandbox.tgz \
+  && aptitude install -y php8.1-excimer \
+  && echo 'extension=luasandbox.so' > /etc/php/8.1/mods-available/luasandbox.ini \
+  && phpenmod -v 8.1 luasandbox \
+  && php8.1 -m | grep -iE 'luasandbox|excimer' \
 	&& aptitude clean \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
