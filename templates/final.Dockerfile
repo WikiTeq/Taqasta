@@ -64,9 +64,6 @@ COPY _sources/configs/scan.conf /etc/clamd.d/scan.conf
 COPY _sources/configs/php_cli_*.ini _sources/configs/php_common_*.ini /etc/php/8.3/cli/conf.d/
 COPY _sources/configs/php_apache2_*.ini _sources/configs/php_common_*.ini /etc/php/8.3/apache2/conf.d/
 
-COPY _sources/configs/php_session_progress.ini /etc/php/8.3/cli/conf.d/
-COPY _sources/configs/php_session_progress.ini /etc/php/8.3/apache2/conf.d/
-
 COPY _sources/scripts/*.sh /
 COPY _sources/scripts/*.php $MW_HOME/maintenance/
 COPY _sources/configs/robots.php $WWW_ROOT/
