@@ -52,24 +52,24 @@ RUN set x; \
 	&& echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list \
 	&& aptitude update \
 	&& aptitude install -y \
-	php8.1 \
-	php8.1-mysql \
-	php8.1-cli \
-	php8.1-gd \
-	php8.1-mbstring \
-	php8.1-xml \
-	php8.1-mysql \
-	php8.1-intl \
-	php8.1-opcache \
-	php8.1-apcu \
-	php8.1-redis \
-	php8.1-curl \
-	php8.1-tidy \
-	php8.1-zip \
-	php8.1-tideways \
+	php8.2 \
+	php8.2-mysql \
+	php8.2-cli \
+	php8.2-gd \
+	php8.2-mbstring \
+	php8.2-xml \
+	php8.2-mysql \
+	php8.2-intl \
+	php8.2-opcache \
+	php8.2-apcu \
+	php8.2-redis \
+	php8.2-curl \
+	php8.2-tidy \
+	php8.2-zip \
+	php8.2-tideways \
 # Lua sandbox
 	php-pear \
-	php8.1-dev \
+	php8.2-dev \
 	liblua5.1-0 \
 	liblua5.1-0-dev \
 	monit \
@@ -86,20 +86,21 @@ RUN set x; \
 	gettext-base \
 #    xvfb \ + 14.9 MB
 #    lilypond \ + 301 MB
-	&& pecl -d php_suffix=8.1 install luasandbox \
-	&& pecl -d php_suffix=8.1 install excimer \
-	&& aptitude -y remove php-pear php8.1-dev liblua5.1-0-dev \
+	&& pecl -d php_suffix=8.2 install luasandbox \
+	&& pecl -d php_suffix=8.2 install excimer \
+	&& aptitude -y remove php-pear php8.2-dev liblua5.1-0-dev \
+	&& /usr/bin/php8.2 -r 'exit(PHP_VERSION === "8.2.35" ? 0 : 1);' \
 	&& aptitude clean \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
-# FORCE USING PHP 8.1 (same for phar)
+# FORCE USING PHP 8.2 (same for phar)
 # For some reason sury provides other versions, see
 # https://github.com/oerdnj/deb.sury.org/wiki/Frequently-Asked-Questions
 RUN set -x; \
-	update-alternatives --set php /usr/bin/php8.1 \
-	&& update-alternatives --set phar /usr/bin/phar8.1 \
-	&& update-alternatives --set phar.phar /usr/bin/phar.phar8.1
+	update-alternatives --set php /usr/bin/php8.2 \
+	&& update-alternatives --set phar /usr/bin/phar8.2 \
+	&& update-alternatives --set phar.phar /usr/bin/phar.phar8.2
 
 # Post install configuration
 RUN set -x; \
@@ -1085,8 +1086,8 @@ COPY _sources/configs/msmtprc /etc/
 COPY _sources/configs/mediawiki.conf /etc/apache2/sites-enabled/
 COPY _sources/configs/status.conf /etc/apache2/mods-available/
 COPY _sources/configs/scan.conf /etc/clamd.d/scan.conf
-COPY _sources/configs/php_*.ini /etc/php/8.1/cli/conf.d/
-COPY _sources/configs/php_*.ini /etc/php/8.1/apache2/conf.d/
+COPY _sources/configs/php_*.ini /etc/php/8.2/cli/conf.d/
+COPY _sources/configs/php_*.ini /etc/php/8.2/apache2/conf.d/
 COPY _sources/scripts/*.sh /
 COPY _sources/scripts/*.php $MW_HOME/maintenance/
 COPY _sources/configs/robots.php $WWW_ROOT/
