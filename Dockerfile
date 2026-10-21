@@ -13,7 +13,8 @@ ENV MW_VERSION=REL1_39 \
 	MW_IMPORT_VOLUME=/import \
 	WWW_USER=www-data \
 	WWW_GROUP=www-data \
-	APACHE_LOG_DIR=/var/log/apache2
+	APACHE_LOG_DIR=/var/log/apache2 \
+	GIT_HTTP_USER_AGENT="WikiTeq-Taqasta/1.0 (https://wikiteq.com)"
 
 # System setup
 RUN set x; \
