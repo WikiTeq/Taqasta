@@ -51,25 +51,26 @@ RUN set x; \
 	&& wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
 	&& echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list \
 	&& aptitude update \
-	&& aptitude install -y \
-	php8.2 \
-	php8.2-mysql \
-	php8.2-cli \
-	php8.2-gd \
-	php8.2-mbstring \
-	php8.2-xml \
-	php8.2-mysql \
-	php8.2-intl \
-	php8.2-opcache \
+	&& apt-get satisfy -y \
+	'php8.2 (>= 8.2.35)' \
+	'php8.2-mysql (>= 8.2.35)' \
+	'php8.2-cli (>= 8.2.35)' \
+	'php8.2-gd (>= 8.2.35)' \
+	'php8.2-mbstring (>= 8.2.35)' \
+	'php8.2-xml (>= 8.2.35)' \
+	'php8.2-mysql (>= 8.2.35)' \
+	'php8.2-intl (>= 8.2.35)' \
+	'php8.2-opcache (>= 8.2.35)' \
 	php8.2-apcu \
 	php8.2-redis \
-	php8.2-curl \
-	php8.2-tidy \
-	php8.2-zip \
+	'php8.2-curl (>= 8.2.35)' \
+	'php8.2-tidy (>= 8.2.35)' \
+	'php8.2-zip (>= 8.2.35)' \
 	php8.2-tideways \
+	'php8.2-dev (>= 8.2.35)' \
+	&& aptitude install -y \
 # Lua sandbox
 	php-pear \
-	php8.2-dev \
 	liblua5.1-0 \
 	liblua5.1-0-dev \
 	monit \
@@ -89,7 +90,6 @@ RUN set x; \
 	&& pecl -d php_suffix=8.2 install luasandbox \
 	&& pecl -d php_suffix=8.2 install excimer \
 	&& aptitude -y remove php-pear php8.2-dev liblua5.1-0-dev \
-	&& /usr/bin/php8.2 -r 'exit(PHP_VERSION === "8.2.35" ? 0 : 1);' \
 	&& aptitude clean \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
