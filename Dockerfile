@@ -93,6 +93,7 @@ RUN set x; \
 	&& pecl -d php_suffix=8.2 install -o /tmp/luasandbox.tgz \
 	&& pecl -d php_suffix=8.2 install -o /tmp/excimer.tgz \
 	&& aptitude -y remove php-pear php8.2-dev liblua5.1-0-dev \
+	&& apt-get install -y --no-install-recommends gettext-base \
 	&& aptitude clean \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/luasandbox.tgz /tmp/excimer.tgz
