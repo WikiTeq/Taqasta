@@ -1,0 +1,54 @@
+{
+	"name": "CaptchaConsent",
+	"version": "0.1.0",
+	"author": "WikiTeq",
+	"url": "https://github.com/WikiTeq/Taqasta",
+	"descriptionmsg": "captchaconsent-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.43.0"
+	},
+	"MessagesDirs": {
+		"CaptchaConsent": [ "i18n" ]
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\CaptchaConsent\\": "src/"
+	},
+	"TestAutoloadNamespaces": {
+		"MediaWiki\\Extension\\CaptchaConsent\\Tests\\": "tests/phpunit/"
+	},
+	"config": {
+		"CaptchaConsentCategory": {
+			"value": "",
+			"description": "CookieConsent category that must be granted before a third-party CAPTCHA script loads. Empty string turns the gate off."
+		}
+	},
+	"attributes": {
+		"VisualEditor": {
+			"PluginModules": [ "ext.captchaConsent" ]
+		}
+	},
+	"ResourceModules": {
+		"ext.captchaConsent": {
+			"localBasePath": "resources",
+			"remoteExtPath": "CaptchaConsent/resources",
+			"packageFiles": [ "ext.captchaConsent.js" ],
+			"messages": [
+				"captchaconsent-notice",
+				"captchaconsent-notice-link",
+				"captchaconsent-ve-notice"
+			],
+			"dependencies": [ "mediawiki.jqueryMsg", "mediawiki.util", "mediawiki.cookie" ]
+		}
+	},
+	"Hooks": {
+		"BeforePageDisplay": "main"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\CaptchaConsent\\Hooks"
+		}
+	},
+	"manifest_version": 2
+}

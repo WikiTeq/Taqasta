@@ -1,5 +1,6 @@
 COPY --from=composer $MW_HOME $MW_HOME
 COPY --from=composer $MW_ORIGIN_FILES $MW_ORIGIN_FILES
+COPY _sources/extensions/CaptchaConsent $MW_HOME/extensions/CaptchaConsent
 
 # Default values
 ENV MW_AUTOUPDATE=true \

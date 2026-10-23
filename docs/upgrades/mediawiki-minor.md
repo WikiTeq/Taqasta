@@ -16,3 +16,5 @@ Open a pull request in [WikiTeq/Taqasta](https://github.com/WikiTeq/Taqasta) upd
 You may also need to update the `psy/psysh` composer constraint to match the constraint in the new version of MediaWiki. Failure to do so may lead to the image failing to build, either immediately or after additional versions of `psy/psysh` are released. Locate the constraint to use in the `require-dev` section of core's `composer.json`, and update Taqasta's [values.yml](../../values.yml) accordingly if the values are different.
 
 Once built, you can test the image locally using [docker-compose.sample.yml](../../docker-compose.sample.yml) as a reference. After the PR merges, update production deployments to the new image tag (see [deployment.md](../deployment.md#image-tags)).
+
+If the wiki uses the CaptchaConsent extension, also run the checks in [captcha-consent.md](../captcha-consent.md#after-a-mediawiki-or-confirmedit-upgrade).

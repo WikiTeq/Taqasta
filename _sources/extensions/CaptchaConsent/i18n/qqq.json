@@ -1,0 +1,7 @@
+{
+	"@metadata": { "authors": [ "WikiTeq" ] },
+	"captchaconsent-desc": "{{desc|name=CaptchaConsent|url=https://github.com/WikiTeq/Taqasta}}",
+	"captchaconsent-notice": "Warning shown above a CAPTCHA widget when the visitor has not accepted the cookie category the CAPTCHA needs.\n\nParameters:\n* $1 - the name of the cookie category",
+	"captchaconsent-notice-link": "Text of the link that opens the cookie preferences dialog.",
+	"captchaconsent-ve-notice": "Warning shown in the VisualEditor save flow when a CAPTCHA is required and the cookie category is not accepted.\n\nParameters:\n* $1 - the name of the cookie category"
+}
