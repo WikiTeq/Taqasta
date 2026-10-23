@@ -33,10 +33,12 @@ const DOCKER_SKINS = [
 	'Vector', # bundled
 	'chameleon',
 	'Pivot',
+	'Citizen'
 ];
 
 const DOCKER_EXTENSIONS = [
 	'SemanticMediaWiki', // keep it at the top to be enabled first, because some Semantic extension don't work in other case.
+	'AccountInfo',
 	'AJAXPoll',
 	'AbuseFilter',
 	'AddMessages',
@@ -61,6 +63,7 @@ const DOCKER_EXTENSIONS = [
 	'Cite', # bundled
 	'CiteThisPage', # bundled
 	'Citoid',
+	'CleanChanges',
 	'CodeEditor', # bundled
 	'CodeMirror',
 	'Collection',
@@ -134,6 +137,7 @@ const DOCKER_EXTENSIONS = [
 	'MassPasswordReset',
 	'Math',
 	'MediaUploader',
+	'MediaSearch',
 	'Mermaid',
 	'MobileDetect',
 	'MobileFrontend',
@@ -163,6 +167,7 @@ const DOCKER_EXTENSIONS = [
 	'Popups',
 	'PubmedParser',
 	'RegularTooltips',
+	'RelatedArticles',
 	'RemoteWiki',
 	'ReplaceText', # bundled
 	'RevisionSlider',
@@ -198,12 +203,14 @@ const DOCKER_EXTENSIONS = [
 	'Survey',
 	'SyntaxHighlight_GeSHi', # bundled
 	'Share',
+	'ShortDescription',
 	'Tabber',
 	'TabberNeue',
 	'Tabs',
 	'TemplateData', # bundled
 	'TemplateSandbox',
 	'TemplateStyles',
+	'TemplateStylesExtender',
 	'TemplateWizard',
 	'TextExtracts', # bundled
 	'Thanks', # bundled
