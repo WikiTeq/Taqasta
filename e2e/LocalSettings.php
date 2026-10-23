@@ -298,3 +298,44 @@ $wgExtensionFunctions[] = static function () {
 	//   set for the engine
 	@unlink( dirname( __FILE__, 2 ) . '/extensions/Scribunto/tests/phpunit/Engines/LuaSandbox/SandboxInterpreterTest.php' );
 };
+
+// CaptchaConsent end-to-end test (006-captcha-consent.spec.ts).
+// CookieConsent opens a dialog on every page, which would get in the way of the other specs, so
+// this setup is only active for browsers that send the `e2e_captcha_consent` cookie:
+// `1` uses hCaptcha, `recaptcha` uses reCAPTCHA (which also has a <noscript> iframe),
+// `ungated` is hCaptcha with the gate switched off ($wgCaptchaConsentCategory = ''),
+// `typo` is hCaptcha with a category that CookieConsent does not know (must fail closed).
+$e2eCaptcha = $_COOKIE['e2e_captcha_consent'] ?? '';
+// The gate is off without $wgCaptchaConsentCategory, so loading the extension in CLI only
+// makes PHPUnit find its unit tests
+if ( PHP_SAPI === 'cli' ) {
+	wfLoadExtension( 'CaptchaConsent' );
+}
+if ( in_array( $e2eCaptcha, [ '1', 'recaptcha', 'ungated', 'typo' ], true ) ) {
+	wfLoadExtension( 'CookieConsent' );
+	wfLoadExtension( 'ConfirmEdit' );
+	wfLoadExtension( 'CaptchaConsent' );
+	$wgCookieConsentCategories['captcha'] = [
+		'namemsg' => 'cookieconsent-category-name-marketing',
+		'descriptionmsg' => 'cookieconsent-category-desc-marketing',
+		'selected' => false,
+		'disabled' => false,
+	];
+	$wgCaptchaConsentCategory = [ 'ungated' => '', 'typo' => 'captcah' ][$e2eCaptcha] ?? 'captcha';
+	// Fake keys: the browser requests are intercepted by the test, nothing reaches the vendor
+	if ( $e2eCaptcha === 'recaptcha' ) {
+		wfLoadExtension( 'ConfirmEdit/ReCaptchaNoCaptcha' );
+		$wgCaptchaClass = 'ReCaptchaNoCaptcha';
+		$wgReCaptchaSiteKey = 'fake-site-key';
+		$wgReCaptchaSecretKey = 'fake-secret-key';
+	} else {
+		wfLoadExtension( 'ConfirmEdit/hCaptcha' );
+		$wgCaptchaClass = 'HCaptcha';
+		$wgHCaptchaSiteKey = '10000000-ffff-ffff-ffff-000000000001';
+		$wgHCaptchaSecretKey = '0x0000000000000000000000000000000000000000';
+	}
+	$wgCaptchaTriggers['createaccount'] = true;
+	// Anonymous edits need a CAPTCHA, to cover the classic edit form
+	$wgCaptchaTriggers['edit'] = true;
+	$wgGroupPermissions['*']['skipcaptcha'] = false;
+}

@@ -1,0 +1,7 @@
+{
+	"@metadata": { "authors": [ "WikiTeq" ] },
+	"captchaconsent-desc": "Keeps third-party CAPTCHA scripts inactive until the visitor accepts a CookieConsent category",
+	"captchaconsent-notice": "This form needs the \"$1\" cookie category for bot protection. It is not accepted, so the CAPTCHA is not loaded and the form cannot be submitted.",
+	"captchaconsent-notice-link": "Change cookie preferences",
+	"captchaconsent-ve-notice": "Saving needs a CAPTCHA, and it needs the \"$1\" cookie category for bot protection. It is not accepted, so the CAPTCHA is not loaded."
+}
