@@ -8,7 +8,8 @@ ENV MW_VERSION=REL1_43 \
 	MW_IMPORT_VOLUME=/import \
 	WWW_USER=www-data \
 	WWW_GROUP=www-data \
-	APACHE_LOG_DIR=/var/log/apache2
+	APACHE_LOG_DIR=/var/log/apache2 \
+	GIT_HTTP_USER_AGENT="WikiTeq-Taqasta/1.0 (https://wikiteq.com)"
 
 # System setup
 RUN set x; \
@@ -49,24 +50,7 @@ RUN set x; \
 	poppler-utils \
 	ghostscript \
 	gettext-base \
-	php8.3 \
-	php8.3-mysql \
-	php8.3-cli \
-	php8.3-gd \
-	php8.3-mbstring \
-	php8.3-xml \
-	php8.3-mysql \
-	php8.3-intl \
-	php8.3-opcache \
-	php8.3-apcu \
-	php8.3-redis \
-	php8.3-curl \
-	php8.3-ldap \
-	php8.3-tidy \
-	php8.3-zip \
-	php8.3-xhprof \
 	php-pear \
-	php8.3-dev \
 	liblua5.1-0 \
 	liblua5.1-0-dev \
 	monit \
@@ -82,6 +66,24 @@ RUN set x; \
 	jq \
   build-essential \
   pkg-config && \
+  apt-get satisfy -y --no-install-recommends \
+	'php8.3 (>= 8.3.36)' \
+	'php8.3-mysql (>= 8.3.36)' \
+	'php8.3-cli (>= 8.3.36)' \
+	'php8.3-gd (>= 8.3.36)' \
+	'php8.3-mbstring (>= 8.3.36)' \
+	'php8.3-xml (>= 8.3.36)' \
+	'php8.3-mysql (>= 8.3.36)' \
+	'php8.3-intl (>= 8.3.36)' \
+	'php8.3-opcache (>= 8.3.36)' \
+	php8.3-apcu \
+	php8.3-redis \
+	'php8.3-curl (>= 8.3.36)' \
+	'php8.3-ldap (>= 8.3.36)' \
+	'php8.3-tidy (>= 8.3.36)' \
+	'php8.3-zip (>= 8.3.36)' \
+	php8.3-xhprof \
+	'php8.3-dev (>= 8.3.36)' && \
 	pecl -d php_suffix=8.3 install luasandbox && \
 	pecl -d php_suffix=8.3 install excimer
 
