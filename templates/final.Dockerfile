@@ -70,9 +70,9 @@ COPY _sources/configs/robots.php $WWW_ROOT/
 COPY _sources/configs/robots.txt $WWW_ROOT/
 COPY _sources/configs/.htaccess $WWW_ROOT/
 COPY _sources/images/favicon.ico $WWW_ROOT/
-COPY _sources/canasta/DockerSettings.php $MW_HOME/
-COPY _sources/canasta/non-prod-indicator $MW_HOME/resources/wikiteq-non-prod/
-COPY _sources/canasta/getMediawikiSettings.php /
+COPY _sources/taqasta/DockerSettings.php $MW_HOME/
+COPY _sources/taqasta/non-prod-indicator $MW_HOME/resources/wikiteq-non-prod/
+COPY _sources/taqasta/getMediawikiSettings.php /
 COPY _sources/configs/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf.template
 
 RUN set -x; \
@@ -83,9 +83,9 @@ RUN set -x; \
 	# Comment out ErrorLog and CustomLog parameters, we use rotatelogs in mediawiki.conf for the log files
 	sed -i 's/^\(\s*ErrorLog .*\)/# \1/g' /etc/apache2/apache2.conf && \
 	sed -i 's/^\(\s*CustomLog .*\)/# \1/g' /etc/apache2/apache2.conf && \
-	# Make web installer work with Canasta
-	cp "$MW_HOME/includes/Output/NoLocalSettings.php" "$MW_HOME/includes/CanastaNoLocalSettings.php" && \
-	sed -i 's/MW_CONFIG_FILE/CANASTA_CONFIG_FILE/g' "$MW_HOME/includes/CanastaNoLocalSettings.php" && \
+	# Make web installer work with Taqasta
+	cp "$MW_HOME/includes/Output/NoLocalSettings.php" "$MW_HOME/includes/TaqastaNoLocalSettings.php" && \
+	sed -i 's/MW_CONFIG_FILE/TAQASTA_CONFIG_FILE/g' "$MW_HOME/includes/TaqastaNoLocalSettings.php" && \
 	# Modify config
 	sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf && \
 	a2enmod expires remoteip && \
@@ -95,4 +95,4 @@ RUN set -x; \
 	mv $MW_HOME/extensions/Widgets/compiled_templates $MW_ORIGIN_FILES/extensions/Widgets/ && \
 	ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates
 
-COPY _sources/images/Powered-by-Canasta.png /var/www/mediawiki/w/resources/assets/
+COPY _sources/images/Powered-by-Taqasta.png /var/www/mediawiki/w/resources/assets/

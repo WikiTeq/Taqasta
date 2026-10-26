@@ -567,14 +567,14 @@ $wgHooks['BeforePageDisplay'][] = static function ( $out, $skin ) {
 };
 
 ######################### Custom Settings ##########################
-$canastaLocalSettingsFilePath = getenv( 'MW_CONFIG_DIR' ) . '/LocalSettings.php';
+$taqastaLocalSettingsFilePath = getenv( 'MW_CONFIG_DIR' ) . '/LocalSettings.php';
 $emulateLocalSettingsDoesNotExists = false;
 if ( is_readable( "$IP/_settings/LocalSettings.php" ) ) {
 	require_once "$IP/_settings/LocalSettings.php";
 } elseif ( is_readable( "$IP/CustomSettings.php" ) ) {
 	require_once "$IP/CustomSettings.php";
-} elseif ( is_readable( $canastaLocalSettingsFilePath ) ) {
-	require_once $canastaLocalSettingsFilePath;
+} elseif ( is_readable( $taqastaLocalSettingsFilePath ) ) {
+	require_once $taqastaLocalSettingsFilePath;
 } elseif ( getenv( 'MW_DB_TYPE' ) !== 'sqlite' && !getenv( 'MW_DB_SERVER' ) ) {
 	// There are no LocalSettings.php files
 	// and the database server is not defined (and it is not a sqlite database)
@@ -598,11 +598,11 @@ if ( defined( 'MW_CONFIG_CALLBACK' ) ) {
 if ( $emulateLocalSettingsDoesNotExists ) {
 	// Emulate that "$IP/LocalSettings.php" does not exist
 
-	// Set CANASTA_CONFIG_FILE for NoLocalSettings template work correctly in includes/CanastaNoLocalSettings.php
-	define( "CANASTA_CONFIG_FILE", $canastaLocalSettingsFilePath );
+	// Set TAQASTA_CONFIG_FILE for NoLocalSettings template work correctly in includes/TaqastaNoLocalSettings.php
+	define( "TAQASTA_CONFIG_FILE", $taqastaLocalSettingsFilePath );
 
 	// Do the same what function wfWebStartNoLocalSettings() does
-	require_once "$IP/includes/CanastaNoLocalSettings.php";
+	require_once "$IP/includes/TaqastaNoLocalSettings.php";
 	die();
 }
 

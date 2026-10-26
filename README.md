@@ -16,16 +16,9 @@ Taqasta tracks **MediaWiki LTS releases**. The `master` branch follows the curre
 
 For deployments that need an intermediate MediaWiki version, Taqasta may maintain non-LTS branches (e.g. 1.41, 1.42). Those branches receive **unofficial support** only — they are not merged into `master` and do not carry the same commitment as LTS on `master` and REL maintenance branches.
 
-## Canasta fork
+## About Taqasta
 
-This repository is a fork of the MediaWiki application image from the [Canasta](https://github.com/CanastaWiki/Canasta) stack. For the broader Canasta platform, see [Canasta documentation](https://canasta.wiki/) — much of it does not apply to Taqasta.
-
-**Differences from Canasta:**
-
-* Single-wiki focus (no wiki farm)
-* Automated wiki installation via environment variables (admin account, database, site settings)
-* Template-driven build from [values.yml](values.yml) ([build system docs](docs/build-system.md))
-* Image plus reference deployment templates (Docker Compose, Kubernetes) rather than Canasta's full managed stack with CLI and Caddy
+Taqasta is a single-wiki MediaWiki image and stack. It installs the wiki automatically from environment variables (admin account, database, site settings). The build is template-driven from [values.yml](values.yml) ([build system docs](docs/build-system.md)). It ships the image plus reference deployment templates for Docker Compose and Kubernetes.
 
 ## Documentation
 

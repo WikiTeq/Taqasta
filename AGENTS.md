@@ -1,6 +1,6 @@
 # Taqasta – Agent context
 
-Taqasta is a MediaWiki Docker image and stack (fork of Canasta). This repo contains the image build (templates, `values.yml`, `compile.sh`, `build.sh`), Docker Compose for CI/e2e, and end-to-end tests.
+Taqasta is a MediaWiki Docker image and stack. This repo contains the image build (templates, `values.yml`, `compile.sh`, `build.sh`), Docker Compose for CI/e2e, and end-to-end tests.
 
 **When editing docs (e.g. README, e2e/README):** Do not use list items in the form `- **Label**: description`. Use plain bullets or inline text instead so lists stay concise and consistent.
 
