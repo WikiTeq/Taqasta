@@ -18,7 +18,7 @@ For deployments that need an intermediate MediaWiki version, Taqasta may maintai
 
 ## About Taqasta
 
-Taqasta is a single-wiki MediaWiki image and stack. It installs the wiki automatically from environment variables (admin account, database, site settings). The build is template-driven from [values.yml](values.yml) ([build system docs](docs/build-system.md)). It ships the image plus reference deployment templates for Docker Compose and Kubernetes.
+Taqasta is a single-wiki MediaWiki image and stack. It installs the wiki automatically from environment variables (admin account, database, site settings). The build is template-driven from [values.yml](values.yml) ([build system docs](docs/build-system.md)). It ships the image plus reference deployment templates for Docker Compose and Kubernetes. Taqasta is based on an early version of [Canasta](https://canasta.wiki).
 
 ## Documentation
 
