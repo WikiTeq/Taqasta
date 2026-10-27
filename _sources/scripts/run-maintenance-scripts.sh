@@ -154,10 +154,19 @@ run_maintenance_script_if_needed () {
                 return 0;
             fi
             echo >&2 "Run maintenance script: ${!i}"
-            runuser -c "php ${!i}" -s /bin/bash "$WWW_USER" || {
-                echo >&2 "An error occurred when the maintenance script ${!i} was running"
-                return $?
-            }
+            runuser -c "php ${!i}" -s /bin/bash "$WWW_USER"
+            rc=$?
+            if [ "$rc" -ne 0 ]; then
+                script_path=$(echo "${!i}" | awk '{print $1}')
+                # Exit 10 means the new index matches the live one. That is success:
+                # record it, or the next pod start runs this script again.
+                if [ "$rc" -eq 10 ] && [[ "$script_path" == *UpdateSearchIndexConfig.php ]]; then
+                    echo >&2 "Search index is unchanged"
+                else
+                    echo >&2 "An error occurred when the maintenance script ${!i} was running"
+                    return "$rc"
+                fi
+            fi
             i=$((i+1))
         done
 
