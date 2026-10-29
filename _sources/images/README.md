@@ -1,1 +1,1 @@
-Directory for Canasta-specific images.
+Directory for Taqasta-specific images.
