@@ -95,4 +95,4 @@ RUN set -x; \
 	mv $MW_HOME/extensions/Widgets/compiled_templates $MW_ORIGIN_FILES/extensions/Widgets/ && \
 	ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates
 
-COPY _sources/images/Powered-by-Taqasta.png /var/www/mediawiki/w/resources/assets/
+COPY _sources/images/Powered-by-Taqasta.svg /var/www/mediawiki/w/resources/assets/

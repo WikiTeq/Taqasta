@@ -30,6 +30,12 @@ You can also set `$wgWikiTeqNonProdIndicator` to `true` in the site `LocalSettin
 
 Click the label to hide the frame and the label for 20 seconds on the current page. A new page load shows the overlay again.
 
+### Powered by Taqasta footer icon
+
+The wiki footer shows a Powered by Taqasta icon that links to the Taqasta repository. Set `MW_SHOW_POWERED_BY_TAQASTA` to `false` (or `0`) to hide it. The default value is on.
+
+You can also remove `$wgFooterIcons['poweredby']['taqasta']` in the site `LocalSettings.php` file.
+
 ### WikiTeq hosted-wiki policy footer
 
 Set `ENABLE_WIKITEQ_POLICY_FOOTER_LINK` to `true` (or `1`) to add a footer link to WikiTeq's hosted-wiki legal page. The native MediaWiki Privacy policy link is not changed.
