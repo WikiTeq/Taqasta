@@ -575,8 +575,8 @@ if ( !in_array( strtolower( (string)getenv( 'MW_SHOW_POWERED_BY_TAQASTA' ) ), [ 
 		'src' => "$wgResourceBasePath/resources/assets/Powered-by-Taqasta.svg",
 		'url' => 'https://github.com/WikiTeq/Taqasta',
 		'alt' => 'Powered by Taqasta',
-		'width' => 132,
-		'height' => 47,
+		'width' => 88,
+		'height' => 31,
 	];
 }
 
