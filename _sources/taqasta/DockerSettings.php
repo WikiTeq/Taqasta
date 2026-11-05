@@ -567,10 +567,10 @@ $wgHooks['BeforePageDisplay'][] = static function ( $out, $skin ) {
 };
 
 ########################### Powered by Taqasta footer icon [WIK-2778] ############################
-# Shown by default. Set MW_SHOW_POWERED_BY_TAQASTA=false (or 0) to hide it.
+# Shown by default. Set MW_SHOW_POWERED_BY_TAQASTA=false to hide it.
 # The image is copied to resources/assets/ by the Dockerfile.
 # Runs before the site LocalSettings.php, so a wiki can change or unset the icon there.
-if ( !in_array( strtolower( (string)getenv( 'MW_SHOW_POWERED_BY_TAQASTA' ) ), [ 'false', '0' ], true ) ) {
+if ( isEnvTrue( 'MW_SHOW_POWERED_BY_TAQASTA' ) ) {
 	$wgFooterIcons['poweredby']['taqasta'] = [
 		'src' => "$wgResourceBasePath/resources/assets/Powered-by-Taqasta.svg",
 		'url' => 'https://github.com/WikiTeq/Taqasta',

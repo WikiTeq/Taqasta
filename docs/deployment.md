@@ -32,7 +32,7 @@ Click the label to hide the frame and the label for 20 seconds on the current pa
 
 ### Powered by Taqasta footer icon
 
-The wiki footer shows a Powered by Taqasta icon that links to the Taqasta repository. Set `MW_SHOW_POWERED_BY_TAQASTA` to `false` (or `0`) to hide it. The default value is on.
+The wiki footer shows a Powered by Taqasta icon that links to the Taqasta repository. Set `MW_SHOW_POWERED_BY_TAQASTA` to `false` to hide it. The default value is `true`.
 
 You can also remove `$wgFooterIcons['poweredby']['taqasta']` in the site `LocalSettings.php` file.
 
