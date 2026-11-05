@@ -29,6 +29,7 @@ ENV MW_AUTOUPDATE=true \
 	MW_MAP_DOMAIN_TO_DOCKER_GATEWAY=0 \
 	MW_ENABLE_SITEMAP_GENERATOR=false \
 	MW_SHOW_NON_PROD_INDICATOR=false \
+	MW_SHOW_POWERED_BY_TAQASTA=true \
 	MW_SITEMAP_PAUSE_DAYS=1 \
 	MW_SITEMAP_SUBDIR="" \
 	MW_SITEMAP_IDENTIFIER="mediawiki" \
@@ -95,4 +96,4 @@ RUN set -x; \
 	mv $MW_HOME/extensions/Widgets/compiled_templates $MW_ORIGIN_FILES/extensions/Widgets/ && \
 	ln -s $MW_VOLUME/extensions/Widgets/compiled_templates $MW_HOME/extensions/Widgets/compiled_templates
 
-COPY _sources/images/Powered-by-Taqasta.png /var/www/mediawiki/w/resources/assets/
+COPY _sources/images/Powered-by-Taqasta.svg /var/www/mediawiki/w/resources/assets/

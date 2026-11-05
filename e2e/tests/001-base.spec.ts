@@ -11,6 +11,13 @@ test('WikiTeq policy footer link is off by default', async ({page}) => {
     await expect(page.locator('#footer-places-privacy')).toBeVisible();
 });
 
+test('Powered by Taqasta footer icon links to the repository by default', async ({page}) => {
+    await page.goto('/wiki/Main_Page');
+    const icon = page.locator('#footer-poweredbyico a[href="https://github.com/WikiTeq/Taqasta"]');
+    await expect(icon).toBeVisible();
+    await expect(icon.locator('img')).toHaveAttribute('src', /Powered-by-Taqasta\.svg$/);
+});
+
 test('has successful installation message', async ({page}) => {
     await page.goto('/wiki/Main_Page');
     await expect(page.locator('#content')).toContainText(/MediaWiki has been installed/);
