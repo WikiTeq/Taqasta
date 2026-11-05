@@ -219,6 +219,10 @@ jobs:
   # Pre-build amd64 image and run e2e
   deploy-e2e:
     needs: [tags]
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
     timeout-minutes: 60
     outputs:
       pages_url: ${{ steps.deployment_pages.outputs.page_url }}
@@ -263,6 +267,33 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/wikiteq/taqasta:buildcache-linux-amd64,mode=max
           push: false
           load: true
+
+      - name: Select image for scanning
+        id: scan-image
+        env:
+          REGISTRY_TAGS: ${{ needs.tags.outputs.REGISTRY_TAGS }}
+        shell: bash
+        run: echo "image-ref=${REGISTRY_TAGS%%,*}" >> "$GITHUB_OUTPUT"
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        continue-on-error: true
+        with:
+          image-ref: ${{ steps.scan-image.outputs.image-ref }}
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH
+          limit-severities-for-sarif: true
+          exit-code: '0'
+          trivyignores: .trivyignore
+
+      - name: Upload Trivy SARIF
+        uses: github/codeql-action/upload-sarif@v4.39.3
+        if: always() && hashFiles('trivy-results.sarif') != '' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
+        continue-on-error: true
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy-container
 
       - name: Set up environment
         shell: bash

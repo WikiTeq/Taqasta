@@ -1,0 +1,2 @@
+# Trivy vulnerability ignores: one CVE ID per line.
+# Above each CVE, add a comment with the package, reason, and review date (YYYY-MM-DD).

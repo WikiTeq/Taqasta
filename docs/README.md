@@ -15,6 +15,7 @@ Extensions, skins, and patches are defined in [values.yml](../values.yml).
 | Minor MediaWiki point releases | [upgrades/mediawiki-minor.md](upgrades/mediawiki-minor.md) |
 | LTS MediaWiki upgrades | [upgrades/mediawiki-major.md](upgrades/mediawiki-major.md) |
 | PHP version upgrades | [upgrades/php.md](upgrades/php.md) |
+| Container security scanning and ignore policy | [security-scanning.md](security-scanning.md) |
 | End-to-end tests (Playwright) | [../e2e/README.md](../e2e/README.md) |
 
 ## LTS policy
