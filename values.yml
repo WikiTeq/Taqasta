@@ -611,3 +611,7 @@ patches:
   # WikiTeq AL-12
   - name: FlexDiagrams.0.4.fix.diff
     path: extensions/FlexDiagrams
+  # BET1-65: REL1_43 MultimediaViewer sets img.crossOrigin, which fails
+  # when the page image was cached from S3 without Access-Control-Allow-Origin.
+  - name: MultimediaViewer.no-crossorigin.diff
+    path: extensions/MultimediaViewer
