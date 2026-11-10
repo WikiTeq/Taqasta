@@ -1,0 +1,49 @@
+diff --git a/resources/mmv/provider/mmv.provider.Image.js b/resources/mmv/provider/mmv.provider.Image.js
+index 2d019e3..57de37b 100644
+--- a/resources/mmv/provider/mmv.provider.Image.js
++++ b/resources/mmv/provider/mmv.provider.Image.js
+@@ -59,7 +59,7 @@ class ImageProvider {
+ 		}
+ 
+ 		if ( !this.cache[ cacheKey ] ) {
+-			this.cache[ cacheKey ] = this.rawGet( url, this.imagePreloadingSupported() );
++			this.cache[ cacheKey ] = this.rawGet( url );
+ 			this.cache[ cacheKey ].fail( ( error ) => {
+ 				mw.log( `${ this.constructor.name } provider failed to load: `, error );
+ 			} );
+@@ -72,19 +72,16 @@ class ImageProvider {
+ 	 * Internal version of get(): no caching, no performance metrics.
+ 	 *
+ 	 * @param {string} url
+-	 * @param {boolean} [cors] if true, use CORS for preloading
+ 	 * @return {jQuery.Promise.<HTMLImageElement>} a promise which resolves to the image object
+ 	 */
+-	rawGet( url, cors ) {
++	rawGet( url ) {
+ 		const img = new window.Image();
+ 		const deferred = $.Deferred();
+ 
+-		// This attribute is necessary in Firefox, which needs it for the image request after
+-		// the XHR to hit the cache by being a proper CORS request.
+-		if ( cors ) {
+-			img.crossOrigin = 'anonymous';
+-		}
+-
++		// Do not set crossOrigin. S3 adds Access-Control-Allow-Origin only when the
++		// request already has Origin. The page image is cached without that header,
++		// and a later CORS load of the same URL fails. Master removed this path in
++		// T426217; REL1_43 still has it.
+ 		img.onload = () => deferred.resolve( img );
+ 		img.onerror = () => deferred.reject( `could not load image from ${ url }` );
+ 
+@@ -106,8 +103,8 @@ class ImageProvider {
+ 	 * @return {boolean}
+ 	 */
+ 	imagePreloadingSupported() {
+-		// This checks if the browser supports CORS requests in XHRs
+-		return window.XMLHttpRequest !== undefined && 'withCredentials' in new XMLHttpRequest();
++		// CORS preloading is disabled. See rawGet().
++		return false;
+ 	}
+ }
+ 
