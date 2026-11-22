@@ -519,7 +519,7 @@ extensions:
   - SummaryToJiraComment:
       repository: https://github.com/WikiTeq/mediawiki-extensions-SummaryToJiraComment.git
       branch: main
-      commit: 01515972ab6ce325c27b0ee33ff857b39f5b9c9e
+      commit: b0cd351796078e50ed2aafc77def40a87635da13
   - PageAuthors:
       Wikidata ID: Q122888068
       branch: REL1_43
