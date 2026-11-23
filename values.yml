@@ -62,7 +62,10 @@ extensions:
       commit: ee7b17910ece1ebaf6ad53857926d797b0ff374d
   - CheckUser:
       Wikidata ID: Q21676386
-      commit: 53f7c98d3fd003aef8faf95dd08ee05139079fab
+      # REL1_43 head, includes the MediaWiki 1.43.12 security fixes (T439722, T440123, T440119).
+      commit: 0f90a976619b1cab0496aaf3a9a8372de450874e
+      additional steps:
+        - composer update
   - CirrusSearch:
       Wikidata ID: Q21676498
       commit: 2a27e7505a06d84ca6efb094d86fc41ea2766e1b
