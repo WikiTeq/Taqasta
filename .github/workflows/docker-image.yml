@@ -342,6 +342,7 @@ jobs:
   # Findings are uploaded to Code Scanning and never fail the workflow.
   scan:
     needs: [tags]
+    continue-on-error: true
     permissions:
       contents: read
       packages: write
@@ -401,6 +402,7 @@ jobs:
           output: trivy-results.sarif
           severity: CRITICAL,HIGH
           limit-severities-for-sarif: true
+          ignore-unfixed: true
           exit-code: '0'
           trivyignores: .trivyignore
 

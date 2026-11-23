@@ -2,7 +2,7 @@
 
 The Docker build workflow runs Trivy in the `scan` job, in parallel with `deploy-e2e`. The job builds the `linux/amd64` image from the shared registry build cache and scans it using the first comma-separated tag in `needs.tags.outputs.REGISTRY_TAGS`; it does not scan the arm64 image.
 
-The scan reports CRITICAL and HIGH vulnerabilities as `trivy-results.sarif`, including vulnerabilities without a fix. Findings are advisory: the scan uses exit code zero, and scan and SARIF upload errors are allowed to continue without blocking the job. Check the workflow logs for scan or upload failures; missing alerts do not prove the image is free of vulnerabilities.
+The scan reports CRITICAL and HIGH vulnerabilities as `trivy-results.sarif`. The scan sets `ignore-unfixed`, so vulnerabilities without an available fix are not reported. Findings are advisory: the scan uses exit code zero, and scan and SARIF upload errors are allowed to continue without blocking the job. Check the workflow logs for scan or upload failures; missing alerts do not prove the image is free of vulnerabilities.
 
 ## Viewing results
 
