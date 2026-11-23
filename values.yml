@@ -459,10 +459,12 @@ extensions:
       additional steps:
         - composer update
   - JWTAuth:
-      repository: https://github.com/jeffw16/JWTAuth.git
-      branch: main
+      repository: https://github.com/wikimedia/mediawiki-extensions-JWTAuth.git
+      branch: master
+      # v2.1.1. The jeffw16 repo stalled at v2.0 in 2023. The Wikimedia mirror is the maintained upstream.
+      # This pin requires firebase/php-jwt ^7.0.2, same as the CheckUser pin (MAIN-639).
       # Upgrade carefully, we had a problem with version 2.0, see MITE-50
-      commit: c7c0730160a84d6b60e3e1b6b108d790972f0f15
+      commit: 5f9f76ad0c4d11f7bc1728be564c84cdf70d6d6f
       additional steps:
         - composer update
   - WikiCategoryTagCloud:
@@ -474,7 +476,8 @@ extensions:
       branch: REL1_43
       commit: ffec5e3c4fad940320f3abeb7ea9104025f71612
   - OAuth:
-      commit: b36cdf6963cbe8e2304ec3bdc63d476db008591b
+      # This pin requires firebase/php-jwt ^7.0.2, same as the CheckUser pin (MAIN-639).
+      commit: 2deadfa73ad7897e7f3ac6965a5ccefa09c61f6d
       additional steps:
         - composer update
   - SemanticReports:
