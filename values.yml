@@ -64,8 +64,6 @@ extensions:
       Wikidata ID: Q21676386
       # REL1_43 head, includes the MediaWiki 1.43.12 security fixes (T439722, T440123, T440119).
       commit: 0f90a976619b1cab0496aaf3a9a8372de450874e
-      additional steps:
-        - composer update
   - CirrusSearch:
       Wikidata ID: Q21676498
       commit: 2a27e7505a06d84ca6efb094d86fc41ea2766e1b
@@ -459,12 +457,10 @@ extensions:
       additional steps:
         - composer update
   - JWTAuth:
-      repository: https://github.com/wikimedia/mediawiki-extensions-JWTAuth.git
-      branch: master
-      # v2.1.1. The jeffw16 repo stalled at v2.0 in 2023. The Wikimedia mirror is the maintained upstream.
-      # This pin requires firebase/php-jwt ^7.0.2, same as the CheckUser pin (MAIN-639).
+      repository: https://github.com/jeffw16/JWTAuth.git
+      branch: main
       # Upgrade carefully, we had a problem with version 2.0, see MITE-50
-      commit: 5f9f76ad0c4d11f7bc1728be564c84cdf70d6d6f
+      commit: c7c0730160a84d6b60e3e1b6b108d790972f0f15
       additional steps:
         - composer update
   - WikiCategoryTagCloud:
@@ -476,7 +472,8 @@ extensions:
       branch: REL1_43
       commit: ffec5e3c4fad940320f3abeb7ea9104025f71612
   - OAuth:
-      # This pin requires firebase/php-jwt ^7.0.2, same as the CheckUser pin (MAIN-639).
+      # Upstream requires firebase/php-jwt ^7.0.2. The MAIN-639 patch widens
+      # the constraint to ^6.10.0 || ^7.0.2 so it installs with MediaWiki 1.43.
       commit: 2deadfa73ad7897e7f3ac6965a5ccefa09c61f6d
       additional steps:
         - composer update
@@ -621,3 +618,8 @@ patches:
   # when the page image was cached from S3 without Access-Control-Allow-Origin.
   - name: MultimediaViewer.no-crossorigin.diff
     path: extensions/MultimediaViewer
+  # MAIN-639: OAuth at 2deadfa7 requires firebase/php-jwt ^7.0.2, which
+  # conflicts with the psr/log 1.1.4 pin of MediaWiki 1.43. Widen the
+  # constraint so composer can use the 6.x line instead.
+  - name: OAuth.php-jwt-6-compat.patch
+    path: extensions/OAuth
