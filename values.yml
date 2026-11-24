@@ -452,7 +452,7 @@ extensions:
       commit: 64a5776f055b33c38602e8a94f7237a6b8cb4c79
   - WSSlots:
       repository: https://github.com/WikiTeq/WSSlots.git
-      branch: master
+      branch: REL1_43
       commit: 9a39063a848130030c35944dea047386315051ae
       additional steps:
         - composer update
