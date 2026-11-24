@@ -568,9 +568,9 @@ packages:
   - name: mediawiki/semantic-media-wiki
     version: 7.3.1
   - name: mediawiki/chameleon-skin
-    version: 5.0.0
+    version: 5.0.3
   - name: mediawiki/bootstrap-components
-    # 476693d on rel-522; avoid dev-master (Packagist alias requires bootstrap ^6, breaks chameleon 5.0.0)
+    # 476693d on rel-522; avoid dev-master (Packagist alias requires bootstrap ^6, breaks chameleon 5.0.3)
     version: dev-rel-522#476693d7a0f0de11bb67b775486950bff5cd1415
   - name: mediawiki/mermaid
     version: 3.1.0
@@ -612,3 +612,8 @@ patches:
   # WikiTeq AL-12
   - name: FlexDiagrams.0.4.fix.diff
     path: extensions/FlexDiagrams
+  # WIK-2806: JWTAuth upstream is unmaintained (last commit 2023) and pins
+  # firebase/php-jwt ^6.3, while MediaWiki 1.47 extensions require ^7.0.2.
+  # JWTAuth only uses Key and JWT::decode, which are unchanged in php-jwt v7.
+  - name: JWTAuth.firebase-php-jwt-7.diff
+    path: extensions/JWTAuth
