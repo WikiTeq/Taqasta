@@ -38,6 +38,8 @@ Core and skin patches are declared directly in stage templates (not in [values.y
 
 `skin-refreshed.patch` is applied with `patch -u`; the other core and skin patches use `git apply` (see [templates/skins.Dockerfile](../templates/skins.Dockerfile)).
 
+Re-tested against MediaWiki 1.47 (core 1.47.0-rc.0, Refreshed skin f8cd45b): all four patches still apply and are still needed, because upstream has not fixed any of the four issues. Note that MediaWiki 1.47 moved LocalSettingsGenerator from `includes/installer/` to `includes/Installer/`, so `core-local-settings-generator.patch` targets the capital-I path on 1.47.
+
 To add or update a core or skin patch: edit the relevant template with `COPY` and apply steps before `.git` cleanup, and place the patch file in [_sources/patches/](../_sources/patches/).
 
 ## Cleanup

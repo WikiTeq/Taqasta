@@ -1,5 +1,5 @@
---- a/includes/installer/LocalSettingsGenerator.php
-+++ b/includes/installer/LocalSettingsGenerator.php
+--- a/includes/Installer/LocalSettingsGenerator.php
++++ b/includes/Installer/LocalSettingsGenerator.php
 @@ -48,6 +48,15 @@ class LocalSettingsGenerator {
  		$this->skins = $installer->getVar( '_Skins' );
  		$this->IP = $installer->getVar( 'IP' );
@@ -15,4 +15,4 @@
 +
  		$db = $installer->getDBInstaller( $installer->getVar( 'wgDBtype' ) );
  
- 		$confItems = array_merge(
+ 		$confItems = [

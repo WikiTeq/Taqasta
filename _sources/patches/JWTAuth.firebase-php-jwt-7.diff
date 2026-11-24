@@ -1,0 +1,11 @@
+diff --git a/composer.json b/composer.json
+--- a/composer.json
++++ b/composer.json
+@@ -1,6 +1,6 @@
+ {
+     "require": {
+-        "firebase/php-jwt": "^6.3",
++        "firebase/php-jwt": "^6.3 || ^7.0",
+         "paragonie/sodium_compat": "^1.19"
+     }
+ }
