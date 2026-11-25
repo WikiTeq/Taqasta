@@ -53,22 +53,22 @@ RUN set x; \
 	&& echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list \
 	&& aptitude update \
 	&& apt-get satisfy -y \
-	'php8.2 (>= 8.2.35)' \
-	'php8.2-mysql (>= 8.2.35)' \
-	'php8.2-cli (>= 8.2.35)' \
-	'php8.2-gd (>= 8.2.35)' \
-	'php8.2-mbstring (>= 8.2.35)' \
-	'php8.2-xml (>= 8.2.35)' \
-	'php8.2-mysql (>= 8.2.35)' \
-	'php8.2-intl (>= 8.2.35)' \
-	'php8.2-opcache (>= 8.2.35)' \
+	'php8.2 (>= 8.2.36)' \
+	'php8.2-mysql (>= 8.2.36)' \
+	'php8.2-cli (>= 8.2.36)' \
+	'php8.2-gd (>= 8.2.36)' \
+	'php8.2-mbstring (>= 8.2.36)' \
+	'php8.2-xml (>= 8.2.36)' \
+	'php8.2-mysql (>= 8.2.36)' \
+	'php8.2-intl (>= 8.2.36)' \
+	'php8.2-opcache (>= 8.2.36)' \
 	php8.2-apcu \
 	php8.2-redis \
-	'php8.2-curl (>= 8.2.35)' \
-	'php8.2-tidy (>= 8.2.35)' \
-	'php8.2-zip (>= 8.2.35)' \
+	'php8.2-curl (>= 8.2.36)' \
+	'php8.2-tidy (>= 8.2.36)' \
+	'php8.2-zip (>= 8.2.36)' \
 	php8.2-tideways \
-	'php8.2-dev (>= 8.2.35)' \
+	'php8.2-dev (>= 8.2.36)' \
 	&& aptitude install -y \
 # Lua sandbox
 	php-pear \
