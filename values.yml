@@ -48,7 +48,7 @@ extensions:
         - composer update
   - BetaFeatures:
       Wikidata ID: Q21676633
-      commit: e2dc57ca67ca7d4188f3b921d5883ee532754724
+      commit: 2b4ecf0fba70bf053e971075bfb8fc32bd115836
   - BreadCrumbs2:
       Wikidata ID: Q21676848
       commit: 28e82570da8d7e9e8a422a9a3f55392cf6166e0f
