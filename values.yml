@@ -475,7 +475,7 @@ extensions:
   - OAuth:
       # Upstream requires firebase/php-jwt ^7.0.2. The MAIN-639 patch widens
       # the constraint to ^6.10.0 || ^7.0.2 so it installs with MediaWiki 1.43.
-      commit: 47d9d7dc2b12d51438651d2287a042816b5667be
+      commit: 47c0a6d205b2b7c259efbcb55db059d0f5d033ce
       additional steps:
         - composer update
   - SemanticReports:
