@@ -46,6 +46,7 @@ Test specs live in the **`tests/`** subdirectory. When running Playwright (e.g. 
 - `tests/003-upload.spec.ts` — file upload capabilities
 - `tests/004-admin.spec.ts` — admin features and user management
 - `tests/005-createaccount.spec.ts` — user account creation
+- `tests/extensions/001-ajax-poll.spec.ts` — AJAXPoll rendering
 
 ### Configuration Files
 
@@ -173,6 +174,7 @@ The current test suite covers:
 * ✅ File upload functionality
 * ✅ User account creation
 * ✅ Administrative features
+* ✅ AJAXPoll rendering
 
 ## Adding tests
 
