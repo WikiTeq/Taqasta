@@ -28,7 +28,7 @@ extensions:
       commit: fbfd07ef43063e806026d5bd3f95493e2b189378
   - AntiSpoof:
       Wikidata ID: Q21676294
-      commit: cabc1c4292f672ce2752823a02ff2326142b50f9
+      commit: c46f572c5a0d6222a27333195da67ed147ff0238
       additional steps:
         - composer update
   - ApprovedRevs:
