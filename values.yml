@@ -227,7 +227,8 @@ extensions:
       commit: 77d2936cb635478c667d216fec3dcf8e0880e0c7
   - MobileFrontend:
       Wikidata ID: Q21677641
-      commit: a44f2808aa9e051f6a56215ce1320018db723808
+      # REL1_43, includes the MediaWiki 1.43.12 security fix (T441041).
+      commit: b231970eb20985a3ddfbc80bd31b985f913a52a2
   - MsUpload:
       Wikidata ID: Q21677697
       commit: 039b6aece443d6d030e187c112ab2520a65915b2
