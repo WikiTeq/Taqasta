@@ -33,12 +33,13 @@ Core and skin patches are declared directly in stage templates (not in [values.y
 |------------|----------|
 | `core-local-settings-generator.patch` | [templates/core.Dockerfile](../templates/core.Dockerfile) |
 | `core-rest-request-uri-psr7.patch` | [templates/core.Dockerfile](../templates/core.Dockerfile) |
+| `core-syntaxhighlight-papyrus.patch` | [templates/core.Dockerfile](../templates/core.Dockerfile) |
 | `skin-refreshed.patch` | [templates/skins.Dockerfile](../templates/skins.Dockerfile) |
 | `skin-refreshed-737080.diff` | [templates/skins.Dockerfile](../templates/skins.Dockerfile) |
 
 `skin-refreshed.patch` is applied with `patch -u`; the other core and skin patches use `git apply` (see [templates/skins.Dockerfile](../templates/skins.Dockerfile)).
 
-To add or update a core or skin patch: edit the relevant template with `COPY` and apply steps before `.git` cleanup, and place the patch file in [_sources/patches/](../_sources/patches/).
+To add or update a core or skin patch: edit the relevant template with `COPY` and apply steps before `.git` cleanup, and place the patch file in [_sources/patches/](../_sources/patches/). A core or skin patch can also add a new file (not just modify an existing one) — `git apply` handles both the same way, in one step.
 
 ## Cleanup
 
