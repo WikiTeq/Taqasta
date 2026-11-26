@@ -383,7 +383,7 @@ extensions:
   - Citoid:
       commit: ee1f920556ff245fd4366d8ceed15afb6aa1b0f8
   - EditAccount:
-      commit: e59561c56836a98bc5f5f3068bc81fd67a5d1c41
+      commit: 80b83dcbef425d5090dff2bf19d1943a473954d5
   - GoogleDocTag:
       commit: 50dfe68e36742b9c6ab24b734ab4401cf1d65178
   - GTag:
