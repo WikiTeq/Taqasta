@@ -12,6 +12,7 @@ Extensions, skins, and patches are defined in [values.yml](../values.yml).
 | Adding, updating, and removing extensions | [extensions.md](extensions.md) |
 | Applying patches | [patching.md](patching.md) |
 | Deployment, env vars, enabling extensions | [deployment.md](deployment.md) |
+| Bind mounts → named volumes migration | [bind-mounts-to-volumes.md](bind-mounts-to-volumes.md) |
 | Minor MediaWiki point releases | [upgrades/mediawiki-minor.md](upgrades/mediawiki-minor.md) |
 | LTS MediaWiki upgrades | [upgrades/mediawiki-major.md](upgrades/mediawiki-major.md) |
 | PHP version upgrades | [upgrades/php.md](upgrades/php.md) |
