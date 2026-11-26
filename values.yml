@@ -475,7 +475,7 @@ extensions:
   - OAuth:
       # Upstream requires firebase/php-jwt ^7.0.2. The MAIN-639 patch widens
       # the constraint to ^6.10.0 || ^7.0.2 so it installs with MediaWiki 1.43.
-      commit: 2deadfa73ad7897e7f3ac6965a5ccefa09c61f6d
+      commit: 47d9d7dc2b12d51438651d2287a042816b5667be
       additional steps:
         - composer update
   - SemanticReports:
@@ -619,7 +619,7 @@ patches:
   # when the page image was cached from S3 without Access-Control-Allow-Origin.
   - name: MultimediaViewer.no-crossorigin.diff
     path: extensions/MultimediaViewer
-  # MAIN-639: OAuth at 2deadfa7 requires firebase/php-jwt ^7.0.2, which
+  # MAIN-639: OAuth at 47d9d7dc requires firebase/php-jwt ^7.0.2, which
   # conflicts with the psr/log 1.1.4 pin of MediaWiki 1.43. Widen the
   # constraint so composer can use the 6.x line instead.
   - name: OAuth.php-jwt-6-compat.patch
