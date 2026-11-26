@@ -154,7 +154,7 @@ extensions:
       Wikidata ID: Q21676576
       branch: master
       # v3.7
-      commit: 33f353579dde7928dc2de024934363819ecff6f5
+      commit: 579dd1565a71afbb2fab3f003a60eaa1af673600
   - FlexDiagrams:
       Wikidata ID: Q125545336
       branch: master
